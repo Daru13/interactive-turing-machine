@@ -1,6 +1,7 @@
 body{
   display: grid;
-  grid-template-columns: auto 50px;
+  grid-template-columns: 90% 10%;
+  grid-template-rows: 80% 20%;
   grid-template-areas:
     'graph toolBar'
     'tape tape';
@@ -25,8 +26,10 @@ body{
 
 #toolBar{
   grid-area: 'toolBar';
+  background-color: black;
 }
 
 #tape{
   grid-area: 'tape';
+  background-color: red;
 }
