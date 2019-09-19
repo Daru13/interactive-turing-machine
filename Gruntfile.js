@@ -12,7 +12,7 @@ module.exports = function (grunt) {
       exec: {
         clean: "rm -Rf build .tscache",
         copyHTML: "cp -f ./src/index.html build/index.html",
-        copyCSS: "cp -Rf ./src/css/ build"
+        copyCSS: "cp -Rf ./src/css/ build/css/"
       },
 
       // Typescript task

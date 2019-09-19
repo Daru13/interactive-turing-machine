@@ -1,3 +1,8 @@
+html{
+  width:100%;
+  height: 100%;
+}
+
 body{
   display: grid;
   grid-template-columns: 90% 10%;
@@ -17,6 +22,8 @@ body{
 
 #graph{
   grid-area: 'graph';
+  width:100%;
+  height: 100%;
 }
 
 #graph svg{
@@ -27,9 +34,13 @@ body{
 #toolBar{
   grid-area: 'toolBar';
   background-color: black;
+  width:100%;
+  height: 100%;
 }
 
 #tape{
   grid-area: 'tape';
   background-color: red;
+  width:100%;
+  height: 100%;
 }
