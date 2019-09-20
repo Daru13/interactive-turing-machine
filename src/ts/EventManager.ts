@@ -61,7 +61,6 @@ export class EventManager {
   }
 
   upEvent(e){
-    console.log("up")
     if(this.idToInteraction[e.pointerId] != undefined){
       this.idToInteraction[e.pointerId].pointerUp(e);
       delete this.idToInteraction[e.pointerId]
@@ -69,7 +68,6 @@ export class EventManager {
   }
 
   transformEvent(e: PointerEvent){
-    console.log(e.pointerId)
     e.preventDefault()
     e.stopPropagation()
     var pointerType = e.pointerType;
