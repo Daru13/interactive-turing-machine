@@ -1,21 +1,27 @@
 import * as d3 from "d3-selection";
+import { EventManager } from "./EventManager";
+import { NodeInteraction } from "./interaction/nodeInteraction";
+import { SVGInteraction } from "./interaction/SVGInteraction";
 
 export class Graph {
   svg: any;
+  nodeId: number;
+  nodeSelected: any;
+  eventManager: EventManager;
 
-  constructor() {
+  constructor(eventManager: EventManager) {
     this.svg = d3.select("#graph").append("svg");
-    this.svg.on("mouseup", (e: any) => this.addNode(e))
+    this.nodeId = 0;
+    this.nodeSelected = null;
+    this.eventManager = eventManager;
+    eventManager.addEventForTag("svg", new SVGInteraction(this.svg))
+    eventManager.addEventForClass("node", new NodeInteraction(this))
   }
 
-  addNode(e: any) {
-    console.log(d3.event);
-    let x = d3.event.pageX;
-    let y = d3.event.pageY;
+  addEdge(pt1: any, pt2: any){
     this.svg
-      .append("circle")
-        .attr("cx", x)
-        .attr("cy", y)
-        .attr("r", 10)
+      .append("path")
+        .attr("d", "M"+pt1.attr("cx")+","+pt1.attr("cy")+" L"+pt2.attr("cx")+","+pt2.attr("cy"))
+        .classed("edge", true)
   }
 }
