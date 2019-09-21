@@ -40,16 +40,12 @@ export class NodeInteraction {
       this.node.datum()["edgeIn"].forEach(function(edge){
         console.log(edge, t.node.datum()["edgeIn"])
         d3.select("#"+edge).datum()["node1"] = t.node;
-        d3.select("#"+edge).attr("d", function(d){
-          return "M"+d["node1"].attr("cx")+","+d["node1"].attr("cy")+" L"+d["node2"].attr("cx")+","+d["node2"].attr("cy")
-        })
+        d3.select("#"+edge).call(t.graph.drawEdge)
       })
 
       this.node.datum()["edgeOut"].forEach(function(edge){
         d3.select("#"+edge).datum()["node2"] = t.node;
-        d3.select("#"+edge).attr("d", function(d){
-          return "M"+d["node1"].attr("cx")+","+d["node1"].attr("cy")+" L"+d["node2"].attr("cx")+","+d["node2"].attr("cy")
-        })
+        d3.select("#"+edge).call(t.graph.drawEdge)
       })
     }
 
