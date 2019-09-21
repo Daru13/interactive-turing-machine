@@ -32,9 +32,25 @@ export class NodeInteraction {
   pointerMove(e: any){
 
     if(e.pointerType == "touch"){
-      console.log(parseFloat(this.node.attr("cx")) + e.x - this.previousX, parseFloat(this.node.attr("cx")), e.x, this.previousX)
       this.node.attr("cx", parseFloat(this.node.attr("cx")) + e.x - this.previousX);
       this.node.attr("cy", parseFloat(this.node.attr("cy")) + e.y - this.previousY);
+
+      var t = this
+
+      this.node.datum()["edgeIn"].forEach(function(edge){
+        console.log(edge, t.node.datum()["edgeIn"])
+        d3.select("#"+edge).datum()["node1"] = t.node;
+        d3.select("#"+edge).attr("d", function(d){
+          return "M"+d["node1"].attr("cx")+","+d["node1"].attr("cy")+" L"+d["node2"].attr("cx")+","+d["node2"].attr("cy")
+        })
+      })
+
+      this.node.datum()["edgeOut"].forEach(function(edge){
+        d3.select("#"+edge).datum()["node2"] = t.node;
+        d3.select("#"+edge).attr("d", function(d){
+          return "M"+d["node1"].attr("cx")+","+d["node1"].attr("cy")+" L"+d["node2"].attr("cx")+","+d["node2"].attr("cy")
+        })
+      })
     }
 
     if(e.pointerType == "pen"){
