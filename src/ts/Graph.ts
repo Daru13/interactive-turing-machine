@@ -25,6 +25,18 @@ export class Graph {
     this.nodeId += 1;
   }
 
+  deleteNode(node){
+    let t = this;
+    node.datum()["edgeIn"].forEach(function(edge){
+      d3.select("#"+edge).call(t.deleteEdge)
+    })
+
+    node.datum()["edgeOut"].forEach(function(edge){
+      d3.select("#"+edge).call(t.deleteEdge)
+    })
+    node.remove();
+  }
+
   addEdge(node1: any, node2: any){
     this.svg
       .append("path")
@@ -32,8 +44,8 @@ export class Graph {
         .attr("id", "edge-"+this.edgeId)
         .call(this.drawEdge)
         .classed("edge", true);
-    node1.datum()["edgeIn"].push(("edge-"+this.edgeId))
-    node2.datum()["edgeOut"].push(("edge-"+this.edgeId))
+    node1.datum()["edgeOut"].push(("edge-"+this.edgeId))
+    node2.datum()["edgeIn"].push(("edge-"+this.edgeId))
     this.edgeId += 1;
   }
 
@@ -50,6 +62,22 @@ export class Graph {
     edge.attr("d", function(d){
       return "M"+(x1 - dx1)+","+(y1 - dy1)+" L"+(x2 - dx2)+","+(y2 - dy2)
     })
+  }
+
+  deleteEdge(edge){
+    console.log(edge);
+    let id = edge.datum()["id"];
+    var index = edge.datum()["node1"].datum()["edgeOut"].indexOf(id);
+    while(index !== -1){
+      edge.datum()["node1"].datum()["edgeOut"].splice(index, 1);
+      index = edge.datum()["node1"].datum()["edgeOut"].indexOf(id);
+    }
+    index = edge.datum()["node2"].datum()["edgeIn"].indexOf(id);
+    while(index !== -1){
+      edge.datum()["node2"].datum()["edgeIn"].splice(index, 1);
+      index = edge.datum()["node2"].datum()["edgeIn"].indexOf(id);
+    }
+    edge.remove();
   }
 
   getSVGElement(){

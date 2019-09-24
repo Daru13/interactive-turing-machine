@@ -19,6 +19,9 @@ export class MoveTool{
     this.previousY = e.y;
 
     this.node = d3.select(e.target as any);
+    if(!this.node.classed("node")){
+      this.node = undefined
+    }
   }
 
   pointerMove(e: any){
@@ -30,12 +33,10 @@ export class MoveTool{
 
       this.node.datum()["edgeIn"].forEach(function(edge){
         console.log(edge, t.node.datum()["edgeIn"])
-        d3.select("#"+edge).datum()["node1"] = t.node;
         d3.select("#"+edge).call(t.graph.drawEdge)
       })
 
       this.node.datum()["edgeOut"].forEach(function(edge){
-        d3.select("#"+edge).datum()["node2"] = t.node;
         d3.select("#"+edge).call(t.graph.drawEdge)
       })
     }
@@ -45,6 +46,8 @@ export class MoveTool{
   }
 
   pointerUp(e: any){
-    this.node = undefined;
+    if(this.node !== undefined){
+      this.node = undefined;
+    }
   }
 }

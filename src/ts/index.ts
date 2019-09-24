@@ -43,8 +43,5 @@ console.log(tm.toString());
 console.log("nb steps = ", nbSteps);*/
 
 let graph = new Graph();
-
 let toolManager = new ToolManager(graph);
 let toolBar = new ToolBar(toolManager);
-
-toolManager.selectTool(tools.CREATE_NODE);

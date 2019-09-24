@@ -9,8 +9,8 @@ export class ToolBar {
   toolManager: ToolManager;
 
   constructor(toolManager: ToolManager) {
-    this.setupUI();
     this.toolManager = toolManager;
+    this.setupUI();
   }
 
   setupUI(){
@@ -20,6 +20,7 @@ export class ToolBar {
     this.deleteButton = this.addButton(tools.DELETE, "url(./icons/deleteButton.png)");
 
     this.setInteraction()
+    this.selectTool(tools.CREATE_NODE)
   }
 
   setInteraction(){
@@ -36,7 +37,6 @@ export class ToolBar {
   }
 
   selectTool(id: string){
-    console.log(id)
     d3.select("#toolBar").selectAll("div").classed("selected", false);
     d3.select("#"+id).classed("selected", true);
     this.toolManager.selectTool(id);
