@@ -4,7 +4,6 @@ import { Transition } from './model/Transition';
 import { HeadAction } from './model/Tape';
 
 import { Graph } from './Graph';
-import { EventManager } from './EventManager';
 import { ToolBar } from './ToolBar';
 import { ToolManager, tools } from './ToolManager';
 /*
@@ -47,6 +46,5 @@ let graph = new Graph();
 
 let toolManager = new ToolManager(graph);
 let toolBar = new ToolBar(toolManager);
-let eventManager = new EventManager(toolManager);
 
 toolManager.selectTool(tools.CREATE_NODE);

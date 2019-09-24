@@ -1,5 +1,4 @@
 import * as d3 from "d3-selection";
-import { EventManager } from "./EventManager";
 import { ToolManager, tools } from "./ToolManager";
 
 export class ToolBar {
