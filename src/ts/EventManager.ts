@@ -55,7 +55,7 @@ export class EventManager {
   }
 
   moveEvent(e){
-    if(this.idToInteraction[e.pointerId] != undefined){
+    if(this.idToInteraction[e.pointerId] !== undefined){
       this.idToInteraction[e.pointerId].pointerMove(e);
     }
   }
@@ -71,19 +71,19 @@ export class EventManager {
     e.preventDefault()
     e.stopPropagation()
     var pointerType = e.pointerType;
-    if(e.pointerType == "mouse") {
+    if(e.pointerType === "mouse") {
       pointerType = "touch";
     }
 
-    if(e.altKey && e.pointerType == "mouse") {
+    if(e.altKey && e.pointerType === "mouse") {
       pointerType = "pen";
     }
 
-    if((e.pointerType == "pen" && e.button == 5) || (e.shiftKey && e.pointerType == "mouse")) {
+    if((e.pointerType === "pen" && e.button === 5) || (e.shiftKey && e.pointerType === "mouse")) {
       pointerType = "eraser";
     }
 
-    if((e.pointerType == "pen" || e.pointerType == "mouse") && e.button == 2) {
+    if((e.pointerType === "pen" || e.pointerType === "mouse") && e.button === 2) {
       pointerType = "modify";
     }
 

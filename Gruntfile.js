@@ -12,6 +12,7 @@ module.exports = function (grunt) {
       exec: {
         clean: "rm -Rf build .tscache",
         copyHTML: "cp -f ./src/index.html build/index.html",
+        copyIcons: "cp -Rf ./src/icons/ build/icons/",
         copyCSS: "cp -Rf ./src/css/ build/css/"
       },
 
@@ -54,7 +55,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask("build",
         "Compile Typescript sources, Browserify them and copy static sources into the 'build' directory.",
-        ["ts", "browserify", "exec:copyHTML", "exec:copyCSS"]
+        ["ts", "browserify", "exec:copyHTML", "exec:copyCSS", "exec:copyIcons"]
     );
 
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="576" height="144" viewBox="0, 0, 576, 144">
+  <g id="edgeButton" transform="translate(-18, -234)">
+    <g>
+      <path d="M90.5,306.5 L462.9,306.5" fill-opacity="0" stroke="#000000" stroke-width="23" stroke-linecap="round"/>
+      <path d="M462.9,322.7 L506.1,306.5 L462.9,290.3 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="23" stroke-opacity="1"/>
+    </g>
+  </g>
+</svg>

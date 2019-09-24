@@ -9,8 +9,9 @@ html{
 
 body{
   display: grid;
-  grid-template-columns: 90% 10%;
-  grid-template-rows: 80% 20%;
+  grid-gap: 1%;
+  grid-template-columns: 89% 10%;
+  grid-template-rows: 79% 20%;
   grid-template-areas:
     "graph toolBar"
     "tape tape";
@@ -33,18 +34,31 @@ body{
 #graph svg{
   width:100%;
   height: 100%;
+  border: 2px solid #bbb;
 }
 
 #toolBar{
   grid-area: 'toolBar';
-  background-color: black;
   width:100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#toolBar div{
+  flex: 1;
+  border: 0px solid #fff;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+#toolBar div.selected{
+  border: 2px solid #bbb;
 }
 
 #tape{
   grid-area: 'tape';
-  background-color: red;
   width:100%;
   height: 100%;
 }
