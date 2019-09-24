@@ -6,7 +6,8 @@ import { HeadAction } from './model/Tape';
 import { Graph } from './Graph';
 import { EventManager } from './EventManager';
 import { ToolBar } from './ToolBar';
-
+import { ToolManager, tools } from './ToolManager';
+/*
 // Test code for Turing machine model
 let tm = new TuringMachine();
 window["tm"] = tm;
@@ -40,8 +41,12 @@ console.log(tm.toString());
 let nbSteps = tm.run();
 
 console.log(tm.toString());
-console.log("nb steps = ", nbSteps);
+console.log("nb steps = ", nbSteps);*/
 
-let eventManager = new EventManager();
-let graph = new Graph(eventManager);
-let toolBar = new ToolBar(eventManager);
+let graph = new Graph();
+
+let toolManager = new ToolManager(graph);
+let toolBar = new ToolBar(toolManager);
+let eventManager = new EventManager(toolManager);
+
+toolManager.selectTool(tools.CREATE_NODE);

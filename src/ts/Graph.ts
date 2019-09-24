@@ -1,23 +1,16 @@
 import * as d3 from "d3-selection";
-import { EventManager } from "./EventManager";
-import { NodeInteraction } from "./interaction/nodeInteraction";
-import { SVGInteraction } from "./interaction/SVGInteraction";
 import { distance2 } from "./helpers";
 
 export class Graph {
   svg: any;
   nodeId: number;
   edgeId: number;
-  eventManager: EventManager;
   static sizeNode: number = 30;
 
-  constructor(eventManager: EventManager) {
+  constructor() {
     this.svg = d3.select("#graph").append("svg");
     this.nodeId = 0;
     this.edgeId = 0;
-    this.eventManager = eventManager;
-    eventManager.addEventForTag("svg", new SVGInteraction(this))
-    eventManager.addEventForClass("node", new NodeInteraction(this))
   }
 
   addNode(x, y){
@@ -57,5 +50,9 @@ export class Graph {
     edge.attr("d", function(d){
       return "M"+(x1 - dx1)+","+(y1 - dy1)+" L"+(x2 - dx2)+","+(y2 - dy2)
     })
+  }
+
+  getSVGElement(){
+    return this.svg.node();
   }
 }

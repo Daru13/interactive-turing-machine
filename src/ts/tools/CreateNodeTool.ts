@@ -1,7 +1,6 @@
-import * as d3 from "d3-selection";
 import { Graph } from "../Graph";
 
-export class SVGInteraction {
+export class CreateNodeTool{
   eX: number;
   eY: number;
   graph: Graph;
