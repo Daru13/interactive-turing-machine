@@ -11,10 +11,10 @@ export class DeleteTool{
 
   pointerDown(e: any){
     let target = d3.select(e.target as any);
-    if(target.classed("node")){
-      this.node = target;
+    if(this.graph.isANode(d3.select(e.target as any))){
+      this.node = this.graph.getNodeHandle(d3.select(e.target as any))
     }else{
-
+      this.node = undefined
     }
   }
 

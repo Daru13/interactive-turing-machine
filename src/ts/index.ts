@@ -6,6 +6,7 @@ import { HeadAction } from './model/Tape';
 import { Graph } from './Graph';
 import { ToolBar } from './ToolBar';
 import { ToolManager, tools } from './ToolManager';
+import { Tape } from './tape';
 /*
 // Test code for Turing machine model
 let tm = new TuringMachine();
@@ -45,3 +46,5 @@ console.log("nb steps = ", nbSteps);*/
 let graph = new Graph();
 let toolManager = new ToolManager(graph);
 let toolBar = new ToolBar(toolManager);
+
+let tape = new Tape();

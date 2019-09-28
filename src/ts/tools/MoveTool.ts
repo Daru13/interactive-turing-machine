@@ -1,11 +1,10 @@
 import * as d3 from "d3-selection";
-import { distance2 } from "../helpers";
 import { Graph } from "../Graph";
 
 export class MoveTool{
   previousX: number;
   previousY: number;
-  node: d3.Selection<any, unknown, null, undefined>;
+  node: any;
   graph: Graph;
 
   constructor(graph: Graph){
@@ -17,17 +16,16 @@ export class MoveTool{
   pointerDown(e: any){
     this.previousX = e.x;
     this.previousY = e.y;
-
-    this.node = d3.select(e.target as any);
-    if(!this.node.classed("node")){
+    if(this.graph.isANode(d3.select(e.target as any))){
+      this.node = this.graph.getNodeHandle(d3.select(e.target as any))
+    }else{
       this.node = undefined
     }
   }
 
   pointerMove(e: any){
     if(this.node !== undefined){
-      this.node.attr("cx", parseFloat(this.node.attr("cx")) + e.x - this.previousX);
-      this.node.attr("cy", parseFloat(this.node.attr("cy")) + e.y - this.previousY);
+      this.graph.moveNodeByD(this.node, e.x - this.previousX, e.y - this.previousY);
 
       var t = this
 

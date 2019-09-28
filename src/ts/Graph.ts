@@ -15,14 +15,22 @@ export class Graph {
 
   addNode(x, y){
     this.svg
-      .append("circle")
-        .attr("cx", x)
-        .attr("cy", y)
-        .attr("r", Graph.sizeNode)
+      .append("g")
         .classed("node", true)
+        .datum({x:0, y:0, id:("node-"+this.nodeId), edgeIn:[], edgeOut:[]})
         .attr("id", "node-"+this.nodeId)
-        .datum({id:("node-"+this.nodeId), edgeIn:[], edgeOut:[]});
+        .append("circle")
+          .attr("cx", 0)
+          .attr("cy", 0)
+          .attr("r", Graph.sizeNode);
+    this.moveNodeByD(d3.select("#node-"+this.nodeId), x, y);
     this.nodeId += 1;
+  }
+
+  moveNodeByD(node, dx, dy){
+    node.datum()["x"] += dx;
+    node.datum()["y"] += dy;
+    node.attr("transform", function(d){return "translate("+d.x+","+d.y+")"})
   }
 
   deleteNode(node){
@@ -35,6 +43,26 @@ export class Graph {
       d3.select("#"+edge).call(t.deleteEdge)
     })
     node.remove();
+  }
+
+  isANode(selection){
+    if(selection.datum() !== undefined && selection.datum()["id"] !== undefined){
+      if(d3.select("#" + selection.datum()["id"]).classed("node")){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  getNodeHandle(selection){
+    var node;
+    if(selection.datum() !== undefined && selection.datum()["id"] !== undefined){
+      node = d3.select("#" + selection.datum()["id"])
+      if(node.classed("node")){
+        return node
+      }
+    }
+    throw "Graph.ts (getNodeHandle): Selection is not part of a node"
   }
 
   addEdge(node1: any, node2: any){
@@ -50,10 +78,10 @@ export class Graph {
   }
 
   drawEdge(edge: any){
-    let x1 = edge.datum()["node1"].attr("cx");
-    let y1 = edge.datum()["node1"].attr("cy");
-    let x2 = edge.datum()["node2"].attr("cx");
-    let y2 = edge.datum()["node2"].attr("cy");
+    let x1 = edge.datum()["node1"].datum()["x"];
+    let y1 = edge.datum()["node1"].datum()["y"];
+    let x2 = edge.datum()["node2"].datum()["x"];
+    let y2 = edge.datum()["node2"].datum()["y"];
     let len = distance2({x: x1, y: y1}, {x: x2, y: y2});
     let dx1 = Graph.sizeNode * (x1 - x2) / len;
     let dy1 = Graph.sizeNode * (y1 - y2) / len;

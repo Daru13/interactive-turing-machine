@@ -26,7 +26,7 @@ export class CreateEdgeTool{
     this.node.classed("selected", true)
     this.graph.svg
       .append("path")
-        .attr("d", "M"+this.node.attr("cx")+","+this.node.attr("cy")+" L"+this.previousX+","+this.previousY)
+        .attr("d", "M"+this.node.datum()["x"]+","+this.node.datum()["y"]+" L"+this.previousX+","+this.previousY)
         .classed("edgeInCreation", true)
   }
 
@@ -34,7 +34,7 @@ export class CreateEdgeTool{
     if(this.isDown){
       this.graph.svg
         .select(".edgeInCreation")
-          .attr("d", "M"+this.node.attr("cx")+","+this.node.attr("cy")+" L"+this.previousX+","+this.previousY)
+          .attr("d", "M"+this.node.datum()["x"]+","+this.node.datum()["y"]+" L"+this.previousX+","+this.previousY)
 
       this.previousX = e.x;
       this.previousY = e.y;
@@ -52,9 +52,9 @@ export class CreateEdgeTool{
     let t = this;
     d3.selectAll(".node:not(.selected)").each(function(){
       if(distance2({x: t.previousX, y: t.previousY},
-                   {x: parseFloat(d3.select(this).attr("cx")), y: parseFloat(d3.select(this).attr("cy"))}) < closestDistance){
+                   {x: parseFloat(d3.select(this).datum()["x"]), y: parseFloat(d3.select(this).datum()["y"])}) < closestDistance){
         closestDistance =distance2({x: t.previousX, y: t.previousY},
-                     {x: parseFloat(d3.select(this).attr("cx")), y: parseFloat(d3.select(this).attr("cy"))})
+                     {x: parseFloat(d3.select(this).datum()["x"]), y: parseFloat(d3.select(this).datum()["y"])})
         closestNode = d3.select(this)
       }
     })
