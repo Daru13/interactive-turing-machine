@@ -31,11 +31,11 @@ export class MoveTool{
 
       this.node.datum()["edgeIn"].forEach(function(edge){
         console.log(edge, t.node.datum()["edgeIn"])
-        d3.select("#"+edge).call(t.graph.drawEdge)
+        d3.select("#"+edge).call(t.graph.moveEdge)
       })
 
       this.node.datum()["edgeOut"].forEach(function(edge){
-        d3.select("#"+edge).call(t.graph.drawEdge)
+        d3.select("#"+edge).call(t.graph.moveEdge)
       })
     }
 

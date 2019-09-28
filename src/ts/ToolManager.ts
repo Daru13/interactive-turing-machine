@@ -47,14 +47,27 @@ export class ToolManager{
   }
 
   dispatchDownEvent(e:any){
+    this.updateXYSVG(e);
     this.toolToInteraction[this.selectedTool].pointerDown(e);
   }
 
   dispatchMoveEvent(e:any){
+    this.updateXYSVG(e);
     this.toolToInteraction[this.selectedTool].pointerMove(e);
   }
 
   dispatchUpEvent(e:any){
+    this.updateXYSVG(e);
     this.toolToInteraction[this.selectedTool].pointerUp(e);
+  }
+
+  updateXYSVG(e:any){
+    var pt = this.graph.getSVGElement().createSVGPoint(), svgP
+
+    pt.x = e.x;
+    pt.y = e.y;
+    svgP = pt.matrixTransform(this.graph.getSVGElement().getScreenCTM().inverse());
+    e.x = svgP.x
+    e.y = svgP.y
   }
 }

@@ -6,12 +6,13 @@ html{
   overscroll-behavior: none;
   user-zoom: fixed;
 }
-
+svg{overflow: visible;}
 body{
   display: grid;
+  padding: 3%;
   grid-gap: 1%;
-  grid-template-columns: 89% 10%;
-  grid-template-rows: 79% 20%;
+  grid-template-columns: 85% 8%;
+  grid-template-rows: 76% 17%;
   grid-template-areas:
     "graph toolBar"
     "tape tape";
@@ -84,10 +85,14 @@ body{
   stroke: red;
 }
 
-.edge{
+.edge path{
   stroke: black;
   stroke-width: 2px;
   marker-end:url(#arrowHead);
+}
+
+.edge rect{
+  fill: white;
 }
 
 .edgeInCreation{
