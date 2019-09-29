@@ -20,14 +20,20 @@ export class CreateEdgeTool{
   pointerDown(e: any){
     this.previousX = e.x;
     this.previousY = e.y;
-    this.node = d3.select(e.target as any);
-    this.isDown = true;
+    this.node = undefined;
 
-    this.node.classed("selected", true)
-    this.graph.svg
-      .append("path")
-        .attr("d", "M"+this.node.datum()["x"]+","+this.node.datum()["y"]+" L"+this.previousX+","+this.previousY)
-        .classed("edgeInCreation", true)
+    if(this.graph.isANode(d3.select(e.target as any))){
+      this.node = this.graph.getNodeHandle(d3.select(e.target as any))
+      this.node.classed("selected", true)
+      this.isDown = true;
+      this.graph.svg
+        .append("path")
+          .attr("d", "M"+this.node.datum()["x"]+","+this.node.datum()["y"]+" L"+this.previousX+","+this.previousY)
+          .classed("edgeInCreation", true)
+    }else{
+      this.node = undefined
+      return;
+    }
   }
 
   pointerMove(e: any){
@@ -42,23 +48,26 @@ export class CreateEdgeTool{
   }
 
   pointerUp(e: any){
-    this.isDown = false;
+    if(this.isDown){
+      this.isDown = false;
 
-    this.graph.svg
-      .select(".edgeInCreation")
-      .remove()
-    let closestNode: d3.Selection<d3.BaseType, unknown, null, undefined>;
-    let closestDistance = Infinity;
-    let t = this;
-    d3.selectAll(".node:not(.selected)").each(function(){
-      if(distance2({x: t.previousX, y: t.previousY},
-                   {x: parseFloat(d3.select(this).datum()["x"]), y: parseFloat(d3.select(this).datum()["y"])}) < closestDistance){
-        closestDistance =distance2({x: t.previousX, y: t.previousY},
-                     {x: parseFloat(d3.select(this).datum()["x"]), y: parseFloat(d3.select(this).datum()["y"])})
-        closestNode = d3.select(this)
-      }
-    })
-    d3.selectAll(".node.selected").classed("selected", false);
-    this.graph.addEdge(this.node, closestNode);
+      this.node.classed("selected", false);
+
+      this.graph.svg.select(".edgeInCreation").remove()
+
+      let closestNode: d3.Selection<d3.BaseType, unknown, null, undefined>;
+      let closestDistance = Infinity;
+      let t = this;
+      d3.selectAll(".node:not(.selected)").each(function(){
+        if(distance2({x: t.previousX, y: t.previousY},
+                     {x: parseFloat(d3.select(this).datum()["x"]), y: parseFloat(d3.select(this).datum()["y"])}) < closestDistance){
+          closestDistance =distance2({x: t.previousX, y: t.previousY},
+                       {x: parseFloat(d3.select(this).datum()["x"]), y: parseFloat(d3.select(this).datum()["y"])})
+          closestNode = d3.select(this)
+        }
+      })
+      d3.selectAll(".node.selected").classed("selected", false);
+      this.graph.addEdge(this.node, closestNode);
+    }
   }
 }

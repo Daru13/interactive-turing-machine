@@ -1,6 +1,7 @@
 import { Graph } from "../Graph";
 import * as d3 from "d3-selection";
 import { EdgeEditor } from "../EdgeEditor";
+import { NodeEditor } from "../NodeEditor";
 
 export class EditTool{
   graph: Graph;
@@ -26,7 +27,7 @@ export class EditTool{
 
   pointerUp(e: any){
     if(this.node !== undefined){
-
+      new NodeEditor(this.graph, this.node);
     }
     if(this.edge !== undefined){
       new EdgeEditor(this.graph, this.edge);

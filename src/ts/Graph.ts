@@ -1,6 +1,12 @@
 import * as d3 from "d3-selection";
 import { distance2, angleToXAxis } from "./helpers";
 
+export const nodeTypes = {
+  STANDARD: "standard",
+  START: "start",
+  FINAL: "final"
+}
+
 export class Graph {
   svg: any;
   nodeId: number;
@@ -9,10 +15,6 @@ export class Graph {
 
   constructor() {
     this.svg = d3.select("#graph").append("svg");
-    this.svg.append("circle")
-      .attr("cx", 0)
-      .attr("cy", 0)
-      .attr("r", Graph.sizeNode);
     this.nodeId = 0;
     this.edgeId = 0;
   }
@@ -73,6 +75,25 @@ export class Graph {
       }
     }
     throw "Graph.ts (getNodeHandle): Selection is not part of a node"
+  }
+
+  changeTypeNode(node, type){
+    switch(type){
+      case nodeTypes.START:
+        node.classed("start", true)
+        node.classed("final", false)
+        break;
+      case nodeTypes.STANDARD:
+        node.classed("start", false)
+        node.classed("final", false)
+        break;
+      case nodeTypes.FINAL:
+        node.classed("start", false)
+        node.classed("final", true)
+        break;
+      default:
+        throw "Graph.ts (changeTypeNode) type not recognised: "+type
+    }
   }
 
   addEdge(node1: any, node2: any){

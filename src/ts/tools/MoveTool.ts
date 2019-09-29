@@ -18,6 +18,7 @@ export class MoveTool{
     this.previousY = e.y;
     if(this.graph.isANode(d3.select(e.target as any))){
       this.node = this.graph.getNodeHandle(d3.select(e.target as any))
+      this.node.classed("move", true)
     }else{
       this.node = undefined
     }
@@ -45,6 +46,7 @@ export class MoveTool{
 
   pointerUp(e: any){
     if(this.node !== undefined){
+      this.node.classed("move", false);
       this.node = undefined;
     }
   }

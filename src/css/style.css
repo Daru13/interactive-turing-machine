@@ -83,8 +83,20 @@ body{
   fill: #fff;
 }
 
-.node.selected circle{
+.node.start circle{
+  stroke: green;
+}
+
+.node.final circle{
   stroke: red;
+}
+
+.node.selected circle{
+  filter:url(#outline);
+}
+
+.node.move circle{
+  filter:url(#blur);
 }
 
 .edge path{
@@ -95,6 +107,7 @@ body{
 
 .edge rect{
   fill: white;
+  fill-opacity: 0;
 }
 
 .edgeInCreation{
@@ -133,4 +146,18 @@ body{
 
 .EdgeEditor .button:hover{
   background: #2fb5d4;
+}
+
+.NodeEditor{
+  position: absolute;
+  background: white;
+  border: 2px solid black;
+  border-radius: 5px;
+  top: 40%;
+  left:40%;
+  height:30px;
+  width:300px;
+  display: grid;
+  grid-template-columns: 100px 100px 100px;
+  grid-template-rows: 30px;
 }
