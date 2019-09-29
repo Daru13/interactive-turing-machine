@@ -3,12 +3,14 @@ import { CreateNodeTool } from "./tools/CreateNodeTool";
 import { transformEvent } from "./helpers";
 import { CreateEdgeTool } from "./tools/CreateEdgeTool";
 import { DeleteTool } from "./tools/DeleteTool";
+import { EditTool } from "./tools/EditTool";
 
 export const tools = {
     MOVE: "move",
     CREATE_NODE: "create_node",
     CREATE_EDGE: "create_edge",
-    DELETE: 'delete'
+    DELETE: 'delete',
+    EDIT: "edit"
 }
 
 export class ToolManager{
@@ -22,6 +24,7 @@ export class ToolManager{
     this.toolToInteraction[tools.CREATE_NODE] = new CreateNodeTool(graph);
     this.toolToInteraction[tools.CREATE_EDGE] = new CreateEdgeTool(graph);
     this.toolToInteraction[tools.DELETE] = new DeleteTool(graph);
+    this.toolToInteraction[tools.EDIT] = new EditTool(graph);
     this.graph = graph;
     this.setInteraction()
   }

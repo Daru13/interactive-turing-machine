@@ -18,16 +18,22 @@ export class Graph {
   }
 
   addNode(x, y){
-    this.svg
-      .append("g")
-        .classed("node", true)
-        .datum({x:0, y:0, id:("node-"+this.nodeId), edgeIn:[], edgeOut:[]})
-        .attr("id", "node-"+this.nodeId)
-        .append("circle")
-          .attr("cx", 0)
-          .attr("cy", 0)
-          .attr("r", Graph.sizeNode);
-    this.moveNodeByD(d3.select("#node-"+this.nodeId), x, y);
+    let node =
+      this.svg
+        .append("g")
+          .classed("node", true)
+          .datum({x:0, y:0, id:("node-"+this.nodeId), edgeIn:[], edgeOut:[]})
+          .attr("id", "node-"+this.nodeId)
+    node.append("circle")
+      .attr("cx", 0)
+      .attr("cy", 0)
+      .attr("r", Graph.sizeNode);
+    node.append("text")
+      .attr("x",0)
+      .attr("y",0)
+      .attr("text-anchor", "middle")
+      .text("N"+this.nodeId);
+    this.moveNodeByD(node, x, y);
     this.nodeId += 1;
   }
 
@@ -73,7 +79,7 @@ export class Graph {
     var edgeHandle =
       this.svg
         .append("g")
-        .datum({"id": ("edge-"+this.edgeId), node1:node1, node2:node2})
+        .datum({id: ("edge-"+this.edgeId), node1:node1, node2:node2, transition:{r:0, w:0, d:"L"}})
         .attr("id", "edge-"+this.edgeId)
         .classed("edge", true);
     edgeHandle
@@ -87,7 +93,7 @@ export class Graph {
       .attr("x",0)
       .attr("y",15)
       .attr("text-anchor", "middle")
-      .text("R:0/W:0/M:L")
+      .text("click to set");
 
     this.moveEdge(edgeHandle);
 
@@ -107,7 +113,8 @@ export class Graph {
 
     edge.select("path").attr("d", "M" + Graph.sizeNode + ",0 L" + (len) + ",0");
     edge.select("rect").attr("width", len-Graph.sizeNode);
-    edge.select("text").attr("x", (len)/2);
+    edge.select("text")
+      .attr("x", (len)/2);
     if(angle > 90 || angle < -90){
       edge.select("text").attr("transform", "rotate(180," + (len/2) + ",0)")
     }else{
@@ -150,6 +157,14 @@ export class Graph {
       }
     }
     throw "Graph.ts (getEdgeHandle): Selection is not part of a edge"
+  }
+
+  setTransition(edge, read, write, dir){
+    edge.datum().transition.r = read;
+    edge.datum().transition.w = write;
+    edge.datum().transition.d = dir;
+    edge.select("text")
+    .text(function(d){return "R:"+d.transition.r+"/W:"+d.transition.w+"/D:"+d.transition.d})
   }
 
   getSVGElement(){

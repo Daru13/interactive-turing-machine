@@ -6,6 +6,7 @@ export class ToolBar {
   nodeButton: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
   edgeButton: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
   deleteButton: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
+  editButton: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
   toolManager: ToolManager;
 
   constructor(toolManager: ToolManager) {
@@ -18,6 +19,7 @@ export class ToolBar {
     this.nodeButton = this.addButton(tools.CREATE_NODE, "url(./icons/nodeButton.png)");
     this.edgeButton = this.addButton(tools.CREATE_EDGE, "url(./icons/edgeButton.png)");
     this.deleteButton = this.addButton(tools.DELETE, "url(./icons/deleteButton.png)");
+    this.editButton = this.addButton(tools.EDIT, "url(./icons/editButton.png)");
 
     this.setInteraction()
     this.selectTool(tools.CREATE_NODE)
@@ -29,6 +31,7 @@ export class ToolBar {
     this.nodeButton.on("click", function(){t.selectTool(tools.CREATE_NODE)})
     this.edgeButton.on("click", function(){t.selectTool(tools.CREATE_EDGE)})
     this.deleteButton.on("click", function(){t.selectTool(tools.DELETE)})
+    this.editButton.on("click", function(){t.selectTool(tools.EDIT)})
   }
 
   addButton(id: string, image: string){

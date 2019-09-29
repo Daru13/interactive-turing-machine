@@ -6,7 +6,9 @@ html{
   overscroll-behavior: none;
   user-zoom: fixed;
 }
+
 svg{overflow: visible;}
+
 body{
   display: grid;
   padding: 3%;
@@ -99,4 +101,36 @@ body{
   stroke: #333;
   stroke-width: 1px;
   marker-end:url(#arrowHead);
+}
+
+.EdgeEditor{
+  position: absolute;
+  background: white;
+  border: 2px solid black;
+  border-radius: 5px;
+  top: 40%;
+  left:40%;
+  height:110px;
+  width:600px;
+  display: grid;
+  grid-template-columns: 200px 200px 200px;
+  grid-template-rows: 30px 50px 30px;
+  grid-template-areas:
+    "readTag writeTag dirTag"
+    "readEntry writeEntry dirEntry"
+    ". submitButton cancelButton";
+}
+
+.EdgeEditor div{
+  text-align: center;
+}
+
+.EdgeEditor .button{
+  background: #34c9eb;
+  margin: 5px;
+  border-radius: 25px;
+}
+
+.EdgeEditor .button:hover{
+  background: #2fb5d4;
 }
