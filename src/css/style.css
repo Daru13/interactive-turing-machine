@@ -110,6 +110,11 @@ body{
   fill-opacity: 0;
 }
 
+.edge.selected path{
+  stroke: blue;
+  marker-end:url(#arrowHeadSelected);
+}
+
 .edgeInCreation{
   stroke: #333;
   stroke-width: 1px;
@@ -146,6 +151,18 @@ body{
 
 .EdgeEditor .button:hover{
   background: #2fb5d4;
+}
+
+.EdgeEditor .dirEntryButton{
+  background: white;
+  margin: 5px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  border: 2px solid grey;
+}
+
+.EdgeEditor .dirEntryButton .selected{
+  background: grey;
 }
 
 .NodeEditor{

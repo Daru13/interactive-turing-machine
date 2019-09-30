@@ -1,5 +1,5 @@
 import * as d3 from "d3-selection";
-import { distance2, angleToXAxis } from "./helpers";
+import { distance2, angleToXAxis } from "../helpers";
 
 export class Graph {
   svg: any;

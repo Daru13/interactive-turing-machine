@@ -1,7 +1,7 @@
 import * as d3 from "d3-selection";
-import { Graph } from "../Graph";
-import { Node } from "../Node";
-import { Edge } from "../Edge";
+import { Graph } from "../graph/Graph";
+import { Node } from "../graph/Node";
+import { Edge } from "../graph/Edge";
 
 export class DeleteTool{
   graph: Graph;

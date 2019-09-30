@@ -3,7 +3,7 @@ import { State } from './model/State';
 import { Transition } from './model/Transition';
 import { HeadAction } from './model/Tape';
 
-import { Graph } from './Graph';
+import { Graph } from './graph/Graph';
 import { ToolBar } from './ToolBar';
 import { ToolManager, tools } from './ToolManager';
 import { Tape } from './tape';

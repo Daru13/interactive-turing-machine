@@ -1,9 +1,9 @@
-import { Graph } from "../Graph";
+import { Graph } from "../graph/Graph";
 import * as d3 from "d3-selection";
 import { EdgeEditor } from "../EdgeEditor";
 import { NodeEditor } from "../NodeEditor";
-import { Node } from "../Node";
-import { Edge } from "../Edge";
+import { Node } from "../graph/Node";
+import { Edge } from "../graph/Edge";
 
 export class EditTool{
   graph: Graph;

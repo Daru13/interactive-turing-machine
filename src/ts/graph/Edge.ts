@@ -1,6 +1,6 @@
 import { Graph } from "./Graph";
 import * as d3 from "d3-selection";
-import { distance2, angleToXAxis } from "./helpers";
+import { distance2, angleToXAxis } from "../helpers";
 
 let edgeId = 0;
 export class Edge{

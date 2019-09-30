@@ -1,5 +1,5 @@
 import * as d3 from "d3-selection";
-import { nodeTypes, Node } from "./Node";
+import { nodeTypes, Node } from "./graph/Node";
 
 export class NodeEditor{
   holder: any;
@@ -9,6 +9,7 @@ export class NodeEditor{
     d3.select("body").selectAll(".NodeEditor").remove();
     this.holder = d3.select("body").append("div").classed("NodeEditor", true);
     this.node = node;
+    this.node.classed("selected", true);
     this.setupUI();
   }
 
@@ -30,6 +31,7 @@ export class NodeEditor{
   }
 
   close(){
+    this.node.classed("selected", false);
     d3.select("body").selectAll(".NodeEditor").remove();
   }
 }

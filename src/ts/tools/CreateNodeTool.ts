@@ -1,5 +1,5 @@
-import { Graph } from "../Graph";
-import { Node } from "../Node";
+import { Graph } from "../graph/Graph";
+import { Node } from "../graph/Node";
 
 export class CreateNodeTool{
   eX: number;

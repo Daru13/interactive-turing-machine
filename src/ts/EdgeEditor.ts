@@ -1,5 +1,7 @@
 import * as d3 from "d3-selection";
-import { Edge } from "./Edge";
+import { Edge } from "./graph/Edge";
+
+let direction = {LEFT: "L", STAY: "S", RIGHT: "R"};
 
 export class EdgeEditor{
   holder: any;
@@ -12,6 +14,7 @@ export class EdgeEditor{
     d3.select("body").selectAll(".EdgeEditor").remove();
     this.holder = d3.select("body").append("div").classed("EdgeEditor", true);
     this.edge = edge;
+    this.edge.classed("selected", true)
     this.setupUI();
   }
 
@@ -22,11 +25,45 @@ export class EdgeEditor{
 
     this.readField = this.addTextField("test", "readEntry")
     this.writeField = this.addTextField("test", "writeEntry")
-    this.dirField = this.addTextField("test", "dirEntry")
+    this.dirField = this.addDirEntry(direction.STAY, "dirEntry")
 
-    var t = this;
     this.addButton("Submit", "submitButton", this.submit)
     this.addButton("Cancel", "cancelButton", this.close)
+  }
+
+  addDirEntry(defaultDir: string, gridArea: string): any {
+    let holder =
+      this.holder.append("div")
+        .attr("id", gridArea)
+        .style("grid-area", gridArea)
+        .append("div")
+        .classed("dirEntryButton", true);
+    holder.append("div")
+      .text("L")
+      .attr("id", "leftSwitch")
+      .datum(direction.LEFT)
+      .on("click", function(){
+        holder.select(".selected").classed("selected", false);
+        d3.select(this).classed("selected", true);
+      })
+    holder.append("div")
+      .text("S")
+      .attr("id", "staySwitch")
+      .classed("selected", true)
+      .datum(direction.STAY)
+      .on("click", function(){
+        holder.select(".selected").classed("selected", false);
+        d3.select(this).classed("selected", true);
+      })
+    holder.append("div")
+    .text("R")
+    .attr("id", "rightSwitch")
+    .datum(direction.RIGHT)
+    .on("click", function(){
+      holder.select(".selected").classed("selected", false);
+      d3.select(this).classed("selected", true);
+    })
+    return holder;
   }
 
   addButton(text: string, gridArea: string, funct) {
@@ -53,11 +90,12 @@ export class EdgeEditor{
   }
 
   submit(edgeEditor){
-    Edge.setTransition(edgeEditor.edge, edgeEditor.readField.node().value, edgeEditor.writeField.node().value, edgeEditor.dirField.node().value)
-    edgeEditor.close();
+    Edge.setTransition(edgeEditor.edge, edgeEditor.readField.node().value, edgeEditor.writeField.node().value, edgeEditor.dirField.select(".selected").datum())
+    edgeEditor.close(edgeEditor);
   }
 
   close(edgeEditor){
+    edgeEditor.edge.classed("selected", false)
     d3.select("body").selectAll(".EdgeEditor").remove();
   }
 }
