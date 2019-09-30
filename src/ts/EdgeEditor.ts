@@ -1,18 +1,17 @@
 import * as d3 from "d3-selection";
+import { Edge } from "./Edge";
 
 export class EdgeEditor{
   holder: any;
   edge: any;
-  graph: any;
   readField: any;
   writeField: any;
   dirField: any;
 
-  constructor(graph, edge){
+  constructor(edge){
     d3.select("body").selectAll(".EdgeEditor").remove();
     this.holder = d3.select("body").append("div").classed("EdgeEditor", true);
     this.edge = edge;
-    this.graph = graph;
     this.setupUI();
   }
 
@@ -54,8 +53,7 @@ export class EdgeEditor{
   }
 
   submit(edgeEditor){
-    console.log(edgeEditor.edge)
-    edgeEditor.graph.setTransition(edgeEditor.edge, edgeEditor.readField.node().value, edgeEditor.writeField.node().value, edgeEditor.dirField.node().value)
+    Edge.setTransition(edgeEditor.edge, edgeEditor.readField.node().value, edgeEditor.writeField.node().value, edgeEditor.dirField.node().value)
     edgeEditor.close();
   }
 

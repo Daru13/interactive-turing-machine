@@ -1,6 +1,8 @@
 import { distance2 } from "../helpers";
 import * as d3 from "d3-selection";
 import { Graph } from "../Graph";
+import { Node } from "../Node";
+import { Edge } from "../Edge";
 
 export class CreateEdgeTool{
   previousX: number;
@@ -22,11 +24,11 @@ export class CreateEdgeTool{
     this.previousY = e.y;
     this.node = undefined;
 
-    if(this.graph.isANode(d3.select(e.target as any))){
-      this.node = this.graph.getNodeHandle(d3.select(e.target as any))
+    if(Node.isANode(d3.select(e.target as any))){
+      this.node = Node.getHandle(d3.select(e.target as any))
       this.node.classed("selected", true)
       this.isDown = true;
-      this.graph.svg
+      this.graph.getSVG()
         .append("path")
           .attr("d", "M"+this.node.datum()["x"]+","+this.node.datum()["y"]+" L"+this.previousX+","+this.previousY)
           .classed("edgeInCreation", true)
@@ -38,7 +40,7 @@ export class CreateEdgeTool{
 
   pointerMove(e: any){
     if(this.isDown){
-      this.graph.svg
+      this.graph.getSVG()
         .select(".edgeInCreation")
           .attr("d", "M"+this.node.datum()["x"]+","+this.node.datum()["y"]+" L"+this.previousX+","+this.previousY)
 
@@ -53,7 +55,7 @@ export class CreateEdgeTool{
 
       this.node.classed("selected", false);
 
-      this.graph.svg.select(".edgeInCreation").remove()
+      this.graph.getSVG().select(".edgeInCreation").remove()
 
       let closestNode: d3.Selection<d3.BaseType, unknown, null, undefined>;
       let closestDistance = Infinity;
@@ -67,7 +69,7 @@ export class CreateEdgeTool{
         }
       })
       d3.selectAll(".node.selected").classed("selected", false);
-      this.graph.addEdge(this.node, closestNode);
+      Edge.add(this.graph, this.node, closestNode);
     }
   }
 }

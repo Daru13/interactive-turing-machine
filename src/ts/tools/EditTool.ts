@@ -2,6 +2,8 @@ import { Graph } from "../Graph";
 import * as d3 from "d3-selection";
 import { EdgeEditor } from "../EdgeEditor";
 import { NodeEditor } from "../NodeEditor";
+import { Node } from "../Node";
+import { Edge } from "../Edge";
 
 export class EditTool{
   graph: Graph;
@@ -16,10 +18,10 @@ export class EditTool{
     let target = d3.select(e.target as any);
     this.edge = undefined;
     this.node = undefined;
-    if(this.graph.isANode(d3.select(e.target as any))){
-      this.node = this.graph.getNodeHandle(d3.select(e.target as any));
-    }else if(this.graph.isAnEdge(d3.select(e.target as any))){
-      this.edge = this.graph.getEdgeHandle(d3.select(e.target as any));
+    if(Node.isANode(d3.select(e.target as any))){
+      this.node = Node.getHandle(d3.select(e.target as any));
+    }else if(Edge.isAnEdge(d3.select(e.target as any))){
+      this.edge = Edge.getHandle(d3.select(e.target as any));
     }
   }
 
@@ -27,10 +29,10 @@ export class EditTool{
 
   pointerUp(e: any){
     if(this.node !== undefined){
-      new NodeEditor(this.graph, this.node);
+      new NodeEditor(this.node);
     }
     if(this.edge !== undefined){
-      new EdgeEditor(this.graph, this.edge);
+      new EdgeEditor(this.edge);
     }
   }
 }

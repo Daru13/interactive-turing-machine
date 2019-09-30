@@ -1,16 +1,14 @@
 import * as d3 from "d3-selection";
-import { nodeTypes } from "./Graph";
+import { nodeTypes, Node } from "./Node";
 
 export class NodeEditor{
   holder: any;
   node: any;
-  graph: any;
 
-  constructor(graph, node){
+  constructor(node){
     d3.select("body").selectAll(".NodeEditor").remove();
     this.holder = d3.select("body").append("div").classed("NodeEditor", true);
     this.node = node;
-    this.graph = graph;
     this.setupUI();
   }
 
@@ -25,7 +23,7 @@ export class NodeEditor{
     var t = this;
     this.holder.append("div")
       .on("click", function(){
-        t.graph.changeTypeNode(t.node, type);
+        Node.changeType(t.node, type);
         t.close();
       })
       .text(text);

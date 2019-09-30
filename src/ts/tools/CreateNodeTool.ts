@@ -1,4 +1,5 @@
 import { Graph } from "../Graph";
+import { Node } from "../Node";
 
 export class CreateNodeTool{
   eX: number;
@@ -20,6 +21,6 @@ export class CreateNodeTool{
   pointerMove(e: any){}
 
   pointerUp(e: any){
-    this.graph.addNode(this.eX, this.eY)
+    Node.add(this.graph, this.eX, this.eY)
   }
 }
