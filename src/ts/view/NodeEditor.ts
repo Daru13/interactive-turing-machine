@@ -1,5 +1,5 @@
 import * as d3 from "d3-selection";
-import { nodeTypes, Node } from "./graph/Node";
+import { NodeType, Node } from "./graph/Node";
 
 export class NodeEditor{
   holder: any;
@@ -15,9 +15,9 @@ export class NodeEditor{
 
   setupUI(){
     var t = this;
-    this.addButton("Start", nodeTypes.START)
-    this.addButton("Standard", nodeTypes.STANDARD)
-    this.addButton("Final", nodeTypes.FINAL)
+    this.addButton("Start", NodeType.START)
+    this.addButton("Standard", NodeType.STANDARD)
+    this.addButton("Final", NodeType.FINAL)
   }
 
   addButton(text: string, type) {

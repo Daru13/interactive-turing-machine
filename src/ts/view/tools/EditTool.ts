@@ -18,7 +18,7 @@ export class EditTool{
     let target = d3.select(e.target as any);
     this.edge = undefined;
     this.node = undefined;
-    if(Node.isANode(d3.select(e.target as any))){
+    if(Node.isNode(d3.select(e.target as any))){
       this.node = Node.getHandle(d3.select(e.target as any));
     }else if(Edge.isAnEdge(d3.select(e.target as any))){
       this.edge = Edge.getHandle(d3.select(e.target as any));

@@ -1,14 +1,14 @@
-import { distance2 } from "../helpers";
+import { distance2 } from "../../helpers";
 import * as d3 from "d3-selection";
 import { Graph } from "../graph/Graph";
-import { Node } from "../graph/Node";
+import { Node, NodeHandleSelection } from "../graph/Node";
 import { Edge } from "../graph/Edge";
 
 export class CreateEdgeTool{
   previousX: number;
   previousY: number;
   graph: Graph;
-  node: d3.Selection<any, unknown, null, undefined>;
+  node: NodeHandleSelection;
   isDown: boolean;
 
   constructor(graph: Graph){
@@ -24,7 +24,7 @@ export class CreateEdgeTool{
     this.previousY = e.y;
     this.node = undefined;
 
-    if(Node.isANode(d3.select(e.target as any))){
+    if(Node.isNode(d3.select(e.target as any))){
       this.node = Node.getHandle(d3.select(e.target as any))
       this.node.classed("selected", true)
       this.isDown = true;
