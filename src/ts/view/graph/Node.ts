@@ -1,7 +1,6 @@
 import { Graph, GraphDatum } from "./Graph";
-import { Edge } from "./Edge";
 import * as d3 from "d3-selection";
-import { State } from "../../model/State";
+import { State, StateID } from "../../model/State";
 
 export enum NodeType {
   STANDARD = "standard",
@@ -52,16 +51,6 @@ export class Node{
   }
 
   static delete(node){
-    let copyEdgeIn = node.datum()["edgeIn"].slice();
-    for(var i = 0; i < copyEdgeIn.length; i++){
-      d3.select("#"+copyEdgeIn[i]).call(Edge.delete)
-    }
-
-    let copyEdgeOut = node.datum()["edgeOut"].slice();
-    for(var i = 0; i < copyEdgeOut.length; i++){
-      d3.select("#"+copyEdgeOut[i]).call(Edge.delete)
-    }
-
     node.remove();
   }
 
@@ -83,6 +72,10 @@ export class Node{
       }
     }
     throw "Graph.ts (getNodeHandle): Selection is not part of a node"
+  }
+
+  static getHandleByStateId(stateId: StateID): NodeHandleSelection{
+    return d3.select("#node-"+stateId);
   }
 
   static changeType(node: NodeHandleSelection, type: NodeType): void{
