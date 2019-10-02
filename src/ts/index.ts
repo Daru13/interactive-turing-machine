@@ -3,6 +3,11 @@ import { State } from './model/State';
 import { Transition } from './model/Transition';
 import { HeadAction } from './model/Tape';
 
+import { Graph } from './graph/Graph';
+import { ToolBar } from './ToolBar';
+import { ToolManager, tools } from './ToolManager';
+import { Tape } from './tape';
+/*
 // Test code for Turing machine model
 let tm = new TuringMachine();
 window["tm"] = tm;
@@ -36,4 +41,10 @@ console.log(tm.toString());
 let nbSteps = tm.run();
 
 console.log(tm.toString());
-console.log("nb steps = ", nbSteps);
+console.log("nb steps = ", nbSteps);*/
+
+let graph = new Graph();
+let toolManager = new ToolManager(graph);
+let toolBar = new ToolBar(toolManager);
+
+let tape = new Tape();
