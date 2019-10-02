@@ -2,6 +2,7 @@ import * as d3 from "d3-selection";
 import { Graph } from "../graph/Graph";
 import { Node, NodeHandleSelection } from "../graph/Node";
 import { Edge } from "../graph/Edge";
+import { TuringMachine } from "../../model/TuringMachine";
 
 
 export class MoveTool{
@@ -9,11 +10,13 @@ export class MoveTool{
   previousY: number;
   node: NodeHandleSelection;
   graph: Graph;
+  turingMachine: TuringMachine;
 
-  constructor(graph: Graph){
+  constructor(graph: Graph, turingMachine: TuringMachine){
     this.previousX = 0;
     this.previousY = 0;
-    this.graph = graph
+    this.graph = graph;
+    this.turingMachine = turingMachine;
   }
 
   pointerDown(e: any){

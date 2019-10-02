@@ -1,6 +1,7 @@
 import { Graph, GraphDatum } from "./Graph";
 import { Edge, EdgeId } from "./Edge";
 import * as d3 from "d3-selection";
+import { StateID, State } from "../../model/State";
 
 export enum NodeType {
   STANDARD = "standard",
@@ -12,26 +13,23 @@ export interface NodeDatum {
   x: number;
   y: number;
   id: string;
-  edgeIn: EdgeId[];
-  edgeOut: EdgeId[];
+  state: State;
 };
 
 export type NodeElementSelection = d3.Selection<SVGElement, NodeDatum, SVGElement, NodeDatum>;
 export type NodeHandleSelection = d3.Selection<SVGElement, NodeDatum, HTMLElement, GraphDatum>;
 
-let nodeId: number = 0;
-
 export class Node{
   constructor(){}
 
-  static add(graph: Graph, x: number, y: number): void{
-    let datum: NodeDatum = {x: 0, y: 0, id: ("node-"+nodeId), edgeIn:[] , edgeOut:[]};
+  static add(graph: Graph, state: State, x: number, y: number): void{
+    let datum: NodeDatum = {x: 0, y: 0, id: "node-" + state.id, state};
     let node: NodeHandleSelection =
       graph.getSVG()
         .append("g")
           .classed("node", true)
           .datum(datum)
-          .attr("id", "node-"+nodeId)
+          .attr("id", "node-"+state.id)
 
     node.append("circle")
       .attr("cx", 0)
@@ -42,10 +40,9 @@ export class Node{
       .attr("x",0)
       .attr("y",-2)
       .attr("text-anchor", "middle")
-      .text("N"+nodeId);
+      .text("N"+state.id);
 
     Node.translate(node, x, y);
-    nodeId += 1;
   }
 
   static translate(node: NodeHandleSelection, dx: number, dy: number): void{
@@ -55,13 +52,16 @@ export class Node{
   }
 
   static delete(node){
-    node.datum()["edgeIn"].forEach(function(edge){
-      d3.select("#"+edge).call(Edge.delete)
-    })
+    let copyEdgeIn = node.datum()["edgeIn"].slice();
+    for(var i = 0; i < copyEdgeIn.length; i++){
+      d3.select("#"+copyEdgeIn[i]).call(Edge.delete)
+    }
 
-    node.datum()["edgeOut"].forEach(function(edge){
-      d3.select("#"+edge).call(Edge.delete)
-    })
+    let copyEdgeOut = node.datum()["edgeOut"].slice();
+    for(var i = 0; i < copyEdgeOut.length; i++){
+      d3.select("#"+copyEdgeOut[i]).call(Edge.delete)
+    }
+
     node.remove();
   }
 

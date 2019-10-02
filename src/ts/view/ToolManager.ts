@@ -4,6 +4,8 @@ import { DeleteTool } from "./tools/DeleteTool";
 import { EditTool } from "./tools/EditTool";
 import { transformEvent } from "../helpers";
 import { MoveTool } from "./tools/MoveTool";
+import { Graph } from "./graph/Graph";
+import { TuringMachine } from "../model/TuringMachine";
 
 
 export const tools = {
@@ -19,13 +21,13 @@ export class ToolManager{
   toolToInteraction: Object;
   graph: any;
 
-  constructor(graph){
+  constructor(graph, turingMachine: TuringMachine){
     this.toolToInteraction = {};
-    this.toolToInteraction[tools.MOVE] = new MoveTool(graph);
-    this.toolToInteraction[tools.CREATE_NODE] = new CreateNodeTool(graph);
-    this.toolToInteraction[tools.CREATE_EDGE] = new CreateEdgeTool(graph);
-    this.toolToInteraction[tools.DELETE] = new DeleteTool(graph);
-    this.toolToInteraction[tools.EDIT] = new EditTool(graph);
+    this.toolToInteraction[tools.MOVE] = new MoveTool(graph, turingMachine);
+    this.toolToInteraction[tools.CREATE_NODE] = new CreateNodeTool(graph, turingMachine);
+    this.toolToInteraction[tools.CREATE_EDGE] = new CreateEdgeTool(graph, turingMachine);
+    this.toolToInteraction[tools.DELETE] = new DeleteTool(graph, turingMachine);
+    this.toolToInteraction[tools.EDIT] = new EditTool(graph, turingMachine);
     this.graph = graph;
     this.setInteraction()
   }

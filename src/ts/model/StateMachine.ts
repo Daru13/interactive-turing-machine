@@ -1,5 +1,10 @@
-import { State } from "./State";
+import { State, StateID } from "./State";
 import { Transition } from './Transition';
+import { EventManager } from "../events/EventManager";
+import { NewStateEvent } from "../events/newStateEvent";
+import { DeleteStateEvent } from "../events/deleteStateEvent";
+import { NewTransitionEvent } from "../events/newTransitionEvent";
+import { DeleteTransitionEvent } from "../events/DeleteTransitionEvent";
 
 
 export class StateMachine {
@@ -8,20 +13,22 @@ export class StateMachine {
     private initialState: State;
     private currentState: State;
 
-    
+
     constructor() {
         this.states = [];
         this.currentState = null;
         this.initialState = null;
     }
 
-    addState(state: State) {
+    addState(state: State, x: number = 0, y: number = 0) {
         this.states.push(state);
+        EventManager.emit(new NewStateEvent(state, x, y));
     }
 
     removeState(state: State) {
         let index = this.states.indexOf(state);
         this.states.splice(index, 1);
+        EventManager.emit(new DeleteStateEvent(state));
     }
 
     hasState(state: State) {
@@ -63,6 +70,7 @@ export class StateMachine {
         }
 
         fromState.addTransition(transition);
+        EventManager.emit(new NewTransitionEvent(transition));
     }
 
     removeTransition(transition: Transition) {
@@ -74,6 +82,7 @@ export class StateMachine {
         }
 
         fromState.addTransition(transition);
+        EventManager.emit(new DeleteTransitionEvent(transition));
     }
 
     getStatesAsString(useLabels: boolean = true) {

@@ -1,17 +1,19 @@
 import { Graph } from "../graph/Graph";
 import { Node } from "../graph/Node";
-import { EventManager } from "../../EventManager";
+import { TuringMachine } from "../../model/TuringMachine";
+import { State } from "../../model/State";
 
 export class CreateNodeTool{
   eX: number;
   eY: number;
   graph: Graph;
+  turingMachine: TuringMachine;
 
-  constructor(graph: Graph){
+  constructor(graph: Graph, turingMachine: TuringMachine){
     this.eX = 0;
     this.eY = 0;
     this.graph = graph;
-
+    this.turingMachine = turingMachine;
   }
 
   pointerDown(e: any){
@@ -22,7 +24,6 @@ export class CreateNodeTool{
   pointerMove(e: any){}
 
   pointerUp(e: any){
-    Node.add(this.graph, this.eX, this.eY);
-    EventManager.emit({id: "addNode"});
+    this.turingMachine.stateMachine.addState(new State(""), this.eX, this.eY);
   }
 }

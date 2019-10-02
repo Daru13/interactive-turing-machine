@@ -1,17 +1,13 @@
 import { Graph, GraphDatum } from "./Graph";
 import * as d3 from "d3-selection";
 import { distance2, angleToXAxis } from "../../helpers";
-import { Transition } from "./Transition";
 import { NodeHandleSelection } from "./Node";
-
-let edgeId = 0;
+import { Transition } from "../../model/Transition";
 
 export type EdgeId = String;
 
 export interface EdgeDatum {
   id: string;
-  node1: NodeHandleSelection;
-  node2: NodeHandleSelection;
   transition: Transition
 };
 
@@ -22,12 +18,13 @@ export class Edge{
 
   constructor(){}
 
-  static add(graph, node1: any, node2: any){
+  static add(graph, transition: Transition){
+    let id = "edge-" + transition.id;
     var edgeHandle =
       graph.getSVG()
         .append("g")
-        .datum({id: ("edge-"+edgeId), node1:node1, node2:node2, transition:{r:0, w:0, d:"L"}})
-        .attr("id", "edge-"+ edgeId)
+        .datum({id: id, transition: transition})
+        .attr("id", id)
         .classed("edge", true);
 
     edgeHandle
@@ -46,10 +43,6 @@ export class Edge{
       .text("click to set");
 
     Edge.move(edgeHandle);
-
-    node1.datum()["edgeOut"].push(("edge-"+edgeId));
-    node2.datum()["edgeIn"].push(("edge-"+edgeId));
-    edgeId += 1;
   }
 
   static move(edge){
@@ -109,11 +102,8 @@ export class Edge{
     throw "Graph.ts (getEdgeHandle): Selection is not part of a edge"
   }
 
-  static setTransition(edge, read, write, dir){
-    edge.datum().transition.r = read;
-    edge.datum().transition.w = write;
-    edge.datum().transition.d = dir;
+  static setTransition(edge){
     edge.select("text")
-    .text(function(d){return "R:" + d.transition.r + "/W:" + d.transition.w + "/D:" + d.transition.d})
+    .text(function(d){return "R:" + d.transition.onSymbol + "/W:" + d.transition.outputSymbol + "/D:" + d.transition.headAction})
   }
 }

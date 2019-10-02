@@ -4,14 +4,17 @@ import { EdgeEditor } from "../EdgeEditor";
 import { NodeEditor } from "../NodeEditor";
 import { Node } from "../graph/Node";
 import { Edge } from "../graph/Edge";
+import { TuringMachine } from "../../model/TuringMachine";
 
 export class EditTool{
   graph: Graph;
   edge: any;
   node: any;
+  turingMachine: TuringMachine;
 
-  constructor(graph: Graph){
-    this.graph = graph
+  constructor(graph: Graph, turingMachine: TuringMachine){
+    this.graph = graph;
+    this.turingMachine = turingMachine;
   }
 
   pointerDown(e: any){

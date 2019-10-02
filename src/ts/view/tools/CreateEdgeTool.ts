@@ -3,6 +3,9 @@ import * as d3 from "d3-selection";
 import { Graph } from "../graph/Graph";
 import { Node, NodeHandleSelection } from "../graph/Node";
 import { Edge } from "../graph/Edge";
+import { TuringMachine } from "../../model/TuringMachine";
+import { Transition } from "../../model/Transition";
+import { HeadAction } from "../../model/Tape";
 
 export class CreateEdgeTool{
   previousX: number;
@@ -10,13 +13,14 @@ export class CreateEdgeTool{
   graph: Graph;
   node: NodeHandleSelection;
   isDown: boolean;
+  turingMachine: TuringMachine;
 
-  constructor(graph: Graph){
+  constructor(graph: Graph,  turingMachine: TuringMachine){
     this.previousX = 0;
     this.previousY = 0;
     this.graph = graph
     this.isDown = false;
-
+    this.turingMachine = turingMachine;
   }
 
   pointerDown(e: any){
@@ -69,7 +73,7 @@ export class CreateEdgeTool{
         }
       })
       d3.selectAll(".node.selected").classed("selected", false);
-      Edge.add(this.graph, this.node, closestNode);
+      this.turingMachine.stateMachine.addTransition(new Transition(this.node.datum()["state"], closestNode.datum()["state"], "unknown", "unknown", HeadAction.None));
     }
   }
 }

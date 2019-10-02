@@ -2,14 +2,17 @@ import * as d3 from "d3-selection";
 import { Graph } from "../graph/Graph";
 import { Edge } from "../graph/Edge";
 import { Node } from "../graph/Node";
+import { TuringMachine } from "../../model/TuringMachine";
 
 export class DeleteTool{
   graph: Graph;
   node: d3.Selection<SVGElement, any, any, any>;
   edge: any;
+  turingMachine: TuringMachine;
 
-  constructor(graph: Graph){
+  constructor(graph: Graph, turingMachine: TuringMachine){
     this.graph = graph
+    this.turingMachine = turingMachine
   }
 
   pointerDown(e: any){
@@ -27,11 +30,11 @@ export class DeleteTool{
 
   pointerUp(e: any){
     if(this.node !== undefined){
-      Node.delete(this.node);
+      this.turingMachine.stateMachine.removeState(this.node.datum()["state"]);
       this.node = undefined;
     }
     if(this.edge !== undefined){
-      Edge.delete(this.edge);
+      this.turingMachine.stateMachine.removeTransition(this.edge.datum()["transition"]);
       this.edge = undefined;
     }
   }
