@@ -31,18 +31,18 @@ export class TuringMachine {
         // Attempt to follow a transition
         let currentSymbol = this.tape.getCurrentSymbol();
 
-        if (! currentState.hasTransitionFor(currentSymbol)) {
+        if (! currentState.hasOutTransitionForSymbol(currentSymbol)) {
             console.error("The machine could not be ran: no transition available.");
             return false;
         }
 
-        let transition = currentState.getTransitionFor(currentSymbol);
+        let transition = currentState.getOutTransitionForSymbol(currentSymbol);
         let nextState = transition.toState;
 
         // Update the machine according to the transition
         this.tape.setCurrentSymbol(transition.outputSymbol);
         this.tape.applyHeadAction(transition.headAction);
-        this.stateMachine.setCurrentState(nextState);
+        this.stateMachine.setCurrentState(nextState.id);
 
         // Only return true if the execution is finished (final state reached)
         return !nextState.isFinal;

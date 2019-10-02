@@ -9,16 +9,13 @@ import { ViewController } from './view/ViewController';
 let tm = new TuringMachine();
 window["tm"] = tm;
 
-// Define and add states
-const states = [
-    new State("A"),
-    new State("B"),
-    new State("C", true)
-];
+// Create states
+const stateLabels = ["A", "B", "C"];
+const states = stateLabels.map((label) => { return tm.stateMachine.createAndAddState(label); });
 
-for (let state of states) {
-    tm.stateMachine.addState(state);
-}
+// Set the initial and final states
+tm.stateMachine.setInitialState(states[0].id);
+states[2].isFinal = true;
 
 // Add transitions
 tm.stateMachine.addTransition(new Transition(states[0], states[0], "O", "O", HeadAction.MoveRight));
@@ -28,11 +25,8 @@ tm.stateMachine.addTransition(new Transition(states[1], states[2], "X", "X", Hea
 
 // Set the initial content of the tape and the initial state
 tm.tape.setContent(["X", "O", "O", "O", "X", "O", "A"]);
-tm.stateMachine.setInitialState(states[0]);
 
 console.log(tm.toString());
-
-
 
 // Run the machine
 let nbSteps = tm.run();

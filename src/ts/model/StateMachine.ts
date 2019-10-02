@@ -22,16 +22,34 @@ export class StateMachine {
 
     addState(state: State, x: number = 0, y: number = 0) {
         this.states.set(state.id, state);
+
         EventManager.emit(new NewStateEvent(state, x, y));
     }
 
-    removeState(state: State) {
-        this.states.delete(state.id);
-        EventManager.emit(new DeleteStateEvent(state));
+    createAndAddState(label: string, x: number = 0, y: number = 0): State {
+        let state = new State(label);
+        this.addState(state, x, y);
+
+        return state;
     }
 
-    hasState(state: State) {
-        return this.states.has(state.id);
+    hasState(id: StateID) {
+        return this.states.has(id);
+    }
+
+    getState(id: StateID) {
+        return this.hasState(id) ? this.states.get(id) : null;
+    }
+
+    removeState(id: StateID) {
+        let state = this.states.get(id);
+
+        // Remove in and out transitions first
+        state.getInTransitions().forEach((t) => { this.removeTransition(t); });
+        state.getOutTransitions().forEach((t) => { this.removeTransition(t); });
+
+        this.states.delete(id);
+        EventManager.emit(new DeleteStateEvent(state));
     }
 
     getInitialState() {
@@ -42,46 +60,51 @@ export class StateMachine {
         return this.currentState;
     }
 
-    setInitialState(state: State) {
-        if (! this.hasState(state)) {
+    setInitialState(id: StateID) {
+        if (! this.hasState(id)) {
             console.error("The state could not be set as initial: unknown state.");
             return;
         }
 
-        this.initialState = state;
+        this.initialState = this.states.get(id);
     }
 
-    setCurrentState(state: State) {
-        if (! this.hasState(state)) {
+    setCurrentState(id: StateID) {
+        if (! this.hasState(id)) {
             console.error("The state could not be set as current: unknown state.");
             return;
         }
 
-        this.currentState = state;
+        this.currentState = this.states.get(id);
     }
 
     addTransition(transition: Transition) {
         let fromState = transition.fromState;
+        let toState = transition.toState;
 
-        if (! this.hasState(fromState)) {
+        if (! (this.hasState(fromState.id) && this.hasState(toState.id))) {
             console.error("The transition could not be added: unknown origin state.");
             return;
         }
 
-        fromState.addTransition(transition);
+        toState.addInTransition(transition);
+        fromState.addOutTransition(transition);
+
         EventManager.emit(new NewTransitionEvent(transition));
     }
 
     removeTransition(transition: Transition) {
-        throw "todo removeTransition StateMachine.ts"
         let fromState = transition.fromState;
+        let toState = transition.toState;
 
-        if (! this.hasState(fromState)) {
-            console.error("The transition could not be removed: unknown origin state.");
+        if (! (this.hasState(fromState.id) && this.hasState(toState.id))) {
+            console.error("The transition could not be added: unknown origin state.");
             return;
         }
 
-        fromState.addTransition(transition);
+        toState.removeInTransition(transition);
+        fromState.removeOutTransition(transition);
+
         EventManager.emit(new DeleteTransitionEvent(transition));
     }
 
@@ -93,7 +116,7 @@ export class StateMachine {
 
     getTransitionsAsString(useLabels: boolean = true) {
         return [...this.states.values()]
-            .map((s) => s.transitionsToString(useLabels))
+            .map((s) => s.outTransitionsToString(useLabels))
             .reduce((str, t) => str + "\n\n" + t, "");
     }
 
@@ -110,7 +133,7 @@ export class StateMachine {
                 str += " (init)";
             }
 
-            str += state.transitionsToString(useLabels);
+            str += state.outTransitionsToString(useLabels);
             str += "\n\n";
         }
 
