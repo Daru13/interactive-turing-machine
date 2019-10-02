@@ -1,12 +1,13 @@
 import * as d3 from "d3-selection";
 import { Graph } from "../graph/Graph";
-import { Node } from "../graph/Node";
+import { Node, NodeHandleSelection } from "../graph/Node";
 import { Edge } from "../graph/Edge";
+
 
 export class MoveTool{
   previousX: number;
   previousY: number;
-  node: any;
+  node: NodeHandleSelection;
   graph: Graph;
 
   constructor(graph: Graph){
@@ -18,9 +19,10 @@ export class MoveTool{
   pointerDown(e: any){
     this.previousX = e.x;
     this.previousY = e.y;
-    if(Node.isANode(d3.select(e.target as any))){
-      this.node = Node.getHandle(d3.select(e.target as any))
-      this.node.classed("move", true)
+    if(Node.isNode(d3.select(e.target as any))){
+      this.node = Node.getHandle(d3.select(e.target as any));
+      this.node.classed("move", true);
+      this.node.raise();
     }else{
       this.node = undefined
     }

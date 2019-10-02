@@ -1,11 +1,11 @@
 import * as d3 from "d3-selection";
 import { Graph } from "../graph/Graph";
-import { Node } from "../graph/Node";
 import { Edge } from "../graph/Edge";
+import { Node } from "../graph/Node";
 
 export class DeleteTool{
   graph: Graph;
-  node: d3.Selection<any, unknown, null, undefined>;
+  node: d3.Selection<SVGElement, any, any, any>;
   edge: any;
 
   constructor(graph: Graph){
@@ -16,7 +16,7 @@ export class DeleteTool{
     let target = d3.select(e.target as any);
     this.edge = undefined;
     this.node = undefined;
-    if(Node.isANode(d3.select(e.target as any))){
+    if(Node.isNode(d3.select(e.target as any))){
       this.node = Node.getHandle(d3.select(e.target as any));
     }else if(Edge.isAnEdge(d3.select(e.target as any))){
       this.edge = Edge.getHandle(d3.select(e.target as any));

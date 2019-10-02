@@ -1,7 +1,6 @@
 import * as d3 from "d3-selection";
 import { Edge } from "./graph/Edge";
-
-let direction = {LEFT: "L", STAY: "S", RIGHT: "R"};
+import { Direction } from "./graph/Transition";
 
 export class EdgeEditor{
   holder: any;
@@ -25,7 +24,7 @@ export class EdgeEditor{
 
     this.readField = this.addTextField("test", "readEntry")
     this.writeField = this.addTextField("test", "writeEntry")
-    this.dirField = this.addDirEntry(direction.STAY, "dirEntry")
+    this.dirField = this.addDirEntry(Direction.STAY, "dirEntry")
 
     this.addButton("Submit", "submitButton", this.submit)
     this.addButton("Cancel", "cancelButton", this.close)
@@ -41,7 +40,7 @@ export class EdgeEditor{
     holder.append("div")
       .text("L")
       .attr("id", "leftSwitch")
-      .datum(direction.LEFT)
+      .datum(Direction.LEFT)
       .on("click", function(){
         holder.select(".selected").classed("selected", false);
         d3.select(this).classed("selected", true);
@@ -50,7 +49,7 @@ export class EdgeEditor{
       .text("S")
       .attr("id", "staySwitch")
       .classed("selected", true)
-      .datum(direction.STAY)
+      .datum(Direction.STAY)
       .on("click", function(){
         holder.select(".selected").classed("selected", false);
         d3.select(this).classed("selected", true);
@@ -58,7 +57,7 @@ export class EdgeEditor{
     holder.append("div")
     .text("R")
     .attr("id", "rightSwitch")
-    .datum(direction.RIGHT)
+    .datum(Direction.RIGHT)
     .on("click", function(){
       holder.select(".selected").classed("selected", false);
       d3.select(this).classed("selected", true);

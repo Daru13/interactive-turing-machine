@@ -1,24 +1,36 @@
-import { Graph } from "./Graph";
-import { Edge } from "./Edge";
+import { Graph, GraphDatum } from "./Graph";
+import { Edge, EdgeId } from "./Edge";
 import * as d3 from "d3-selection";
 
-export const nodeTypes = {
-  STANDARD: "standard",
-  START: "start",
-  FINAL: "final"
+export enum NodeType {
+  STANDARD = "standard",
+  START = "start",
+  FINAL = "final"
 }
 
-let nodeId = 0;
+export interface NodeDatum {
+  x: number;
+  y: number;
+  id: string;
+  edgeIn: EdgeId[];
+  edgeOut: EdgeId[];
+};
+
+export type NodeElementSelection = d3.Selection<SVGElement, NodeDatum, SVGElement, NodeDatum>;
+export type NodeHandleSelection = d3.Selection<SVGElement, NodeDatum, HTMLElement, GraphDatum>;
+
+let nodeId: number = 0;
 
 export class Node{
   constructor(){}
 
-  static add(graph, x, y){
-    let node =
+  static add(graph: Graph, x: number, y: number): void{
+    let datum: NodeDatum = {x: 0, y: 0, id: ("node-"+nodeId), edgeIn:[] , edgeOut:[]};
+    let node: NodeHandleSelection =
       graph.getSVG()
         .append("g")
           .classed("node", true)
-          .datum({x:0, y:0, id:("node-"+nodeId), edgeIn:[], edgeOut:[]})
+          .datum(datum)
           .attr("id", "node-"+nodeId)
 
     node.append("circle")
@@ -36,7 +48,7 @@ export class Node{
     nodeId += 1;
   }
 
-  static translate(node, dx, dy){
+  static translate(node: NodeHandleSelection, dx: number, dy: number): void{
     node.datum()["x"] += dx;
     node.datum()["y"] += dy;
     node.attr("transform", function(d){return "translate("+d.x+","+d.y+")"})
@@ -53,7 +65,7 @@ export class Node{
     node.remove();
   }
 
-  static isANode(selection){
+  static isNode(selection: d3.Selection<any, any, any, any>): boolean{
     if(selection.datum() !== undefined && selection.datum()["id"] !== undefined){
       if(d3.select("#" + selection.datum()["id"]).classed("node")){
         return true;
@@ -62,8 +74,8 @@ export class Node{
     return false;
   }
 
-  static getHandle(selection){
-    var node;
+  static getHandle(selection: NodeElementSelection): NodeHandleSelection{
+    var node: NodeHandleSelection;
     if(selection.datum() !== undefined && selection.datum()["id"] !== undefined){
       node = d3.select("#" + selection.datum()["id"])
       if(node.classed("node")){
@@ -73,22 +85,22 @@ export class Node{
     throw "Graph.ts (getNodeHandle): Selection is not part of a node"
   }
 
-  static changeType(node, type){
+  static changeType(node: NodeHandleSelection, type: NodeType): void{
     switch(type){
-      case nodeTypes.START:
+      case NodeType.START:
         node.classed("start", true)
         node.classed("final", false)
         break;
-      case nodeTypes.STANDARD:
+      case NodeType.STANDARD:
         node.classed("start", false)
         node.classed("final", false)
         break;
-      case nodeTypes.FINAL:
+      case NodeType.FINAL:
         node.classed("start", false)
         node.classed("final", true)
         break;
       default:
-        throw "Graph.ts (changeTypeNode) type not recognised: "+type
+        throw "Node.ts (changeType) type not recognised: "+type
     }
   }
 }

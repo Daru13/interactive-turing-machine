@@ -1,8 +1,23 @@
-import { Graph } from "./Graph";
+import { Graph, GraphDatum } from "./Graph";
 import * as d3 from "d3-selection";
-import { distance2, angleToXAxis } from "../helpers";
+import { distance2, angleToXAxis } from "../../helpers";
+import { Transition } from "./Transition";
+import { NodeHandleSelection } from "./Node";
 
 let edgeId = 0;
+
+export type EdgeId = String;
+
+export interface EdgeDatum {
+  id: string;
+  node1: NodeHandleSelection;
+  node2: NodeHandleSelection;
+  transition: Transition
+};
+
+export type EdgeElementSelection = d3.Selection<SVGElement, EdgeDatum, SVGElement, EdgeDatum>;
+export type EdgeHandleSelection = d3.Selection<SVGElement, EdgeDatum, HTMLElement, GraphDatum>;
+
 export class Edge{
 
   constructor(){}
