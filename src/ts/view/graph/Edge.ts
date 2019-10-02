@@ -1,7 +1,7 @@
 import { Graph, GraphDatum } from "./Graph";
 import * as d3 from "d3-selection";
 import { distance2, angleToXAxis } from "../../helpers";
-import { NodeHandleSelection } from "./Node";
+import { Node, NodeHandleSelection } from "./Node";
 import { Transition } from "../../model/Transition";
 
 export type EdgeId = String;
@@ -46,10 +46,14 @@ export class Edge{
   }
 
   static move(edge){
-    let x1 = edge.datum()["node1"].datum()["x"];
-    let y1 = edge.datum()["node1"].datum()["y"];
-    let x2 = edge.datum()["node2"].datum()["x"];
-    let y2 = edge.datum()["node2"].datum()["y"];
+    let fromState = edge.datum().transition.fromState;
+    let toState = edge.datum().transition.toState;
+
+    let x1 = Node.getHandleByStateId(fromState.id).datum()["x"];
+    let y1 = Node.getHandleByStateId(fromState.id).datum()["y"];
+    let x2 = Node.getHandleByStateId(toState.id).datum()["x"];
+    let y2 = Node.getHandleByStateId(toState.id).datum()["y"];
+    
     let len = distance2({x: x1, y: y1}, {x: x2, y: y2}) - Graph.sizeNode;
     let angle = 180 * angleToXAxis({x: x1, y: y1}, {x: x2, y: y2}) / Math.PI;
     console.log(angle)
@@ -68,17 +72,6 @@ export class Edge{
   }
 
   static delete(edge){
-    let id = edge.datum()["id"];
-    var index = edge.datum()["node1"].datum()["edgeOut"].indexOf(id);
-    while(index !== -1){
-      edge.datum()["node1"].datum()["edgeOut"].splice(index, 1);
-      index = edge.datum()["node1"].datum()["edgeOut"].indexOf(id);
-    }
-    index = edge.datum()["node2"].datum()["edgeIn"].indexOf(id);
-    while(index !== -1){
-      edge.datum()["node2"].datum()["edgeIn"].splice(index, 1);
-      index = edge.datum()["node2"].datum()["edgeIn"].indexOf(id);
-    }
     edge.remove();
   }
 
@@ -102,7 +95,7 @@ export class Edge{
     throw "Graph.ts (getEdgeHandle): Selection is not part of a edge"
   }
 
-  static setTransition(edge){
+  static drawText(edge){
     edge.select("text")
     .text(function(d){return "R:" + d.transition.onSymbol + "/W:" + d.transition.outputSymbol + "/D:" + d.transition.headAction})
   }

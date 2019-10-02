@@ -22,11 +22,12 @@ export class MoveTool{
   pointerDown(e: any){
     this.previousX = e.x;
     this.previousY = e.y;
-    if(Node.isNode(d3.select(e.target as any))){
+
+    if(Node.isNode(d3.select(e.target as any))) {
       this.node = Node.getHandle(d3.select(e.target as any));
       this.node.classed("move", true);
       this.node.raise();
-    }else{
+    } else {
       this.node = undefined
     }
   }
@@ -35,16 +36,7 @@ export class MoveTool{
     if(this.node !== undefined){
       Node.translate(this.node, e.x - this.previousX, e.y - this.previousY);
 
-      var t = this
-
-      this.node.datum()["edgeIn"].forEach(function(edge){
-        console.log(edge, t.node.datum()["edgeIn"])
-        d3.select("#"+edge).call(Edge.move)
-      })
-
-      this.node.datum()["edgeOut"].forEach(function(edge){
-        d3.select("#"+edge).call(Edge.move)
-      })
+      console.log("TODO: get all edges from a node")
     }
 
     this.previousX = e.x;

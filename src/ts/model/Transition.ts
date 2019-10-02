@@ -32,6 +32,12 @@ export class Transition {
         this.headAction = headAction;
     }
 
+    setTransition(onSymbol: TapeSymbol, outputSymbol: TapeSymbol, headAction: HeadAction){
+      this.onSymbol = onSymbol;
+      this.outputSymbol = outputSymbol;
+      this.headAction = headAction;
+    }
+
     toString(useLabels: boolean = true) {
         let actionAsString = "";
         switch (this.headAction) {

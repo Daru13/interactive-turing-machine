@@ -74,6 +74,7 @@ export class StateMachine {
     }
 
     removeTransition(transition: Transition) {
+        throw "todo removeTransition StateMachine.ts"
         let fromState = transition.fromState;
 
         if (! this.hasState(fromState)) {
