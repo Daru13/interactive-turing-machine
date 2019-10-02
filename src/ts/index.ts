@@ -4,6 +4,7 @@ import { Transition } from './model/Transition';
 import { HeadAction } from './model/Tape';
 
 import { ViewController } from './view/ViewController';
+import { EventManager } from './EventManager';
 /*
 // Test code for Turing machine model
 let tm = new TuringMachine();
@@ -41,3 +42,4 @@ console.log(tm.toString());
 console.log("nb steps = ", nbSteps);*/
 
 let vc = new ViewController();
+EventManager.registerHandler("addNode", function(e){console.log(e)});

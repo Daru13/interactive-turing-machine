@@ -1,5 +1,6 @@
 import { Graph } from "../graph/Graph";
 import { Node } from "../graph/Node";
+import { EventManager } from "../../EventManager";
 
 export class CreateNodeTool{
   eX: number;
@@ -9,7 +10,7 @@ export class CreateNodeTool{
   constructor(graph: Graph){
     this.eX = 0;
     this.eY = 0;
-    this.graph = graph
+    this.graph = graph;
 
   }
 
@@ -21,6 +22,7 @@ export class CreateNodeTool{
   pointerMove(e: any){}
 
   pointerUp(e: any){
-    Node.add(this.graph, this.eX, this.eY)
+    Node.add(this.graph, this.eX, this.eY);
+    EventManager.emit({id: "addNode"});
   }
 }
