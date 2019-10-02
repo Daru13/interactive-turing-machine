@@ -24,6 +24,7 @@
     "typescript": "^3.6.3"
   },
   "dependencies": {
-    "d3-selection": "^1.4.0"
+    "d3-selection": "^1.4.0",
+    "d3-transition": "^1.2.0"
   }
 }

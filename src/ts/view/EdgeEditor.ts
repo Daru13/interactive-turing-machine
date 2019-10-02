@@ -37,6 +37,7 @@ export class EdgeEditor{
         .style("grid-area", gridArea)
         .append("div")
         .classed("dirEntryButton", true);
+
     holder.append("div")
       .text("L")
       .attr("id", "leftSwitch")
@@ -45,6 +46,7 @@ export class EdgeEditor{
         holder.select(".selected").classed("selected", false);
         d3.select(this).classed("selected", true);
       })
+
     holder.append("div")
       .text("S")
       .attr("id", "staySwitch")
