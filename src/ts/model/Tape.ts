@@ -58,10 +58,6 @@ export class Tape {
         }
     }
 
-    moveHeadLeft() {
-        this.headPosition--;
-    }
-
     resetHeadPosition() {
         this.headPosition = 0;
     }
