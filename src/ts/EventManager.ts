@@ -8,14 +8,12 @@ export interface Event {
 }
 
 
-export interface EventHandler<E extends Event> {
-	handle: (event: E) => void;
-}
+export type EventHandler<E extends Event> = (event: E) => void;
 
 
 export class EventManager {
-	
-	private static eventHandlers: Map<EventID, EventHandler<any>[]>;
+
+	private static eventHandlers: Map<EventID, EventHandler<any>[]> = new Map();
 
 	//constructor() {
 	//	this.eventHandlers = new Map();
@@ -30,13 +28,11 @@ export class EventManager {
 
 		let handlers = EventManager.eventHandlers.get(eventID);
 		for (let handler of handlers) {
-			handler.handle(event);
+			handler(event);
 		}
 	}
 
-	static registerHandler<E extends Event>(event: E, handler: EventHandler<E>) {
-		let eventID = event.id;		
-
+	static registerHandler<E extends Event>(eventID: EventID, handler: EventHandler<E>) {
 		if (! EventManager.eventHandlers.has(eventID)) {
 			EventManager.eventHandlers.set(eventID, []);
 		}
