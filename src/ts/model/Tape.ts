@@ -45,7 +45,7 @@ export class Tape {
     applyHeadAction(action: HeadAction) {
         switch (action) {
             case HeadAction.MoveLeft:
-                this.headPosition--;
+                Math.max(0, this.headPosition--);
                 break;
 
             case HeadAction.MoveRight:
