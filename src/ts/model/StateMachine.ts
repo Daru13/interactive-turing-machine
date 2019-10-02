@@ -9,30 +9,29 @@ import { DeleteTransitionEvent } from "../events/DeleteTransitionEvent";
 
 export class StateMachine {
 
-    private states: State[];
+    private states: Map<StateID, State>;
     private initialState: State;
     private currentState: State;
 
 
     constructor() {
-        this.states = [];
+        this.states = new Map();
         this.currentState = null;
         this.initialState = null;
     }
 
     addState(state: State, x: number = 0, y: number = 0) {
-        this.states.push(state);
+        this.states.set(state.id, state);
         EventManager.emit(new NewStateEvent(state, x, y));
     }
 
     removeState(state: State) {
-        let index = this.states.indexOf(state);
-        this.states.splice(index, 1);
+        this.states.delete(state.id);
         EventManager.emit(new DeleteStateEvent(state));
     }
 
     hasState(state: State) {
-        return this.states.indexOf(state) >= 0;
+        return this.states.has(state.id);
     }
 
     getInitialState() {
@@ -87,13 +86,13 @@ export class StateMachine {
     }
 
     getStatesAsString(useLabels: boolean = true) {
-        return this.states
+        return [...this.states.values()]
             .map((s) => s.toString(useLabels))
             .reduce((str, s) => str + "\n" + s, "");
     }
 
     getTransitionsAsString(useLabels: boolean = true) {
-        return this.states
+        return [...this.states.values()]
             .map((s) => s.transitionsToString(useLabels))
             .reduce((str, t) => str + "\n\n" + t, "");
     }
@@ -101,7 +100,7 @@ export class StateMachine {
     toString(useLabels: boolean = true) {
         let str = "";
 
-        for (let state of this.states) {
+        for (let state of this.states.values()) {
             str += state.toString(useLabels);
 
             if (this.currentState == state) {
