@@ -1,7 +1,6 @@
 import { Graph, GraphDatum } from "./Graph";
 import * as d3 from "d3-selection";
 import { distance2, angleToXAxis } from "../../helpers";
-import { NodeHandleSelection } from "./Node";
 import { Transition } from "../../model/Transition";
 
 export type EdgeId = String;

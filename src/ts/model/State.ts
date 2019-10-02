@@ -1,7 +1,5 @@
 import { Transition } from './Transition';
 import { TapeSymbol } from './Tape';
-import { EventManager } from '../events/EventManager';
-import { NewStateEvent } from '../events/newStateEvent';
 
 
 export type StateID = number;

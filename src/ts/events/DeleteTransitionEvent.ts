@@ -1,5 +1,5 @@
 import { Event } from './EventManager';
-import { Transition } from '../model/transition';
+import { Transition } from '../model/Transition';
 
 export class DeleteTransitionEvent implements Event {
   id: string = "deleteTransition";

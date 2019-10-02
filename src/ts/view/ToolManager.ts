@@ -4,7 +4,6 @@ import { DeleteTool } from "./tools/DeleteTool";
 import { EditTool } from "./tools/EditTool";
 import { transformEvent } from "../helpers";
 import { MoveTool } from "./tools/MoveTool";
-import { Graph } from "./graph/Graph";
 import { TuringMachine } from "../model/TuringMachine";
 
 

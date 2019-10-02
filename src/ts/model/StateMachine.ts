@@ -1,9 +1,9 @@
 import { State, StateID } from "./State";
 import { Transition } from './Transition';
 import { EventManager } from "../events/EventManager";
-import { NewStateEvent } from "../events/newStateEvent";
-import { DeleteStateEvent } from "../events/deleteStateEvent";
-import { NewTransitionEvent } from "../events/newTransitionEvent";
+import { NewStateEvent } from "../events/NewStateEvent";
+import { DeleteStateEvent } from "../events/DeleteStateEvent";
+import { NewTransitionEvent } from "../events/NewTransitionEvent";
 import { DeleteTransitionEvent } from "../events/DeleteTransitionEvent";
 
 

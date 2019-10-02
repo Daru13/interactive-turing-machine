@@ -1,12 +1,9 @@
 import * as d3 from "d3-selection";
-import { distance2, angleToXAxis } from "../../helpers";
 import { EventManager } from "../../events/EventManager";
 import { Node } from "./Node"
-import { NewStateEvent } from "../../events/newStateEvent";
-import { DeleteStateEvent } from "../../events/deleteStateEvent";
-import { State } from "../../model/State";
-import { Transition } from "../../model/Transition";
-import { NewTransitionEvent } from "../../events/newTransitionEvent";
+import { NewStateEvent } from "../../events/NewStateEvent";
+import { DeleteStateEvent } from "../../events/DeleteStateEvent";
+import { NewTransitionEvent } from "../../events/NewTransitionEvent";
 import { DeleteTransitionEvent } from "../../events/DeleteTransitionEvent";
 import { Edge } from "./Edge";
 

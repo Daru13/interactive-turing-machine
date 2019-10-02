@@ -1,7 +1,7 @@
 import { Graph, GraphDatum } from "./Graph";
-import { Edge, EdgeId } from "./Edge";
+import { Edge } from "./Edge";
 import * as d3 from "d3-selection";
-import { StateID, State } from "../../model/State";
+import { State } from "../../model/State";
 
 export enum NodeType {
   STANDARD = "standard",
