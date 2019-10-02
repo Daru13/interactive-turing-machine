@@ -1,4 +1,4 @@
-import { Tape } from "./tape";
+import { Tape } from "./Tape";
 import { ToolBar } from "./ToolBar";
 import { ToolManager } from "./ToolManager";
 import { Graph } from "./graph/Graph";
@@ -8,7 +8,7 @@ export class ViewController{
   toolManager: ToolManager;
   toolBar: ToolBar;
   tape: Tape;
-  
+
   constructor(){
     this.setupUI();
   }

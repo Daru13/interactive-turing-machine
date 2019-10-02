@@ -3,10 +3,6 @@ import { State } from './model/State';
 import { Transition } from './model/Transition';
 import { HeadAction } from './model/Tape';
 
-import { Graph } from './view/graph/Graph';
-import { ToolBar } from './view/ToolBar';
-import { ToolManager, tools } from './view/ToolManager';
-import { Tape } from './view/tape';
 import { ViewController } from './view/ViewController';
 /*
 // Test code for Turing machine model
@@ -44,4 +40,4 @@ let nbSteps = tm.run();
 console.log(tm.toString());
 console.log("nb steps = ", nbSteps);*/
 
-new ViewController();
+let vc = new ViewController();
