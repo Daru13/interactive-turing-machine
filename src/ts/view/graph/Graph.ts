@@ -23,8 +23,8 @@ export class Graph {
     this.setupListeners()
   }
 
-  getSVGElement(): SVGElement{
-    return this.svg.node();
+  getSVGElement(): SVGSVGElement{
+    return this.svg.node() as SVGSVGElement;
   }
 
   getSVG(): GraphSelection{

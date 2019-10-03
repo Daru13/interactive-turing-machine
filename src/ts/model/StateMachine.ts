@@ -41,7 +41,7 @@ export class StateMachine {
         return this.states.has(id);
     }
 
-    getState(id: StateID) {
+    getState(id: StateID){
         return this.hasState(id) ? this.states.get(id) : null;
     }
 

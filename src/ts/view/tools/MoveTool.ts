@@ -38,7 +38,6 @@ export class MoveTool extends Tool{
     if(this.node !== undefined){
       Node.translate(this.node, e.x - this.previousX, e.y - this.previousY);
 
-      console.log("TODO: get all edges from a node")
     }
 
     this.previousX = e.x;
