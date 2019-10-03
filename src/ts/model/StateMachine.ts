@@ -1,5 +1,5 @@
 import { State, StateID } from "./State";
-import { Transition } from './Transition';
+import { Transition, TransitionID } from './Transition';
 import { EventManager } from "../events/EventManager";
 import { NewStateEvent } from "../events/NewStateEvent";
 import { DeleteStateEvent } from "../events/DeleteStateEvent";
@@ -10,12 +10,16 @@ import { DeleteTransitionEvent } from "../events/DeleteTransitionEvent";
 export class StateMachine {
 
     private states: Map<StateID, State>;
+    private transitions: Map<TransitionID, Transition>;
+
     private initialState: State;
     private currentState: State;
 
 
     constructor() {
         this.states = new Map();
+        this.transitions = new Map();
+
         this.currentState = null;
         this.initialState = null;
     }
@@ -45,8 +49,8 @@ export class StateMachine {
         let state = this.states.get(id);
 
         // Remove in and out transitions first
-        state.getInTransitions().forEach((t) => { this.removeTransition(t); });
-        state.getOutTransitions().forEach((t) => { this.removeTransition(t); });
+        state.getInTransitions().forEach((t) => { this.removeTransition(t.id); });
+        state.getOutTransitions().forEach((t) => { this.removeTransition(t.id); });
 
         this.states.delete(id);
         EventManager.emit(new DeleteStateEvent(state));
@@ -83,27 +87,41 @@ export class StateMachine {
         let toState = transition.toState;
 
         if (! (this.hasState(fromState.id) && this.hasState(toState.id))) {
-            console.error("The transition could not be added: unknown origin state.");
+            console.error("The transition could not be added: unknown origin or destination state.");
+            return;
+        }
+
+        if (this.transitions.has(transition.id)) {
+            console.error("The transition could not be added: already added.");
             return;
         }
 
         toState.addInTransition(transition);
         fromState.addOutTransition(transition);
+        this.transitions.set(transition.id, transition);
 
         EventManager.emit(new NewTransitionEvent(transition));
     }
 
-    removeTransition(transition: Transition) {
-        let fromState = transition.fromState;
-        let toState = transition.toState;
+    hasTransition(id: TransitionID): boolean {
+        return this.transitions.has(id);
+    }
 
-        if (! (this.hasState(fromState.id) && this.hasState(toState.id))) {
-            console.error("The transition could not be removed: unknown origin state.");
+    getTransition(id: TransitionID): Transition {
+        return this.transitions.has(id) ? this.transitions.get(id) : null;
+    }
+
+    removeTransition(id: TransitionID) {
+        if (! this.transitions.has(id)) {
+            console.error("The transition could not be removed: unknown transition.");
             return;
         }
 
-        toState.removeInTransition(transition);
-        fromState.removeOutTransition(transition);
+        let transition = this.transitions.get(id);
+        this.transitions.delete(id);
+
+        transition.toState.removeInTransition(transition);
+        transition.fromState.removeOutTransition(transition);
 
         EventManager.emit(new DeleteTransitionEvent(transition));
     }
