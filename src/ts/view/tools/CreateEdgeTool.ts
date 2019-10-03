@@ -1,12 +1,13 @@
-import { distance2 } from "../../helpers";
+import { Helpers } from "../../helpers";
 import * as d3 from "d3-selection";
 import { Graph } from "../graph/Graph";
 import { Node, NodeHandleSelection } from "../graph/Node";
 import { TuringMachine } from "../../model/TuringMachine";
 import { Transition } from "../../model/Transition";
 import { HeadAction } from "../../model/Tape";
+import { Tool } from "./Tool";
 
-export class CreateEdgeTool{
+export class CreateEdgeTool extends Tool{
   previousX: number;
   previousY: number;
   graph: Graph;
@@ -15,6 +16,7 @@ export class CreateEdgeTool{
   turingMachine: TuringMachine;
 
   constructor(graph: Graph,  turingMachine: TuringMachine){
+    super(graph, turingMachine);
     this.previousX = 0;
     this.previousY = 0;
     this.graph = graph
@@ -64,9 +66,9 @@ export class CreateEdgeTool{
       let closestDistance = Infinity;
       let t = this;
       d3.selectAll(".node:not(.selected)").each(function(){
-        if(distance2({x: t.previousX, y: t.previousY},
+        if(Helpers.distance2({x: t.previousX, y: t.previousY},
                      {x: parseFloat(d3.select(this).datum()["x"]), y: parseFloat(d3.select(this).datum()["y"])}) < closestDistance){
-          closestDistance =distance2({x: t.previousX, y: t.previousY},
+          closestDistance = Helpers.distance2({x: t.previousX, y: t.previousY},
                        {x: parseFloat(d3.select(this).datum()["x"]), y: parseFloat(d3.select(this).datum()["y"])})
           closestNode = d3.select(this)
         }

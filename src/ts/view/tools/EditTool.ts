@@ -5,14 +5,16 @@ import { NodeEditor } from "../NodeEditor";
 import { Node } from "../graph/Node";
 import { Edge } from "../graph/Edge";
 import { TuringMachine } from "../../model/TuringMachine";
+import { Tool } from "./Tool";
 
-export class EditTool{
+export class EditTool extends Tool{
   graph: Graph;
   edge: any;
   node: any;
   turingMachine: TuringMachine;
 
   constructor(graph: Graph, turingMachine: TuringMachine){
+    super(graph, turingMachine);
     this.graph = graph;
     this.turingMachine = turingMachine;
   }

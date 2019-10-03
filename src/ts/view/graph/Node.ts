@@ -16,7 +16,7 @@ export interface NodeDatum {
 };
 
 export type NodeElementSelection = d3.Selection<SVGElement, NodeDatum, SVGElement, NodeDatum>;
-export type NodeHandleSelection = d3.Selection<SVGElement, NodeDatum, HTMLElement, GraphDatum>;
+export type NodeHandleSelection = d3.Selection<SVGGElement, NodeDatum, HTMLElement, GraphDatum>;
 
 export class Node{
   constructor(){}
@@ -28,7 +28,7 @@ export class Node{
         .append("g")
           .classed("node", true)
           .datum(datum)
-          .attr("id", "node-"+state.id)
+          .attr("id", "node-"+state.id);
 
     node.append("circle")
       .attr("cx", 0)
@@ -47,10 +47,10 @@ export class Node{
   static translate(node: NodeHandleSelection, dx: number, dy: number): void{
     node.datum()["x"] += dx;
     node.datum()["y"] += dy;
-    node.attr("transform", function(d){return "translate("+d.x+","+d.y+")"})
+    node.attr("transform", function(d){return "translate("+d.x+","+d.y+")"});
   }
 
-  static delete(node){
+  static delete(node: NodeHandleSelection): void{
     node.remove();
   }
 
@@ -66,12 +66,12 @@ export class Node{
   static getHandle(selection: NodeElementSelection): NodeHandleSelection{
     var node: NodeHandleSelection;
     if(selection.datum() !== undefined && selection.datum()["id"] !== undefined){
-      node = d3.select("#" + selection.datum()["id"])
+      node = d3.select("#" + selection.datum()["id"]);
       if(node.classed("node")){
-        return node
+        return node;
       }
     }
-    throw "Graph.ts (getNodeHandle): Selection is not part of a node"
+    throw "Graph.ts (getNodeHandle): Selection is not part of a node";
   }
 
   static getHandleByStateId(stateId: StateID): NodeHandleSelection{
@@ -81,16 +81,16 @@ export class Node{
   static changeType(node: NodeHandleSelection, type: NodeType): void{
     switch(type){
       case NodeType.START:
-        node.classed("start", true)
-        node.classed("final", false)
+        node.classed("start", true);
+        node.classed("final", false);
         break;
       case NodeType.STANDARD:
-        node.classed("start", false)
-        node.classed("final", false)
+        node.classed("start", false);
+        node.classed("final", false);
         break;
       case NodeType.FINAL:
-        node.classed("start", false)
-        node.classed("final", true)
+        node.classed("start", false);
+        node.classed("final", true);
         break;
       default:
         throw "Node.ts (changeType) type not recognised: "+type
