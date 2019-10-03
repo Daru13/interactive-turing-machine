@@ -25,6 +25,11 @@ export class StateMachine {
     }
 
     addState(state: State, x: number = 0, y: number = 0) {
+        if (this.states.has(state.id)) {
+            console.error("The state could not be added: already added.");
+            return;
+        }
+
         this.states.set(state.id, state);
 
         EventManager.emit(new NewStateEvent(state, x, y));
