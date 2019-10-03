@@ -1,11 +1,11 @@
 import * as d3 from "d3-selection";
-import { NodeType, Node } from "./graph/Node";
+import { NodeType, Node, NodeHandleSelection } from "./graph/Node";
 
 export class NodeEditor{
-  holder: any;
-  node: any;
+  holder: d3.Selection<HTMLDivElement, {}, HTMLElement, {}>;
+  node: NodeHandleSelection;
 
-  constructor(node){
+  constructor(node: NodeHandleSelection){
     d3.select("body").selectAll(".NodeEditor").remove();
     this.holder = d3.select("body").append("div").classed("NodeEditor", true);
     this.node = node;
@@ -15,9 +15,9 @@ export class NodeEditor{
 
   setupUI(){
     var t = this;
-    this.addButton("Start", NodeType.START)
-    this.addButton("Standard", NodeType.STANDARD)
-    this.addButton("Final", NodeType.FINAL)
+    this.addButton("Start", NodeType.START);
+    this.addButton("Standard", NodeType.STANDARD);
+    this.addButton("Final", NodeType.FINAL);
   }
 
   addButton(text: string, type) {

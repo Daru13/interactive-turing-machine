@@ -98,7 +98,7 @@ export class StateMachine {
         let toState = transition.toState;
 
         if (! (this.hasState(fromState.id) && this.hasState(toState.id))) {
-            console.error("The transition could not be added: unknown origin state.");
+            console.error("The transition could not be removed: unknown origin state.");
             return;
         }
 

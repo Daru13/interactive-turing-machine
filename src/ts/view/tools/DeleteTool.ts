@@ -3,14 +3,16 @@ import { Graph } from "../graph/Graph";
 import { Edge } from "../graph/Edge";
 import { Node } from "../graph/Node";
 import { TuringMachine } from "../../model/TuringMachine";
+import { Tool } from "./Tool";
 
-export class DeleteTool{
+export class DeleteTool extends Tool{
   graph: Graph;
   node: d3.Selection<SVGElement, any, any, any>;
   edge: any;
   turingMachine: TuringMachine;
 
   constructor(graph: Graph, turingMachine: TuringMachine){
+    super(graph, turingMachine);
     this.graph = graph
     this.turingMachine = turingMachine
   }

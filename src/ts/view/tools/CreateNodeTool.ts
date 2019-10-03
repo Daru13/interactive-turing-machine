@@ -1,14 +1,16 @@
 import { Graph } from "../graph/Graph";
 import { TuringMachine } from "../../model/TuringMachine";
 import { State } from "../../model/State";
+import { Tool } from "./Tool";
 
-export class CreateNodeTool{
+export class CreateNodeTool extends Tool{
   eX: number;
   eY: number;
   graph: Graph;
   turingMachine: TuringMachine;
 
   constructor(graph: Graph, turingMachine: TuringMachine){
+    super(graph, turingMachine);
     this.eX = 0;
     this.eY = 0;
     this.graph = graph;

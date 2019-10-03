@@ -2,11 +2,11 @@ import * as d3 from "d3-selection";
 import * as d3Transition from "d3-transition";
 
 export class Tape{
-  tapeHolder: d3.Selection<d3.BaseType, unknown, HTMLElement, any>;
-  tape: any;
+  tapeHolder: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
+  tape: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
   indexOfHead: number;
   stepMovement: number;
-  head: any;
+  head: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
 
   constructor(){
     this.tapeHolder = d3.select("#tapeHolder");
@@ -16,7 +16,7 @@ export class Tape{
     this.moveTapeBy(3);
   }
 
-  addTape(){
+  addTape(): d3.Selection<HTMLDivElement, unknown, HTMLElement, any>{
     let tape = this.tapeHolder.append("div").attr("id", "tape");
     for(var i = 0; i < 100; i++){
       tape.append("div")
@@ -34,14 +34,13 @@ export class Tape{
     return tape;
   }
 
-  addHead(){
+  addHead(): d3.Selection<HTMLDivElement, unknown, HTMLElement, any>{
     return this.tapeHolder.append("div").attr("id", "head")
   }
 
-  moveTapeBy(n){
+  moveTapeBy(n: number){
     let l = parseInt(this.tape.style("left"));
     this.tape
-      .transition(d3Transition.transition().duration(750).ease())
       .style("left", (l - n * this.stepMovement).toString() + "px")
   }
 }

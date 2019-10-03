@@ -3,9 +3,10 @@ import { Graph } from "../graph/Graph";
 import { Node, NodeHandleSelection } from "../graph/Node";
 import { Edge } from "../graph/Edge";
 import { TuringMachine } from "../../model/TuringMachine";
+import { Tool } from "./Tool";
 
 
-export class MoveTool{
+export class MoveTool extends Tool{
   previousX: number;
   previousY: number;
   node: NodeHandleSelection;
@@ -13,6 +14,7 @@ export class MoveTool{
   turingMachine: TuringMachine;
 
   constructor(graph: Graph, turingMachine: TuringMachine){
+    super(graph, turingMachine);
     this.previousX = 0;
     this.previousY = 0;
     this.graph = graph;
