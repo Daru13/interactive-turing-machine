@@ -1,5 +1,7 @@
 import { Transition, TransitionID } from './Transition';
 import { TapeSymbol } from './Tape';
+import { EventManager } from '../events/EventManager';
+import { EditStateEvent } from '../events/EditStateEvent';
 
 
 export type StateID = number;
@@ -10,24 +12,44 @@ export class State {
     private static nextStateID = 1;
 
     readonly id: StateID;
-    label: string;
-    isFinal: boolean;
+    private label: string;
+    private final: boolean;
 
     private inTransitions: Map<TransitionID, Transition>;
     private outTransitions: Map<TransitionID, Transition>;
     private symbolsToOutTransitions: Map<TapeSymbol, Transition>;
 
 
-    constructor(label: string, isFinal: boolean = false) {
+    constructor(label: string, final: boolean = false) {
         this.id = State.nextStateID;
         State.nextStateID++;
 
         this.label = label;
-        this.isFinal = isFinal;
+        this.final = final;
 
         this.inTransitions = new Map();
         this.outTransitions = new Map();
         this.symbolsToOutTransitions = new Map();
+    }
+
+    getLabel(): string {
+        return this.label;
+    }
+
+    setLabel(label: string) {
+        this.label = label;
+        
+        EventManager.emit(new EditStateEvent(this));
+    }
+
+    isFinal(): boolean {
+        return this.final;
+    }
+
+    setFinal(final: boolean) {
+        this.final = final;
+        
+        EventManager.emit(new EditStateEvent(this));
     }
 
     addInTransition(transition: Transition) {

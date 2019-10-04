@@ -15,7 +15,7 @@ const states = stateLabels.map((label) => { return tm.stateMachine.createAndAddS
 
 // Set the initial and final states
 tm.stateMachine.setInitialState(states[0].id);
-states[2].isFinal = true;
+states[2].setFinal(true);
 
 // Add transitions
 tm.stateMachine.addTransition(new Transition(states[0], states[0], "O", "O", HeadAction.MoveRight));
