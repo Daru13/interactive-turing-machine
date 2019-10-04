@@ -91,6 +91,7 @@ export class EdgeEditor{
     
     edgeEditor.stateMachine.getTransition(edgeEditor.edge.datum().transitionID)
       .setTransition(onSymbol, outputSymbol, headAction);
+    console.log(edgeEditor.stateMachine.toString());    
     edgeEditor.close(edgeEditor);
   }
 

@@ -18,19 +18,23 @@ export class NodeEditor{
 
   setupUI(){
     var t = this;
-    this.addButton("Start", NodeType.START);
-    this.addButton("Standard", NodeType.STANDARD);
-    this.addButton("Final", NodeType.FINAL);
-  }
-
-  addButton(text: string, type) {
-    var t = this;
+    
     this.holder.append("div")
-      .on("click", function(){
-        Node.changeType(t.node, type);
+      .on("click", function () {
+        t.stateMachine.setInitialState(t.node.datum().stateID);
+        console.log(t.stateMachine.toString());
         t.close();
       })
-      .text(text);
+      .text("Initial");
+
+    this.holder.append("div")
+      .on("click", function () {
+        let state = t.stateMachine.getState(t.node.datum().stateID);
+        state.setFinal(!state.isFinal());
+        console.log(t.stateMachine.toString());
+        t.close();
+      })
+      .text("Final");
   }
 
   close(){

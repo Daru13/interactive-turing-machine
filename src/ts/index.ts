@@ -4,7 +4,7 @@ import { Transition } from './model/Transition';
 import { HeadAction } from './model/Tape';
 
 import { ViewController } from './view/ViewController';
-
+/*
 // Test code for Turing machine model
 let tm = new TuringMachine();
 window["tm"] = tm;
@@ -33,5 +33,5 @@ let nbSteps = tm.run();
 
 console.log(tm.toString());
 console.log("nb steps = ", nbSteps);
-
+*/
 new ViewController(new TuringMachine());

@@ -27,6 +27,7 @@ export class CreateNodeTool extends Tool{
 
   pointerUp(e: any){
     this.turingMachine.stateMachine.addState(new State(CreateNodeTool.nameState.toString()), this.eX, this.eY);
+    console.log(this.turingMachine.stateMachine.toString());
     CreateNodeTool.nameState += 1;
   }
 }

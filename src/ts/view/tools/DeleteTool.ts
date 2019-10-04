@@ -33,10 +33,12 @@ export class DeleteTool extends Tool{
   pointerUp(e: any){
     if(this.node !== undefined){
       this.stateMachine.removeState(this.node.datum().stateID);
+      console.log(this.stateMachine.toString());
       this.node = undefined;
     }
     if(this.edge !== undefined){
       this.stateMachine.removeTransition(this.edge.datum().transitionID);
+      console.log(this.stateMachine.toString());
       this.edge = undefined;
     }
   }

@@ -31,12 +31,12 @@ export class Node{
           .datum(datum)
           .attr("id", "node-"+state.id);
 
-   /*node.append("circle")
+   node.append("circle")
       .attr("cx", 0)
       .attr("cy", 0)
-      .attr("r", Graph.sizeNode);*/
+      .attr("r", Graph.sizeNode);
 
-    addHandDrawnCircle(node, Graph.sizeNode, "nodeCircle");
+    //addHandDrawnCircle(node, Graph.sizeNode, "nodeCircle");
 
     node.append("text")
       .attr("x",0)
