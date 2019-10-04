@@ -32,7 +32,6 @@ export class CreateEdgeTool extends Tool{
 
     if(Node.isNode(d3.select(e.target as any))){
       this.node = Node.getHandle(d3.select(e.target as any))
-      this.node.classed("selected", true)
       this.isDown = true;
       this.graph.getSVG()
         .append("path")
@@ -49,6 +48,12 @@ export class CreateEdgeTool extends Tool{
       this.graph.getSVG()
         .select(".edgeInCreation")
           .attr("d", "M"+this.node.datum()["x"]+","+this.node.datum()["y"]+" L"+this.previousX+","+this.previousY)
+      
+      d3.selectAll(".node.closestNode").classed("closestNode", false);
+      let closestNode = this.closestNode({ x: this.previousX, y: this.previousY }, Graph.sizeNode * 2);
+      if (closestNode !== undefined) {
+        closestNode.classed("closestNode", true);
+      }
 
       this.previousX = e.x;
       this.previousY = e.y;
@@ -59,29 +64,33 @@ export class CreateEdgeTool extends Tool{
     if(this.isDown){
       this.isDown = false;
 
-      this.node.classed("selected", false);
-
       this.graph.getSVG().select(".edgeInCreation").remove()
 
-      let closestNode: NodeHandleSelection;
-      let closestDistance = Infinity;
-      let t = this;
-      d3.selectAll(".node:not(.selected)").each(function(){
-        if(Helpers.distance2({x: t.previousX, y: t.previousY},
-                     {x: parseFloat(d3.select(this).datum()["x"]), y: parseFloat(d3.select(this).datum()["y"])}) < closestDistance){
-          closestDistance = Helpers.distance2({x: t.previousX, y: t.previousY},
-                       {x: parseFloat(d3.select(this).datum()["x"]), y: parseFloat(d3.select(this).datum()["y"])})
-          closestNode = d3.select(this) as NodeHandleSelection;
-        }
-      })
-      d3.selectAll(".node.selected").classed("selected", false);
-      this.stateMachine
-        .addTransition(new Transition(
-          this.stateMachine.getState(this.node.datum().stateID),
-          this.stateMachine.getState(closestNode.datum().stateID), 
-          "unknown", 
-          "unknown", 
-          HeadAction.None));
+      d3.selectAll(".node.closestNode").classed("closestNode", false);
+      let closestNode = this.closestNode({x: this.previousX, y: this.previousY}, Graph.sizeNode * 2);
+
+      if (closestNode !== undefined){
+        this.stateMachine
+          .addTransition(new Transition(
+            this.stateMachine.getState(this.node.datum().stateID),
+            this.stateMachine.getState(closestNode.datum().stateID), 
+            "unknown", 
+            "unknown", 
+            HeadAction.None));
+      }
     }
+  }
+
+  closestNode(point: {x, y}, closestDistance: number): NodeHandleSelection{
+    let closestNode: NodeHandleSelection;
+    let t = this;
+    d3.selectAll(".node").each(function () {
+      let point2 = { x: d3.select(this).datum()["x"], y: d3.select(this).datum()["y"] };
+      if (Helpers.distance2(point, point2) < closestDistance) {
+        closestDistance = Helpers.distance2(point, point2)
+        closestNode = d3.select(this) as NodeHandleSelection;
+      }
+    })
+    return closestNode;
   }
 }

@@ -147,6 +147,10 @@ body{
   filter:url(#outline);
 }
 
+.node.closestNode circle{
+  filter:url(#outline);
+}
+
 .node.move circle{
   filter:url(#blur);
 }
