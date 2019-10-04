@@ -141,6 +141,16 @@ export class State {
         return [...this.outTransitions.values()];
     }
 
+    isDeterministic(): boolean {
+        for (let transitions of this.symbolsToOutTransitions.values()) {
+            if (transitions.size > 1) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     toString(useLabels: boolean = true) {
         return useLabels ? this.label : this.id;
     }

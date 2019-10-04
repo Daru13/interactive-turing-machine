@@ -60,6 +60,11 @@ export class TuringMachine {
     }
 
     run(maxNbSteps: number = 1000) {
+        if (! this.stateMachine.isDeterministic()) {
+            console.error("The machine could not be ran: nondeterministic state-machine.");
+            return false;
+        }
+
         let nbSteps = 0;
         let keepRunning = true;
 

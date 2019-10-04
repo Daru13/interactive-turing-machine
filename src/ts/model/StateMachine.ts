@@ -131,6 +131,18 @@ export class StateMachine {
         EventManager.emit(new DeleteTransitionEvent(transition));
     }
 
+    isDeterministic(): boolean {
+        let deterministic = true;
+
+        for (let state of this.states.values()) {
+            if (! state.isDeterministic()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     getStatesAsString(useLabels: boolean = true) {
         return [...this.states.values()]
             .map((s) => s.toString(useLabels))
