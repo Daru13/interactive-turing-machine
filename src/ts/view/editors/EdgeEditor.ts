@@ -53,8 +53,9 @@ export class EdgeEditor{
       .text(text)
       .attr("id", "rightSwitch")
       .datum(datum)
+      .classed("selected", selected)
       .on("click", function () {
-        holder.select(".selected").classed("selected", selected);
+        holder.select(".selected").classed("selected", false);
         d3.select(this).classed("selected", true);
       });
   }

@@ -54,20 +54,57 @@ export class Edge{
     let x2 = toNode.datum().x;
     let y2 = toNode.datum().y;
     
-    let len = Helpers.distance2({x: x1, y: y1}, {x: x2, y: y2}) - Graph.sizeNode;
-    let angle = 180 * Helpers.angleToXAxis({x: x1, y: y1}, {x: x2, y: y2}) / Math.PI;
+    if(x1 === x2 && y1 === y2) {
+      this.drawEdgeOnePoint(edge, x1, y1);
+    } else {
+      this.drawEdgeTwoPoints(edge, x1, y1, x2, y2);
+    }
+  }
 
-    edge.select("path").attr("d", "M" + Graph.sizeNode + ",0 L" + (len-7) + ",0"); //7 is for size of marker
-    edge.select("rect").attr("width", len-Graph.sizeNode);
-    
-    edge.select("text").attr("x", (len)/2);
-    if(angle > 90 || angle < -90){
-      edge.select("text").attr("transform", "rotate(180," + (len/2) + ",0)")
-    }else{
+  static  drawEdgeTwoPoints(edge: EdgeHandleSelection, x1: number, y1: number, x2: number, y2: number){
+    let len = Helpers.distance2({ x: x1, y: y1 }, { x: x2, y: y2 }) - Graph.sizeNode;
+    let angle = 180 * Helpers.angleToXAxis({ x: x1, y: y1 }, { x: x2, y: y2 }) / Math.PI;
+
+    edge.select("path").attr("d", "M" + Graph.sizeNode + ",0 L" + (len - 7) + ",0"); //7 is for size of marker
+    edge.select("rect").attr("width", len - Graph.sizeNode);
+
+    edge.select("text").attr("x", (len) / 2);
+    if (angle > 90 || angle < -90) {
+      edge.select("text").attr("transform", "rotate(180," + (len / 2) + ",0)")
+    } else {
       edge.select("text").attr("transform", "")
     }
 
     edge.attr("transform", "rotate(" + angle + "," + (x1) + "," + (y1) + ")" + " translate(" + (x1) + "," + (y1) + ")");
+  }
+
+  static  drawEdgeOnePoint(edge: EdgeHandleSelection, x: number, y: number){
+    let r = Graph.sizeNode;
+
+    let firstYOffset = 50;
+    let secondYOffset = 75;
+    let xOffset = 20;
+
+    let c = 12; //courbature control
+
+    let startX = r * Math.sin(0.1);
+    let startY = r * Math.cos(0.1);
+    let finalX = -1 * (r + 7) * Math.sin(0.1);//7 is for size of marker
+    let finalY = (r + 7) * Math.cos(0.1) ;
+    
+
+    edge.select("path").attr("d", 
+      "M" + startX + "," + startY + 
+      " C " + startX + "," + startY + "," + xOffset + "," + (r + firstYOffset - c) + " " + xOffset + "," + (r + firstYOffset) + 
+      " C" + xOffset + "," + (r + firstYOffset + c) + " " + c + "," + (r + secondYOffset) + " 0," + (r + secondYOffset) + 
+      " C" + "-" + c + "," + (r + secondYOffset) + " " + (-1 * xOffset) + "," + (r + firstYOffset + c) + " " + (-1 * xOffset) + ","  + (r + firstYOffset) + 
+      " C" + (-1 * xOffset) + "," + (r + firstYOffset - c) + " " + finalX + "," + finalY + " " + finalX + "," + finalY)
+      .style("fill", "none"); 
+    edge.select("rect").attr("x", -xOffset).attr("y", r).attr("width", 2*xOffset).attr("height", (20 + secondYOffset)).style("fill","red");
+
+    edge.select("text").attr("x", 0).attr("y", r + secondYOffset + 18);
+
+    edge.attr("transform",  " translate(" + (x) + "," + (y) + ")");
   }
 
   static delete(edge: EdgeHandleSelection): void{

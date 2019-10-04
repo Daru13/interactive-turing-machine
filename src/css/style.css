@@ -147,7 +147,7 @@ body{
   filter:url(#outline);
 }
 
-.node.closestNode circle{
+.node.closestNode path{
   filter:url(#outline);
 }
 
