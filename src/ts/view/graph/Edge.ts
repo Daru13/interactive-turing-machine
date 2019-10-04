@@ -1,14 +1,15 @@
 import { Graph, GraphDatum } from "./Graph";
 import * as d3 from "d3-selection";
 import { Node, NodeHandleSelection } from "./Node";
-import { Transition } from "../../model/Transition";
+import { Transition, TransitionID } from "../../model/Transition";
 import { Helpers } from "../../helpers";
+import { HeadAction, TapeSymbol } from "../../model/Tape";
 
 export type EdgeId = String;
 
 export interface EdgeDatum {
   id: string;
-  transition: Transition
+  transitionID: TransitionID
 };
 
 export type EdgeElementSelection = d3.Selection<SVGElement, EdgeDatum, SVGElement, EdgeDatum>;
@@ -20,7 +21,7 @@ export class Edge{
 
   static add(graph, transition: Transition): void{
     let id = "edge-" + transition.id;
-    let datum: EdgeDatum = { id: id, transition: transition };
+    let datum: EdgeDatum = { id: id, transitionID: transition.id };
     var edgeHandle :EdgeHandleSelection =
       graph.getSVG()
         .append("g")
@@ -43,17 +44,14 @@ export class Edge{
       .attr("text-anchor", "middle")
       .text("click to set");
 
-    Edge.move(edgeHandle);
+    Edge.move(edgeHandle, Node.getHandleByStateId(transition.fromState.id), Node.getHandleByStateId(transition.toState.id));
   }
-
-  static move(edge: EdgeHandleSelection){
-    let fromState = edge.datum().transition.fromState;
-    let toState = edge.datum().transition.toState;
-
-    let x1 = Node.getHandleByStateId(fromState.id).datum()["x"];
-    let y1 = Node.getHandleByStateId(fromState.id).datum()["y"];
-    let x2 = Node.getHandleByStateId(toState.id).datum()["x"];
-    let y2 = Node.getHandleByStateId(toState.id).datum()["y"];
+  
+  static move(edge: EdgeHandleSelection, fromNode: NodeHandleSelection, toNode: NodeHandleSelection){
+    let x1 = fromNode.datum().x;
+    let y1 = fromNode.datum().y;
+    let x2 = toNode.datum().x;
+    let y2 = toNode.datum().y;
     
     let len = Helpers.distance2({x: x1, y: y1}, {x: x2, y: y2}) - Graph.sizeNode;
     let angle = 180 * Helpers.angleToXAxis({x: x1, y: y1}, {x: x2, y: y2}) / Math.PI;
@@ -95,8 +93,12 @@ export class Edge{
     throw "Graph.ts (getEdgeHandle): Selection is not part of a edge"
   }
 
-  static drawText(edge: EdgeHandleSelection): void{
+  static getHandleByTransitionId(transitionID: TransitionID): EdgeHandleSelection {
+    return d3.select("#edge-" + transitionID);
+  }
+
+  static drawText(edge: EdgeHandleSelection, onSymbol: TapeSymbol, outputSymbol: TapeSymbol, headAction:HeadAction): void{
     edge.select("text")
-      .text(function(d){return "R:" + d.transition.onSymbol + "/W:" + d.transition.outputSymbol + "/D:" + d.transition.headAction});
+      .text(function(d){return "R:" + onSymbol + "/W:" + outputSymbol + "/D:" + headAction});
   }
 }

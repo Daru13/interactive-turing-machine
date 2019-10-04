@@ -12,7 +12,7 @@ export interface NodeDatum {
   x: number;
   y: number;
   id: string;
-  state: State;
+  stateID: StateID;
 };
 
 export type NodeElementSelection = d3.Selection<SVGElement, NodeDatum, SVGElement, NodeDatum>;
@@ -22,7 +22,7 @@ export class Node{
   constructor(){}
 
   static add(graph: Graph, state: State, x: number, y: number): void{
-    let datum: NodeDatum = {x: 0, y: 0, id: "node-" + state.id, state};
+    let datum: NodeDatum = {x: 0, y: 0, id: "node-" + state.id, stateID: state.id};
     let node: NodeHandleSelection =
       graph.getSVG()
         .append("g")

@@ -1,15 +1,18 @@
 import * as d3 from "d3-selection";
-import { NodeType, Node, NodeHandleSelection } from "./graph/Node";
+import { NodeType, Node, NodeHandleSelection } from "../graph/Node";
+import { StateMachine } from "../../model/StateMachine";
 
 export class NodeEditor{
   holder: d3.Selection<HTMLDivElement, {}, HTMLElement, {}>;
   node: NodeHandleSelection;
+  stateMachine: StateMachine;
 
-  constructor(node: NodeHandleSelection){
+  constructor(node: NodeHandleSelection, stateMachine: StateMachine){
     d3.select("body").selectAll(".NodeEditor").remove();
     this.holder = d3.select("body").append("div").classed("NodeEditor", true);
     this.node = node;
     this.node.classed("selected", true);
+    this.stateMachine = stateMachine;
     this.setupUI();
   }
 

@@ -1,5 +1,7 @@
 import { State } from "./State";
 import { TapeSymbol, HeadAction } from './Tape';
+import { EventManager } from "../events/EventManager";
+import { EditTransitionEvent } from "../events/EditTransitionEvent";
 
 export type TransitionID = number;
 
@@ -36,6 +38,7 @@ export class Transition {
       this.onSymbol = onSymbol;
       this.outputSymbol = outputSymbol;
       this.headAction = headAction;
+        EventManager.emit(new EditTransitionEvent(this));
     }
 
     toString(useLabels: boolean = true) {

@@ -8,6 +8,7 @@ export class CreateNodeTool extends Tool{
   eY: number;
   graph: Graph;
   turingMachine: TuringMachine;
+  static nameState: number = 0;
 
   constructor(graph: Graph, turingMachine: TuringMachine){
     super(graph, turingMachine);
@@ -25,6 +26,7 @@ export class CreateNodeTool extends Tool{
   pointerMove(e: any){}
 
   pointerUp(e: any){
-    this.turingMachine.stateMachine.addState(new State(""), this.eX, this.eY);
+    this.turingMachine.stateMachine.addState(new State(CreateNodeTool.nameState.toString()), this.eX, this.eY);
+    CreateNodeTool.nameState += 1;
   }
 }

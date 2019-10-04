@@ -1,24 +1,24 @@
 import * as d3 from "d3-selection";
 import { Graph } from "../graph/Graph";
-import { Edge } from "../graph/Edge";
-import { Node } from "../graph/Node";
+import { Edge, EdgeHandleSelection } from "../graph/Edge";
+import { Node, NodeHandleSelection } from "../graph/Node";
 import { TuringMachine } from "../../model/TuringMachine";
 import { Tool } from "./Tool";
+import { StateMachine } from "../../model/StateMachine";
 
 export class DeleteTool extends Tool{
   graph: Graph;
-  node: d3.Selection<SVGElement, any, any, any>;
-  edge: any;
-  turingMachine: TuringMachine;
+  node: NodeHandleSelection;
+  edge: EdgeHandleSelection;
+  stateMachine: StateMachine;
 
   constructor(graph: Graph, turingMachine: TuringMachine){
     super(graph, turingMachine);
-    this.graph = graph
-    this.turingMachine = turingMachine
+    this.graph = graph;
+    this.stateMachine = turingMachine.stateMachine;
   }
 
   pointerDown(e: any){
-    let target = d3.select(e.target as any);
     this.edge = undefined;
     this.node = undefined;
     if(Node.isNode(d3.select(e.target as any))){
@@ -32,11 +32,11 @@ export class DeleteTool extends Tool{
 
   pointerUp(e: any){
     if(this.node !== undefined){
-      this.turingMachine.stateMachine.removeState(this.node.datum()["state"]);
+      this.stateMachine.removeState(this.node.datum().stateID);
       this.node = undefined;
     }
     if(this.edge !== undefined){
-      this.turingMachine.stateMachine.removeTransition(this.edge.datum()["transition"]);
+      this.stateMachine.removeTransition(this.edge.datum().transitionID);
       this.edge = undefined;
     }
   }

@@ -6,6 +6,8 @@ import { DeleteStateEvent } from "../../events/DeleteStateEvent";
 import { NewTransitionEvent } from "../../events/NewTransitionEvent";
 import { DeleteTransitionEvent } from "../../events/DeleteTransitionEvent";
 import { Edge } from "./Edge";
+import { EditTransitionEvent } from "../../events/EditTransitionEvent";
+import { transition } from "d3";
 
 export interface GraphDatum {};
 export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, {}>;
@@ -38,7 +40,7 @@ export class Graph {
     })
 
     EventManager.registerHandler("deleteState", function(e: DeleteStateEvent) {
-      Node.delete(d3.select("#node-"+e.state.id));
+      Node.delete(Node.getHandleByStateId(e.state.id));
     })
 
     EventManager.registerHandler("newTransition", function(e: NewTransitionEvent) {
@@ -46,7 +48,11 @@ export class Graph {
     })
 
     EventManager.registerHandler("deleteTransition", function(e: DeleteTransitionEvent) {
-      Edge.delete(d3.select("#node-"+e.transition.id));
+      Edge.delete(Edge.getHandleByTransitionId(e.transition.id));
+    })
+
+    EventManager.registerHandler("editTransition", function (e: EditTransitionEvent) {
+      Edge.drawText(Edge.getHandleByTransitionId(e.transition.id), e.transition.onSymbol, e.transition.outputSymbol, e.transition.headAction);
     })
   }
 }

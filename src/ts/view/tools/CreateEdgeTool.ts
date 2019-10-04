@@ -2,10 +2,11 @@ import { Helpers } from "../../helpers";
 import * as d3 from "d3-selection";
 import { Graph } from "../graph/Graph";
 import { Node, NodeHandleSelection } from "../graph/Node";
-import { TuringMachine } from "../../model/TuringMachine";
+import {  TuringMachine } from "../../model/TuringMachine";
 import { Transition } from "../../model/Transition";
 import { HeadAction } from "../../model/Tape";
 import { Tool } from "./Tool";
+import { StateMachine } from "../../model/StateMachine";
 
 export class CreateEdgeTool extends Tool{
   previousX: number;
@@ -13,7 +14,7 @@ export class CreateEdgeTool extends Tool{
   graph: Graph;
   node: NodeHandleSelection;
   isDown: boolean;
-  turingMachine: TuringMachine;
+  stateMachine: StateMachine;
 
   constructor(graph: Graph,  turingMachine: TuringMachine){
     super(graph, turingMachine);
@@ -21,7 +22,7 @@ export class CreateEdgeTool extends Tool{
     this.previousY = 0;
     this.graph = graph
     this.isDown = false;
-    this.turingMachine = turingMachine;
+    this.stateMachine = turingMachine.stateMachine;
   }
 
   pointerDown(e: any){
@@ -62,7 +63,7 @@ export class CreateEdgeTool extends Tool{
 
       this.graph.getSVG().select(".edgeInCreation").remove()
 
-      let closestNode: d3.Selection<d3.BaseType, unknown, null, undefined>;
+      let closestNode: NodeHandleSelection;
       let closestDistance = Infinity;
       let t = this;
       d3.selectAll(".node:not(.selected)").each(function(){
@@ -70,11 +71,17 @@ export class CreateEdgeTool extends Tool{
                      {x: parseFloat(d3.select(this).datum()["x"]), y: parseFloat(d3.select(this).datum()["y"])}) < closestDistance){
           closestDistance = Helpers.distance2({x: t.previousX, y: t.previousY},
                        {x: parseFloat(d3.select(this).datum()["x"]), y: parseFloat(d3.select(this).datum()["y"])})
-          closestNode = d3.select(this)
+          closestNode = d3.select(this) as NodeHandleSelection;
         }
       })
       d3.selectAll(".node.selected").classed("selected", false);
-      this.turingMachine.stateMachine.addTransition(new Transition(this.node.datum()["state"], closestNode.datum()["state"], "unknown", "unknown", HeadAction.None));
+      this.stateMachine
+        .addTransition(new Transition(
+          this.stateMachine.getState(this.node.datum().stateID),
+          this.stateMachine.getState(closestNode.datum().stateID), 
+          "unknown", 
+          "unknown", 
+          HeadAction.None));
     }
   }
 }

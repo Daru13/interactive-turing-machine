@@ -1,7 +1,7 @@
 import { Graph } from "../graph/Graph";
 import * as d3 from "d3-selection";
-import { EdgeEditor } from "../EdgeEditor";
-import { NodeEditor } from "../NodeEditor";
+import { EdgeEditor } from "../editors/EdgeEditor";
+import { NodeEditor } from "../editors/NodeEditor";
 import { Node } from "../graph/Node";
 import { Edge } from "../graph/Edge";
 import { TuringMachine } from "../../model/TuringMachine";
@@ -34,10 +34,10 @@ export class EditTool extends Tool{
 
   pointerUp(e: any){
     if(this.node !== undefined){
-      new NodeEditor(this.node);
+      new NodeEditor(this.node, this.turingMachine.stateMachine);
     }
     if(this.edge !== undefined){
-      new EdgeEditor(this.edge);
+      new EdgeEditor(this.edge, this.turingMachine.stateMachine);
     }
   }
 }
