@@ -28,6 +28,11 @@ export class TuringMachine {
             currentState = initialState;
         }
 
+        // Check if the current state is a final state
+        if (currentState.isFinal()) {
+            return false;
+        }
+
         // Attempt to follow a transition
         let currentSymbol = this.tape.getCurrentSymbol();
 
