@@ -41,12 +41,18 @@ export class TuringMachine {
             return false;
         }
 
-        let transition = currentState.getOutTransitionForSymbol(currentSymbol);
-        let nextState = transition.toState;
+        let transitions = currentState.getOutTransitionsForSymbol(currentSymbol);
+        if (transitions.length > 1) {
+            console.error("The machine could not be ran: nondeterministic state-machine.");
+            return false;
+        }
 
         // Update the machine according to the transition
-        this.tape.setCurrentSymbol(transition.outputSymbol);
-        this.tape.applyHeadAction(transition.headAction);
+        let transition = [...transitions.values()][0];
+        let nextState = transition.toState;
+
+        this.tape.setCurrentSymbol(transition.getOutputSymbol());
+        this.tape.applyHeadAction(transition.getHeadAction());
         this.stateMachine.setCurrentState(nextState.id);
 
         // Only return true if the execution is finished (final state reached)

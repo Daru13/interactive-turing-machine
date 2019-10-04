@@ -2,6 +2,7 @@ import { Transition, TransitionID } from './Transition';
 import { TapeSymbol } from './Tape';
 import { EventManager } from '../events/EventManager';
 import { EditStateEvent } from '../events/EditStateEvent';
+import { transition, symbol } from 'd3';
 
 
 export type StateID = number;
@@ -17,7 +18,7 @@ export class State {
 
     private inTransitions: Map<TransitionID, Transition>;
     private outTransitions: Map<TransitionID, Transition>;
-    private symbolsToOutTransitions: Map<TapeSymbol, Transition>;
+    private symbolsToOutTransitions: Map<TapeSymbol, Set<Transition>>;
 
 
     constructor(label: string, final: boolean = false) {
@@ -77,8 +78,14 @@ export class State {
             return;
         }
 
+
+        let onSymbol = transition.getOnSymbol();
+        if (! this.symbolsToOutTransitions.has(onSymbol)) {
+            this.symbolsToOutTransitions.set(onSymbol, new Set());
+        }
+
+        this.symbolsToOutTransitions.get(transition.getOnSymbol()).add(transition);
         this.outTransitions.set(transition.id, transition);
-        this.symbolsToOutTransitions.set(transition.onSymbol, transition);
     }
 
     removeOutTransition(transition: Transition) {
@@ -88,16 +95,42 @@ export class State {
             return;
         }
 
+        let onSymbol = transition.getOnSymbol();
+        let transitions = this.symbolsToOutTransitions.get(onSymbol);
+
+        transitions.delete(transition);
         this.outTransitions.delete(id);
-        this.symbolsToOutTransitions.delete(transition.onSymbol);    
+
+        if (this.symbolsToOutTransitions.get(onSymbol).size === 0) {
+            this.symbolsToOutTransitions.delete(onSymbol);
+        }
     }
 
     hasOutTransitionForSymbol(symbol: TapeSymbol) {
         return this.symbolsToOutTransitions.has(symbol);
     }
 
-    getOutTransitionForSymbol(symbol: TapeSymbol) {
-        return this.symbolsToOutTransitions.get(symbol);
+    getOutTransitionsForSymbol(symbol: TapeSymbol) {
+        return [...this.symbolsToOutTransitions.get(symbol)];
+    }
+
+    editOutTransitionSymbol(transition: Transition, oldSymbol: TapeSymbol, newSymbol: TapeSymbol) {
+        if (oldSymbol === newSymbol) {
+            return;
+        }
+
+        let oldSymbolTransitions = this.symbolsToOutTransitions.get(oldSymbol);
+        oldSymbolTransitions.delete(transition);
+
+        if (oldSymbolTransitions.size === 0) {
+            this.symbolsToOutTransitions.delete(oldSymbol);
+        }
+
+        if (! this.symbolsToOutTransitions.has(newSymbol)) {
+            this.symbolsToOutTransitions.set(newSymbol, new Set())
+        }
+        
+        this.symbolsToOutTransitions.get(newSymbol).add(transition);
     }
 
     getInTransitions(): Transition[] {

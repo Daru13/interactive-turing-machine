@@ -14,9 +14,9 @@ export class Transition {
     readonly fromState: State;
     readonly toState: State;
 
-    onSymbol: TapeSymbol;
-    outputSymbol: TapeSymbol;
-    headAction: HeadAction;
+    private onSymbol: TapeSymbol;
+    private outputSymbol: TapeSymbol;
+    private headAction: HeadAction;
 
     constructor(fromState: State,
                 toState: State,
@@ -34,10 +34,37 @@ export class Transition {
         this.headAction = headAction;
     }
 
-    setTransition(onSymbol: TapeSymbol, outputSymbol: TapeSymbol, headAction: HeadAction){
-      this.onSymbol = onSymbol;
-      this.outputSymbol = outputSymbol;
-      this.headAction = headAction;
+    getOnSymbol(): TapeSymbol {
+        return this.onSymbol;
+    }
+
+    setOnSymbol(symbol: TapeSymbol) {
+        let oldSymbol = this.onSymbol;
+        this.onSymbol = symbol;
+
+        // Update the origin state accordingly
+        this.fromState.editOutTransitionSymbol(this, oldSymbol, symbol);
+
+        EventManager.emit(new EditTransitionEvent(this));
+    }
+
+    getOutputSymbol(): TapeSymbol {
+        return this.outputSymbol;
+    }
+
+    setOutputSymbol(symbol: TapeSymbol) {
+        this.onSymbol = symbol;
+
+        EventManager.emit(new EditTransitionEvent(this));
+    }
+
+    getHeadAction(): HeadAction {
+        return this.headAction;
+    }
+
+    setHeadAction(action: HeadAction) {
+        this.headAction = action;
+
         EventManager.emit(new EditTransitionEvent(this));
     }
 
