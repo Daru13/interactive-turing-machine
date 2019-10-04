@@ -4,6 +4,7 @@ import { Node, NodeHandleSelection } from "./Node";
 import { Transition, TransitionID } from "../../model/Transition";
 import { Helpers } from "../../helpers";
 import { HeadAction, TapeSymbol } from "../../model/Tape";
+import { addHandDrawnLine } from "../handDrawnShape/line";
 
 export type EdgeId = String;
 
@@ -56,7 +57,7 @@ export class Edge{
     let len = Helpers.distance2({x: x1, y: y1}, {x: x2, y: y2}) - Graph.sizeNode;
     let angle = 180 * Helpers.angleToXAxis({x: x1, y: y1}, {x: x2, y: y2}) / Math.PI;
 
-    edge.select("path").attr("d", "M" + Graph.sizeNode + ",0 L" + (len) + ",0");
+    edge.select("path").attr("d", "M" + Graph.sizeNode + ",0 L" + (len-7) + ",0"); //7 is for size of marker
     edge.select("rect").attr("width", len-Graph.sizeNode);
     
     edge.select("text").attr("x", (len)/2);
