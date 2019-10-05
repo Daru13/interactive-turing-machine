@@ -1,5 +1,5 @@
 import * as d3 from "d3-selection";
-import { ToolManager, toolName } from "./ToolManager";
+import { ToolManager, toolName } from "./tools/ToolManager";
 
 export class ToolBar {
   moveButton: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;

@@ -1,6 +1,6 @@
 import { Tape } from "./Tape";
 import { ToolBar } from "./ToolBar";
-import { ToolManager } from "./ToolManager";
+import { ToolManager } from "./tools/ToolManager";
 import { Graph } from "./graph/Graph";
 import { TuringMachine } from "../model/TuringMachine";
 import { TuringMachineButton } from "./TuringMachineButton";
@@ -8,6 +8,7 @@ import { EventManager } from "../events/EventManager";
 import { TapeCellUpdateEvent } from "../events/TapeCellUpdateEvent";
 import * as d3 from "d3-selection";
 import { TapeMoveEvent } from "../events/TapeMoveEvent";
+import { PenAndTouchManager } from "./penAndTouch/PenAndTouchManager";
 
 export class ViewController{
   graph: Graph;
@@ -25,8 +26,10 @@ export class ViewController{
   setupUI(){
     this.graph = new Graph();
 
+    /*
     this.toolManager = new ToolManager(this.graph, this.turingMachine);
-    this.toolBar = new ToolBar(this.toolManager);
+    this.toolBar = new ToolBar(this.toolManager);*/
+    new PenAndTouchManager(this.graph, this.turingMachine);
 
     this.tape = new Tape();
 

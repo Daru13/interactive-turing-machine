@@ -1,13 +1,13 @@
-import { CreateNodeTool } from "./tools/CreateNodeTool";
-import { CreateEdgeTool } from "./tools/CreateEdgeTool";
-import { DeleteTool } from "./tools/DeleteTool";
-import { EditTool } from "./tools/EditTool";
-import { Helpers } from "../helpers";
-import { MoveTool } from "./tools/MoveTool";
-import { TuringMachine } from "../model/TuringMachine";
-import { Graph } from "./graph/Graph";
-import { Tool } from "./tools/Tool";
-import { ModifiedPointerEvent } from "../events/ModifiedPointerEvent";
+import { CreateNodeTool } from "./CreateNodeTool";
+import { CreateEdgeTool } from "./CreateEdgeTool";
+import { DeleteTool } from "./DeleteTool";
+import { EditTool } from "./EditTool";
+import { Helpers } from "../../helpers";
+import { MoveTool } from "./MoveTool";
+import { TuringMachine } from "../../model/TuringMachine";
+import { Graph } from "../graph/Graph";
+import { Tool } from "./Tool";
+import { ModifiedPointerEvent } from "../../events/ModifiedPointerEvent";
 
 
 export enum toolName {

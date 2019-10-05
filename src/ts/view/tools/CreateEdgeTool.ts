@@ -7,6 +7,7 @@ import { Transition } from "../../model/Transition";
 import { HeadAction } from "../../model/Tape";
 import { Tool } from "./Tool";
 import { StateMachine } from "../../model/StateMachine";
+import { ModifiedPointerEvent } from "../../events/ModifiedPointerEvent";
 
 export class CreateEdgeTool extends Tool{
   previousX: number;
@@ -82,7 +83,7 @@ export class CreateEdgeTool extends Tool{
     }
   }
 
-  pointerLeave(){
+  pointerLeave(e: ModifiedPointerEvent){
     if (this.isDown) {
       this.isDown = false;
 
