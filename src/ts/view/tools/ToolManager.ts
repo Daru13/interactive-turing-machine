@@ -8,6 +8,7 @@ import { TuringMachine } from "../../model/TuringMachine";
 import { Graph } from "../graph/Graph";
 import { Tool } from "./Tool";
 import { ModifiedPointerEvent } from "../../events/ModifiedPointerEvent";
+import { ToolBar } from "../ToolBar";
 
 
 export enum toolName {
@@ -22,10 +23,14 @@ export class ToolManager{
   selectedTool: toolName;
   readonly toolToInteraction: Record<toolName, Tool>;
   readonly graph: Graph;
+  toolBar: ToolBar;
+  isActivated: boolean;
 
   constructor(graph: Graph, turingMachine: TuringMachine){
     this.toolToInteraction = {} as Record<toolName, Tool>;
     this.graph = graph;
+    this.toolBar = new ToolBar(this);
+    this.isActivated = false;
     this.setTool(graph, turingMachine);
     this.setInteraction();
   }
@@ -42,22 +47,34 @@ export class ToolManager{
     var t = this;
     t.graph.getSVGElement().addEventListener("pointerdown",
       function(e){
-        t.dispatchDownEvent(Helpers.transformEvent(e))
+        if(t.isActivated){
+          t.dispatchDownEvent(Helpers.transformEvent(e));
+        }
       });
     t.graph.getSVGElement().addEventListener("pointermove",
       function(e){
-        t.dispatchMoveEvent(Helpers.transformEvent(e))
+        if (t.isActivated) {
+          t.dispatchMoveEvent(Helpers.transformEvent(e));
+        }
       });
     t.graph.getSVGElement().addEventListener("pointerup",
       function(e){
-        t.dispatchUpEvent(Helpers.transformEvent(e))
+        if (t.isActivated) {
+          t.dispatchUpEvent(Helpers.transformEvent(e));
+        }
       });
     t.graph.getSVGElement().addEventListener("pointerleave",
       function (e) {
-        t.dispatchLeaveEvent(Helpers.transformEvent(e))
+        if (t.isActivated) {
+          t.dispatchLeaveEvent(Helpers.transformEvent(e));
+        }
       });
     t.graph.getSVGElement().addEventListener("pointercancel",
-      (e: PointerEvent) => console.log("cancel"));
+      function (e) {
+        if (t.isActivated) {
+          console.log("cancel");
+        }
+      });
   }
 
   selectTool(tool: toolName): void{
@@ -69,32 +86,30 @@ export class ToolManager{
   }
 
   dispatchDownEvent(e: ModifiedPointerEvent){
-    this.updateXYSVG(e);
+    Helpers.updateXYSVG(e, this.graph);
     this.toolToInteraction[this.selectedTool].pointerDown(e);
   }
 
   dispatchMoveEvent(e: ModifiedPointerEvent){
-    this.updateXYSVG(e);
+    Helpers.updateXYSVG(e, this.graph);
     this.toolToInteraction[this.selectedTool].pointerMove(e);
   }
 
   dispatchUpEvent(e: ModifiedPointerEvent){
-    this.updateXYSVG(e);
+    Helpers.updateXYSVG(e, this.graph);
     this.toolToInteraction[this.selectedTool].pointerUp(e);
   }
 
   dispatchLeaveEvent(e: ModifiedPointerEvent) {
-    this.updateXYSVG(e);
+    Helpers.updateXYSVG(e, this.graph);
     this.toolToInteraction[this.selectedTool].pointerLeave(e);
   }
 
-  updateXYSVG(e: ModifiedPointerEvent){
-    var pt = this.graph.getSVGElement().createSVGPoint(), svgP;
+  activate(){
+    this.isActivated = true;
+  }
 
-    pt.x = e.x;
-    pt.y = e.y;
-    svgP = pt.matrixTransform(this.graph.getSVGElement().getScreenCTM().inverse());
-    e.x = svgP.x;
-    e.y = svgP.y;
+  deactivate(){
+    this.isActivated = false;
   }
 }

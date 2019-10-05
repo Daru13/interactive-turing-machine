@@ -11,11 +11,13 @@ export class PenAndTouchManager {
   readonly idToPenAndTouch: Record<string, any>;
   readonly graph: Graph;
   readonly turingMachine: TuringMachine;
+  isActivated: boolean;
 
   constructor(graph: Graph, turingMachine: TuringMachine) {
     this.idToPenAndTouch = {} as Record<string, any>;
     this.graph = graph;
     this.turingMachine = turingMachine;
+    this.isActivated = false;
     this.setInteraction();
   }
 
@@ -23,26 +25,38 @@ export class PenAndTouchManager {
     var t = this;
     t.graph.getSVGElement().addEventListener("pointerdown",
       function (e) {
-        t.dispatchDownEvent(Helpers.transformEvent(e))
+        if (t.isActivated) {
+          t.dispatchDownEvent(Helpers.transformEvent(e));
+        }
       });
     t.graph.getSVGElement().addEventListener("pointermove",
       function (e) {
-        t.dispatchMoveEvent(Helpers.transformEvent(e))
+        if (t.isActivated) {
+          t.dispatchMoveEvent(Helpers.transformEvent(e));
+        }
       });
     t.graph.getSVGElement().addEventListener("pointerup",
       function (e) {
-        t.dispatchUpEvent(Helpers.transformEvent(e))
+        if (t.isActivated) {
+          t.dispatchUpEvent(Helpers.transformEvent(e));
+        }
       });
     t.graph.getSVGElement().addEventListener("pointerleave",
       function (e) {
-        t.dispatchLeaveEvent(Helpers.transformEvent(e))
+        if (t.isActivated) {
+          t.dispatchLeaveEvent(Helpers.transformEvent(e));
+        }
       });
     t.graph.getSVGElement().addEventListener("pointercancel",
-      (e: PointerEvent) => console.log("cancel"));
+      function (e) {
+        if (t.isActivated) {
+          console.log("cancel");
+        }
+      });
   }
 
   dispatchDownEvent(e: ModifiedPointerEvent) {
-    this.updateXYSVG(e);
+    Helpers.updateXYSVG(e, this.graph);
     switch(e.pointerType){
       case  "touch":
         this.idToPenAndTouch[e.pointerId] = new Touch(this.graph, this.turingMachine, e);
@@ -60,33 +74,31 @@ export class PenAndTouchManager {
   }
 
   dispatchMoveEvent(e: ModifiedPointerEvent) {
-    this.updateXYSVG(e);
+    Helpers.updateXYSVG(e, this.graph);
     if (this.idToPenAndTouch[e.pointerId] !== undefined){
       this.idToPenAndTouch[e.pointerId].pointerMove(e);
     }
   }
 
   dispatchUpEvent(e: ModifiedPointerEvent) {
-    this.updateXYSVG(e);
+    Helpers.updateXYSVG(e, this.graph);
     if (this.idToPenAndTouch[e.pointerId] !== undefined) {
       this.idToPenAndTouch[e.pointerId].pointerUp(e);
     }
   }
 
   dispatchLeaveEvent(e: ModifiedPointerEvent) {
-    this.updateXYSVG(e);
+    Helpers.updateXYSVG(e, this.graph);
     if (this.idToPenAndTouch[e.pointerId] !== undefined) {
       this.idToPenAndTouch[e.pointerId].pointerLeave(e);
     }
   }
 
-  updateXYSVG(e: ModifiedPointerEvent) {
-    var pt = this.graph.getSVGElement().createSVGPoint(), svgP;
+  activate() {
+    this.isActivated = true;
+  }
 
-    pt.x = e.x;
-    pt.y = e.y;
-    svgP = pt.matrixTransform(this.graph.getSVGElement().getScreenCTM().inverse());
-    e.x = svgP.x;
-    e.y = svgP.y;
+  deactivate() {
+    this.isActivated = false;
   }
 }

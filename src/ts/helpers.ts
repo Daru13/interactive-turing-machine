@@ -1,4 +1,5 @@
 import { ModifiedPointerEvent } from "./events/ModifiedPointerEvent"
+import { Graph } from "./view/graph/Graph";
 
 export class Helpers{
 	static distance2(p1, p2){
@@ -34,5 +35,15 @@ export class Helpers{
 		}
 
 		return {"pointerId":e.pointerId, "pointerType": pointerType, "x": e.clientX,"y": e.clientY, offsetX:e.offsetX, offsetY:e.offsetY, "originEvent": e, target: e.target};
+	}
+
+	static updateXYSVG(e: ModifiedPointerEvent, graph: Graph) {
+		var pt = graph.getSVGElement().createSVGPoint(), svgP;
+
+		pt.x = e.x;
+		pt.y = e.y;
+		svgP = pt.matrixTransform(graph.getSVGElement().getScreenCTM().inverse());
+		e.x = svgP.x;
+		e.y = svgP.y;
 	}
 }

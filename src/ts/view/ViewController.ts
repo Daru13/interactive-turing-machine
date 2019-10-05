@@ -1,5 +1,4 @@
 import { Tape } from "./Tape";
-import { ToolBar } from "./ToolBar";
 import { ToolManager } from "./tools/ToolManager";
 import { Graph } from "./graph/Graph";
 import { TuringMachine } from "../model/TuringMachine";
@@ -12,11 +11,12 @@ import { PenAndTouchManager } from "./penAndTouch/PenAndTouchManager";
 
 export class ViewController{
   graph: Graph;
-  toolManager: ToolManager;
-  toolBar: ToolBar;
   tape: Tape;
   turingMachine: TuringMachine;
   tmButtons: TuringMachineButton;
+  
+  toolManager: ToolManager;
+  penAndTouchManager: PenAndTouchManager;
 
   constructor(turingMachine: TuringMachine){
     this.turingMachine = turingMachine;
@@ -26,10 +26,8 @@ export class ViewController{
   setupUI(){
     this.graph = new Graph();
 
-    /*
     this.toolManager = new ToolManager(this.graph, this.turingMachine);
-    this.toolBar = new ToolBar(this.toolManager);*/
-    new PenAndTouchManager(this.graph, this.turingMachine);
+    this.penAndTouchManager = new PenAndTouchManager(this.graph, this.turingMachine);
 
     this.tape = new Tape();
 
@@ -51,8 +49,17 @@ export class ViewController{
   }
 
   setupMenu(){
+    var t = this;
+    this.toolManager.activate();
+    this.penAndTouchManager.deactivate();
     d3.select("#menu").append("button").text("toggle Interaction").on("click", function(){
-
+      if (t.penAndTouchManager.isActivated){
+        t.toolManager.activate();
+        t.penAndTouchManager.deactivate();
+      }else{
+        t.toolManager.deactivate();
+        t.penAndTouchManager.activate();
+      }
     })
   }
 }
