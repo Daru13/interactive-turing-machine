@@ -54,7 +54,7 @@ export class ToolManager{
       });
     t.graph.getSVGElement().addEventListener("pointerleave",
       function (e) {
-        t.dispatchUpEvent(Helpers.transformEvent(e))
+        t.dispatchLeaveEvent(Helpers.transformEvent(e))
       });
     t.graph.getSVGElement().addEventListener("pointercancel",
       (e: PointerEvent) => console.log("cancel"));
@@ -81,6 +81,11 @@ export class ToolManager{
   dispatchUpEvent(e: ModifiedPointerEvent){
     this.updateXYSVG(e);
     this.toolToInteraction[this.selectedTool].pointerUp(e);
+  }
+
+  dispatchLeaveEvent(e: ModifiedPointerEvent) {
+    this.updateXYSVG(e);
+    this.toolToInteraction[this.selectedTool].pointerLeave(e);
   }
 
   updateXYSVG(e: ModifiedPointerEvent){
