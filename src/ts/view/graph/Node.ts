@@ -81,22 +81,11 @@ export class Node{
     return d3.select("#node-"+stateId);
   }
 
-  static changeType(node: NodeHandleSelection, type: NodeType): void{
-    switch(type){
-      case NodeType.START:
-        node.classed("start", true);
-        node.classed("final", false);
-        break;
-      case NodeType.STANDARD:
-        node.classed("start", false);
-        node.classed("final", false);
-        break;
-      case NodeType.FINAL:
-        node.classed("start", false);
-        node.classed("final", true);
-        break;
-      default:
-        throw "Node.ts (changeType) type not recognised: "+type
-    }
+  static setInitialState(node: NodeHandleSelection, isInital: boolean) {
+    node.classed("start", isInital);
+  }
+
+  static setFinalState(node: NodeHandleSelection, isFinal: boolean) {
+    node.classed("final", isFinal);
   }
 }

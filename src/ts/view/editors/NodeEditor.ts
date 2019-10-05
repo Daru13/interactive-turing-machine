@@ -30,6 +30,7 @@ export class NodeEditor{
     this.holder.append("div")
       .on("click", function () {
         let state = t.stateMachine.getState(t.node.datum().stateID);
+        console.log(!state.isFinal());
         state.setFinal(!state.isFinal());
         console.log(t.stateMachine.toString());
         t.close();

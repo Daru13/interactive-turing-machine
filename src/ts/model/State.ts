@@ -3,6 +3,7 @@ import { TapeSymbol } from './Tape';
 import { EventManager } from '../events/EventManager';
 import { EditStateEvent } from '../events/EditStateEvent';
 import { transition, symbol } from 'd3';
+import { EditFinalStateEvent } from '../events/EditFinalStateEvent';
 
 
 export type StateID = number;
@@ -49,8 +50,8 @@ export class State {
 
     setFinal(final: boolean) {
         this.final = final;
-        
-        EventManager.emit(new EditStateEvent(this));
+
+        EventManager.emit(new EditFinalStateEvent(this, final));
     }
 
     addInTransition(transition: Transition) {
