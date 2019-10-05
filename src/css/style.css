@@ -146,7 +146,7 @@ body{
 }
 
 .node.final circle{
-  stroke: red;
+  filter: url(#dilate);
 }
 
 .node.selected circle{

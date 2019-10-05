@@ -49,6 +49,11 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
+
+    <filter id="dilate" x="-50%" y="-50%" width="500%" height="500%">
+      <feMorphology operator="dilate" radius="4" in="SourceGraphic" result="offOut" />
+      <feBlend in="SourceGraphic" in2="offOut" mode="normal" />
+    </filter>
   </defs>
   </svg>
 
