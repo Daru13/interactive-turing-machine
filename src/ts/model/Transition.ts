@@ -53,7 +53,7 @@ export class Transition {
     }
 
     setOutputSymbol(symbol: TapeSymbol) {
-        this.onSymbol = symbol;
+        this.outputSymbol = symbol;
 
         EventManager.emit(new EditTransitionEvent(this));
     }
