@@ -52,6 +52,10 @@ export class ToolManager{
       function(e){
         t.dispatchUpEvent(Helpers.transformEvent(e))
       });
+    t.graph.getSVGElement().addEventListener("pointerleave",
+      function (e) {
+        t.dispatchUpEvent(Helpers.transformEvent(e))
+      });
     t.graph.getSVGElement().addEventListener("pointercancel",
       (e: PointerEvent) => console.log("cancel"));
   }
