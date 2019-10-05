@@ -1,5 +1,6 @@
 import { EventManager } from "../events/EventManager";
 import { TapeCellUpdateEvent } from "../events/TapeCellUpdateEvent";
+import { TapeMoveEvent } from "../events/TapeMoveEvent";
 
 export type TapeSymbol = string;
 
@@ -61,6 +62,8 @@ export class Tape {
             default:
                 break;
         }
+
+        EventManager.emit(new TapeMoveEvent(action));
     }
 
     resetHeadPosition() {

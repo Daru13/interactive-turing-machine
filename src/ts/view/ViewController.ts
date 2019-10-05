@@ -6,6 +6,7 @@ import { TuringMachine } from "../model/TuringMachine";
 import { TuringMachineButton } from "./TuringMachineButton";
 import { EventManager } from "../events/EventManager";
 import { TapeCellUpdateEvent } from "../events/TapeCellUpdateEvent";
+import { TapeMoveEvent } from "../events/TapeMoveEvent";
 
 export class ViewController{
   graph: Graph;
@@ -36,8 +37,11 @@ export class ViewController{
   setupTapeListener(){
     var tape = this.tape;
     EventManager.registerHandler("tapeCellUpdate", function(e: TapeCellUpdateEvent){
-      console.log(e);
-        tape.updateCell(e.symbol, e.index);
+      tape.updateCell(e.symbol, e.index);
+    })
+
+    EventManager.registerHandler("tapeMove", function (e: TapeMoveEvent) {
+      tape.move(e.headAction);
     })
   }
 }

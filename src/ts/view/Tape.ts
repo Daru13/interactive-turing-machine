@@ -1,6 +1,6 @@
 import * as d3 from "d3-selection";
 import * as d3Transition from "d3-transition";
-import { TapeSymbol } from "../model/Tape";
+import { TapeSymbol, HeadAction } from "../model/Tape";
 
 export class Tape{
   tapeHolder: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
@@ -14,7 +14,6 @@ export class Tape{
     this.tape = this.addTape();
     this.head = this.addHead();
     this.indexOfHead = 0;
-    this.moveTapeBy(3);
   }
 
   addTape(): d3.Selection<HTMLDivElement, unknown, HTMLElement, any>{
@@ -43,6 +42,22 @@ export class Tape{
     let l = parseInt(this.tape.style("left"));
     this.tape
       .style("left", (l - n * this.stepMovement).toString() + "px")
+  }
+
+  move(action: HeadAction){
+    switch (action) {
+      case HeadAction.MoveLeft:
+        this.moveTapeBy(-1);
+        break;
+
+      case HeadAction.MoveRight:
+        this.moveTapeBy(1);
+        break;
+
+      case HeadAction.None:
+      default:
+        break;
+    }
   }
 
   toArray(): TapeSymbol[]{
