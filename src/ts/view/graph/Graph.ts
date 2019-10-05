@@ -52,7 +52,10 @@ export class Graph {
     })
 
     EventManager.registerHandler("editTransition", function (e: EditTransitionEvent) {
-      Edge.drawText(Edge.getHandleByTransitionId(e.transition.id), e.transition.onSymbol, e.transition.outputSymbol, e.transition.headAction);
+      Edge.drawText(Edge.getHandleByTransitionId(e.transition.id),
+                    e.transition.getOnSymbol(),
+                    e.transition.getOutputSymbol(),
+                    e.transition.getHeadAction());
     })
   }
 }
