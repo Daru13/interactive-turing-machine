@@ -3,6 +3,7 @@ import { ToolBar } from "./ToolBar";
 import { ToolManager } from "./ToolManager";
 import { Graph } from "./graph/Graph";
 import { TuringMachine } from "../model/TuringMachine";
+import { TuringMachineButton } from "./TuringMachineButton";
 
 export class ViewController{
   graph: Graph;
@@ -10,6 +11,7 @@ export class ViewController{
   toolBar: ToolBar;
   tape: Tape;
   turingMachine: TuringMachine;
+  tmButtons: TuringMachineButton;
 
   constructor(turingMachine: TuringMachine){
     this.turingMachine = turingMachine;
@@ -23,5 +25,7 @@ export class ViewController{
     this.toolBar = new ToolBar(this.toolManager);
 
     this.tape = new Tape();
+
+    this.tmButtons = new TuringMachineButton(this.turingMachine, this.tape);
   }
 }

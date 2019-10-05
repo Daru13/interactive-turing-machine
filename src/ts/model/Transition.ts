@@ -38,7 +38,7 @@ export class Transition {
       this.onSymbol = onSymbol;
       this.outputSymbol = outputSymbol;
       this.headAction = headAction;
-        EventManager.emit(new EditTransitionEvent(this));
+      EventManager.emit(new EditTransitionEvent(this));
     }
 
     toString(useLabels: boolean = true) {
