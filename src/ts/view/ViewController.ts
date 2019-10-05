@@ -6,6 +6,7 @@ import { TuringMachine } from "../model/TuringMachine";
 import { TuringMachineButton } from "./TuringMachineButton";
 import { EventManager } from "../events/EventManager";
 import { TapeCellUpdateEvent } from "../events/TapeCellUpdateEvent";
+import * as d3 from "d3-selection";
 import { TapeMoveEvent } from "../events/TapeMoveEvent";
 
 export class ViewController{
@@ -31,7 +32,8 @@ export class ViewController{
 
     this.tmButtons = new TuringMachineButton(this.turingMachine, this.tape);
 
-    this.setupTapeListener()
+    this.setupTapeListener();
+    this.setupMenu();
   }
 
   setupTapeListener(){
@@ -42,6 +44,12 @@ export class ViewController{
 
     EventManager.registerHandler("tapeMove", function (e: TapeMoveEvent) {
       tape.move(e.headAction);
+    })
+  }
+
+  setupMenu(){
+    d3.select("#menu").append("button").text("toggle Interaction").on("click", function(){
+
     })
   }
 }
