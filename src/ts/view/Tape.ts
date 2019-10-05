@@ -53,4 +53,9 @@ export class Tape{
     })
     return tapeSymbols;
   }
+
+  updateCell(symbol: TapeSymbol, index: number){
+    let inputCell = this.tape.select("#cell-"+index).select("input").node() as HTMLInputElement;
+    inputCell.value = symbol;
+  }
 }

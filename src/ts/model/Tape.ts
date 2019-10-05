@@ -1,3 +1,6 @@
+import { EventManager } from "../events/EventManager";
+import { TapeCellUpdateEvent } from "../events/TapeCellUpdateEvent";
+
 export type TapeSymbol = string;
 
 
@@ -28,6 +31,7 @@ export class Tape {
 
     setSymbolAt(index: number, symbol: TapeSymbol) {
         this.content[index] = symbol;
+        EventManager.emit(new TapeCellUpdateEvent(symbol, index));
     }
 
     getCurrentSymbol(): TapeSymbol {
@@ -36,6 +40,7 @@ export class Tape {
 
     setCurrentSymbol(symbol: TapeSymbol) {
         this.setSymbolAt(this.headPosition, symbol);
+        EventManager.emit(new TapeCellUpdateEvent(symbol, this.getHeadPosition()));
     }
 
     setContent(content: TapeSymbol[]) {
