@@ -42,7 +42,6 @@ export class Edge{
     edgeHandle.append("text")
       .attr("x",0)
       .attr("y",15)
-      .attr("text-anchor", "middle")
       .text("click to set");
 
     Edge.move(edgeHandle, Node.getHandleByStateId(transition.fromState.id), Node.getHandleByStateId(transition.toState.id));
@@ -64,13 +63,25 @@ export class Edge{
   static  drawEdgeTwoPoints(edge: EdgeHandleSelection, x1: number, y1: number, x2: number, y2: number){
     let len = Helpers.distance2({ x: x1, y: y1 }, { x: x2, y: y2 }) - Graph.sizeNode;
     let angle = 180 * Helpers.angleToXAxis({ x: x1, y: y1 }, { x: x2, y: y2 }) / Math.PI;
+    let c = Math.min(40*len/200, 100); //courbature controller
+    let y = -2;
 
-    edge.select("path").attr("d", "M" + Graph.sizeNode + ",0 L" + (len - 7) + ",0"); //7 is for size of marker
+    edge.select("path").attr("d", 
+      "M" + Graph.sizeNode + "," + y + 
+      "C" + (Graph.sizeNode + c) + "," + (y - c/2) + " "
+            + (len - 7 - c) + "," + (y - c/2) + " " 
+            + (len - 7) + "," + y);  //7 is for size of marker
     edge.select("rect").attr("width", len - Graph.sizeNode);
 
-    edge.select("text").attr("x", (len) / 2);
+    let xText = (len) / 2 + Graph.sizeNode;
+    let yText = (y + 3 * (y - c / 2)) / 4 - 5;
+    edge.select("text")
+      .attr("x", xText)
+      .attr("y",  yText); //5 offset text
     if (angle > 90 || angle < -90) {
-      edge.select("text").attr("transform", "rotate(180," + (len / 2) + ",0)")
+      edge.select("text")
+        .attr("transform", "rotate(180," + xText + "," + yText + ") " +
+                                      "translate(0, 9)");
     } else {
       edge.select("text").attr("transform", "")
     }

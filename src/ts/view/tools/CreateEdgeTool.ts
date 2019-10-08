@@ -65,7 +65,7 @@ export class CreateEdgeTool extends Tool{
     if(this.isDown){
       this.isDown = false;
 
-      this.graph.getSVG().select(".edgeInCreation").remove()
+      this.graph.getSVG().selectAll(".edgeInCreation").remove()
 
       d3.selectAll(".node.closestNode").classed("closestNode", false);
       let closestNode = this.closestNode({x: this.previousX, y: this.previousY}, Graph.sizeNode * 3);
@@ -87,7 +87,7 @@ export class CreateEdgeTool extends Tool{
     if (this.isDown) {
       this.isDown = false;
 
-      this.graph.getSVG().select(".edgeInCreation").remove()
+      this.graph.getSVG().selectAll(".edgeInCreation").remove()
 
       d3.selectAll(".node.closestNode").classed("closestNode", false);
       console.log(this.stateMachine.toString());

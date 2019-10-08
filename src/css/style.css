@@ -168,6 +168,7 @@ body{
 }
 
 .edge path{
+  fill: none;
   stroke: black;
   stroke-width: 2px;
   marker-end:url(#arrowHead);
@@ -176,6 +177,10 @@ body{
 .edge rect{
   fill: white;
   fill-opacity: 0;
+}
+
+.edge text{
+  text-anchor: middle;
 }
 
 .edge.selected path{
