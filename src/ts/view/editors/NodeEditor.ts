@@ -9,6 +9,7 @@ export class NodeEditor{
 
   constructor(node: NodeHandleSelection, stateMachine: StateMachine){
     d3.select("body").selectAll(".NodeEditor").remove();
+    d3.selectAll("node.selected").classed("selected", false);
     this.holder = d3.select("body").append("div").classed("NodeEditor", true);
     this.node = node;
     this.node.classed("selected", true);
