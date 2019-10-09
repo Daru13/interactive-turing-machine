@@ -1,13 +1,13 @@
 import { Graph } from "../graph/Graph";
 import { TuringMachine } from "../../model/TuringMachine";
 import { ModifiedPointerEvent } from "../../events/ModifiedPointerEvent";
-import { DeleteTool } from "../tools/DeleteTool";
+import { DeleteAction } from "../actions/DeleteAction";
 
 export class Eraser{
-  deleteTool: DeleteTool;
-  
+  deleteTool: DeleteAction;
+
   constructor(graph: Graph, turingMachine: TuringMachine){
-    this.deleteTool = new DeleteTool(graph, turingMachine);
+    this.deleteTool = new DeleteAction(graph, turingMachine);
   }
 
   pointerDown(e: ModifiedPointerEvent) { 

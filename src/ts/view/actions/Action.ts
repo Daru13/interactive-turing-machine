@@ -2,7 +2,7 @@ import { Graph } from "../graph/Graph";
 import { TuringMachine } from "../../model/TuringMachine";
 import { ModifiedPointerEvent } from "../../events/ModifiedPointerEvent";
 
-export class Tool{
+export class Action{
   constructor(graph: Graph, turingMachine: TuringMachine){}
   pointerDown(e: ModifiedPointerEvent){ };
   pointerMove(e: ModifiedPointerEvent){ };

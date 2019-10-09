@@ -3,23 +3,23 @@ import { CreateEdgeAction } from "../actions/CreateEdgeAction";
 import { Graph } from "../graph/Graph";
 import { TuringMachine } from "../../model/TuringMachine";
 
-export class Pen {
-  createEdgeTool: CreateEdgeAction;
+export class EdgeTool {
+  createEdgeAction: CreateEdgeAction;
 
   constructor(graph: Graph, turingMachine: TuringMachine) {
-    this.createEdgeTool = new CreateEdgeAction(graph, turingMachine);
+    this.createEdgeAction = new CreateEdgeAction(graph, turingMachine);
   }
 
   pointerDown(e: ModifiedPointerEvent) {
-    this.createEdgeTool.pointerDown(e);
+    this.createEdgeAction.pointerDown(e);
   };
   pointerMove(e: ModifiedPointerEvent) {
-    this.createEdgeTool.pointerMove(e);
+    this.createEdgeAction.pointerMove(e);
   };
   pointerUp(e: ModifiedPointerEvent) {
-    this.createEdgeTool.pointerUp(e);
+    this.createEdgeAction.pointerUp(e);
   };
   pointerLeave(e: ModifiedPointerEvent) {
-    this.createEdgeTool.pointerLeave(e);
+    this.createEdgeAction.pointerLeave(e);
   };
 }

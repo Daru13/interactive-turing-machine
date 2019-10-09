@@ -3,10 +3,10 @@ import { Graph } from "../graph/Graph";
 import { Node, NodeHandleSelection } from "../graph/Node";
 import { Edge, EdgeHandleSelection } from "../graph/Edge";
 import { TuringMachine } from "../../model/TuringMachine";
-import { Tool } from "./Tool";
+import { Action } from "./Action";
 
 
-export class MoveTool extends Tool{
+export class MoveAction extends Action{
   previousX: number;
   previousY: number;
   node: NodeHandleSelection;

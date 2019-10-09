@@ -5,11 +5,11 @@ import { Node, NodeHandleSelection } from "../graph/Node";
 import {  TuringMachine } from "../../model/TuringMachine";
 import { Transition } from "../../model/Transition";
 import { HeadAction } from "../../model/Tape";
-import { Tool } from "./Tool";
+import { Action } from "./Action";
 import { StateMachine } from "../../model/StateMachine";
 import { ModifiedPointerEvent } from "../../events/ModifiedPointerEvent";
 
-export class CreateEdgeTool extends Tool{
+export class CreateEdgeAction extends Action{
   previousX: number;
   previousY: number;
   graph: Graph;

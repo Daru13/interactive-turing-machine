@@ -3,10 +3,10 @@ import { Graph } from "../graph/Graph";
 import { Edge, EdgeHandleSelection } from "../graph/Edge";
 import { Node, NodeHandleSelection } from "../graph/Node";
 import { TuringMachine } from "../../model/TuringMachine";
-import { Tool } from "./Tool";
+import { Action } from "./Action";
 import { StateMachine } from "../../model/StateMachine";
 
-export class DeleteTool extends Tool{
+export class DeleteAction extends Action{
   graph: Graph;
   node: NodeHandleSelection;
   edge: EdgeHandleSelection;
