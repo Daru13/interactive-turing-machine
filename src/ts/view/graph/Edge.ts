@@ -5,6 +5,7 @@ import { Transition, TransitionID } from "../../model/Transition";
 import { Helpers } from "../../helpers";
 import { HeadAction, TapeSymbol } from "../../model/Tape";
 import { addHandDrawnLine } from "../handDrawnShape/line";
+import { State } from "../../model/State";
 
 export type EdgeId = String;
 
@@ -20,7 +21,7 @@ export class Edge{
 
   constructor(){}
 
-  static add(graph, transition: Transition): void{
+  static add(graph:Graph, transition: Transition): void{
     let id = "edge-" + transition.id;
     let datum: EdgeDatum = { id: id, transitionID: transition.id };
     var edgeHandle :EdgeHandleSelection =
@@ -89,7 +90,7 @@ export class Edge{
     edge.attr("transform", "rotate(" + angle + "," + (x1) + "," + (y1) + ")" + " translate(" + (x1) + "," + (y1) + ")");
   }
 
-  static  drawEdgeOnePoint(edge: EdgeHandleSelection, x: number, y: number){
+  static drawEdgeOnePoint(edge: EdgeHandleSelection, x: number, y: number){
     let r = Graph.sizeNode;
 
     let firstYOffset = 50;
@@ -111,6 +112,7 @@ export class Edge{
       " C" + "-" + c + "," + (r + secondYOffset) + " " + (-1 * xOffset) + "," + (r + firstYOffset + c) + " " + (-1 * xOffset) + ","  + (r + firstYOffset) + 
       " C" + (-1 * xOffset) + "," + (r + firstYOffset - c) + " " + finalX + "," + finalY + " " + finalX + "," + finalY)
       .style("fill", "none"); 
+    
     edge.select("rect").attr("x", -xOffset).attr("y", r).attr("width", 2*xOffset).attr("height", (20 + secondYOffset)).style("fill","red");
 
     edge.select("text").attr("x", 0).attr("y", r + secondYOffset + 18);

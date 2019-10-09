@@ -1,29 +1,29 @@
 import * as d3 from "d3-selection";
 import { EventManager } from "../../events/EventManager";
-import { Node } from "./Node"
+import { Node, NodeHandleSelection } from "./Node"
 import { NewStateEvent } from "../../events/NewStateEvent";
 import { DeleteStateEvent } from "../../events/DeleteStateEvent";
 import { NewTransitionEvent } from "../../events/NewTransitionEvent";
 import { DeleteTransitionEvent } from "../../events/DeleteTransitionEvent";
-import { Edge } from "./Edge";
+import { Edge, EdgeHandleSelection } from "./Edge";
 import { EditTransitionEvent } from "../../events/EditTransitionEvent";
 import { transition } from "d3";
 import { EditInitialStateEvent } from "../../events/EditInitialStateEvent";
 import { EditFinalStateEvent } from "../../events/EditFinalStateEvent";
+import { TuringMachine } from "../../model/TuringMachine";
+import { Transition } from "../../model/Transition";
 
 export interface GraphDatum {};
 export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, {}>;
 
 export class Graph {
   svg: GraphSelection;
-  nodeId: number;
-  edgeId: number;
   static sizeNode: number = 30;
+  turingMachine: TuringMachine;
 
-  constructor(){
+  constructor(turingMachine: TuringMachine){
     this.svg = d3.select("#graph").append("svg");
-    this.nodeId = 0;
-    this.edgeId = 0;
+    this.turingMachine = turingMachine;
     this.setupListeners()
   }
 
@@ -33,6 +33,24 @@ export class Graph {
 
   getSVG(): GraphSelection{
     return this.svg;
+  }
+
+  getTransitionsFromNode(node: NodeHandleSelection): Transition[]{
+    let transitions = [];
+    this.turingMachine
+      .stateMachine.getState(node.datum().stateID)
+      .getInTransitions()
+      .forEach((t) => transitions.push(t));
+    this.turingMachine
+      .stateMachine.getState(node.datum().stateID)
+      .getOutTransitions()
+      .forEach((t) => transitions.push(t));
+    return transitions;
+  }
+
+  getNodesFromEdges(edge: EdgeHandleSelection): {fromNode:NodeHandleSelection, toNode:NodeHandleSelection}{
+    let transition = this.turingMachine.stateMachine.getTransition(edge.datum().transitionID)
+    return { fromNode: Node.getHandleByStateId(transition.fromState.id), toNode: Node.getHandleByStateId(transition.toState.id)}
   }
 
   setupListeners(){

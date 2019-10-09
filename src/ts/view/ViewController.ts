@@ -8,6 +8,7 @@ import { TapeCellUpdateEvent } from "../events/TapeCellUpdateEvent";
 import * as d3 from "d3-selection";
 import { TapeMoveEvent } from "../events/TapeMoveEvent";
 import { PenAndTouchManager } from "./penAndTouch/PenAndTouchManager";
+import { TapeNewPosEvent } from "../events/TapeNewPosEvent";
 
 export class ViewController{
   graph: Graph;
@@ -24,7 +25,7 @@ export class ViewController{
   }
 
   setupUI(){
-    this.graph = new Graph();
+    this.graph = new Graph(this.turingMachine);
 
     this.toolManager = new ToolManager(this.graph, this.turingMachine);
     this.penAndTouchManager = new PenAndTouchManager(this.graph, this.turingMachine);
@@ -46,6 +47,12 @@ export class ViewController{
     EventManager.registerHandler("tapeMove", function (e: TapeMoveEvent) {
       tape.move(e.headAction);
     })
+
+    EventManager.registerHandler("tapeNewPos", function (e: TapeNewPosEvent) {
+      tape.setPos(e.headPos);
+    })
+
+    
   }
 
   setupMenu(){

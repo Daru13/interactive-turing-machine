@@ -40,13 +40,13 @@ export class MoveTool extends Tool{
       this.turingMachine
         .stateMachine.getState(this.node.datum().stateID)
         .getInTransitions()
-        .forEach((t) => Edge.move(Edge.getHandleByTransitionId(t.id),
+        .forEach((t) => Edge.move( Edge.getHandleByTransitionId(t.id),
                 Node.getHandleByStateId(t.fromState.id),
                 Node.getHandleByStateId(t.toState.id)));
       this.turingMachine
         .stateMachine.getState(this.node.datum().stateID)
         .getOutTransitions()
-        .forEach((t) => Edge.move(Edge.getHandleByTransitionId(t.id),
+        .forEach((t) => Edge.move( Edge.getHandleByTransitionId(t.id),
           Node.getHandleByStateId(t.fromState.id),
           Node.getHandleByStateId(t.toState.id)));
     }

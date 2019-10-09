@@ -23,5 +23,12 @@ export class TuringMachineButton{
       tM.run();
       console.log(tM.toString());
     }).text("start");
+
+  this.holder.append("button").on("click", function () {
+    tM.tape.setContent(tape.toArray());
+    console.log(tM.toString());
+    tM.tape.resetHeadPosition();
+    console.log(tM.toString());
+  }).text("reset");
   }
 }

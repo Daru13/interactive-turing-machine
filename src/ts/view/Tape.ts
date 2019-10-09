@@ -5,15 +5,15 @@ import { TapeSymbol, HeadAction } from "../model/Tape";
 export class Tape{
   tapeHolder: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
   tape: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
-  indexOfHead: number;
+  origin: number;
   stepMovement: number;
   head: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
 
-  constructor(){
+  constructor() {
+    this.origin = 0;
     this.tapeHolder = d3.select("#tapeHolder");
     this.tape = this.addTape();
     this.head = this.addHead();
-    this.indexOfHead = 0;
   }
 
   addTape(): d3.Selection<HTMLDivElement, unknown, HTMLElement, any>{
@@ -28,7 +28,8 @@ export class Tape{
 
     let widthHolder = document.getElementById("tapeHolder").getBoundingClientRect().width;
 
-    tape.style("left", (widthHolder / 2 - 2 - 45).toString() + "px");
+    this.origin = widthHolder / 2 - 2 - 45;
+    tape.style("left", (this.origin).toString() + "px");
 
     this.stepMovement = 90 + 2 + 2;
     return tape;
@@ -72,5 +73,11 @@ export class Tape{
   updateCell(symbol: TapeSymbol, index: number){
     let inputCell = this.tape.select("#cell-"+index).select("input").node() as HTMLInputElement;
     inputCell.value = symbol;
+  }
+
+  setPos(pos: number){
+    console.log(this.origin)
+    this.tape
+      .style("left", (this.origin).toString() + "px")
   }
 }
