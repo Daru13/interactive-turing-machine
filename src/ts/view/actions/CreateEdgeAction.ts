@@ -104,6 +104,9 @@ export class CreateEdgeAction extends Action{
         closestNode = d3.select(this) as NodeHandleSelection;
       }
     })
+    if(closestDistance < Graph.sizeNode){
+      return undefined;
+    }
     return closestNode;
   }
 }

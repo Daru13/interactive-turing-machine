@@ -69,7 +69,7 @@ export class ToolManager{
       function(e){
         if (t.isActivated) {
           t.dispatchUpEvent(Helpers.transformEvent(e));
-          if(distPDown < 100){
+          if(distPDown < Graph.sizeNode/2){
             t.dispatchClickEvent(Helpers.transformEvent(e));
           }
         }
