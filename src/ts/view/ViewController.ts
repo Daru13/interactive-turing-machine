@@ -1,5 +1,5 @@
 import { Tape } from "./Tape";
-import { ToolManager, toolName } from "./graphInteraction/tools/ToolManager";
+import { MouseDispatcher, toolName } from "./graphInteraction/tools/MouseDispatcher";
 import { Graph } from "./graph/Graph";
 import { TuringMachine } from "../model/TuringMachine";
 import { TuringMachineButton } from "./TuringMachineButton";
@@ -7,7 +7,7 @@ import { EventManager } from "../events/EventManager";
 import { TapeCellUpdateEvent } from "../events/TapeCellUpdateEvent";
 import * as d3 from "d3-selection";
 import { TapeMoveEvent } from "../events/TapeMoveEvent";
-import { PenAndTouchManager } from "./graphInteraction/penAndTouch/PenAndTouchManager";
+import { PenAndTouchDispatcher } from "./graphInteraction/penAndTouch/PenAndTouchDispatcher";
 import { TapeNewPosEvent } from "../events/TapeNewPosEvent";
 
 export class ViewController{
@@ -16,8 +16,8 @@ export class ViewController{
   turingMachine: TuringMachine;
   tmButtons: TuringMachineButton;
   
-  toolManager: ToolManager;
-  penAndTouchManager: PenAndTouchManager;
+  toolManager: MouseDispatcher;
+  penAndTouchManager: PenAndTouchDispatcher;
 
   constructor(turingMachine: TuringMachine){
     this.turingMachine = turingMachine;
@@ -27,8 +27,8 @@ export class ViewController{
   setupUI(){
     this.graph = new Graph(this.turingMachine);
 
-    this.toolManager = new ToolManager(this.graph, this.turingMachine);
-    this.penAndTouchManager = new PenAndTouchManager(this.graph, this.turingMachine);
+    this.toolManager = new MouseDispatcher(this.graph, this.turingMachine);
+    this.penAndTouchManager = new PenAndTouchDispatcher(this.graph, this.turingMachine);
 
     this.tape = new Tape();
 

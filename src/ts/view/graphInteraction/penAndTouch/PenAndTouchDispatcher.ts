@@ -5,9 +5,9 @@ import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
 import { Pen } from "./Pen";
 import { Eraser } from "./Eraser";
 import { Touch } from "./Touch";
-import { GraphInteraction } from "../GraphInteraction";
+import { GraphEventDispatcher } from "../GraphEventDispatcher";
 
-export class PenAndTouchManager extends GraphInteraction{
+export class PenAndTouchDispatcher extends GraphEventDispatcher{
   readonly idToPenAndTouch: Record<string, any>;
 
   constructor(graph: Graph, turingMachine: TuringMachine) {

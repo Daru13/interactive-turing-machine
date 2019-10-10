@@ -12,7 +12,7 @@ import { NodeTool } from "./NodeTool";
 import { Edge, EdgeElementSelection } from "../../graph/Edge";
 import { Node, NodeElementSelection } from "../../graph/Node";
 import { EditEdgeAction } from "../../actions/EditEdgeAction";
-import { GraphInteraction } from "../GraphInteraction";
+import { GraphEventDispatcher } from "../GraphEventDispatcher";
 
 
 export enum toolName {
@@ -22,7 +22,7 @@ export enum toolName {
 
 type Tool = NodeTool | EdgeTool;
 
-export class ToolManager extends GraphInteraction{
+export class MouseDispatcher extends GraphEventDispatcher{
   selectedTool: toolName;
   readonly toolToInteraction: Record<toolName, Tool>;
   toolBar: ToolBar;

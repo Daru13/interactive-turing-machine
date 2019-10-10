@@ -1,12 +1,12 @@
 import * as d3 from "d3-selection";
-import { ToolManager, toolName } from "./graphInteraction/tools/ToolManager";
+import { MouseDispatcher, toolName } from "./graphInteraction/tools/MouseDispatcher";
 
 export class ToolBar {
   nodeToolButton: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
   edgeToolButton: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
-  toolManager: ToolManager;
+  toolManager: MouseDispatcher;
 
-  constructor(toolManager: ToolManager) {
+  constructor(toolManager: MouseDispatcher) {
     this.toolManager = toolManager;
     this.setupUI();
   }
