@@ -9,6 +9,6 @@ import { Action } from "./Action";
 
 export class EditNodeAction extends Action{
   static do(node: NodeHandleSelection, turingMachine: TuringMachine){
-    new NodeEditor(node, turingMachine.stateMachine);
+    new NodeEditor(node, turingMachine);
   }
 }

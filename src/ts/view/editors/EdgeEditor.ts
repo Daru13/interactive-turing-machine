@@ -14,7 +14,7 @@ export class EdgeEditor{
 
   constructor(edge: EdgeHandleSelection, stateMachine: StateMachine){
     d3.select("body").selectAll(".EdgeEditor").remove();
-    d3.selectAll("node.selected").classed("selected", false);
+    d3.selectAll(".edge.selected").classed("selected", false);
     this.holder = d3.select("body").append("div").classed("EdgeEditor", true);
     this.edge = edge;
     this.edge.classed("selected", true);

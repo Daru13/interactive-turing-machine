@@ -195,6 +195,7 @@ body{
 }
 
 .EdgeEditor{
+   z-index: 3000;
   position: absolute;
   background: white;
   border: 2px solid black;
@@ -247,15 +248,16 @@ body{
 }
 
 .NodeEditor{
+  z-index: 3000;
   position: absolute;
   background: white;
   border: 2px solid black;
   border-radius: 5px;
   top: 40%;
   left:40%;
-  height:30px;
-  width:300px;
+  height:60px;
+  width:200px;
   display: grid;
-  grid-template-columns: 100px 100px 100px;
-  grid-template-rows: 30px;
+  grid-template-columns: 100px 100px;
+  grid-template-rows: 30px 30px;
 }
