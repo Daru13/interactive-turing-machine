@@ -4,8 +4,5 @@ import { ModifiedPointerEvent } from "../../events/ModifiedPointerEvent";
 
 export class Action{
   constructor(graph: Graph, turingMachine: TuringMachine){}
-  pointerDown(e: ModifiedPointerEvent){ };
-  pointerMove(e: ModifiedPointerEvent){ };
-  pointerUp(e: ModifiedPointerEvent){};
-  pointerLeave(e: ModifiedPointerEvent){};
+  do(){};
 }

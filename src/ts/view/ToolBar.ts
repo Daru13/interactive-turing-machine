@@ -1,5 +1,5 @@
 import * as d3 from "d3-selection";
-import { ToolManager, toolName } from "./tools/ToolManager";
+import { ToolManager, toolName } from "./graphInteraction/tools/ToolManager";
 
 export class ToolBar {
   nodeToolButton: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;

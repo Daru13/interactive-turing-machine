@@ -1,5 +1,5 @@
 import { Tape } from "./Tape";
-import { ToolManager } from "./tools/ToolManager";
+import { ToolManager, toolName } from "./graphInteraction/tools/ToolManager";
 import { Graph } from "./graph/Graph";
 import { TuringMachine } from "../model/TuringMachine";
 import { TuringMachineButton } from "./TuringMachineButton";
@@ -7,7 +7,7 @@ import { EventManager } from "../events/EventManager";
 import { TapeCellUpdateEvent } from "../events/TapeCellUpdateEvent";
 import * as d3 from "d3-selection";
 import { TapeMoveEvent } from "../events/TapeMoveEvent";
-import { PenAndTouchManager } from "./penAndTouch/PenAndTouchManager";
+import { PenAndTouchManager } from "./graphInteraction/penAndTouch/PenAndTouchManager";
 import { TapeNewPosEvent } from "../events/TapeNewPosEvent";
 
 export class ViewController{

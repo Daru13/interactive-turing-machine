@@ -1,12 +1,11 @@
-import { Graph } from "../graph/Graph";
-import { Edge, EdgeHandleSelection } from "../graph/Edge";
-import { Node, NodeHandleSelection } from "../graph/Node";
-import { TuringMachine } from "../../model/TuringMachine";
-import { ModifiedPointerEvent } from "../../events/ModifiedPointerEvent";
+import { Graph } from "../../graph/Graph";
+import { Edge, EdgeHandleSelection } from "../../graph/Edge";
+import { Node, NodeHandleSelection } from "../../graph/Node";
+import { TuringMachine } from "../../../model/TuringMachine";
+import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
 import * as d3 from "d3-selection";
-import { DeleteEdgeAction } from "../actions/DeleteEdgeAction";
-import { DeleteNodeAction } from "../actions/DeleteNodeAction";
-import { D3BrushEvent } from "d3";
+import { DeleteEdgeAction } from "../../actions/DeleteEdgeAction";
+import { DeleteNodeAction } from "../../actions/DeleteNodeAction";
 
 export class Eraser{
   tM: TuringMachine;
@@ -30,4 +29,5 @@ export class Eraser{
   };
   pointerLeave(e: ModifiedPointerEvent) { 
   };
+  click(e: ModifiedPointerEvent) { }
 }

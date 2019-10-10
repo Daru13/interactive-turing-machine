@@ -1,37 +1,37 @@
-import { Helpers } from "../../helpers";
-import { TuringMachine } from "../../model/TuringMachine";
 import { Graph } from "../graph/Graph";
+import { TuringMachine } from "../../model/TuringMachine";
+import { Helpers } from "../../helpers";
 import { ModifiedPointerEvent } from "../../events/ModifiedPointerEvent";
-import { toolName } from "../tools/ToolManager";
-import { Pen } from "./Pen";
-import { Eraser } from "./Eraser";
-import { Touch } from "./Touch";
 
-export class PenAndTouchManager {
-  readonly idToPenAndTouch: Record<string, any>;
+export class GraphInteraction {
   readonly graph: Graph;
-  readonly turingMachine: TuringMachine;
+  readonly tM: TuringMachine;
   isActivated: boolean;
 
   constructor(graph: Graph, turingMachine: TuringMachine) {
-    this.idToPenAndTouch = {} as Record<string, any>;
     this.graph = graph;
-    this.turingMachine = turingMachine;
+    this.tM = turingMachine;
     this.isActivated = false;
     this.setInteraction();
   }
 
   setInteraction() {
     var t = this;
+    let ptDown = { x: 0, y: 0 };
+    let distPDown = 0;
     t.graph.getSVGElement().addEventListener("pointerdown",
       function (e) {
         if (t.isActivated) {
+          ptDown.x = e.x;
+          ptDown.y = e.y;
+          distPDown = 0;
           t.dispatchDownEvent(Helpers.transformEvent(e));
         }
       });
     t.graph.getSVGElement().addEventListener("pointermove",
       function (e) {
         if (t.isActivated) {
+          distPDown = Helpers.distance2(ptDown, { x: e.x, y: e.y });
           t.dispatchMoveEvent(Helpers.transformEvent(e));
         }
       });
@@ -39,6 +39,9 @@ export class PenAndTouchManager {
       function (e) {
         if (t.isActivated) {
           t.dispatchUpEvent(Helpers.transformEvent(e));
+          if (distPDown < Graph.sizeNode / 2) {
+            t.dispatchClickEvent(Helpers.transformEvent(e));
+          }
         }
       });
     t.graph.getSVGElement().addEventListener("pointerleave",
@@ -57,41 +60,22 @@ export class PenAndTouchManager {
 
   dispatchDownEvent(e: ModifiedPointerEvent) {
     Helpers.updateXYSVG(e, this.graph);
-    switch(e.pointerType){
-      case  "touch":
-        this.idToPenAndTouch[e.pointerId] = new Touch(this.graph, this.turingMachine, e);
-        break;
-      case  "pen":
-        this.idToPenAndTouch[e.pointerId] = new Pen(this.graph, this.turingMachine);
-        break;
-      case "eraser":
-        this.idToPenAndTouch[e.pointerId] = new Eraser(this.graph, this.turingMachine);
-        break;
-      case "modify":
-      default:
-    }
-    this.idToPenAndTouch[e.pointerId].pointerDown(e);
   }
 
   dispatchMoveEvent(e: ModifiedPointerEvent) {
     Helpers.updateXYSVG(e, this.graph);
-    if (this.idToPenAndTouch[e.pointerId] !== undefined){
-      this.idToPenAndTouch[e.pointerId].pointerMove(e);
-    }
   }
 
   dispatchUpEvent(e: ModifiedPointerEvent) {
     Helpers.updateXYSVG(e, this.graph);
-    if (this.idToPenAndTouch[e.pointerId] !== undefined) {
-      this.idToPenAndTouch[e.pointerId].pointerUp(e);
-    }
   }
 
   dispatchLeaveEvent(e: ModifiedPointerEvent) {
     Helpers.updateXYSVG(e, this.graph);
-    if (this.idToPenAndTouch[e.pointerId] !== undefined) {
-      this.idToPenAndTouch[e.pointerId].pointerLeave(e);
-    }
+  }
+
+  dispatchClickEvent(e: ModifiedPointerEvent) {
+    Helpers.updateXYSVG(e, this.graph);
   }
 
   activate() {

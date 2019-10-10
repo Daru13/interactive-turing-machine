@@ -1,7 +1,7 @@
-import { ModifiedPointerEvent } from "../../events/ModifiedPointerEvent";
-import { CreateEdgeAction } from "../actions/CreateEdgeAction";
-import { Graph } from "../graph/Graph";
-import { TuringMachine } from "../../model/TuringMachine";
+import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
+import { CreateEdgeAction } from "../../actions/CreateEdgeAction";
+import { Graph } from "../../graph/Graph";
+import { TuringMachine } from "../../../model/TuringMachine";
 
 export class EdgeTool {
   createEdgeAction: CreateEdgeAction;
