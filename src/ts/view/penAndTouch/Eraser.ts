@@ -1,25 +1,33 @@
 import { Graph } from "../graph/Graph";
+import { Edge, EdgeHandleSelection } from "../graph/Edge";
+import { Node, NodeHandleSelection } from "../graph/Node";
 import { TuringMachine } from "../../model/TuringMachine";
 import { ModifiedPointerEvent } from "../../events/ModifiedPointerEvent";
-import { DeleteAction } from "../actions/DeleteAction";
+import * as d3 from "d3-selection";
+import { DeleteEdgeAction } from "../actions/DeleteEdgeAction";
+import { DeleteNodeAction } from "../actions/DeleteNodeAction";
+import { D3BrushEvent } from "d3";
 
 export class Eraser{
-  deleteTool: DeleteAction;
+  tM: TuringMachine;
+  target: d3.BaseType;
 
   constructor(graph: Graph, turingMachine: TuringMachine){
-    this.deleteTool = new DeleteAction(graph, turingMachine);
+    this.tM = turingMachine;
   }
 
   pointerDown(e: ModifiedPointerEvent) { 
-    this.deleteTool.pointerDown(e);
+    this.target = e.target as d3.BaseType;
   };
   pointerMove(e: ModifiedPointerEvent) { 
-    this.deleteTool.pointerMove(e);
   };
   pointerUp(e: ModifiedPointerEvent) { 
-    this.deleteTool.pointerUp(e);
+    if (Node.isNode(d3.select(this.target))) {
+      DeleteNodeAction.do(d3.select(this.target) as NodeHandleSelection, this.tM)
+    } else if (Edge.isAnEdge(d3.select(this.target))) {
+      DeleteEdgeAction.do(d3.select(this.target) as EdgeHandleSelection, this.tM);
+    }
   };
   pointerLeave(e: ModifiedPointerEvent) { 
-    this.deleteTool.pointerLeave(e);    
   };
 }
