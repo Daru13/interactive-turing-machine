@@ -55,7 +55,7 @@ export class Graph {
     setupListeners(){
         var t = this;
         EventManager.registerHandler("newState", function(e: NewStateEvent) {
-            Node.add(t, e.state, e.x, e.y);
+            Node.add(t, e.state);
         })
 
         EventManager.registerHandler("editInitialState", function (e: EditInitialStateEvent) {

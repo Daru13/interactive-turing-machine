@@ -21,7 +21,8 @@ export type NodeHandleSelection = d3.Selection<SVGGElement, NodeDatum, HTMLEleme
 export class Node{
     constructor(){}
 
-    static add(graph: Graph, state: State, x: number, y: number): void{
+    static add(graph: Graph, state: State): void{
+        let position = state.getPosition();
         let datum: NodeDatum = {x: 0, y: 0, id: "node-" + state.id, stateID: state.id};
         let node: NodeHandleSelection =
             graph.getSVG()
@@ -43,7 +44,7 @@ export class Node{
             .attr("text-anchor", "middle")
             .text("N"+state.id);
 
-        Node.translate(node, x, y);
+        Node.translate(node, position.x, position.y);
     }
 
     static translate(node: NodeHandleSelection, dx: number, dy: number): void{
