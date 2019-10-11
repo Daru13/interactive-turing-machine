@@ -1,4 +1,3 @@
-import { Helpers } from "../../../helpers";
 import { TuringMachine } from "../../../model/TuringMachine";
 import { Graph } from "../../graph/Graph";
 import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
@@ -8,56 +7,56 @@ import { Touch } from "./Touch";
 import { GraphEventDispatcher } from "../GraphEventDispatcher";
 
 export class PenAndTouchDispatcher extends GraphEventDispatcher{
-  readonly idToPenAndTouch: Record<string, any>;
+    readonly idToPenAndTouch: Record<string, any>;
 
-  constructor(graph: Graph, turingMachine: TuringMachine) {
-    super(graph, turingMachine)
-    this.idToPenAndTouch = {} as Record<string, any>;
-  }
-
-  dispatchDownEvent(e: ModifiedPointerEvent) {
-    super.dispatchDownEvent(e);
-    switch(e.pointerType){
-      case  "touch":
-        this.idToPenAndTouch[e.pointerId] = new Touch(this.graph, this.tM);
-        break;
-      case  "pen":
-        this.idToPenAndTouch[e.pointerId] = new Pen(this.graph, this.tM);
-        break;
-      case "eraser":
-        this.idToPenAndTouch[e.pointerId] = new Eraser(this.graph, this.tM);
-        break;
-      case "modify":
-      default:
+    constructor(graph: Graph, turingMachine: TuringMachine) {
+        super(graph, turingMachine)
+        this.idToPenAndTouch = {} as Record<string, any>;
     }
-    this.idToPenAndTouch[e.pointerId].pointerDown(e);
-  }
 
-  dispatchMoveEvent(e: ModifiedPointerEvent) {
-    super.dispatchMoveEvent(e);
-    if (this.idToPenAndTouch[e.pointerId] !== undefined){
-      this.idToPenAndTouch[e.pointerId].pointerMove(e);
+    dispatchDownEvent(e: ModifiedPointerEvent) {
+        super.dispatchDownEvent(e);
+        switch(e.pointerType){
+            case    "touch":
+                this.idToPenAndTouch[e.pointerId] = new Touch(this.graph, this.tM);
+                break;
+            case    "pen":
+                this.idToPenAndTouch[e.pointerId] = new Pen(this.graph, this.tM);
+                break;
+            case "eraser":
+                this.idToPenAndTouch[e.pointerId] = new Eraser(this.graph, this.tM);
+                break;
+            case "modify":
+            default:
+        }
+        this.idToPenAndTouch[e.pointerId].pointerDown(e);
     }
-  }
 
-  dispatchUpEvent(e: ModifiedPointerEvent) {
-    super.dispatchUpEvent(e);
-    if (this.idToPenAndTouch[e.pointerId] !== undefined) {
-      this.idToPenAndTouch[e.pointerId].pointerUp(e);
+    dispatchMoveEvent(e: ModifiedPointerEvent) {
+        super.dispatchMoveEvent(e);
+        if (this.idToPenAndTouch[e.pointerId] !== undefined){
+            this.idToPenAndTouch[e.pointerId].pointerMove(e);
+        }
     }
-  }
 
-  dispatchLeaveEvent(e: ModifiedPointerEvent) {
-    super.dispatchLeaveEvent(e);
-    if (this.idToPenAndTouch[e.pointerId] !== undefined) {
-      this.idToPenAndTouch[e.pointerId].pointerLeave(e);
+    dispatchUpEvent(e: ModifiedPointerEvent) {
+        super.dispatchUpEvent(e);
+        if (this.idToPenAndTouch[e.pointerId] !== undefined) {
+            this.idToPenAndTouch[e.pointerId].pointerUp(e);
+        }
     }
-  }
 
-  dispatchClickEvent(e: ModifiedPointerEvent) {
-    super.dispatchClickEvent(e);
-    if (this.idToPenAndTouch[e.pointerId] !== undefined) {
-      this.idToPenAndTouch[e.pointerId].click(e);
+    dispatchLeaveEvent(e: ModifiedPointerEvent) {
+        super.dispatchLeaveEvent(e);
+        if (this.idToPenAndTouch[e.pointerId] !== undefined) {
+            this.idToPenAndTouch[e.pointerId].pointerLeave(e);
+        }
     }
-  }
+
+    dispatchClickEvent(e: ModifiedPointerEvent) {
+        super.dispatchClickEvent(e);
+        if (this.idToPenAndTouch[e.pointerId] !== undefined) {
+            this.idToPenAndTouch[e.pointerId].click(e);
+        }
+    }
 }
