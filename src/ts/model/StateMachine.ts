@@ -136,6 +136,16 @@ export class StateMachine {
         EventManager.emit(new DeleteTransitionEvent(transition));
     }
 
+    getNonDeterministicTransitions(): Transition[] {
+        let nonDeterministicTransitions = [];
+
+        for (let state of this.states.values()) {
+            nonDeterministicTransitions.push(...state.getNonDeterministicOutTransitions());
+        }
+
+        return nonDeterministicTransitions;
+    }
+
     isDeterministic(): boolean {
         let deterministic = true;
 

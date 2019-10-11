@@ -142,6 +142,18 @@ export class State {
         return [...this.outTransitions.values()];
     }
 
+    getNonDeterministicOutTransitions(): Transition[] {
+        let nonDeterministicTransitions = [];
+
+        for (let transitions of this.symbolsToOutTransitions.values()) {
+            if (transitions.size > 1) {
+                nonDeterministicTransitions.push(...transitions.values());                
+            }
+        }
+
+        return nonDeterministicTransitions;
+    }
+
     isDeterministic(): boolean {
         for (let transitions of this.symbolsToOutTransitions.values()) {
             if (transitions.size > 1) {
