@@ -4,23 +4,23 @@ import { Graph } from "../../graph/Graph";
 import { TuringMachine } from "../../../model/TuringMachine";
 
 export class Pen {
-  edgeTool: EdgeTool;
+    edgeTool: EdgeTool;
 
-  constructor(graph: Graph, turingMachine: TuringMachine) {
-    this.edgeTool = new EdgeTool(graph, turingMachine);
-  }
+    constructor(graph: Graph, turingMachine: TuringMachine) {
+        this.edgeTool = new EdgeTool(graph, turingMachine);
+    }
 
-  pointerDown(e: ModifiedPointerEvent) {
-    this.edgeTool.pointerDown(e);
-  };
-  pointerMove(e: ModifiedPointerEvent) {
-    this.edgeTool.pointerMove(e);
-  };
-  pointerUp(e: ModifiedPointerEvent) {
-    this.edgeTool.pointerUp(e);
-  };
-  pointerLeave(e: ModifiedPointerEvent) {
-    this.edgeTool.pointerLeave(e);
-  };
-  click(e: ModifiedPointerEvent){}
+    pointerDown(e: ModifiedPointerEvent) {
+        this.edgeTool.pointerDown(e);
+    };
+    pointerMove(e: ModifiedPointerEvent) {
+        this.edgeTool.pointerMove(e);
+    };
+    pointerUp(e: ModifiedPointerEvent) {
+        this.edgeTool.pointerUp(e);
+    };
+    pointerLeave(e: ModifiedPointerEvent) {
+        this.edgeTool.pointerLeave(e);
+    };
+    click(e: ModifiedPointerEvent){}
 }
