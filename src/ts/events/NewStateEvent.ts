@@ -7,9 +7,7 @@ export class NewStateEvent implements Event {
   x: number;
   y: number;
 
-  constructor(state: State, x: number, y: number) {
+  constructor(state: State) {
     this.state = state;
-    this.x = x;
-    this.y = y;
   }
 }

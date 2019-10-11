@@ -8,12 +8,18 @@ import { EditFinalStateEvent } from '../events/EditFinalStateEvent';
 
 export type StateID = number;
 
+export interface Position {
+    x: number;
+    y: number;
+}
+
 
 export class State {
 
     private static nextStateID = 1;
 
     readonly id: StateID;
+    private position: Position;
     private label: string;
     private final: boolean;
 
@@ -22,16 +28,25 @@ export class State {
     private symbolsToOutTransitions: Map<TapeSymbol, Set<Transition>>;
 
 
-    constructor(label: string, final: boolean = false) {
+    constructor(position: Position, label: string, final: boolean = false) {
         this.id = State.nextStateID;
         State.nextStateID++;
 
+        this.position = position;
         this.label = label;
         this.final = final;
 
         this.inTransitions = new Map();
         this.outTransitions = new Map();
         this.symbolsToOutTransitions = new Map();
+    }
+
+    getPosition(): Position {
+        return this.position;
+    }
+
+    setPosition(position: Position) {
+        this.position = position;
     }
 
     getLabel(): string {

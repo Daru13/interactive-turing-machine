@@ -1,4 +1,4 @@
-import { State, StateID } from "./State";
+import { State, StateID, Position } from './State';
 import { Transition, TransitionID } from './Transition';
 import { EventManager } from "../events/EventManager";
 import { NewStateEvent } from "../events/NewStateEvent";
@@ -25,7 +25,7 @@ export class StateMachine {
         this.initialState = null;
     }
 
-    addState(state: State, x: number = 0, y: number = 0) {
+    addState(state: State) {
         if (this.states.has(state.id)) {
             console.error("The state could not be added: already added.");
             return;
@@ -33,12 +33,12 @@ export class StateMachine {
 
         this.states.set(state.id, state);
 
-        EventManager.emit(new NewStateEvent(state, x, y));
+        EventManager.emit(new NewStateEvent(state));
     }
 
-    createAndAddState(label: string, x: number = 0, y: number = 0): State {
-        let state = new State(label);
-        this.addState(state, x, y);
+    createAndAddState(position: Position, label: string, final: boolean = false): State {
+        let state = new State(position, label, final);
+        this.addState(state);
 
         return state;
     }

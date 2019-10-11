@@ -7,7 +7,7 @@ export class CreateNodeAction extends Action{
         static nameState: number = 0;
 
         static do(x: number, y: number, turingMachine: TuringMachine){
-                turingMachine.stateMachine.addState(new State(CreateNodeAction.nameState.toString()), x, y);
+                turingMachine.stateMachine.createAndAddState({x: x, y: y}, CreateNodeAction.nameState.toString());
                 CreateNodeAction.nameState += 1;
         }
 }
