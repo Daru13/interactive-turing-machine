@@ -1,263 +1,298 @@
-root{
-  --cell-tape-width: 90px;
+/******************************************************************
+/* GENERAL RULES
+/*****************************************************************/
+
+root {
+    --cell-tape-width: 90px;
 }
 
-html{
-  width:100%;
-  height: 100%;
-  overflow: hidden;
-  touch-action: none;
-  overscroll-behavior: none;
-  user-zoom: fixed;
+html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    touch-action: none;
+    overscroll-behavior: none;
+    user-zoom: fixed;
 }
 
-svg{overflow: visible;}
+svg { overflow: visible; }
 
-body{
-  display: grid;
-  grid-gap: 1%;
-  grid-template-columns: 2px auto 100px 2px;
-  grid-template-rows: 25px auto 100px 2px;
-  grid-template-areas:
-    "menu menu menu menu"
-    ". graph toolBar ."
-    ". tape tmButtons ."
-    ". . . .";
-
-  user-select: none;
-  overflow:hidden;
-  position: fixed;
-  width:100%;
-  min-height: 100%;
-  height: 100%;
-  max-height: 100%;
-  margin: 0;
+body {
+    display: grid;
+    grid-template-columns: auto 100px;
+    grid-template-rows: 60px calc(100% - 160px) 100px;
+    grid-template-areas:
+        "menu menu"
+        "graph toolBar"
+        "tape tmButtons";
+    user-select: none;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    margin: 0;
 }
 
-#menu{
-  grid-area: menu;
+
+
+
+/******************************************************************
+/* MAIN MENU BAR
+/*****************************************************************/
+
+#menu {
+    grid-area: menu;
 }
 
-#turingMachineButton{
-  grid-area: tmButtons;
-  width:100%;
-  height: 100%;
+
+
+
+/******************************************************************
+/* STATE MACHINE GRAPH
+/*****************************************************************/
+
+#graph {
+    grid-area: graph;
+    width: 100%;
+    height: 100%;
 }
 
-#graph{
-  grid-area: graph;
-  width:100%;
-  height: 100%;
+#graph svg {
+    width: 100%;
+    height: 100%;
+    border: 2px solid #bbb;
 }
 
-#graph svg{
-  width:100%;
-  height: 100%;
-  border: 2px solid #bbb;
+.node circle {
+    stroke: black;
+    stroke-width: 2px;
+    fill: #fff;
 }
 
-#toolBar{
-  grid-area: toolBar;
-  width:100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+.node.start circle {
+    stroke: green;
 }
 
-#toolBar div{
-  flex: 1;
-  border: 0px solid #fff;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+.node.final circle {
+    filter: url(#dilate);
 }
 
-#toolBar div.selected{
-  border-radius: 5px;
-  background-color: #eee;
+.node.selected circle {
+    filter: url(#outline);
 }
 
-#tapeHolder{
-  grid-area: tape;
-  width: 100%;
-  height: 100%;
-  border: 2px solid #aaa;
-  position: relative;
-  overflow-y: visible;
-  overflow-x: hidden;
+.node.closestNode circle {
+    filter: url(#outline);
 }
 
-#tape{
-  position: absolute;
-  margin-top: auto;
-  margin-bottom: auto;
-  height: 99%;
-  background-color: #eee;
-  overflow: hidden;
-  z-index: 500;
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
+.node.move circle {
+    filter: url(#blur);
 }
 
-#tape .cell{
-  display: inline-block;
-  min-height: 90%;
-  max-height: 96%;
-  width: 90px;
-  border: 2px solid #aaa;
-  box-sizing: border-box;
-  margin-right: 2px;
-  margin-left: 2px;
-  overflow: hidden
+.edge path {
+    fill: none;
+    stroke: black;
+    stroke-width: 2px;
+    marker-end: url(#arrowHead);
 }
 
-#tape .cell input[type=text]{
-  min-width: 90px;
-  max-width: 90px;
-  border: none;
-  background-color: #bbb;
-  position: relative;
-  top: 0;
-  bottom: 0;
-  margin-top: auto;
-  margin-bottom: auto;
+.edge rect {
+    fill: white;
+    fill-opacity: 0;
 }
 
-#tape .cell input[type=text]:hover{
-  background-color: #ccc;
+.edge text {
+    text-anchor: middle;
 }
 
-#head{
-  width: 20px;
-  height: 20px;
-  position: absolute;
-  top: -10px;
-  left: 0;
-  right: 0;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: red;
-  z-index: 1000;
+.edge.selected path {
+    stroke: blue;
+    marker-end: url(#arrowHeadSelected);
 }
 
-.node circle{
-  stroke: black;
-  stroke-width: 2px;
-  fill: #fff;
+.edgeInCreation {
+    stroke: #333;
+    stroke-width: 1px;
+    marker-end: url(#arrowHead);
 }
 
-.node.start circle{
-  stroke: green;
+.EdgeEditor {
+    z-index: 3000;
+    position: absolute;
+    background: white;
+    border: 2px solid rgb(97, 51, 51);
+    border-radius: 5px;
+    top: 40%;
+    left: 40%;
+    height: 160px;
+    width: 400px;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas:
+        "readTag readEntry"
+        "writeTag writeEntry"
+        "dirTag dirEntry"
+        "submitButton cancelButton";
 }
 
-.node.final circle{
-  filter: url(#dilate);
+.EdgeEditor div {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.node.selected circle{
-  filter:url(#outline);
+.EdgeEditor .button {
+    background: #34c9eb;
+    border-radius: 25px;
+    padding: 5px;
 }
 
-.node.closestNode circle{
-  filter:url(#outline);
+.EdgeEditor .button:hover {
+    background: #2fb5d4;
 }
 
-.node.move circle{
-  filter:url(#blur);
+.EdgeEditor .dirEntryButton {
+    background: white;
+    margin: 5px;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    border: 2px solid grey;
 }
 
-.edge path{
-  fill: none;
-  stroke: black;
-  stroke-width: 2px;
-  marker-end:url(#arrowHead);
+.EdgeEditor .dirEntryButton div {
+    min-width: 30px;
 }
 
-.edge rect{
-  fill: white;
-  fill-opacity: 0;
+.EdgeEditor .dirEntryButton .selected {
+    background: grey;
 }
 
-.edge text{
-  text-anchor: middle;
+.NodeEditor {
+    z-index: 3000;
+    position: absolute;
+    background: white;
+    border: 2px solid black;
+    border-radius: 5px;
+    top: 40%;
+    left: 40%;
+    height: 60px;
+    width: 200px;
+    display: grid;
+    grid-template-columns: 100px 100px;
+    grid-template-rows: 30px 30px;
 }
 
-.edge.selected path{
-  stroke: blue;
-  marker-end:url(#arrowHeadSelected);
+
+
+
+/******************************************************************
+/* TOOLS
+/*****************************************************************/
+
+#toolBar {
+    grid-area: toolBar;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-.edgeInCreation{
-  stroke: #333;
-  stroke-width: 1px;
-  marker-end:url(#arrowHead);
+#toolBar div {
+    flex: 1;
+    border: 0px solid #fff;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 }
 
-.EdgeEditor{
-   z-index: 3000;
-  position: absolute;
-  background: white;
-  border: 2px solid rgb(97, 51, 51);
-  border-radius: 5px;
-  top: 40%;
-  left:40%;
-  height:160px;
-  width:400px;
-  display: grid;
-  grid-template-columns: auto auto;
-  grid-template-rows: auto auto auto auto;
-  grid-template-areas:
-    "readTag readEntry"
-    "writeTag writeEntry"
-    "dirTag dirEntry"
-    "submitButton cancelButton";
+#toolBar div.selected {
+    border-radius: 5px;
+    background-color: #eee;
 }
 
-.EdgeEditor div{
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+
+
+/******************************************************************
+/* TURING MACHINE CONTROLS
+/*****************************************************************/
+
+#turingMachineButton {
+    grid-area: tmButtons;
+    width: 100%;
+    height: 100%;
 }
 
-.EdgeEditor .button{
-  background: #34c9eb;
-  border-radius: 25px;
-  padding: 5px;
+
+
+
+/******************************************************************
+/* TAPE
+/*****************************************************************/
+
+#tapeHolder {
+    grid-area: tape;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #aaa;
+    position: relative;
+    overflow-y: visible;
+    overflow-x: hidden;
 }
 
-.EdgeEditor .button:hover{
-  background: #2fb5d4;
+#tape {
+    position: absolute;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 99%;
+    background-color: #eee;
+    overflow: hidden;
+    z-index: 500;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
 }
 
-.EdgeEditor .dirEntryButton{
-  background: white;
-  margin: 5px;
-  display: grid;
-  grid-template-columns: auto auto auto;
-  border: 2px solid grey;
+#tape .cell {
+    display: inline-block;
+    min-height: 90%;
+    max-height: 96%;
+    width: 90px;
+    border: 2px solid #aaa;
+    box-sizing: border-box;
+    margin-right: 2px;
+    margin-left: 2px;
+    overflow: hidden
 }
 
-.EdgeEditor .dirEntryButton div{
-  min-width: 30px;
+#tape .cell input[type=text] {
+    min-width: 90px;
+    max-width: 90px;
+    border: none;
+    background-color: #bbb;
+    position: relative;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
-.EdgeEditor .dirEntryButton .selected{
-  background: grey;
+#tape .cell input[type=text]:hover {
+    background-color: #ccc;
 }
 
-.NodeEditor{
-  z-index: 3000;
-  position: absolute;
-  background: white;
-  border: 2px solid black;
-  border-radius: 5px;
-  top: 40%;
-  left:40%;
-  height:60px;
-  width:200px;
-  display: grid;
-  grid-template-columns: 100px 100px;
-  grid-template-rows: 30px 30px;
+#head {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: -10px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: red;
+    z-index: 1000;
 }
+
