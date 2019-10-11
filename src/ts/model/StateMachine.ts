@@ -117,6 +117,11 @@ export class StateMachine {
         return this.transitions.has(id);
     }
 
+    hasTransitionBetween(state1: State, state2: State) {
+        return state1.hasOutTransitionTo(state2)
+            || state2.hasOutTransitionTo(state1);
+    }
+
     getTransition(id: TransitionID): Transition {
         return this.transitions.has(id) ? this.transitions.get(id) : null;
     }
