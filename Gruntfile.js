@@ -14,6 +14,7 @@ module.exports = function (grunt) {
       mkDirs: "mkdir -p build/icons build/css",
       copyHTML: "cp -f ./src/index.html build/index.html",
       copyIcons: "cp -f ./src/icons/* build/icons/",
+      copySVG: "cp -f ./src/svg/* build/svg/",
       copyCSS: "cp -f ./src/css/*.css build/css/"
     },
 
@@ -56,7 +57,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask("build",
     "Compile Typescript sources, Browserify them and copy static sources into the 'build' directory.",
-    ["ts", "browserify", "exec:mkDirs", "exec:copyHTML", "exec:copyCSS", "exec:copyIcons"]
+    ["ts", "browserify", "exec:mkDirs", "exec:copyHTML", "exec:copyCSS", "exec:copyIcons", "exec:copySVG"]
   );
 
 
