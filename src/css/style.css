@@ -63,29 +63,47 @@ body {
     border: 2px solid #bbb;
 }
 
-.node circle {
-    stroke: black;
-    stroke-width: 2px;
-    fill: #fff;
+.node #Highlight {
+    display: none;
 }
 
-.node.start circle {
-    stroke: green;
+.node #Background {
+    fill: #545656;
 }
 
-.node.final circle {
-    filter: url(#dilate);
+.node #Lampe #Halo{
+    display: none;
 }
 
-.node.selected circle {
+.node #Lampe #BulbFill{
+    fill: #DEE0E0;
+}
+
+.node.final #Highlight {
+    display: initial;
+}
+
+.node.final #Background {
+    fill: #8CC63F;
+}
+
+.node.current #Lampe #Halo{
+    display: initial;
+}
+
+.node.current #Lampe #BulbFill{
+    fill: #FFE461;
+}
+
+.node.selected {
     filter: url(#outline);
 }
 
-.node.closestNode circle {
+.node.closestNode {
     filter: url(#outline);
 }
 
-.node.move circle {
+.node.move {
     filter: url(#blur);
 }
 
