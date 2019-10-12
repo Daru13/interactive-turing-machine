@@ -122,6 +122,16 @@ export class State {
         }
     }
 
+    hasOutTransitionTo(state: State): boolean {
+        for (let transition of this.outTransitions.values()) {
+            if (transition.toState === state) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     hasOutTransitionForSymbol(symbol: TapeSymbol) {
         return this.symbolsToOutTransitions.has(symbol);
     }
