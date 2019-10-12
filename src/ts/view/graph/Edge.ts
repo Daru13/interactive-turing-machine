@@ -61,18 +61,31 @@ export class Edge{
     static drawEdgeTwoPoints(edge: EdgeHandleSelection, x1: number, y1: number, x2: number, y2: number){
         let len = Helpers.distance2({ x: x1, y: y1 }, { x: x2, y: y2 }) - Graph.sizeNode;
         let angle = 180 * Helpers.angleToXAxis({ x: x1, y: y1 }, { x: x2, y: y2 }) / Math.PI;
-        let c = Math.min(40*len/200, 100); //courbature controller
-        let y = -2;
+        
 
-        edge.select("path").attr("d", 
-            "M" + Graph.sizeNode + "," + y + 
-            "C" + (Graph.sizeNode + c) + "," + (y - c/2) + " "
-                        + (len - 7 - c) + "," + (y - c/2) + " " 
-                        + (len - 7) + "," + y);    //7 is for size of marker
-        edge.select("rect").attr("width", len - Graph.sizeNode);
+        let xText = (len + Graph.sizeNode)/2;
+        let yText = - 5;
 
-        let xText = (len) / 2 + Graph.sizeNode;
-        let yText = (y + 3 * (y - c / 2)) / 4 - 5;
+        if(true){
+            edge.select("path").attr("d",
+                "M" + Graph.sizeNode + "," + 0 +
+                " L" + (len) + "," + 0);    //7 is for size of marker
+            edge.select("rect").attr("width", len - Graph.sizeNode);
+        }else{
+            let c = Math.min(40 * len / 200, 100); //courbature controller
+            let y = -2;
+
+            edge.select("path").attr("d",
+                "M" + Graph.sizeNode + "," + y +
+                "C" + (Graph.sizeNode + c) + "," + (y - c / 2) + " "
+                + (len - 7 - c) + "," + (y - c / 2) + " "
+                + (len - 7) + "," + y);    //7 is for size of marker
+            edge.select("rect").attr("width", len - Graph.sizeNode);
+
+            xText = (len) / 2 + Graph.sizeNode;
+            yText = (y + 3 * (y - c / 2)) / 4 - 5;
+        }
+        
         edge.select("text")
             .attr("x", xText)
             .attr("y",    yText); //5 offset text
@@ -101,7 +114,6 @@ export class Edge{
         let finalX = -1 * (r + 7) * Math.sin(0.1);//7 is for size of marker
         let finalY = (r + 7) * Math.cos(0.1) ;
         
-
         edge.select("path").attr("d", 
             "M" + startX + "," + startY + 
             " C " + startX + "," + startY + "," + xOffset + "," + (r + firstYOffset - c) + " " + xOffset + "," + (r + firstYOffset) + 

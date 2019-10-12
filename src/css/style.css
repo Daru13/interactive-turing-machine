@@ -109,8 +109,8 @@ body {
 
 .edge path {
     fill: none;
-    stroke: black;
-    stroke-width: 2px;
+    stroke: #545555;
+    stroke-width: 3px;
     marker-end: url(#arrowHead);
 }
 
@@ -125,7 +125,6 @@ body {
 
 .edge.selected path {
     stroke: blue;
-    marker-end: url(#arrowHeadSelected);
 }
 
 .edgeInCreation {
