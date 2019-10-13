@@ -9,18 +9,21 @@ export type EdgeId = String;
 
 export interface EdgeDatum {
     id: string;
-    transitionID: TransitionID
+    transitionID: TransitionID[]
 };
 
 export type EdgeElementSelection = d3.Selection<SVGElement, EdgeDatum, SVGElement, EdgeDatum>;
 export type EdgeHandleSelection = d3.Selection<SVGGElement, EdgeDatum, HTMLElement, GraphDatum>;
 
 export class Edge{
+    static transitionIdToEdgeId = {} as Record<TransitionID, EdgeId>
     constructor(){}
 
-    static add(graph:Graph, transition: Transition): void{
+    static addNewEdge(graph:Graph, transition: Transition): void{
         let id = "edge-" + transition.id;
-        let datum: EdgeDatum = { id: id, transitionID: transition.id };
+        Edge.transitionIdToEdgeId[transition.id] = id;
+
+        let datum: EdgeDatum = { id: id, transitionID: [transition.id ]};
         var edgeHandle :EdgeHandleSelection =
             graph.getSVG()
                 .append("g")
@@ -43,6 +46,11 @@ export class Edge{
             .text("click to set");
 
         Edge.move(edgeHandle, Node.getHandleByStateId(transition.fromState.id), Node.getHandleByStateId(transition.toState.id));
+    }
+
+    static addToEdge(edge: EdgeHandleSelection, transition: Transition){
+        Edge.transitionIdToEdgeId[transition.id] = edge.datum().id;
+        edge.datum().transitionID.push(transition.id);
     }
     
     static move(edge: EdgeHandleSelection, fromNode: NodeHandleSelection, toNode: NodeHandleSelection){
@@ -70,7 +78,7 @@ export class Edge{
             edge.select("path").attr("d",
                 "M" + Graph.sizeNode + "," + 0 +
                 " L" + (len) + "," + 0);    //7 is for size of marker
-            edge.select("rect").attr("width", len - Graph.sizeNode);
+            edge.select("rect").attr("width", Math.abs(len - Graph.sizeNode));
         }else{
             let c = Math.min(40 * len / 200, 100); //courbature controller
             let y = -2;
@@ -129,8 +137,13 @@ export class Edge{
         edge.attr("transform",    " translate(" + (x) + "," + (y) + ")");
     }
 
-    static delete(edge: EdgeHandleSelection): void{
-        edge.remove();
+    static delete(transitionId:TransitionID, edge: EdgeHandleSelection): void{
+        delete Edge.transitionIdToEdgeId[transitionId];
+        let index = edge.datum().transitionID.indexOf[transitionId];
+        edge.datum().transitionID.splice(index, 1);
+        if(edge.datum().transitionID === []){
+            edge.remove();
+        }
     }
 
     static isAnEdge(selection: d3.Selection<any, any, any, any>): boolean{
@@ -154,7 +167,10 @@ export class Edge{
     }
 
     static getHandleByTransitionId(transitionID: TransitionID): EdgeHandleSelection {
-        return d3.select("#edge-" + transitionID);
+        if(Edge.transitionIdToEdgeId.hasOwnProperty(transitionID)){
+            return d3.select("#" + Edge.transitionIdToEdgeId[transitionID]);
+        }
+        throw "No matching edge for the transition id"
     }
 
     static drawText(edge: EdgeHandleSelection, onSymbol: TapeSymbol, outputSymbol: TapeSymbol, headAction:HeadAction): void{

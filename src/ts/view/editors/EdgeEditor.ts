@@ -89,10 +89,10 @@ export class EdgeEditor{
         let headAction = edgeEditor.dirField.select(".selected").datum() as HeadAction;
 
         
-        let transition = edgeEditor.stateMachine.getTransition(edgeEditor.edge.datum().transitionID);
+        /*let transition = edgeEditor.stateMachine.getTransition(edgeEditor.edge.datum().transitionID);
         transition.setOnSymbol(onSymbol);
         transition.setOutputSymbol(outputSymbol);
-        transition.setHeadAction(headAction);
+        transition.setHeadAction(headAction);*/
 
         console.log(edgeEditor.stateMachine.toString());        
         edgeEditor.close(edgeEditor);
