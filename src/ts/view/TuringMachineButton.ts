@@ -28,6 +28,7 @@ export class TuringMachineButton{
         tM.tape.setContent(tape.toArray());
         console.log(tM.toString());
         tM.tape.resetHeadPosition();
+        tM.stateMachine.setCurrentState(tM.stateMachine.getInitialState().id);
         console.log(tM.toString());
     }).text("reset");
     }
