@@ -88,4 +88,9 @@ export class Node{
     static setFinalState(node: NodeHandleSelection, isFinal: boolean) {
         node.classed("final", isFinal);
     }
+
+    static setCurrentNode(node: NodeHandleSelection) {
+        d3.selectAll(".current").classed("current", false);
+        node.classed("current", true);
+    }
 }

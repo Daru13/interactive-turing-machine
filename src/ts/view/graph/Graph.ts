@@ -11,6 +11,7 @@ import { EditInitialStateEvent } from "../../events/EditInitialStateEvent";
 import { EditFinalStateEvent } from "../../events/EditFinalStateEvent";
 import { TuringMachine } from "../../model/TuringMachine";
 import { Transition } from "../../model/Transition";
+import { NewCurrentStateEvent } from "../../events/NewCurrentStateEvent";
 
 export interface GraphDatum {};
 export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, {}>;
@@ -42,6 +43,10 @@ export class Graph {
 
         EventManager.registerHandler("editInitialState", function (e: EditInitialStateEvent) {
             Node.setInitialState(Node.getHandleByStateId(e.state.id), e.isInitial);
+        })
+
+        EventManager.registerHandler("newCurrentState", function (e: NewCurrentStateEvent) {
+            Node.setCurrentNode(Node.getHandleByStateId(e.state.id));
         })
 
         EventManager.registerHandler("editFinalState", function (e: EditFinalStateEvent) {
