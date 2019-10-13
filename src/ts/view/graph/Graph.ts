@@ -55,7 +55,7 @@ export class Graph {
         EventManager.registerHandler("newTransition", function(e: NewTransitionEvent) {
                 let added = false;
                 e.transition.fromState.getOutTransitions().forEach(t => {
-                    if(t.toState === e.transition.toState && t.id !== e.transition.id){
+                    if(t.toState === e.transition.toState && t.id !== e.transition.id && !added){
                         Edge.addToEdge(Edge.getHandleByTransitionId(t.id), e.transition);
                         added = true;
                         return;
