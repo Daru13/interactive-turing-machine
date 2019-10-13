@@ -39,6 +39,7 @@ export class EdgeEditor{
             this.addTextField(row, this.stateMachine.getTransition(tId).getOnSymbol(), "OnSymbol");
             this.addTextField(row, this.stateMachine.getTransition(tId).getOutputSymbol(), "OutputSymbol");
             this.addDirEntry(row, this.stateMachine.getTransition(tId).getHeadAction(), "HeadAction");
+            this.addDeleteTransitionButton(row);
         });
     }
 
@@ -46,6 +47,23 @@ export class EdgeEditor{
         let footer = this.holder.append("div").classed("footer", true)
         this.addButton(footer, "Submit", "submit", this.submit);
         this.addButton(footer, "Cancel", "cancel", this.close);
+    }
+
+    addDeleteTransitionButton(holder: d3.Selection<HTMLElement, any, any, any>){
+        let t = this;
+        holder.append("div")
+            .classed("cell", true)
+            .append("div")
+            .classed("button", true)
+            .on("click", function(){
+                t.stateMachine.removeTransition(holder.datum());
+                holder.remove();
+                if(t.holder.select(".body").selectAll(".row").empty()){
+                    t.close(t);
+                }
+                console.log(t.stateMachine.toString())
+            })
+            .text("Delete");
     }
 
     addDirEntry(holder: d3.Selection<HTMLElement, any, any, any>, defaultDir: HeadAction, id: string) {

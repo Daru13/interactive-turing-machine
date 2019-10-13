@@ -140,8 +140,11 @@ export class Edge{
     static delete(transitionId:TransitionID, edge: EdgeHandleSelection): void{
         delete Edge.transitionIdToEdgeId[transitionId];
         let index = edge.datum().transitionID.indexOf[transitionId];
+        console.log(edge.datum().transitionID)
         edge.datum().transitionID.splice(index, 1);
-        if(edge.datum().transitionID === []){
+        console.log(edge.datum().transitionID)
+        if(edge.datum().transitionID.length === 0){
+            console.log("edge deleted")
             edge.remove();
         }
     }
@@ -174,7 +177,8 @@ export class Edge{
     }
 
     static drawText(edge: EdgeHandleSelection, onSymbol: TapeSymbol, outputSymbol: TapeSymbol, headAction:HeadAction): void{
+        let extraText = (edge.datum().transitionID.length > 1)? "..." : "";
         edge.select("text")
-            .text(function(d){return "R:" + onSymbol + "/W:" + outputSymbol + "/D:" + headAction});
+            .text(function(d){return "R:" + onSymbol + "/W:" + outputSymbol + "/D:" + headAction + extraText});
     }
 }
