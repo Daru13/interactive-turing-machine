@@ -34,6 +34,8 @@ export class Node{
 
         addLamp(node, Graph.sizeNode, "nodeCircle");
 
+        Node.setLabel(node, state.getLabel());
+
         Node.translate(node, position.x, position.y);
     }
 
@@ -92,5 +94,9 @@ export class Node{
     static setCurrentNode(node: NodeHandleSelection) {
         d3.selectAll(".current").classed("current", false);
         node.classed("current", true);
+    }
+
+    static setLabel(node: NodeHandleSelection, label: string) {
+        node.select("#Text").select("text").text(label);
     }
 }

@@ -20,25 +20,20 @@ export class NodeEditor{
 
     setupUI(){
         let t = this;
-        
-        this.holder.append("div")
-            .on("click", function () {
-                t.tm.stateMachine.setInitialState(t.node.datum().stateID);
-                console.log(t.tm.stateMachine.toString());
-                t.close(t);
-            })
-            .text("Initial");
-
-        this.holder.append("div")
-            .on("click", function () {
-                let state = t.tm.stateMachine.getState(t.node.datum().stateID);
-                console.log(!state.isFinal());
-                state.setFinal(!state.isFinal());
-                console.log(t.tm.stateMachine.toString());
-                t.close(t);
-            })
-            .text("Final");
-
+        this.addButton("Initial", function () {
+            t.tm.stateMachine.setInitialState(t.node.datum().stateID);
+            console.log(t.tm.stateMachine.toString());
+            t.close(t);
+        })
+        this.addButton("Final", function () {
+            let state = t.tm.stateMachine.getState(t.node.datum().stateID);
+            console.log(!state.isFinal());
+            state.setFinal(!state.isFinal());
+            console.log(t.tm.stateMachine.toString());
+            t.close(t);
+        })
+        this.addTextField(this.tm.stateMachine.getState(this.node.datum().stateID).getLabel(), "name");
+        this.addButton("", () => {});
         this.addButton("Cancel", this.close);
         this.addButton("DeleteNode", this.deleteNode);
     }
@@ -52,8 +47,18 @@ export class NodeEditor{
             .text(text);
     }
 
-    close(nodeEditor:    NodeEditor){
+    addTextField(defaultText: string, id: string) {
+        this.holder
+            .append("input")
+            .attr("type", "text")
+            .attr("id", id)
+            .attr("value", defaultText)
+    }
+
+    close(nodeEditor: NodeEditor){
         nodeEditor.node.classed("selected", false);
+        let label = (nodeEditor.holder.select("#name").node() as HTMLInputElement).value;
+        nodeEditor.tm.stateMachine.getState(nodeEditor.node.datum().stateID).setLabel(label);
         d3.select("body").selectAll(".NodeEditor").remove();
     }
 

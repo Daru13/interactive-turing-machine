@@ -216,11 +216,11 @@ body {
     border-radius: 5px;
     top: 40%;
     left: 40%;
-    height: 60px;
+    height: 90px;
     width: 200px;
     display: grid;
     grid-template-columns: 100px 100px;
-    grid-template-rows: 30px 30px;
+    grid-template-rows: 30px 30px 30px;
 }
 
 
