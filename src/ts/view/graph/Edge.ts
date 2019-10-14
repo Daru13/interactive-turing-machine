@@ -34,9 +34,9 @@ export class Edge{
         edgeHandle
             .append("rect")
                 .attr("x", Graph.sizeNode)
-                .attr("y", -20)
+                .attr("y", -25)
                 .attr("width", 1)
-                .attr("height", 40);
+                .attr("height", 50);
 
         edgeHandle.append("path").attr("d", "M0,0 L0,1");
 
@@ -177,8 +177,27 @@ export class Edge{
     }
 
     static drawText(edge: EdgeHandleSelection, onSymbol: TapeSymbol, outputSymbol: TapeSymbol, headAction:HeadAction): void{
-        let extraText = (edge.datum().transitionID.length > 1)? "..." : "";
+        let actionAsString = "";
+        switch (headAction) {
+            case HeadAction.MoveLeft:
+                actionAsString = "◀";
+                break;
+
+            case HeadAction.MoveRight:
+                actionAsString = "▶";
+                break;
+
+            case HeadAction.None:
+                actionAsString = "▽";
+                break;
+
+            default:
+                actionAsString = "<unknown action>";
+                break;
+        }
+
+        let extraText = (edge.datum().transitionID.length > 1)? " ..." : "";
         edge.select("text")
-            .text(function(d){return "R:" + onSymbol + "/W:" + outputSymbol + "/D:" + headAction + extraText});
+            .text(function (d) { return "R:" + onSymbol + "/W:" + outputSymbol + "/D:" + actionAsString + extraText});
     }
 }

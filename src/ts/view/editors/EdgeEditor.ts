@@ -35,7 +35,7 @@ export class EdgeEditor{
     addBody(){
         let body = this.holder.append("div").classed("body", true)
         this.edge.datum().transitionID.forEach(tId => {
-            let row = body.append("div").classed("row", true).datum(tId);
+            let row = body.append("div").classed("row", true).datum({ transitionID: tId});
             this.addTextField(row, this.stateMachine.getTransition(tId).getOnSymbol(), "OnSymbol");
             this.addTextField(row, this.stateMachine.getTransition(tId).getOutputSymbol(), "OutputSymbol");
             this.addDirEntry(row, this.stateMachine.getTransition(tId).getHeadAction(), "HeadAction");
@@ -56,7 +56,7 @@ export class EdgeEditor{
             .append("div")
             .classed("button", true)
             .on("click", function(){
-                t.stateMachine.removeTransition(holder.datum());
+                t.stateMachine.removeTransition(holder.datum()["transitionID"]);
                 holder.remove();
                 if(t.holder.select(".body").selectAll(".row").empty()){
                     t.close(t);
@@ -69,25 +69,27 @@ export class EdgeEditor{
     addDirEntry(holder: d3.Selection<HTMLElement, any, any, any>, defaultDir: HeadAction, id: string) {
         let dirEntry =
             holder.append("div")
-                .attr("id", id)
                 .classed("cell", true)
                 .append("div")
+                .attr("id", id)
                 .classed("dirEntryButton", true);
+        dirEntry.datum()["direction"] = defaultDir;
+        console.log(defaultDir);
 
-        this.addDirButton(dirEntry, "L", HeadAction.MoveLeft, false);
-        this.addDirButton(dirEntry, "S", HeadAction.None, true);
-        this.addDirButton(dirEntry, "R", HeadAction.MoveRight, false);
+        this.addDirButton(dirEntry, "L", HeadAction.MoveLeft, defaultDir === HeadAction.MoveLeft);
+        this.addDirButton(dirEntry, "S", HeadAction.None, defaultDir === HeadAction.None);
+        this.addDirButton(dirEntry, "R", HeadAction.MoveRight, defaultDir === HeadAction.MoveRight);
     }
 
     addDirButton(holder: d3.Selection<HTMLDivElement, any, any, any>, text:string, datum: HeadAction, selected: boolean){
         holder.append("div")
             .text(text)
-            .attr("id", "rightSwitch")
-            .datum(datum)
             .classed("selected", selected)
             .on("click", function () {
-                holder.select(".selected").classed("selected", false);
+                holder.selectAll(".selected").classed("selected", false);
                 d3.select(this).classed("selected", true);
+                holder.datum()["direction"] = datum;
+                console.log(holder);
             });
     }
 
@@ -114,9 +116,10 @@ export class EdgeEditor{
         edgeEditor.holder.select(".body").selectAll(".row").each(function(d){
             let onSymbol = (d3.select(this).select("#OnSymbol").node() as HTMLInputElement).value;
             let outputSymbol =  (d3.select(this).select("#OutputSymbol").node() as HTMLInputElement).value;
-            let headAction = d3.select(this).select("#HeadAction").select(".selected").datum() as HeadAction;
+            let headAction = d3.select(this).select("#HeadAction").datum()["direction"];
+            console.log(d3.select(this).select("#HeadAction"));
           
-            let transition = edgeEditor.stateMachine.getTransition(d as TransitionID);
+            let transition = edgeEditor.stateMachine.getTransition(d["transitionID"] as TransitionID);
           
             transition.setOnSymbol(onSymbol);
             transition.setOutputSymbol(outputSymbol);
@@ -124,7 +127,7 @@ export class EdgeEditor{
         });
 
         console.log(edgeEditor.stateMachine.toString());        
-        edgeEditor.close(edgeEditor);
+        //edgeEditor.close(edgeEditor);
     }
 
     close(edgeEditor): void{

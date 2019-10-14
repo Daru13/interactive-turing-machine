@@ -63,7 +63,7 @@ export class NodeEditor{
     }
 
     deleteNode(nodeEditor: NodeEditor){
-        DeleteNodeAction.do(nodeEditor.node, nodeEditor.tm);
         nodeEditor.close(nodeEditor);
+        DeleteNodeAction.do(nodeEditor.node, nodeEditor.tm);
     }
 }
