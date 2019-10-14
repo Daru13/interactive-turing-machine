@@ -51,6 +51,7 @@ export class Edge{
     static addToEdge(edge: EdgeHandleSelection, transition: Transition){
         Edge.transitionIdToEdgeId[transition.id] = edge.datum().id;
         edge.datum().transitionID.push(transition.id);
+        edge.classed("bigger", true);
     }
     
     static move(edge: EdgeHandleSelection, fromNode: NodeHandleSelection, toNode: NodeHandleSelection){
@@ -140,11 +141,9 @@ export class Edge{
     static delete(transitionId:TransitionID, edge: EdgeHandleSelection): void{
         delete Edge.transitionIdToEdgeId[transitionId];
         let index = edge.datum().transitionID.indexOf[transitionId];
-        console.log(edge.datum().transitionID)
         edge.datum().transitionID.splice(index, 1);
-        console.log(edge.datum().transitionID)
+        edge.classed("bigger", edge.datum().transitionID.length == 1);
         if(edge.datum().transitionID.length === 0){
-            console.log("edge deleted")
             edge.remove();
         }
     }

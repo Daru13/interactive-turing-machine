@@ -19,7 +19,7 @@ export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, {
 
 export class Graph {
     svg: GraphSelection;
-    static sizeNode: number = 30;
+    static sizeNode: number = 40;
     turingMachine: TuringMachine;
 
     constructor(turingMachine: TuringMachine){

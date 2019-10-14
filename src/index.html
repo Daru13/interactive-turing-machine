@@ -52,6 +52,26 @@
       </feMerge>
     </filter>
 
+    <filter id="lightOn" height="300%" width="300%" x="-75%" y="-75%">
+        <feMorphology operator="dilate" radius="4" in="SourceAlpha" result="thicken" />
+        <feGaussianBlur in="thicken" stdDeviation="10" result="blurred" />
+        <feFlood flood-color="rgb(255, 241, 112)" result="glowColor" />
+        <feComposite in="glowColor" in2="blurred" operator="in" result="softGlow_colored" />
+        <feMerge>
+            <feMergeNode in="softGlow_colored" />
+            <feMergeNode in="SourceGraphic" />
+        </feMerge>
+    </filter>
+    <filter id="outline" height="300%" width="300%" x="-75%" y="-75%">
+        <feMorphology operator="dilate" radius="2" in="SourceAlpha" result="thicken" />
+        <feFlood flood-color="rgb(120,120,255)" result="outlineColor" />
+        <feComposite in="outlineColor" in2="thicken" operator="in" result="softGlow_colored" />
+        <feMerge>
+            <feMergeNode in="softGlow_colored" />
+            <feMergeNode in="SourceGraphic" />
+        </feMerge>
+    </filter>
+
     <filter id="dilate" x="-50%" y="-50%" width="500%" height="500%">
       <feMorphology operator="dilate" radius="4" in="SourceGraphic" result="offOut" />
       <feBlend in="SourceGraphic" in2="offOut" mode="normal" />
