@@ -266,11 +266,11 @@ body {
 }
 
 #toolBar #nodeButton {
-    background-image: url("../icons/nodeButton.png");
+    background-image: url("../img/nodeButton.png");
 }
 
 #toolBar #edgeButton {
-    background-image: url("../icons/edgeButton.png");
+    background-image: url("../img/edgeButton.png");
 }
 
 
