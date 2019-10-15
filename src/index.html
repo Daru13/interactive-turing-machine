@@ -23,7 +23,7 @@
 
   <svg xmlns="http://www.w3.org/2000/svg" width="0px" height="0px">
     <defs>
-      <marker id="arrowHead" viewBox="0 -10 37 20" refX="34" refY="0" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <marker id="arrowHead" viewBox="0 -10 37 20" refX="34" refY="0" markerWidth="14" markerHeight="14" orient="auto-start-reverse">
         <g id="transition-arrow-right">
             <path d="M0,-10 L37,-10 L37,10 L0,10 z" fill="#969654" />
             <path d="M0,-8 L37,-8 L37,8 L0,8 z" fill="#AFAD64" />
@@ -31,6 +31,16 @@
             <path d="M3,-5.099 L12.48,-0.168 L3,5.208 z" fill="#545656" />
         </g>
       </marker>
+
+    <marker id="arrowHeadSmaller" viewBox="0 -10 37 20" refX="34" refY="0" markerWidth="5.6" markerHeight="5.6"
+        orient="auto-start-reverse">
+        <g id="transition-arrow-right">
+            <path d="M0,-10 L37,-10 L37,10 L0,10 z" fill="#969654" />
+            <path d="M0,-8 L37,-8 L37,8 L0,8 z" fill="#AFAD64" />
+            <path d="M0,-6 L37,-6 L37,2 L0,2 z" fill="#EAE786" />
+            <path d="M3,-5.099 L12.48,-0.168 L3,5.208 z" fill="#545656" />
+        </g>
+    </marker>
 
     <filter id="blur" height="300%" width="300%" x="-75%" y="-75%">
       <feMorphology operator="dilate" radius="4" in="SourceAlpha" result="thicken" />

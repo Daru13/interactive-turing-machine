@@ -4,7 +4,7 @@
 
 :root {
     --cell-tape-width: 90px;
-    --node-size: 40;
+    --node-size: 45;
 }
 
 @keyframes arrive {
@@ -163,6 +163,7 @@ body {
 
 .edge.bigger path {
     stroke-width: 5px;
+    marker-end: url(#arrowHeadSmaller);
 }
 
 .edge rect {
