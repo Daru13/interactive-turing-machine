@@ -50,13 +50,23 @@ module.exports = function (grunt) {
   /***************************************************************************/
 
   grunt.registerTask("clean",
-    "Remove the 'build' directory and clean temp/cache directories.",
+    "Delete the build directory as well as temporary files and caches.",
     "exec:clean"
   );
 
+  grunt.registerTask("copy-static-files",
+    "Copy static files into the build directory.",
+    ["exec:mkDirs", "exec:copyHTML", "exec:copyCSS", "exec:copyImg"]
+  );
+
+  grunt.registerTask("compile",
+    "Compile Typescript sources (using browserify) into the build directory.",
+    ["ts", "browserify"]
+  );
+
   grunt.registerTask("build",
-    "Compile Typescript sources, Browserify them and copy static sources into the 'build' directory.",
-    ["ts", "browserify", "exec:mkDirs", "exec:copyHTML", "exec:copyCSS", "exec:copyImg"]
+    "Copy static files and compile Typescript sources into the build directory.",
+    ["copy-static-files", "compile"]
   );
 
 
