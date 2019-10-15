@@ -6,6 +6,7 @@ import { DeleteStateEvent } from "../events/DeleteStateEvent";
 import { NewTransitionEvent } from "../events/NewTransitionEvent";
 import { DeleteTransitionEvent } from "../events/DeleteTransitionEvent";
 import { EditInitialStateEvent } from "../events/EditInitialStateEvent";
+import { NewCurrentStateEvent } from '../events/NewCurrentStateEvent';
 
 
 export class StateMachine {
@@ -90,6 +91,7 @@ export class StateMachine {
         }
 
         this.currentState = this.states.get(id);
+        EventManager.emit(new NewCurrentStateEvent(this.currentState));
     }
 
     addTransition(transition: Transition) {

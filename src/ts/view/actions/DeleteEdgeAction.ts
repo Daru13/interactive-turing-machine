@@ -5,7 +5,10 @@ import { Action } from "./Action";
 
 export class DeleteEdgeAction extends Action{
     static do(edge: EdgeHandleSelection, tM: TuringMachine) {
-        tM.stateMachine.removeTransition(edge.datum().transitionID);
+        let transitions = edge.datum().transitionID.slice();
+        transitions.forEach((t) => {
+            tM.stateMachine.removeTransition(t);
+        });
         console.log(tM.stateMachine.toString());
     }
 }

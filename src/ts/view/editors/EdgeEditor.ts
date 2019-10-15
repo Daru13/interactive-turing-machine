@@ -2,13 +2,11 @@ import * as d3 from "d3-selection";
 import { EdgeHandleSelection } from "../graph/Edge";
 import { HeadAction } from "../../model/Tape";
 import { StateMachine } from "../../model/StateMachine";
+import { TransitionID } from "../../model/Transition";
 
 export class EdgeEditor{
     holder: d3.Selection<HTMLDivElement, {}, HTMLElement, any>;
     edge: EdgeHandleSelection;
-    readField: d3.Selection<HTMLInputElement, {}, HTMLElement, any>;
-    writeField: d3.Selection<HTMLInputElement, {}, HTMLElement, any>;
-    dirField: d3.Selection<HTMLDivElement, {}, HTMLElement, any>;
     stateMachine: StateMachine;
 
     constructor(edge: EdgeHandleSelection, stateMachine: StateMachine){
@@ -22,80 +20,114 @@ export class EdgeEditor{
     }
 
     setupUI(): void{
-        this.addTag("Read", "readTag");
-        this.addTag("Write", "writeTag");
-        this.addTag("Direction", "dirTag");
-
-        this.readField = this.addTextField("test", "readEntry");
-        this.writeField = this.addTextField("test", "writeEntry");
-        this.dirField = this.addDirEntry(HeadAction.None, "dirEntry");
-
-        this.addButton("Submit", "submitButton", this.submit);
-        this.addButton("Cancel", "cancelButton", this.close);
+        this.addHeader();
+        this.addBody();
+        this.addFooter();
     }
 
-    addDirEntry(defaultDir: HeadAction, gridArea: string): d3.Selection<HTMLDivElement, {}, HTMLElement, any> {
-        let holder =
-            this.holder.append("div")
-                .attr("id", gridArea)
-                .style("grid-area", gridArea)
-                .append("div")
-                .classed("dirEntryButton", true);
+    addHeader(){
+        let header = this.holder.append("div").classed("header", true);
+        header.append("div").classed("cell", true).text("Read");
+        header.append("div").classed("cell", true).text("Write");
+        header.append("div").classed("cell", true).text("Direction");
+    }
 
-        this.addDirButton(holder, "L", HeadAction.MoveLeft, false);
-        this.addDirButton(holder, "S", HeadAction.None, true);
-        this.addDirButton(holder, "R", HeadAction.MoveRight, false);
-        return holder;
+    addBody(){
+        let body = this.holder.append("div").classed("body", true)
+        this.edge.datum().transitionID.forEach(tId => {
+            let row = body.append("div").classed("row", true).datum({ transitionID: tId});
+            this.addTextField(row, this.stateMachine.getTransition(tId).getOnSymbol(), "OnSymbol");
+            this.addTextField(row, this.stateMachine.getTransition(tId).getOutputSymbol(), "OutputSymbol");
+            this.addDirEntry(row, this.stateMachine.getTransition(tId).getHeadAction(), "HeadAction");
+            this.addDeleteTransitionButton(row);
+        });
+    }
+
+    addFooter(){
+        let footer = this.holder.append("div").classed("footer", true)
+        this.addButton(footer, "Submit", "submit", this.submit);
+        this.addButton(footer, "Cancel", "cancel", this.close);
+    }
+
+    addDeleteTransitionButton(holder: d3.Selection<HTMLElement, any, any, any>){
+        let t = this;
+        holder.append("div")
+            .classed("cell", true)
+            .append("div")
+            .classed("button", true)
+            .on("click", function(){
+                t.stateMachine.removeTransition(holder.datum()["transitionID"]);
+                holder.remove();
+                if(t.holder.select(".body").selectAll(".row").empty()){
+                    t.close(t);
+                }
+                console.log(t.stateMachine.toString())
+            })
+            .text("Delete");
+    }
+
+    addDirEntry(holder: d3.Selection<HTMLElement, any, any, any>, defaultDir: HeadAction, id: string) {
+        let dirEntry =
+            holder.append("div")
+                .classed("cell", true)
+                .append("div")
+                .attr("id", id)
+                .classed("dirEntryButton", true);
+        dirEntry.datum()["direction"] = defaultDir;
+        console.log(defaultDir);
+
+        this.addDirButton(dirEntry, "L", HeadAction.MoveLeft, defaultDir === HeadAction.MoveLeft);
+        this.addDirButton(dirEntry, "S", HeadAction.None, defaultDir === HeadAction.None);
+        this.addDirButton(dirEntry, "R", HeadAction.MoveRight, defaultDir === HeadAction.MoveRight);
     }
 
     addDirButton(holder: d3.Selection<HTMLDivElement, any, any, any>, text:string, datum: HeadAction, selected: boolean){
         holder.append("div")
             .text(text)
-            .attr("id", "rightSwitch")
-            .datum(datum)
             .classed("selected", selected)
             .on("click", function () {
-                holder.select(".selected").classed("selected", false);
+                holder.selectAll(".selected").classed("selected", false);
                 d3.select(this).classed("selected", true);
+                holder.datum()["direction"] = datum;
+                console.log(holder);
             });
     }
 
-    addButton(text: string, gridArea: string, funct): void {
+    addButton(holder: d3.Selection<HTMLElement, any, any, any>, text: string, id: string, funct): void {
         var t = this;
-        this.holder.append("div")
-            .attr("id", gridArea)
-            .style("grid-area", gridArea)
+        holder.append("div")
+            .attr("id", id)
+            .classed("cell", true)
             .append("div")
-            .classed("button", true)
-            .on("click", function(){funct(t)})
-            .text(text);
+                .classed("button", true)
+                .on("click", e => funct(t))
+                .text(text);
     }
 
-    addTextField(defaultText: string, gridArea: string): d3.Selection<HTMLInputElement, {}, HTMLElement, any> {
-        return this.holder.append("input")
-                            .attr("type", "text")
-                            .attr("id", gridArea)
-                            .attr("value", defaultText)
-                            .style("grid-area", gridArea);
-    }
-
-    addTag(text: string, gridArea: string): void{
-        this.holder.append("div").style("grid-area", gridArea).text(text);
+    addTextField(holder: d3.Selection<HTMLElement, any, any, any>, defaultText: string, id: string) {
+        holder
+            .append("input")
+                .attr("type", "text")
+                .attr("id", id)
+                .attr("value", defaultText)
     }
 
     submit(edgeEditor: EdgeEditor): void{
-        let onSymbol = edgeEditor.readField.node().value;
-        let outputSymbol = edgeEditor.writeField.node().value;
-        let headAction = edgeEditor.dirField.select(".selected").datum() as HeadAction;
-
-        
-        let transition = edgeEditor.stateMachine.getTransition(edgeEditor.edge.datum().transitionID);
-        transition.setOnSymbol(onSymbol);
-        transition.setOutputSymbol(outputSymbol);
-        transition.setHeadAction(headAction);
+        edgeEditor.holder.select(".body").selectAll(".row").each(function(d){
+            let onSymbol = (d3.select(this).select("#OnSymbol").node() as HTMLInputElement).value;
+            let outputSymbol =  (d3.select(this).select("#OutputSymbol").node() as HTMLInputElement).value;
+            let headAction = d3.select(this).select("#HeadAction").datum()["direction"];
+            console.log(d3.select(this).select("#HeadAction"));
+          
+            let transition = edgeEditor.stateMachine.getTransition(d["transitionID"] as TransitionID);
+          
+            transition.setOnSymbol(onSymbol);
+            transition.setOutputSymbol(outputSymbol);
+            transition.setHeadAction(headAction);
+        });
 
         console.log(edgeEditor.stateMachine.toString());        
-        edgeEditor.close(edgeEditor);
+        //edgeEditor.close(edgeEditor);
     }
 
     close(edgeEditor): void{

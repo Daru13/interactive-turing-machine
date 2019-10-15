@@ -1,6 +1,7 @@
 import { Graph, GraphDatum } from "./Graph";
 import * as d3 from "d3-selection";
 import { State, StateID } from "../../model/State";
+import { addLamp } from "../CustomShape/lamps";
 
 export enum NodeType {
     STANDARD = "standard",
@@ -31,18 +32,9 @@ export class Node{
                     .datum(datum)
                     .attr("id", "node-"+state.id);
 
-     node.append("circle")
-            .attr("cx", 0)
-            .attr("cy", 0)
-            .attr("r", Graph.sizeNode);
+        addLamp(node, Graph.sizeNode, "nodeCircle");
 
-        //addHandDrawnCircle(node, Graph.sizeNode, "nodeCircle");
-
-        node.append("text")
-            .attr("x",0)
-            .attr("y",-2)
-            .attr("text-anchor", "middle")
-            .text("N"+state.id);
+        Node.setLabel(node, state.getLabel());
 
         Node.translate(node, position.x, position.y);
     }
@@ -58,21 +50,31 @@ export class Node{
     }
 
     static isNode(selection: d3.Selection<any, any, any, any>): boolean{
-        if(selection.datum() !== undefined && selection.datum()["id"] !== undefined){
-            if(d3.select("#" + selection.datum()["id"]).classed("node")){
+        let child = selection.node();
+        let security = 100;
+        let i = 0;
+        while(child.parentElement.tagName != "BODY" && i < security){
+            if (d3.select(child).classed("node")) {
                 return true;
             }
+            child = child.parentElement;
+            i += 1;
         }
         return false;
     }
 
     static getHandle(selection: NodeElementSelection): NodeHandleSelection{
         var node: NodeHandleSelection;
-        if(selection.datum() !== undefined && selection.datum()["id"] !== undefined){
-            node = d3.select("#" + selection.datum()["id"]);
-            if(node.classed("node")){
+        let child = selection.node() as Element;
+        let security = 100;
+        let i = 0;
+        while (child.parentElement.tagName != "BODY" && i < security) {
+            if (d3.select(child).classed("node")) {
+                node = d3.select(child) as NodeHandleSelection;
                 return node;
             }
+            child = child.parentElement;
+            i += 1;
         }
         throw "Graph.ts (getNodeHandle): Selection is not part of a node";
     }
@@ -87,5 +89,14 @@ export class Node{
 
     static setFinalState(node: NodeHandleSelection, isFinal: boolean) {
         node.classed("final", isFinal);
+    }
+
+    static setCurrentNode(node: NodeHandleSelection) {
+        d3.selectAll(".current").classed("current", false);
+        node.classed("current", true);
+    }
+
+    static setLabel(node: NodeHandleSelection, label: string) {
+        node.select("#Text").select("text").text(label);
     }
 }

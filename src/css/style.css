@@ -23,7 +23,7 @@ body {
     grid-template-rows: 60px calc(100% - 240px) 180px;
     grid-template-areas:
         "menu menu"
-        "graph toolBar"
+        "graph graph"
         "tape tmButtons";
     user-select: none;
     overflow: hidden;
@@ -64,37 +64,60 @@ body {
     height: 100%;
 }
 
-.node circle {
-    stroke: black;
-    stroke-width: 2px;
-    fill: #fff;
+.node #Highlight {
+    display: none;
 }
 
-.node.start circle {
-    stroke: green;
+.node #Background {
+    fill: #545656;
 }
 
-.node.final circle {
-    filter: url(#dilate);
+.node #Lampe #Halo{
+    display: none;
 }
 
-.node.selected circle {
+.node #Lampe #BulbFill{
+    fill: #DEE0E0;
+}
+
+.node.final #Highlight {
+    display: initial;
+}
+
+.node.final #Background {
+    fill: #8CC63F;
+}
+
+.node.current #Lampe #Halo{
+    display: initial;
+}
+
+.node.current #Lampe #BulbFill{
+    fill: #FFE461;
+    filter: url(#lightOn);
+}
+
+.node.selected {
     filter: url(#outline);
 }
 
-.node.closestNode circle {
+.node.closestNode {
     filter: url(#outline);
 }
 
-.node.move circle {
+.node.move {
     filter: url(#blur);
 }
 
 .edge path {
     fill: none;
-    stroke: black;
+    stroke: #545555;
     stroke-width: 2px;
     marker-end: url(#arrowHead);
+}
+
+.edge.bigger path {
+    stroke-width: 5px;
 }
 
 .edge rect {
@@ -108,7 +131,6 @@ body {
 
 .edge.selected path {
     stroke: blue;
-    marker-end: url(#arrowHeadSelected);
 }
 
 .edgeInCreation {
@@ -125,19 +147,41 @@ body {
     border-radius: 5px;
     top: 40%;
     left: 40%;
-    height: 160px;
+    height: 200px;
     width: 400px;
     display: grid;
-    grid-template-columns: auto auto;
-    grid-template-rows: auto auto auto auto;
+    grid-template-columns: auto;
+    grid-template-rows: 50px auto 50px;
     grid-template-areas:
-        "readTag readEntry"
-        "writeTag writeEntry"
-        "dirTag dirEntry"
-        "submitButton cancelButton";
+        "header"
+        "body"
+        "footer"
 }
 
-.EdgeEditor div {
+.EdgeEditor .header{
+    grid-area: header;
+    display: grid;
+    grid-template-columns: 100px 100px 100px 100px;
+}
+
+.EdgeEditor .body{
+    grid-area: body;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+
+.EdgeEditor .footer{
+    grid-area: footer;
+    display: flex;
+}
+
+.EdgeEditor div.row {
+    display: grid;
+    grid-template-columns: 100px 100px 100px 100px;
+}
+
+.EdgeEditor div.cell {
     text-align: center;
     display: flex;
     justify-content: center;
@@ -178,11 +222,11 @@ body {
     border-radius: 5px;
     top: 40%;
     left: 40%;
-    height: 60px;
+    height: 90px;
     width: 200px;
     display: grid;
     grid-template-columns: 100px 100px;
-    grid-template-rows: 30px 30px;
+    grid-template-rows: 30px 30px 30px;
 }
 
 
@@ -193,26 +237,41 @@ body {
 /*****************************************************************/
 
 #toolBar {
-    grid-area: toolBar;
-    width: 100%;
-    height: 100%;
+    grid-area: graph;
+    position: absolute;
+    right:0;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 70px;
+    height: 140px;
     display: flex;
     flex-direction: column;
 }
 
-#toolBar div {
+#toolBar button {
     flex: 1;
+    box-sizing: initial;
     border: 0px solid #fff;
+    margin: 5px  0px;
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
 }
 
-#toolBar div.selected {
+#toolBar button.selected {
     border-radius: 5px;
     background-color: #eee;
 }
 
+#toolBar #nodeButton {
+    background-image: url("../icons/nodeButton.png");
+}
+
+#toolBar #edgeButton {
+    background-image: url("../icons/edgeButton.png");
+}
 
 
 
@@ -243,8 +302,13 @@ body {
     left: 40px;
 }
 
+#turingMachineButton #startButton {
+    background-color: khaki;
+}
 
-
+#turingMachineButton #resetButton {
+    background-color: khaki;
+}
 
 /******************************************************************
 /* TAPE

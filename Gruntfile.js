@@ -11,10 +11,11 @@ module.exports = function (grunt) {
     // They allow to run external commands (as in a terminal).
     exec: {
       clean: "rm -Rf build .tscache",
-      mkDirs: "mkdir -p build/icons build/img build/css",
+      mkDirs: "mkdir -p build/icons build/img build/svg build/css",
       copyHTML: "cp -f ./src/index.html build/index.html",
       copyIcons: "cp -f ./src/icons/* build/icons/",
       copyImg: "cp -f ./src/img/* build/img/",
+      copySVG: "cp -f ./src/svg/* build/svg/",
       copyCSS: "cp -f ./src/css/*.css build/css/"
     },
 
@@ -57,7 +58,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask("build",
     "Compile Typescript sources, Browserify them and copy static sources into the 'build' directory.",
-    ["ts", "browserify", "exec:mkDirs", "exec:copyHTML", "exec:copyCSS", "exec:copyIcons", "exec:copyImg"]
+    ["ts", "browserify", "exec:mkDirs", "exec:copyHTML", "exec:copyCSS", "exec:copyIcons", "exec:copyImg", "exec:copySVG"]
   );
 
 
