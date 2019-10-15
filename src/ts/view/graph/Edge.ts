@@ -179,15 +179,15 @@ export class Edge{
         let actionAsString = "";
         switch (headAction) {
             case HeadAction.MoveLeft:
-                actionAsString = "◀";
+                actionAsString = "⬅️";
                 break;
 
             case HeadAction.MoveRight:
-                actionAsString = "▶";
+                actionAsString = "➡️";
                 break;
 
             case HeadAction.None:
-                actionAsString = "▽";
+                actionAsString = "⬇️";
                 break;
 
             default:
@@ -197,6 +197,6 @@ export class Edge{
 
         let extraText = (edge.datum().transitionID.length > 1)? " ..." : "";
         edge.select("text")
-            .text(function (d) { return "R:" + onSymbol + "/W:" + outputSymbol + "/D:" + actionAsString + extraText});
+            .text(function (d) { return `📖:${onSymbol}, 📝:${outputSymbol}, ${actionAsString} ${extraText}`});
     }
 }
