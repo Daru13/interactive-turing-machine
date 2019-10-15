@@ -19,8 +19,8 @@ svg { overflow: visible; }
 
 body {
     display: grid;
-    grid-template-columns: auto 100px;
-    grid-template-rows: 60px calc(100% - 160px) 100px;
+    grid-template-columns: auto 260px;
+    grid-template-rows: 60px calc(100% - 240px) 180px;
     grid-template-areas:
         "menu menu"
         "graph toolBar"
@@ -55,12 +55,13 @@ body {
     grid-area: graph;
     width: 100%;
     height: 100%;
+    background-color: #e3e3e5;
+    border: 2px solid #bbb;
 }
 
 #graph svg {
     width: 100%;
     height: 100%;
-    border: 2px solid #bbb;
 }
 
 .node circle {
@@ -223,6 +224,23 @@ body {
     grid-area: tmButtons;
     width: 100%;
     height: 100%;
+    position: relative;
+    /* background-color: #555656; */
+    background-image: url("../img/controls-bg.png"), url("../img/tape-container-bg.png");
+    background-repeat: no-repeat, repeat-x;
+    background-position: center center, center bottom;
+}
+
+#turingMachineButton button:nth-child(1) {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+}
+
+#turingMachineButton button:nth-child(2) {
+    position: absolute;
+    top: 80px;
+    left: 40px;
 }
 
 
@@ -236,51 +254,76 @@ body {
     grid-area: tape;
     width: 100%;
     height: 100%;
-    border: 2px solid #aaa;
     position: relative;
-    overflow-y: visible;
-    overflow-x: hidden;
+    overflow: hidden;
+    background-image: url("../img/tape-container-bg.png");
+    background-repeat: repeat-x;
+    background-position: bottom;
+    z-index: 100;
+}
+
+/*
+#tapeHolder::before {
+    content: url("../img/tape-scroll.png");
+    position: absolute;
+    top: -5px;
+    left: 0;
+    z-index: 500;
+}
+*/
+
+#tapeHolder::after {
+    content: url("../img/tape-scroll.png");
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 500;
 }
 
 #tape {
     position: absolute;
-    margin-top: auto;
-    margin-bottom: auto;
-    height: 99%;
-    background-color: #eee;
-    overflow: hidden;
-    z-index: 500;
+    margin: 15px 0 0 0;
+    padding: 0 10px;
+    height: 156px;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
+    background-image: url("../img/tape-bg.png");
+    background-repeat: repeat-x;
+    background-position: 25px center;
+    z-index: 500;
+}
+
+#tape::before {
+    content: url("../img/tape-end.png");
+    position: absolute;
+    top: 0;
+    left: -25px;
+    z-index: 500;
 }
 
 #tape .cell {
     display: inline-block;
-    min-height: 90%;
-    max-height: 96%;
+    height: 60%;
     width: 90px;
-    border: 2px solid #aaa;
+    border: 2px solid rgba(0, 0, 0, 0.5);
     box-sizing: border-box;
-    margin-right: 2px;
-    margin-left: 2px;
-    overflow: hidden
+    margin: 5px 2px 0 2px;
+    overflow: hidden;
+    z-index: 200;
 }
 
 #tape .cell input[type=text] {
-    min-width: 90px;
-    max-width: 90px;
+    width: 100%;
+    height: 100%;
     border: none;
-    background-color: #bbb;
-    position: relative;
-    top: 0;
-    bottom: 0;
-    margin-top: auto;
-    margin-bottom: auto;
+    background: rgba(0, 0, 0, 0.1);
+    font-size: 2.5rem;
+    z-index: 250;
 }
 
 #tape .cell input[type=text]:hover {
-    background-color: #ccc;
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 #head {
