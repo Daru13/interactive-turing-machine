@@ -76,7 +76,12 @@
       <feMorphology operator="dilate" radius="4" in="SourceGraphic" result="offOut" />
       <feBlend in="SourceGraphic" in2="offOut" mode="normal" />
     </filter>
-  </defs>
+  
+        <radialGradient id="shadowGradient" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="40">
+            <stop offset="0" stop-color="#000000" />
+            <stop offset="1" stop-color="#000000" stop-opacity="0" />
+        </radialGradient>
+    </defs>
   </svg>
 
   <script type="text/javascript" src="itm.js"></script>

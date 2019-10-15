@@ -32,11 +32,24 @@ export class Node{
                     .datum(datum)
                     .attr("id", "node-"+state.id);
 
+        node.append("circle")
+            .attr("cx", 0)
+            .attr("cy", 0)
+            .attr("r", Graph.sizeNode+2)
+            .classed("shadow", true);
         addLamp(node, Graph.sizeNode, "nodeCircle");
+
+        node.on("animationend", () => {
+            node.classed("created", false); 
+            node.select("#shadow").remove();
+        });
+        node.classed("created", true);
 
         Node.setLabel(node, state.getLabel());
 
         Node.translate(node, position.x, position.y);
+
+        //node.classed("created", false);
     }
 
     static translate(node: NodeHandleSelection, dx: number, dy: number): void{
