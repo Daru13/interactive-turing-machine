@@ -2,8 +2,32 @@
 /* GENERAL RULES
 /*****************************************************************/
 
-root {
+:root {
     --cell-tape-width: 90px;
+    --node-size: 45;
+}
+
+@keyframes arrive {
+    0% { transform: scale(calc(5 * var(--node-size) / 115)); }
+    20% { transform: scale(calc(5 * var(--node-size) / 115)); }
+    100% { transform: scale(calc(2 * var(--node-size) / 115)); }
+}
+
+@keyframes arriveShadow{
+    0% {
+        transform: scale(3.5);
+        fill-opacity: 0.6;
+    }
+
+    20% {
+        transform: scale(3.5);
+        fill-opacity: 0.6;
+    }
+
+    100% {
+        transform: scale(1);
+        fill-opacity: 0.8;
+    }
 }
 
 html {
@@ -64,6 +88,27 @@ body {
     height: 100%;
 }
 
+.node.created #state {
+    animation-name: arrive;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+}
+
+.node .shadow {
+    fill: url(#shadowGradient);
+    fill-opacity: 0;
+}
+
+.node.created .shadow {
+    animation-name: arriveShadow;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+}
+
+.node #state {
+    transform: scale(calc(2 * var(--node-size) / 115));
+}
+
 .node #Highlight {
     display: none;
 }
@@ -118,6 +163,7 @@ body {
 
 .edge.bigger path {
     stroke-width: 5px;
+    marker-end: url(#arrowHeadSmaller);
 }
 
 .edge rect {

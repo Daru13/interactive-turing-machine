@@ -19,13 +19,14 @@ export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, {
 
 export class Graph {
     svg: GraphSelection;
-    static sizeNode: number = 40;
+    static sizeNode: number = parseInt(getComputedStyle(document.documentElement)
+        .getPropertyValue('--node-size'));
     turingMachine: TuringMachine;
 
     constructor(turingMachine: TuringMachine){
         this.svg = d3.select("#graph").append("svg");
         this.turingMachine = turingMachine;
-        this.setupListeners()
+        this.setupListeners();
     }
 
     getSVGElement(): SVGSVGElement{
