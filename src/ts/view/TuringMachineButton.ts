@@ -17,19 +17,25 @@ export class TuringMachineButton{
         var tM: TuringMachine = this.turingMachine;
         var tape: Tape = this.tape;
         this.holder = d3.select("#turingMachineButton");
-        this.holder.append("button").on("click", function(){
+        this.holder.append("button")
+            .attr("id", "startButton")
+            .on("click", function(){
+                tM.tape.setContent(tape.toArray());
+                console.log(tM.toString());
+                tM.run();
+                console.log(tM.toString());
+            })
+            .text("start");
+
+    this.holder.append("button")
+        .attr("id", "resetButton")
+        .on("click", function () {
             tM.tape.setContent(tape.toArray());
             console.log(tM.toString());
-            tM.run();
+            tM.tape.resetHeadPosition();
+            tM.stateMachine.setCurrentState(tM.stateMachine.getInitialState().id);
             console.log(tM.toString());
-        }).text("start");
-
-    this.holder.append("button").on("click", function () {
-        tM.tape.setContent(tape.toArray());
-        console.log(tM.toString());
-        tM.tape.resetHeadPosition();
-        tM.stateMachine.setCurrentState(tM.stateMachine.getInitialState().id);
-        console.log(tM.toString());
-    }).text("reset");
+        })
+        .text("reset");
     }
 }

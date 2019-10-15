@@ -284,8 +284,13 @@ body {
     height: 100%;
 }
 
+#turingMachineButton #startButton {
+    background-color: khaki;
+}
 
-
+#turingMachineButton #resetButton {
+    background-color: khaki;
+}
 
 /******************************************************************
 /* TAPE
