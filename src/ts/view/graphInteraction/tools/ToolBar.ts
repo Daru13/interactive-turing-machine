@@ -1,5 +1,5 @@
 import * as d3 from "d3-selection";
-import { MouseDispatcher, toolName } from "./graphInteraction/tools/MouseDispatcher";
+import { MouseDispatcher, toolName } from "./MouseDispatcher";
 
 export class ToolBar {
     nodeToolButton: d3.Selection<HTMLButtonElement, unknown, HTMLElement, any>;
@@ -34,5 +34,13 @@ export class ToolBar {
         d3.select("#toolBar").selectAll("button").classed("selected", false);
         buttonToSelect.classed("selected", true);
         this.toolManager.selectTool(id);
+    }
+
+    display(){
+        d3.select("#toolBar").classed("hidden", false);
+    }
+
+    hide(){
+        d3.select("#toolBar").classed("hidden", true);
     }
 }

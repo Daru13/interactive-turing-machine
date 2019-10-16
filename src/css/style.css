@@ -295,6 +295,10 @@ body {
     flex-direction: column;
 }
 
+#toolBar.hidden {
+    display: none;
+}
+
 #toolBar button {
     flex: 1;
     box-sizing: initial;

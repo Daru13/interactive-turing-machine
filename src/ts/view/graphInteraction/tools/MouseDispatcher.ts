@@ -1,7 +1,7 @@
 import { TuringMachine } from "../../../model/TuringMachine";
 import { Graph } from "../../graph/Graph";
 import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
-import { ToolBar } from "../../ToolBar";
+import { ToolBar } from "./ToolBar";
 import { EdgeTool } from "./EdgeTool";
 import { NodeTool } from "./NodeTool";
 import { GraphEventDispatcher } from "../GraphEventDispatcher";
@@ -62,5 +62,15 @@ export class MouseDispatcher extends GraphEventDispatcher{
     dispatchClickEvent(e: ModifiedPointerEvent){
         super.dispatchClickEvent(e);
         this.toolToInteraction[this.selectedTool].pointerClick(e);
+    }
+
+    activate(){
+        super.activate();
+        this.toolBar.display();
+    }
+
+    deactivate() {
+        super.activate();
+        this.toolBar.hide()
     }
 }
