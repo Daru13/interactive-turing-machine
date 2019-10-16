@@ -37,19 +37,20 @@ export class Node{
             .attr("cy", 0)
             .attr("r", Graph.sizeNode+2)
             .classed("shadow", true);
+
         addLamp(node, Graph.sizeNode, "nodeCircle");
+
+        node.selectAll("*").datum(datum);
 
         node.on("animationend", () => {
             node.classed("created", false); 
-            node.select("#shadow").remove();
+            node.select(".shadow").remove();
         });
         node.classed("created", true);
 
         Node.setLabel(node, state.getLabel());
 
         Node.translate(node, position.x, position.y);
-
-        //node.classed("created", false);
     }
 
     static translate(node: NodeHandleSelection, dx: number, dy: number): void{
@@ -63,31 +64,19 @@ export class Node{
     }
 
     static isNode(selection: d3.Selection<any, any, any, any>): boolean{
-        let child = selection.node();
-        let security = 100;
-        let i = 0;
-        while(child.parentElement.tagName != "BODY" && i < security){
-            if (d3.select(child).classed("node")) {
+        if (selection.datum() !== undefined && selection.datum()["id"] !== undefined) {
+            if (d3.select("#" + selection.datum()["id"]).classed("node")) {
                 return true;
             }
-            child = child.parentElement;
-            i += 1;
         }
         return false;
     }
 
     static getHandle(selection: NodeElementSelection): NodeHandleSelection{
-        var node: NodeHandleSelection;
-        let child = selection.node() as Element;
-        let security = 100;
-        let i = 0;
-        while (child.parentElement.tagName != "BODY" && i < security) {
-            if (d3.select(child).classed("node")) {
-                node = d3.select(child) as NodeHandleSelection;
-                return node;
+        if (selection.datum() !== undefined && selection.datum()["id"] !== undefined) {
+            if (d3.select("#" + selection.datum()["id"]).classed("node")) {
+                return d3.select("#" + selection.datum()["id"]);
             }
-            child = child.parentElement;
-            i += 1;
         }
         throw "Graph.ts (getNodeHandle): Selection is not part of a node";
     }
@@ -110,6 +99,10 @@ export class Node{
     }
 
     static setLabel(node: NodeHandleSelection, label: string) {
-        node.select("#Text").select("text").text(label);
+        let textToDisplay = label;
+        if (textToDisplay.length > 10){
+            textToDisplay = textToDisplay.substring(0,7) + "..."
+        }
+        node.select("#Text").select("text").text(textToDisplay);
     }
 }

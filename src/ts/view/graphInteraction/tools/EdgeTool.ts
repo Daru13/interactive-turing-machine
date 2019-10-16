@@ -1,11 +1,15 @@
 import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
 import { CreateEdgeAction } from "../../actions/CreateEdgeAction";
 import { Graph } from "../../graph/Graph";
-import { Node } from "../../graph/Node"; 
+import { Node, NodeElementSelection } from "../../graph/Node"; 
 import * as d3 from "d3-selection";
 import { TuringMachine } from "../../../model/TuringMachine";
 import { NodeHandleSelection } from "../../graph/Node";
 import { Helpers } from "../../../helpers";
+import { CreateNodeAction } from "../../actions/CreateNodeAction";
+import { EditNodeAction } from "../../actions/EditNodeAction";
+import { Edge, EdgeElementSelection } from "../../graph/Edge";
+import { EditEdgeAction } from "../../actions/EditEdgeAction";
 
 export class EdgeTool {
     previousX: number;
@@ -81,6 +85,17 @@ export class EdgeTool {
 
             d3.selectAll(".node.closestNode").classed("closestNode", false);
             console.log(this.tM.stateMachine.toString());
+        }
+    }
+
+    pointerClick(e: ModifiedPointerEvent) {
+        let target = e.target as d3.BaseType;
+        let targetSelection = d3.select(target);
+
+        if (this.node !== undefined) {
+            EditNodeAction.do(this.node, this.tM);
+        } else if (Edge.isAnEdge(targetSelection)) {
+            EditEdgeAction.do(Edge.getHandle(targetSelection as EdgeElementSelection), this.tM);
         }
     }
 

@@ -1,10 +1,13 @@
 import * as d3 from "d3-selection";
 import { Graph } from "../../graph/Graph";
-import { Node } from "../../graph/Node";
-import { Edge } from "../../graph/Edge";
+import { Node, NodeElementSelection } from "../../graph/Node";
+import { Edge, EdgeElementSelection } from "../../graph/Edge";
 import { TuringMachine } from "../../../model/TuringMachine";
 import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
 import { NodeHandleSelection } from "../../graph/Node";
+import { CreateNodeAction } from "../../actions/CreateNodeAction";
+import { EditNodeAction } from "../../actions/EditNodeAction";
+import { EditEdgeAction } from "../../actions/EditEdgeAction";
 
 export class NodeTool{
     previousX: number;
@@ -63,4 +66,17 @@ export class NodeTool{
 
     pointerLeave(e: ModifiedPointerEvent) {
     };
+
+    pointerClick(e: ModifiedPointerEvent){
+        let target = e.target as d3.BaseType;
+        let targetSelection = d3.select(target);
+
+        if (d3.select(target).property("tagName") == "svg") {
+            CreateNodeAction.do(e.x, e.y, this.turingMachine);
+        } else if (Node.isNode(targetSelection)) {
+            EditNodeAction.do(Node.getHandle(targetSelection as NodeElementSelection), this.turingMachine);
+        } else if (Edge.isAnEdge(targetSelection)) {
+            EditEdgeAction.do(Edge.getHandle(targetSelection as EdgeElementSelection), this.turingMachine);
+        }
+    }
 }

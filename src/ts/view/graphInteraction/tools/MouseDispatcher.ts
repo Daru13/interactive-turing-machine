@@ -1,15 +1,9 @@
-import { CreateNodeAction } from "../../actions/CreateNodeAction";
-import { EditNodeAction } from "../../actions/EditNodeAction";
 import { TuringMachine } from "../../../model/TuringMachine";
 import { Graph } from "../../graph/Graph";
-import * as d3 from "d3-selection";
 import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
-import { ToolBar } from "../../ToolBar";
+import { ToolBar } from "./ToolBar";
 import { EdgeTool } from "./EdgeTool";
 import { NodeTool } from "./NodeTool";
-import { Edge, EdgeElementSelection } from "../../graph/Edge";
-import { Node, NodeElementSelection } from "../../graph/Node";
-import { EditEdgeAction } from "../../actions/EditEdgeAction";
 import { GraphEventDispatcher } from "../GraphEventDispatcher";
 
 
@@ -67,14 +61,16 @@ export class MouseDispatcher extends GraphEventDispatcher{
 
     dispatchClickEvent(e: ModifiedPointerEvent){
         super.dispatchClickEvent(e);
-        let target = e.target as d3.BaseType;
-        let targetSelection = d3.select(target);
-        if (d3.select(target).property("tagName") == "svg") {
-            CreateNodeAction.do(e.x, e.y, this.tM);
-        } else if (Node.isNode(targetSelection)) {
-            EditNodeAction.do(Node.getHandle(targetSelection as NodeElementSelection), this.tM);
-        } else if (Edge.isAnEdge(targetSelection)) {
-            EditEdgeAction.do(Edge.getHandle(targetSelection as EdgeElementSelection), this.tM);
-        }
+        this.toolToInteraction[this.selectedTool].pointerClick(e);
+    }
+
+    activate(){
+        super.activate();
+        this.toolBar.display();
+    }
+
+    deactivate() {
+        super.activate();
+        this.toolBar.hide()
     }
 }
