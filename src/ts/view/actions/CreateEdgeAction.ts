@@ -15,9 +15,9 @@ export class CreateEdgeAction extends Action{
             .addTransition(new Transition(
                 tM.stateMachine.getState(fromNode.datum().stateID),
                 tM.stateMachine.getState(toNode.datum().stateID),
-                "unknown",
-                "unknown",
-                HeadAction.None));
+                "",
+                "",
+                HeadAction.MoveRight));
         console.log(tM.stateMachine.toString());
     }
 }
