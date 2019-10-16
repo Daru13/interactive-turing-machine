@@ -17,6 +17,7 @@ export class EdgeEditor{
         this.edge.classed("selected", true);
         this.stateMachine= stateMachine;
         this.setupUI();
+        this.setPosition();
     }
 
     setupUI(): void{
@@ -112,6 +113,15 @@ export class EdgeEditor{
                 .attr("value", defaultText)
     }
 
+    setPosition() {
+        let bbox = this.edge.node().getBoundingClientRect();
+        let bboxHolder = this.holder.node().getBoundingClientRect();
+
+        this.holder
+            .style("top", (bbox.top + bbox.height).toString() + "px")
+            .style("left", (bbox.left + (bbox.width - bboxHolder.width) / 2).toString() + "px");
+    }
+
     submit(edgeEditor: EdgeEditor): void{
         edgeEditor.holder.select(".body").selectAll(".row").each(function(d){
             let onSymbol = (d3.select(this).select("#OnSymbol").node() as HTMLInputElement).value;
@@ -127,7 +137,7 @@ export class EdgeEditor{
         });
 
         console.log(edgeEditor.stateMachine.toString());        
-        //edgeEditor.close(edgeEditor);
+        edgeEditor.close(edgeEditor);
     }
 
     close(edgeEditor): void{

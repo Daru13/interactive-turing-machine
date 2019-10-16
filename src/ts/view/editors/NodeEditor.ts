@@ -16,6 +16,7 @@ export class NodeEditor{
         this.node.classed("selected", true);
         this.tm = tm;
         this.setupUI();
+        this.setPosition();
     }
 
     setupUI(){
@@ -53,6 +54,15 @@ export class NodeEditor{
             .attr("type", "text")
             .attr("id", id)
             .attr("value", defaultText)
+    }
+
+    setPosition(){
+        let bbox = this.node.node().getBoundingClientRect();
+        let bboxHolder = this.holder.node().getBoundingClientRect();
+
+        this.holder
+            .style("top", (bbox.top + bbox.height).toString() + "px")
+            .style("left", (bbox.left + (bbox.width - bboxHolder.width) / 2).toString() + "px");
     }
 
     close(nodeEditor: NodeEditor){
