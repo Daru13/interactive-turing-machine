@@ -188,8 +188,8 @@ body {
 
 .edgeInCreation {
     stroke: #333;
-    stroke-width: 1px;
-    marker-end: url(#arrowHead);
+    stroke-width: 2px;
+    marker-end: url(#plug);
 }
 
 /******************************************************************
@@ -211,7 +211,7 @@ body {
     width: 400px;
 }
 
-.edge-editor .dirEntryButton {
+.edge-editor .head-action-selector {
     background: white;
     margin: 5px;
     display: grid;
@@ -219,11 +219,11 @@ body {
     border: 2px solid grey;
 }
 
-.edge-editor .dirEntryButton div {
+.edge-editor .head-action-selector button {
     min-width: 30px;
 }
 
-.edge-editor .dirEntryButton .selected {
+.edge-editor .head-action-selector .selected {
     background: grey;
 }
 

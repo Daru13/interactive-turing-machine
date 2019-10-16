@@ -9,15 +9,15 @@ import { Action } from "./Action";
 import { StateMachine } from "../../model/StateMachine";
 import { ModifiedPointerEvent } from "../../events/ModifiedPointerEvent";
 
-export class CreateEdgeAction extends Action{
+export class CreateEdgeAction extends Action {
     static do(fromNode: NodeHandleSelection, toNode: NodeHandleSelection, tM: TuringMachine){
         tM.stateMachine
             .addTransition(new Transition(
                 tM.stateMachine.getState(fromNode.datum().stateID),
                 tM.stateMachine.getState(toNode.datum().stateID),
-                "unknown",
-                "unknown",
-                HeadAction.None));
+                "",
+                "",
+                HeadAction.MoveRight));
         console.log(tM.stateMachine.toString());
     }
 }
