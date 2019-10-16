@@ -22,5 +22,7 @@ export class Pen {
     pointerLeave(e: ModifiedPointerEvent) {
         this.edgeTool.pointerLeave(e);
     };
-    click(e: ModifiedPointerEvent){}
+    click(e: ModifiedPointerEvent){
+        this.edgeTool.pointerClick(e);
+    }
 }

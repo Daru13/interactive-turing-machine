@@ -17,21 +17,17 @@ export class GraphEventDispatcher {
 
     setInteraction() {
         var t = this;
-        let ptDown = { x: 0, y: 0 };
-        let distPDown = 0;
+        let timeDown = 0;
         t.graph.getSVGElement().addEventListener("pointerdown",
             function (e) {
                 if (t.isActivated) {
-                    ptDown.x = e.x;
-                    ptDown.y = e.y;
-                    distPDown = 0;
+                    timeDown = new Date().getTime();
                     t.dispatchDownEvent(Helpers.transformEvent(e));
                 }
             });
         t.graph.getSVGElement().addEventListener("pointermove",
             function (e) {
                 if (t.isActivated) {
-                    distPDown = Helpers.distance2(ptDown, { x: e.x, y: e.y });
                     t.dispatchMoveEvent(Helpers.transformEvent(e));
                 }
             });
@@ -39,7 +35,7 @@ export class GraphEventDispatcher {
             function (e) {
                 if (t.isActivated) {
                     t.dispatchUpEvent(Helpers.transformEvent(e));
-                    if (distPDown < Graph.sizeNode / 2) {
+                    if (Math.abs(new Date().getTime() - timeDown) < 200) {
                         t.dispatchClickEvent(Helpers.transformEvent(e));
                     }
                 }
