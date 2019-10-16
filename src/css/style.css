@@ -278,6 +278,10 @@ body {
     border: 4px solid #ccc;
 }
 
+#toolBar button:not(.selected):hover {
+    background-color: #ccc; 
+}
+
 #toolBar button.selected {
     background-color: #bbb;
     border: 4px solid #333;
