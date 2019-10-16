@@ -48,7 +48,7 @@ export class EdgeEditor extends Editor{
             this.addTextField(transition.getOutputSymbol(), "output-symbol", null, cell);
 
             cell = row.append("td")
-            this.addDirEntry(row, transition.getHeadAction(), "head-action");
+            this.addHeadActionSelector(row, transition.getHeadAction(), "head-action");
 
             cell = row.append("td")
             this.addDeleteTransitionButton(row);
@@ -71,22 +71,22 @@ export class EdgeEditor extends Editor{
             .text("Delete");
     }
 
-    addDirEntry(holder: d3.Selection<HTMLElement, any, any, any>, defaultDir: HeadAction, id: string) {
+    addHeadActionSelector(holder: d3.Selection<HTMLElement, any, any, any>, defaultDir: HeadAction, id: string) {
         let dirEntry =
             holder
                 .append("div")
                 .attr("id", id)
-                .classed("dirEntryButton", true);
+                .classed("head-action-selector", true);
         dirEntry.datum()["direction"] = defaultDir;
         console.log(defaultDir);
 
-        this.addDirButton(dirEntry, "L", HeadAction.MoveLeft, defaultDir === HeadAction.MoveLeft);
-        this.addDirButton(dirEntry, "S", HeadAction.None, defaultDir === HeadAction.None);
-        this.addDirButton(dirEntry, "R", HeadAction.MoveRight, defaultDir === HeadAction.MoveRight);
+        this.addHeadActionOption(dirEntry, "L", HeadAction.MoveLeft, defaultDir === HeadAction.MoveLeft);
+        this.addHeadActionOption(dirEntry, "S", HeadAction.None, defaultDir === HeadAction.None);
+        this.addHeadActionOption(dirEntry, "R", HeadAction.MoveRight, defaultDir === HeadAction.MoveRight);
     }
 
-    addDirButton(holder: d3.Selection<HTMLDivElement, any, any, any>, text:string, datum: HeadAction, selected: boolean){
-        holder.append("div")
+    addHeadActionOption(holder: d3.Selection<HTMLDivElement, any, any, any>, text:string, datum: HeadAction, selected: boolean){
+        holder.append("button")
             .text(text)
             .classed("selected", selected)
             .on("click", function () {
