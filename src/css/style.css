@@ -87,6 +87,14 @@ body {
     height: 100%;
 }
 
+.node:hover {
+    filter: url(#outline)
+}
+
+.node.created {
+    filter : none;
+}
+
 .node.created #state {
     animation-name: arrive;
     animation-duration: 0.5s;
