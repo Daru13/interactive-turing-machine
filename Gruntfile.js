@@ -13,9 +13,7 @@ module.exports = function (grunt) {
       clean: "rm -Rf build .tscache",
       mkDirs: "mkdir -p build/icons build/img build/svg build/css",
       copyHTML: "cp -f ./src/index.html build/index.html",
-      copyIcons: "cp -f ./src/icons/* build/icons/",
       copyImg: "cp -f ./src/img/* build/img/",
-      copySVG: "cp -f ./src/svg/* build/svg/",
       copyCSS: "cp -f ./src/css/*.css build/css/"
     },
 
@@ -52,13 +50,23 @@ module.exports = function (grunt) {
   /***************************************************************************/
 
   grunt.registerTask("clean",
-    "Remove the 'build' directory and clean temp/cache directories.",
+    "Delete the build directory as well as temporary files and caches.",
     "exec:clean"
   );
 
+  grunt.registerTask("copy-static-files",
+    "Copy static files into the build directory.",
+    ["exec:mkDirs", "exec:copyHTML", "exec:copyCSS", "exec:copyImg"]
+  );
+
+  grunt.registerTask("compile",
+    "Compile Typescript sources (using browserify) into the build directory.",
+    ["ts", "browserify"]
+  );
+
   grunt.registerTask("build",
-    "Compile Typescript sources, Browserify them and copy static sources into the 'build' directory.",
-    ["ts", "browserify", "exec:mkDirs", "exec:copyHTML", "exec:copyCSS", "exec:copyIcons", "exec:copyImg", "exec:copySVG"]
+    "Copy static files and compile Typescript sources into the build directory.",
+    ["copy-static-files", "compile"]
   );
 
 

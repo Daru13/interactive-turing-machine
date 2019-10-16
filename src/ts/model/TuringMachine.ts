@@ -76,6 +76,11 @@ export class TuringMachine {
         return nbSteps;
     }
 
+    reset() {
+        this.tape.resetHeadPosition();
+        this.stateMachine.resetCurrentState();
+    }
+
     toString(useLabels: boolean = true) {
         let str = "";
 

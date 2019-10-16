@@ -3,7 +3,7 @@ export enum customShapes {
 };
 
 let customShapesToFiles = {
-    "lamp": "../../svg/lamp.svg"
+    "lamp": "../../img/lamp.svg"
 }
 
 let defaultShapes = {

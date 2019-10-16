@@ -18,24 +18,33 @@ export class TuringMachineButton{
         var tape: Tape = this.tape;
         this.holder = d3.select("#turingMachineButton");
         this.holder.append("button")
-            .attr("id", "startButton")
+            .attr("id", "runButton")
             .on("click", function(){
+                tM.tape.setContent(tape.toArray());
+                console.log(tM.toString());
+                tM.runOneStep();
+                console.log(tM.toString());
+            })
+            .text("Run");
+
+        this.holder.append("button")
+            .attr("id", "runOneStepButton")
+            .on("click", function () {
                 tM.tape.setContent(tape.toArray());
                 console.log(tM.toString());
                 tM.run();
                 console.log(tM.toString());
             })
-            .text("start");
+            .text("Step");
 
-    this.holder.append("button")
-        .attr("id", "resetButton")
-        .on("click", function () {
-            tM.tape.setContent(tape.toArray());
-            console.log(tM.toString());
-            tM.tape.resetHeadPosition();
-            tM.stateMachine.setCurrentState(tM.stateMachine.getInitialState().id);
-            console.log(tM.toString());
-        })
-        .text("reset");
+        this.holder.append("button")
+            .attr("id", "resetButton")
+            .on("click", function () {
+                tM.tape.setContent(tape.toArray());
+                console.log(tM.toString());
+                tM.reset();
+                console.log(tM.toString());
+            })
+            .text("Reset");
     }
 }
