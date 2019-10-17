@@ -13,6 +13,7 @@ import { TuringMachine } from "../../model/TuringMachine";
 import { Transition } from "../../model/Transition";
 import { NewCurrentStateEvent } from "../../events/NewCurrentStateEvent";
 import { EditStateEvent } from "../../events/EditStateEvent";
+import { Generator } from "./Generator";
 
 export interface GraphDatum {};
 export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, {}>;
@@ -24,10 +25,17 @@ export class Graph {
     turingMachine: TuringMachine;
 
     constructor(turingMachine: TuringMachine){
+        this.turingMachine = turingMachine;
+        this.init()
+    }
+
+    init(){
         this.svg = d3.select("#graph").append("svg");
         this.svg.append("g").attr("id", "edges");
         this.svg.append("g").attr("id", "nodes");
-        this.turingMachine = turingMachine;
+
+        new Generator(this);
+
         this.setupListeners();
     }
 
