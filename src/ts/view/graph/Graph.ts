@@ -66,7 +66,11 @@ export class Graph {
         })
 
         EventManager.registerHandler("newCurrentState", function (e: NewCurrentStateEvent) {
-            Node.setCurrentNode(Node.getHandleByStateId(e.state.id));
+            if(e.state === null){
+                Node.resetCurrentNode();
+            }else{
+                Node.setCurrentNode(Node.getHandleByStateId(e.state.id));
+            }
         })
 
         EventManager.registerHandler("editFinalState", function (e: EditFinalStateEvent) {

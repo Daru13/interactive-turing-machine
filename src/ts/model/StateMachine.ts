@@ -96,6 +96,7 @@ export class StateMachine {
 
     resetCurrentState() {
         this.currentState = null;
+        EventManager.emit(new NewCurrentStateEvent(this.currentState));
     }
 
     addTransition(transition: Transition) {
