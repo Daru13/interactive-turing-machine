@@ -31,10 +31,10 @@ export class Graph {
 
     init(){
         this.svg = d3.select("#graph").append("svg");
+        
+        new Generator(this);
         this.svg.append("g").attr("id", "edges");
         this.svg.append("g").attr("id", "nodes");
-
-        new Generator(this);
 
         this.setupListeners();
     }
