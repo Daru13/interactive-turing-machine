@@ -26,7 +26,7 @@ export class Node{
         let position = state.getPosition();
         let datum: NodeDatum = {x: 0, y: 0, id: "node-" + state.id, stateID: state.id};
         let node: NodeHandleSelection =
-            graph.getSVG()
+            graph.getNodesGroup()
                 .append("g")
                     .classed("node", true)
                     .datum(datum)

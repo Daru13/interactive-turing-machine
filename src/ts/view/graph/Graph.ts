@@ -25,6 +25,8 @@ export class Graph {
 
     constructor(turingMachine: TuringMachine){
         this.svg = d3.select("#graph").append("svg");
+        this.svg.append("g").attr("id", "edges");
+        this.svg.append("g").attr("id", "nodes");
         this.turingMachine = turingMachine;
         this.setupListeners();
     }
@@ -35,6 +37,14 @@ export class Graph {
 
     getSVG(): GraphSelection{
         return this.svg;
+    }
+
+    getNodesGroup(): d3.Selection<SVGGElement, any, any, any>{
+        return this.svg.select("#nodes");
+    }
+
+    getEdgesGroup(): d3.Selection<SVGGElement, any, any, any> {
+        return this.svg.select("#edges");
     }
 
     setupListeners(){

@@ -25,7 +25,7 @@ export class Edge{
 
         let datum: EdgeDatum = { id: id, transitionID: [transition.id ]};
         var edgeHandle :EdgeHandleSelection =
-            graph.getSVG()
+            graph.getEdgesGroup()
                 .append("g")
                 .datum(datum)
                 .attr("id", id)
