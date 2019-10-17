@@ -120,8 +120,8 @@ export class Edge{
 
         let startX = r * Math.sin(0.1);
         let startY = r * Math.cos(0.1);
-        let finalX = -1 * (r + 7) * Math.sin(0.1);//7 is for size of marker
-        let finalY = (r + 7) * Math.cos(0.1) ;
+        let finalX = -1 * (r) * Math.sin(0.1);//7 is for size of marker
+        let finalY = (r) * Math.cos(0.1) ;
         
         edge.select("path").attr("d", 
             "M" + startX + "," + startY + 
