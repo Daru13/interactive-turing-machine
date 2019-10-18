@@ -192,23 +192,150 @@ body {
     marker-end: url(#plug);
 }
 
+
+
 /******************************************************************
-/* Editor
+/* POPUP & PROPERTY EDITORS
 /*****************************************************************/
+
+/* background-color: #66686b; #3b3c3d; #494a4c; */
 
 .popup {
     z-index: 3000;
     position: absolute;
-    background: white;
-    border: 2px solid rgb(97, 51, 51);
-    border-radius: 5px;
+    background-color: #dbe3e3;
+    /* border: 5px solid #66686b; */
+    /* border-radius: 10px; */
+    color: #3b3c3d;
+    box-shadow: 0 0 50px #3b3c3d;
 }
+
+.popup-title {
+    width: 100%;
+    background-color: #66686b;
+    color: #FFF;
+    font-size: 1.6rem;
+    text-align: center;
+}
+
+.popup-content {
+    padding: 10x;
+}
+
+.popup-content button {
+    margin: 0;
+    padding: 10px 20px 15px 20px;
+    background-color: #66686b;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    border: none;
+    color: #FFF;
+    font-size: 1.4rem;
+    box-shadow: 0 -5px 0 #3b3c3d inset;
+    transition: 20ms linear;
+}
+
+.popup-content button:hover {
+    padding: 13px 20px 12px 20px;
+    background-color: #494a4c;
+    box-shadow: 0 -2px 0 #3b3c3d inset;
+}
+
+.popup-content input[type = text] {
+    margin: 0;
+    padding: 10px;
+    background-color: #ebd9c1;
+    border: 2px solid #cab8a4;
+    color: #3b3c3d;
+    font-size: 1.4rem;
+    box-shadow: 0 5px 0 #ddc6b1 inset, 0 -5px 0 #ddc6b1 inset;
+    transition: 20ms linear;
+}
+
+.popup-content input[type = text]:hover {
+    box-shadow: 0 8px 0 #ddc6b1 inset, 0 -8px 0 #ddc6b1 inset;
+}
+
+.popup-content input[type = text]:focus {
+    border-color: #3b3c3d;
+}
+
+.background-mask  {
+    position: absolute;
+    z-index: 2999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/*****************************************************************/
+
+.node-editor {
+    top: 40%;
+    left: 40%;
+}
+
+.node-editor .popup-content {
+    display: grid;
+    padding: 10px;
+    grid-template-rows: 50px 50px;
+    grid-template-columns: auto auto auto;
+    grid-template-areas:
+        "initial initial initial"
+        "label   final   delete";
+    gap: 10px;
+}
+
+.node-editor #node-set-initial-button {
+    grid-area: initial;
+    /* width: 100%; */
+    /* margin: 20px 5px; */
+}
+
+.node-editor #node-set-label-field {
+    grid-area: label;
+}
+
+.node-editor #node-set-final-button {
+    grid-area: final;
+}
+
+.node-editor #node-delete-button {
+    grid-area: delete;
+    width: 50px;
+    height: 50px;
+    background-color: #b3484a;
+    background-image: url(../img/close.svg);
+    background-size: 90%;
+    background-position-y: calc(50% - 3px);
+    color: transparent;
+    overflow: hidden;
+    box-shadow: 0 -5px 0 #821e1f inset;
+}
+
+.node-editor #node-delete-button:hover {
+    background-position-y: 50%;
+    background-color: #9e2627;
+    box-shadow: 0 -2px 0 #821e1f inset;
+}
+
+/*****************************************************************/
 
 .edge-editor {
     top: 40%;
     left: 40%;
-    height: 200px;
-    width: 400px;
+}
+
+.edge-editor .popup-content > table tr {
+    height: 80px;
+}
+
+.edge-editor .input-symbol input[type = text],
+.edge-editor .output-symbol input[type = text] {
+    max-width: 80px;
 }
 
 .edge-editor .head-action-selector {
@@ -227,28 +354,26 @@ body {
     background: grey;
 }
 
-.node-editor {
-    top: 40%;
-    left: 40%;
-    height: 90px;
-    width: 200px;
-    display: grid;
-    grid-template-columns: 100px 100px;
-    grid-template-rows: 30px 30px 30px;
+.edge-editor .delete-transition > button {
+    grid-area: delete;
+    width: 50px;
+    height: 50px;
+    background-color: #b3484a;
+    background-image: url(../img/close.svg);
+    background-size: 90%;
+    background-position-y: calc(50% - 3px);
+    color: transparent;
+    overflow: hidden;
+    box-shadow: 0 -5px 0 #821e1f inset;
 }
 
-.background-mask  {
-    position: absolute;
-    z-index: 2999;
-    top: 0;
-    left: 0;
-    min-width: 100%;
-    max-width: 100%;
-    min-height: 100%;
-    max-height: 100%;
-    background-color: tomato;
-    filter: opacity(0.5);
+.edge-editor .delete-transition > button:hover {
+    background-position-y: 50%;
+    background-color: #9e2627;
+    box-shadow: 0 -2px 0 #821e1f inset;
 }
+
+
 
 
 /******************************************************************
