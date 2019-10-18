@@ -42,14 +42,14 @@ export class NodeTool{
             this.turingMachine
                 .stateMachine.getState(this.node.datum().stateID)
                 .getInTransitions()
-                .forEach((t) => TransitionEdge.getTransitionEdgeByTransitionID(t.id)
+                .forEach((t) => this.graph.transitionIdToTransitionEdge.get(t.id)
                     .redrawTransitionEdge(
                         Node.getHandleByStateId(t.fromState.id),
                         Node.getHandleByStateId(t.toState.id)));
             this.turingMachine
                 .stateMachine.getState(this.node.datum().stateID)
                 .getOutTransitions()
-                .forEach((t) => TransitionEdge.getTransitionEdgeByTransitionID(t.id)
+                .forEach((t) => this.graph.transitionIdToTransitionEdge.get(t.id)
                     .redrawTransitionEdge(
                         Node.getHandleByStateId(t.fromState.id),
                         Node.getHandleByStateId(t.toState.id)));

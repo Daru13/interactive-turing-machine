@@ -7,15 +7,12 @@ import { HeadAction, TapeSymbol } from "../../../model/Tape";
 import { Edge, EdgeId, EdgeSelection } from "./Edge";
 
 export class TransitionEdge extends Edge {
-    static transitionIdToTransitionEdge = {} as Record<TransitionID, TransitionEdge>;
     readonly transitionIDs: TransitionID[];
 
     constructor(graph: Graph, transition: Transition) {
         super(graph);
 
-        TransitionEdge.transitionIdToTransitionEdge[transition.id] = this;
-        this.transitionIDs = [transition.id];
-    
+        this.transitionIDs = [transition.id];    
         this.initTransitionEdge(transition);
      }
 
@@ -30,7 +27,6 @@ export class TransitionEdge extends Edge {
      }
 
     addTransitionToEdge (transition: Transition) {
-        TransitionEdge.transitionIdToTransitionEdge[transition.id] = this;
         this.transitionIDs.push(transition.id);
         this.handleSelection.classed("bigger", true);
     }
@@ -50,17 +46,13 @@ export class TransitionEdge extends Edge {
             dy = Math.sin(angle) * Graph.sizeNode;
             this.redraw({ x: pt1.x + dx, y: pt1.y + dy }, { x: pt2.x - dx, y: pt2.y - dy }, curved);
         }
-        
-        
     }
 
     deleteTransitionEdge(transitionId: TransitionID): void {
         let index = this.transitionIDs.indexOf[transitionId];
 
-        delete TransitionEdge.transitionIdToTransitionEdge[transitionId];
         this.transitionIDs.splice(index, 1);
-
-        this.handleSelection.classed("bigger", this.transitionIDs.length == 1);
+        this.handleSelection.classed("bigger", this.transitionIDs.length !== 1);
         if (this.transitionIDs.length === 0) {
             this.delete();
         }
@@ -75,13 +67,6 @@ export class TransitionEdge extends Edge {
             return selection.datum()["edge"];
         }
         
-    }
-
-    static getTransitionEdgeByTransitionID(transitionID: TransitionID): TransitionEdge {
-        if (TransitionEdge.transitionIdToTransitionEdge.hasOwnProperty(transitionID)) {
-            return TransitionEdge.transitionIdToTransitionEdge[transitionID];
-        }
-        throw "No matching edge for the transition id"
     }
 
     drawTransitionText(onSymbol: TapeSymbol, outputSymbol: TapeSymbol, headAction: HeadAction): void {

@@ -13,18 +13,21 @@ import { NewCurrentStateEvent } from "../../events/NewCurrentStateEvent";
 import { EditStateEvent } from "../../events/EditStateEvent";
 import { Generator } from "./Node/GeneratorNode";
 import { TransitionEdge } from "./Edge/TransitionEdge";
+import { TransitionID } from "../../model/Transition";
 
 export interface GraphDatum {};
 export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, {}>;
 
 export class Graph {
-    svg: GraphSelection;
     static sizeNode: number = parseInt(getComputedStyle(document.documentElement)
         .getPropertyValue('--node-size'));
     turingMachine: TuringMachine;
+    svg: GraphSelection;
+    transitionIdToTransitionEdge: Map<TransitionID, TransitionEdge>;
 
     constructor(turingMachine: TuringMachine){
         this.turingMachine = turingMachine;
+        this.transitionIdToTransitionEdge = new Map();
         this.init()
     }
 
@@ -55,9 +58,9 @@ export class Graph {
     }
 
     setupListeners(){
-        var t = this;
+        var thisGraph = this;
         EventManager.registerHandler("newState", function(e: NewStateEvent) {
-            Node.add(t, e.state);
+            Node.add(thisGraph, e.state);
         })
 
         EventManager.registerHandler("editInitialState", function (e: EditInitialStateEvent) {
@@ -88,22 +91,27 @@ export class Graph {
                 let added = false;
                 e.transition.fromState.getOutTransitions().forEach(t => {
                     if(t.toState === e.transition.toState && t.id !== e.transition.id && !added){
-                        TransitionEdge.getTransitionEdgeByTransitionID(t.id).addTransitionToEdge(e.transition);
+                        let transitionEdge = thisGraph.transitionIdToTransitionEdge.get(t.id);
+                        transitionEdge.addTransitionToEdge(e.transition);
+                        thisGraph.transitionIdToTransitionEdge.set(e.transition.id, transitionEdge);
                         added = true;
                         return;
                     }
                 });
                 if(!added){
-                    new TransitionEdge(t, e.transition);
+                    let newTransitionEdge = new TransitionEdge(thisGraph, e.transition);
+                    thisGraph.transitionIdToTransitionEdge.set(e.transition.id, newTransitionEdge);
+                    console.log(thisGraph.transitionIdToTransitionEdge)
                 }
         })
 
         EventManager.registerHandler("deleteTransition", function(e: DeleteTransitionEvent) {
-            TransitionEdge.getTransitionEdgeByTransitionID(e.transition.id).deleteTransitionEdge(e.transition.id);
+            thisGraph.transitionIdToTransitionEdge.get(e.transition.id).deleteTransitionEdge(e.transition.id);
+            thisGraph.transitionIdToTransitionEdge.delete(e.transition.id)
         })
 
         EventManager.registerHandler("editTransition", function (e: EditTransitionEvent) {
-            TransitionEdge.getTransitionEdgeByTransitionID(e.transition.id)
+            thisGraph.transitionIdToTransitionEdge.get(e.transition.id)
                 .drawTransitionText(
                     e.transition.getOnSymbol(),
                     e.transition.getOutputSymbol(),
