@@ -26,7 +26,7 @@ export class NodeEditor extends Editor{
         this.addButton("Initial", () => {
             this.tm.stateMachine.setInitialState(this.node.datum().stateID);
             console.log(this.tm.stateMachine.toString());
-        }, "node-set-intial-button")
+        }, "node-set-initial-button")
 
         this.addButton("Final",  () => {
             let state = this.tm.stateMachine.getState(this.node.datum().stateID);

@@ -52,7 +52,7 @@ export class Editor extends Popup{
         if (id !== null) {
             textField.attr("id", id);
         }
-        if (id !== null) {
+        if (classElement !== null) {
             textField.classed(classElement, true);
         }            
     }

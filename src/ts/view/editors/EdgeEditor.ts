@@ -41,17 +41,17 @@ export class EdgeEditor extends Editor{
             let transition = this.stateMachine.getTransition(tId);
             let row = body.append("tr").datum({ transitionID: tId});
             let cell;
-            cell = row.append("td")
-            this.addTextField(transition.getOnSymbol(), "input-symbol", null, cell);
+            cell = row.append("td").classed("input-symbol", true);
+            this.addTextField(transition.getOnSymbol(), null, null, cell);
 
-            cell = row.append("td")
-            this.addTextField(transition.getOutputSymbol(), "output-symbol", null, cell);
+            cell = row.append("td").classed("output-symbol", true);
+            this.addTextField(transition.getOutputSymbol(), null, null, cell);
 
-            cell = row.append("td")
-            this.addHeadActionSelector(row, transition.getHeadAction(), "head-action");
+            cell = row.append("td").classed("head-action", true);
+            this.addHeadActionSelector(cell, transition.getHeadAction());
 
-            cell = row.append("td")
-            this.addDeleteTransitionButton(row);
+            cell = row.append("td").classed("delete-transition", true);
+            this.addDeleteTransitionButton(cell);
         });
     }
 
@@ -59,7 +59,6 @@ export class EdgeEditor extends Editor{
         let t = this;
         holder
             .append("button")
-            .classed("delete-action", true)
             .on("click", function(){
                 t.stateMachine.removeTransition(holder.datum()["transitionID"]);
                 holder.remove();
@@ -71,11 +70,10 @@ export class EdgeEditor extends Editor{
             .text("Delete");
     }
 
-    addHeadActionSelector(holder: d3.Selection<HTMLElement, any, any, any>, defaultDir: HeadAction, id: string) {
+    addHeadActionSelector(holder: d3.Selection<HTMLElement, any, any, any>, defaultDir: HeadAction) {
         let dirEntry =
             holder
                 .append("div")
-                .attr("id", id)
                 .classed("head-action-selector", true);
         dirEntry.datum()["direction"] = defaultDir;
         console.log(defaultDir);
@@ -99,9 +97,10 @@ export class EdgeEditor extends Editor{
     submit(): void{
         var t = this
         this.holder.select("tbody").selectAll("tr").each(function(d){
-            let onSymbol = (d3.select(this).select("#input-symbol").node() as HTMLInputElement).value;
-            let outputSymbol = (d3.select(this).select("#output-symbol").node() as HTMLInputElement).value;
-            let headAction = d3.select(this).select("#head-action").datum()["direction"];
+            let row = d3.select(this);
+            let onSymbol = (row.select(".input-symbol").select("input").node() as HTMLInputElement).value;
+            let outputSymbol = (row.select(".output-symbol").select("input").node() as HTMLInputElement).value;
+            let headAction = row.select(".head-action").select(".selected").datum()["direction"];
           
             let transition = t.stateMachine.getTransition(d["transitionID"] as TransitionID);
           
