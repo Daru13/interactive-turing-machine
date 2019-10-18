@@ -1,13 +1,13 @@
 import * as d3 from "d3-selection";
 import { Graph } from "../../graph/Graph";
-import { Node, NodeElementSelection } from "../../graph/Node";
-import { Edge, EdgeElementSelection } from "../../graph/Edge";
+import { Node, NodeElementSelection } from "../../graph/Node/Node";
 import { TuringMachine } from "../../../model/TuringMachine";
 import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
-import { NodeHandleSelection } from "../../graph/Node";
+import { NodeHandleSelection } from "../../graph/Node/Node";
 import { CreateNodeAction } from "../../actions/CreateNodeAction";
 import { EditNodeAction } from "../../actions/EditNodeAction";
 import { EditEdgeAction } from "../../actions/EditEdgeAction";
+import { TransitionEdge } from "../../graph/Edge/TransitionEdge";
 
 export class NodeTool{
     previousX: number;
@@ -42,15 +42,17 @@ export class NodeTool{
             this.turingMachine
                 .stateMachine.getState(this.node.datum().stateID)
                 .getInTransitions()
-                .forEach((t) => Edge.move(Edge.getHandleByTransitionId(t.id),
-                    Node.getHandleByStateId(t.fromState.id),
-                    Node.getHandleByStateId(t.toState.id)));
+                .forEach((t) => TransitionEdge.getTransitionEdgeByTransitionID(t.id)
+                    .redrawTransitionEdge(
+                        Node.getHandleByStateId(t.fromState.id),
+                        Node.getHandleByStateId(t.toState.id)));
             this.turingMachine
                 .stateMachine.getState(this.node.datum().stateID)
                 .getOutTransitions()
-                .forEach((t) => Edge.move(Edge.getHandleByTransitionId(t.id),
-                    Node.getHandleByStateId(t.fromState.id),
-                    Node.getHandleByStateId(t.toState.id)));
+                .forEach((t) => TransitionEdge.getTransitionEdgeByTransitionID(t.id)
+                    .redrawTransitionEdge(
+                        Node.getHandleByStateId(t.fromState.id),
+                        Node.getHandleByStateId(t.toState.id)));
         }
 
         this.previousX = e.x;
@@ -75,8 +77,8 @@ export class NodeTool{
             CreateNodeAction.do(e.x, e.y, this.turingMachine);
         } else if (Node.isNode(targetSelection)) {
             EditNodeAction.do(Node.getHandle(targetSelection as NodeElementSelection), this.turingMachine);
-        } else if (Edge.isAnEdge(targetSelection)) {
-            EditEdgeAction.do(Edge.getHandle(targetSelection as EdgeElementSelection), this.turingMachine);
+        } else if (TransitionEdge.isTransitionEdge(targetSelection)) {
+            EditEdgeAction.do(TransitionEdge.getTransitionEdge(targetSelection), this.turingMachine);
         }
     }
 }

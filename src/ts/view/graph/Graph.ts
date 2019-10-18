@@ -1,19 +1,18 @@
 import * as d3 from "d3-selection";
 import { EventManager } from "../../events/EventManager";
-import { Node, NodeHandleSelection } from "./Node"
+import { Node } from "./Node/Node"
 import { NewStateEvent } from "../../events/NewStateEvent";
 import { DeleteStateEvent } from "../../events/DeleteStateEvent";
 import { NewTransitionEvent } from "../../events/NewTransitionEvent";
 import { DeleteTransitionEvent } from "../../events/DeleteTransitionEvent";
-import { Edge, EdgeHandleSelection } from "./Edge";
 import { EditTransitionEvent } from "../../events/EditTransitionEvent";
 import { EditInitialStateEvent } from "../../events/EditInitialStateEvent";
 import { EditFinalStateEvent } from "../../events/EditFinalStateEvent";
 import { TuringMachine } from "../../model/TuringMachine";
-import { Transition } from "../../model/Transition";
 import { NewCurrentStateEvent } from "../../events/NewCurrentStateEvent";
 import { EditStateEvent } from "../../events/EditStateEvent";
-import { Generator } from "./Generator";
+import { Generator } from "./Node/GeneratorNode";
+import { TransitionEdge } from "./Edge/TransitionEdge";
 
 export interface GraphDatum {};
 export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, {}>;
@@ -89,25 +88,26 @@ export class Graph {
                 let added = false;
                 e.transition.fromState.getOutTransitions().forEach(t => {
                     if(t.toState === e.transition.toState && t.id !== e.transition.id && !added){
-                        Edge.addToEdge(Edge.getHandleByTransitionId(t.id), e.transition);
+                        TransitionEdge.getTransitionEdgeByTransitionID(t.id).addTransitionToEdge(e.transition);
                         added = true;
                         return;
                     }
                 });
                 if(!added){
-                    Edge.addNewEdge(t, e.transition);
+                    new TransitionEdge(t, e.transition);
                 }
         })
 
         EventManager.registerHandler("deleteTransition", function(e: DeleteTransitionEvent) {
-            Edge.delete(e.transition.id, Edge.getHandleByTransitionId(e.transition.id));
+            TransitionEdge.getTransitionEdgeByTransitionID(e.transition.id).deleteTransitionEdge(e.transition.id);
         })
 
         EventManager.registerHandler("editTransition", function (e: EditTransitionEvent) {
-            Edge.drawText(Edge.getHandleByTransitionId(e.transition.id),
-                                        e.transition.getOnSymbol(),
-                                        e.transition.getOutputSymbol(),
-                                        e.transition.getHeadAction());
+            TransitionEdge.getTransitionEdgeByTransitionID(e.transition.id)
+                .drawTransitionText(
+                    e.transition.getOnSymbol(),
+                    e.transition.getOutputSymbol(),
+                    e.transition.getHeadAction());
         })
     }
 }

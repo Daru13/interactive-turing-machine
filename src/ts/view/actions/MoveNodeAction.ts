@@ -1,4 +1,4 @@
-import { NodeHandleSelection } from "../graph/Node";
+import { NodeHandleSelection } from "../graph/Node/Node";
 import { Action } from "./Action";
 
 export class MoveNodeAction extends Action{

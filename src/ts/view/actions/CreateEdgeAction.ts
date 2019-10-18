@@ -1,7 +1,7 @@
 import { Helpers } from "../../helpers";
 import * as d3 from "d3-selection";
 import { Graph } from "../graph/Graph";
-import { Node, NodeHandleSelection } from "../graph/Node";
+import { Node, NodeHandleSelection } from "../graph/Node/Node";
 import {    TuringMachine } from "../../model/TuringMachine";
 import { Transition } from "../../model/Transition";
 import { HeadAction } from "../../model/Tape";

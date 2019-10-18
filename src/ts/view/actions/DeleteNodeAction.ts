@@ -1,4 +1,4 @@
-import {  NodeHandleSelection } from "../graph/Node";
+import {  NodeHandleSelection } from "../graph/Node/Node";
 import { TuringMachine } from "../../model/TuringMachine";
 import { Action } from "./Action";
 

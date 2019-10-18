@@ -1,5 +1,5 @@
 import * as d3 from "d3-selection";
-import { NodeHandleSelection } from "../graph/Node";
+import { NodeHandleSelection } from "../graph/Node/Node";
 import { DeleteNodeAction } from "../actions/DeleteNodeAction";
 import { TuringMachine } from "../../model/TuringMachine";
 import { Editor } from "./Editor";

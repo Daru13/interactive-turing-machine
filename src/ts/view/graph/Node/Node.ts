@@ -1,7 +1,7 @@
-import { Graph, GraphDatum } from "./Graph";
+import { Graph, GraphDatum } from "../Graph";
 import * as d3 from "d3-selection";
-import { State, StateID } from "../../model/State";
-import { addLamp } from "../CustomShape/lamps";
+import { State, StateID } from "../../../model/State";
+import { addLamp } from "../../CustomShape/lamps";
 
 export enum NodeType {
     STANDARD = "standard",
@@ -19,7 +19,7 @@ export interface NodeDatum {
 export type NodeElementSelection = d3.Selection<SVGElement, NodeDatum, SVGElement, NodeDatum>;
 export type NodeHandleSelection = d3.Selection<SVGGElement, NodeDatum, HTMLElement, GraphDatum>;
 
-export class Node{
+export abstract class Node{
     constructor(){}
 
     static add(graph: Graph, state: State): void{
@@ -72,7 +72,7 @@ export class Node{
         return false;
     }
 
-    static getHandle(selection: NodeElementSelection): NodeHandleSelection{
+    static getHandle(selection: d3.Selection<any, any, any, any>): NodeHandleSelection{
         if (selection.datum() !== undefined && selection.datum()["id"] !== undefined) {
             if (d3.select("#" + selection.datum()["id"]).classed("node")) {
                 return d3.select("#" + selection.datum()["id"]);
