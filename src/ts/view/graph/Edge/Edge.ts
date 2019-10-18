@@ -148,7 +148,7 @@ export abstract class Edge{
         return selection.datum() !== undefined && selection.datum()["edge"] !== undefined;
     }
 
-    static getEdge(selection: d3.Selection<any, any, any, any>): EdgeSelection{
+    static getEdge(selection: d3.Selection<any, any, any, any>): Edge{
         if(Edge.isEdge(selection)){
             return selection.datum()["edge"];
         }

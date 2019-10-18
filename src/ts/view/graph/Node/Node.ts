@@ -3,110 +3,72 @@ import * as d3 from "d3-selection";
 import { State, StateID } from "../../../model/State";
 import { addLamp } from "../../CustomShape/lamps";
 
-export enum NodeType {
-    STANDARD = "standard",
-    START = "start",
-    FINAL = "final"
-}
-
 export interface NodeDatum {
-    x: number;
-    y: number;
-    id: string;
-    stateID: StateID;
+    node: Node;
 };
 
-export type NodeElementSelection = d3.Selection<SVGElement, NodeDatum, SVGElement, NodeDatum>;
-export type NodeHandleSelection = d3.Selection<SVGGElement, NodeDatum, HTMLElement, GraphDatum>;
+export type NodeSelection = d3.Selection<SVGGElement, NodeDatum, any, any>;
 
 export abstract class Node{
-    constructor(){}
+    static nodeNumber = 0;
+    id: string;
+    handleSelection: d3.Selection<SVGGElement, any, any, any>;
+    x: number;
+    y: number;
+   
+    constructor(graph: Graph){
+        this.id = "node-" + Node.nodeNumber;
 
-    static add(graph: Graph, state: State): void{
-        let position = state.getPosition();
-        let datum: NodeDatum = {x: 0, y: 0, id: "node-" + state.id, stateID: state.id};
-        let node: NodeHandleSelection =
+        Node.nodeNumber += 1;
+
+        this.handleSelection = 
             graph.getNodesGroup()
                 .append("g")
                     .classed("node", true)
-                    .datum(datum)
-                    .attr("id", "node-"+state.id);
-
-        node.append("circle")
-            .attr("cx", 0)
-            .attr("cy", 0)
-            .attr("r", Graph.sizeNode+2)
-            .classed("shadow", true);
-
-        addLamp(node, Graph.sizeNode, "nodeCircle");
-
-        node.selectAll("*").datum(datum);
-
-        node.on("animationend", () => {
-            node.classed("created", false); 
-            node.select(".shadow").remove();
-        });
-        node.classed("created", true);
-
-        Node.setLabel(node, state.getLabel());
-
-        Node.translate(node, position.x, position.y);
+                    .datum({node: this})
+                    .attr("id", this.id);
+        this.x = 0;
+        this.y = 0;
     }
 
-    static translate(node: NodeHandleSelection, dx: number, dy: number): void{
-        node.datum()["x"] += dx;
-        node.datum()["y"] += dy;
-        node.attr("transform", function(d){return "translate("+d.x+","+d.y+")"});
+    init(){}
+
+    translateTo(x: number, y: number): void {
+        this.x = x;
+        this.y = y;
+        this.handleSelection.attr("transform", `translate(${this.x}, ${this.y})`);
     }
 
-    static delete(node: NodeHandleSelection): void{
-        node.remove();
+    translateBy(dx: number, dy: number) {
+        this.x += dx;
+        this.y += dy;
+        this.handleSelection.attr("transform", `translate(${this.x}, ${this.y})`);
+    }
+
+    delete(): void{
+        this.handleSelection.remove();
     }
 
     static isNode(selection: d3.Selection<any, any, any, any>): boolean{
-        if (selection.datum() !== undefined && selection.datum()["id"] !== undefined) {
-            if (d3.select("#" + selection.datum()["id"]).classed("node")) {
-                return true;
+        let element = selection.node()
+        while (element.tagName != "svg" && element != undefined && element != null){
+            if (d3.select(element).classed("node")) {
+                    return true;
             }
+            element = element.parentNode;
         }
         return false;
     }
 
-    static getHandle(selection: d3.Selection<any, any, any, any>): NodeHandleSelection{
-        if (selection.datum() !== undefined && selection.datum()["id"] !== undefined) {
-            if (d3.select("#" + selection.datum()["id"]).classed("node")) {
-                return d3.select("#" + selection.datum()["id"]);
+    static getNode(selection: d3.Selection<any, any, any, any>): Node{
+        let element = selection.node()
+        while (element.tagName != "svg" && element != undefined && element != null) {
+            if (d3.select(element).classed("node")) {
+                return d3.select(element).datum()["node"];
             }
+            element = element.parentNode;
         }
+
         throw "Graph.ts (getNodeHandle): Selection is not part of a node";
-    }
-
-    static getHandleByStateId(stateId: StateID): NodeHandleSelection{
-        return d3.select("#node-"+stateId);
-    }
-
-    static setInitialState(node: NodeHandleSelection, isInital: boolean) {
-        node.classed("start", isInital);
-    }
-
-    static setFinalState(node: NodeHandleSelection, isFinal: boolean) {
-        node.classed("final", isFinal);
-    }
-
-    static resetCurrentNode() {
-        d3.selectAll(".current").classed("current", false);
-    }
-
-    static setCurrentNode(node: NodeHandleSelection) {
-        this.resetCurrentNode();
-        node.classed("current", true);
-    }
-
-    static setLabel(node: NodeHandleSelection, label: string) {
-        let textToDisplay = label;
-        if (textToDisplay.length > 10){
-            textToDisplay = textToDisplay.substring(0,7) + "..."
-        }
-        node.select("#Text").select("text").text(textToDisplay);
     }
 }

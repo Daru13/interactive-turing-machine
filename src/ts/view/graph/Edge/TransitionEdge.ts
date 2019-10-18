@@ -1,29 +1,31 @@
-import { Graph, GraphDatum } from "../Graph";
+import { Graph } from "../Graph";
 import * as d3 from "d3-selection";
-import { Node, NodeHandleSelection } from "../Node/Node";
 import { Transition, TransitionID } from "../../../model/Transition";
 import { Helpers } from "../../../helpers";
 import { HeadAction, TapeSymbol } from "../../../model/Tape";
-import { Edge, EdgeId, EdgeSelection } from "./Edge";
+import { Edge } from "./Edge";
+import { StateNode } from "../Node/StateNode";
 
 export class TransitionEdge extends Edge {
     readonly transitionIDs: TransitionID[];
+    fromStateNode: StateNode;
+    toStateNode: StateNode;
 
     constructor(graph: Graph, transition: Transition) {
         super(graph);
 
         this.transitionIDs = [transition.id];    
-        this.initTransitionEdge(transition);
+        this.fromStateNode = graph.stateIdToStateNode.get(transition.fromState.id);
+        this.toStateNode = graph.stateIdToStateNode.get(transition.toState.id);
+        this.initTransitionEdge();
      }
 
-     initTransitionEdge(transition: Transition){
+     initTransitionEdge(){
          super.init();
 
          this.handleSelection.classed("transition-edge", true);
-
-         let fromNode = Node.getHandleByStateId(transition.fromState.id);
-         let toNode = Node.getHandleByStateId(transition.toState.id);
-         this.redrawTransitionEdge(fromNode, toNode);
+         this.redrawTransitionEdge();
+         this.redrawText("click to set");
      }
 
     addTransitionToEdge (transition: Transition) {
@@ -31,9 +33,9 @@ export class TransitionEdge extends Edge {
         this.handleSelection.classed("bigger", true);
     }
 
-    redrawTransitionEdge(fromNode: NodeHandleSelection, toNode: NodeHandleSelection, curved: boolean = false) {
-        let pt1 = { x: fromNode.datum().x, y: fromNode.datum().y };
-        let pt2 = { x: toNode.datum().x, y: toNode.datum().y }
+    redrawTransitionEdge(curved: boolean = false) {
+        let pt1 = { x: this.fromStateNode.x, y: this.fromStateNode.y };
+        let pt2 = { x: this.toStateNode.x, y: this.toStateNode.y };
         let dx, dy;
 
         if (pt1.x == pt2.x && pt1.y == pt2.y) {

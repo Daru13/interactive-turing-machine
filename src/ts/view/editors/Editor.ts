@@ -1,9 +1,9 @@
 import * as d3 from "d3-selection";
 import { Popup } from "./Popup";
-import { NodeHandleSelection } from "../graph/Node/Node";
 import { TransitionEdge } from "../graph/Edge/TransitionEdge";
+import { StateNode } from "../graph/Node/StateNode";
 
-type GraphElement = NodeHandleSelection | TransitionEdge;
+type GraphElement = StateNode | TransitionEdge;
 
 export class Editor extends Popup{
     element: GraphElement

@@ -11,9 +11,12 @@ import { EditFinalStateEvent } from "../../events/EditFinalStateEvent";
 import { TuringMachine } from "../../model/TuringMachine";
 import { NewCurrentStateEvent } from "../../events/NewCurrentStateEvent";
 import { EditStateEvent } from "../../events/EditStateEvent";
-import { Generator } from "./Node/GeneratorNode";
+import { GeneratorNode } from "./Node/GeneratorNode";
 import { TransitionEdge } from "./Edge/TransitionEdge";
 import { TransitionID } from "../../model/Transition";
+import { StateID } from "../../model/State";
+import { StateNode } from "./Node/StateNode";
+import { GeneratorEdge } from "./Edge/GeneratorEdge";
 
 export interface GraphDatum {};
 export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, {}>;
@@ -24,19 +27,23 @@ export class Graph {
     turingMachine: TuringMachine;
     svg: GraphSelection;
     transitionIdToTransitionEdge: Map<TransitionID, TransitionEdge>;
+    stateIdToStateNode: Map<StateID, StateNode>;
+    generator: GeneratorNode;
+    generatorEdge: GeneratorEdge;
 
     constructor(turingMachine: TuringMachine){
         this.turingMachine = turingMachine;
         this.transitionIdToTransitionEdge = new Map();
+        this.stateIdToStateNode = new Map();
         this.init()
     }
 
     init(){
         this.svg = d3.select("#graph").append("svg");
-        
-        new Generator(this);
         this.svg.append("g").attr("id", "edges");
         this.svg.append("g").attr("id", "nodes");
+
+        this.generator = new GeneratorNode(this);
 
         this.setupListeners();
     }
@@ -60,31 +67,43 @@ export class Graph {
     setupListeners(){
         var thisGraph = this;
         EventManager.registerHandler("newState", function(e: NewStateEvent) {
-            Node.add(thisGraph, e.state);
+            thisGraph.stateIdToStateNode.set(e.state.id, new StateNode(thisGraph, e.state));
         })
 
         EventManager.registerHandler("editInitialState", function (e: EditInitialStateEvent) {
-            Node.setInitialState(Node.getHandleByStateId(e.state.id), e.isInitial);
+            let node = thisGraph.stateIdToStateNode.get(e.state.id);
+            node.setInitialState(e.isInitial);
+            if(e.isInitial) {
+                thisGraph.generatorEdge = new GeneratorEdge(thisGraph, thisGraph.generator, node);
+            } else {
+                if(thisGraph.generatorEdge !== undefined){
+                    thisGraph.generatorEdge.delete()
+                }
+            }
         })
 
         EventManager.registerHandler("newCurrentState", function (e: NewCurrentStateEvent) {
             if(e.state === null){
-                Node.resetCurrentNode();
+                StateNode.resetCurrentNode();
             }else{
-                Node.setCurrentNode(Node.getHandleByStateId(e.state.id));
+                thisGraph.stateIdToStateNode.get(e.state.id).setCurrentNode();
             }
         })
 
         EventManager.registerHandler("editFinalState", function (e: EditFinalStateEvent) {
-            Node.setFinalState(Node.getHandleByStateId(e.state.id), e.isFinal);
+            thisGraph.stateIdToStateNode.get(e.state.id).setFinalState(e.isFinal);
         })
 
         EventManager.registerHandler("editState", function (e: EditStateEvent) {
-            Node.setLabel(Node.getHandleByStateId(e.state.id), e.state.getLabel());
+            thisGraph.stateIdToStateNode.get(e.state.id).setLabel(e.state.getLabel());
         })
 
         EventManager.registerHandler("deleteState", function(e: DeleteStateEvent) {
-            Node.delete(Node.getHandleByStateId(e.state.id));
+            let node = thisGraph.stateIdToStateNode.get(e.state.id);
+            if(node.isInitialState()){
+                thisGraph.generatorEdge.delete();
+            }
+            node.delete();
         })
 
         EventManager.registerHandler("newTransition", function(e: NewTransitionEvent) {

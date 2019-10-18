@@ -5,7 +5,7 @@ import * as d3 from "d3-selection";
 import { DeleteEdgeAction } from "../../actions/DeleteEdgeAction";
 import { DeleteNodeAction } from "../../actions/DeleteNodeAction";
 import { TransitionEdge } from "../../graph/Edge/TransitionEdge";
-import { Node, NodeHandleSelection } from "../../graph/Node/Node";
+import { StateNode } from "../../graph/Node/StateNode";
 
 export class Eraser{
     tM: TuringMachine;
@@ -23,8 +23,8 @@ export class Eraser{
     pointerUp(e: ModifiedPointerEvent) { 
         let targetSelection = d3.select(this.target);
 
-        if (Node.isNode(targetSelection)) {
-            DeleteNodeAction.do(targetSelection as NodeHandleSelection, this.tM)
+        if (StateNode.isStateNode(targetSelection)) {
+            DeleteNodeAction.do(StateNode.getStateNode(targetSelection), this.tM)
         } else if (TransitionEdge.isTransitionEdge(targetSelection)) {
             DeleteEdgeAction.do(TransitionEdge.getTransitionEdge(targetSelection), this.tM);
         }
