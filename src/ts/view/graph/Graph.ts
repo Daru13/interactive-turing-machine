@@ -107,21 +107,26 @@ export class Graph {
         })
 
         EventManager.registerHandler("newTransition", function(e: NewTransitionEvent) {
-                let added = false;
-                e.transition.fromState.getOutTransitions().forEach(t => {
-                    if(t.toState === e.transition.toState && t.id !== e.transition.id && !added){
-                        let transitionEdge = thisGraph.transitionIdToTransitionEdge.get(t.id);
-                        transitionEdge.addTransitionToEdge(e.transition);
-                        thisGraph.transitionIdToTransitionEdge.set(e.transition.id, transitionEdge);
-                        added = true;
-                        return;
-                    }
-                });
-                if(!added){
-                    let newTransitionEdge = new TransitionEdge(thisGraph, e.transition);
-                    thisGraph.transitionIdToTransitionEdge.set(e.transition.id, newTransitionEdge);
-                    console.log(thisGraph.transitionIdToTransitionEdge)
+            let added = false;
+            let isCurved = 
+                thisGraph
+                    .turingMachine
+                        .stateMachine
+                           .hasTransitionBetween(e.transition.toState, e.transition.fromState);
+
+            e.transition.fromState.getOutTransitions().forEach(t => {
+                if(t.toState === e.transition.toState && t.id !== e.transition.id && !added){
+                    let transitionEdge = thisGraph.transitionIdToTransitionEdge.get(t.id);
+                    transitionEdge.addTransitionToEdge(e.transition);
+                    thisGraph.transitionIdToTransitionEdge.set(e.transition.id, transitionEdge);
+                    added = true;
                 }
+            });
+            if(!added){
+                let newTransitionEdge = new TransitionEdge(thisGraph, e.transition, isCurved);
+                thisGraph.transitionIdToTransitionEdge.set(e.transition.id, newTransitionEdge);
+                console.log(thisGraph.transitionIdToTransitionEdge)
+            }
         })
 
         EventManager.registerHandler("deleteTransition", function(e: DeleteTransitionEvent) {

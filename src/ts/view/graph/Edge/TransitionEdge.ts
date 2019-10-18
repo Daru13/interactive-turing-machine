@@ -10,13 +10,15 @@ export class TransitionEdge extends Edge {
     readonly transitionIDs: TransitionID[];
     fromStateNode: StateNode;
     toStateNode: StateNode;
+    isCurved: boolean;
 
-    constructor(graph: Graph, transition: Transition) {
+    constructor(graph: Graph, transition: Transition, isCurved: boolean) {
         super(graph);
 
         this.transitionIDs = [transition.id];    
         this.fromStateNode = graph.stateIdToStateNode.get(transition.fromState.id);
         this.toStateNode = graph.stateIdToStateNode.get(transition.toState.id);
+        this.isCurved = isCurved;
         this.initTransitionEdge();
      }
 
@@ -33,7 +35,7 @@ export class TransitionEdge extends Edge {
         this.handleSelection.classed("bigger", true);
     }
 
-    redrawTransitionEdge(curved: boolean = false) {
+    redrawTransitionEdge() {
         let pt1 = { x: this.fromStateNode.x, y: this.fromStateNode.y };
         let pt2 = { x: this.toStateNode.x, y: this.toStateNode.y };
         let dx, dy;
@@ -41,12 +43,12 @@ export class TransitionEdge extends Edge {
         if (pt1.x == pt2.x && pt1.y == pt2.y) {
             dx = 0;
             dy = Graph.sizeNode;
-            this.redraw({ x: pt1.x + dx, y: pt1.y + dy }, { x: pt1.x + dx, y: pt1.y + dy }, curved);
+            this.redraw({ x: pt1.x + dx, y: pt1.y + dy }, { x: pt1.x + dx, y: pt1.y + dy }, this.isCurved);
         } else {
             let angle = Helpers.angleToXAxis(pt1, pt2);
             dx = Math.cos(angle) * Graph.sizeNode;
             dy = Math.sin(angle) * Graph.sizeNode;
-            this.redraw({ x: pt1.x + dx, y: pt1.y + dy }, { x: pt2.x - dx, y: pt2.y - dy }, curved);
+            this.redraw({ x: pt1.x + dx, y: pt1.y + dy }, { x: pt2.x - dx, y: pt2.y - dy }, this.isCurved);
         }
     }
 
@@ -93,5 +95,9 @@ export class TransitionEdge extends Edge {
 
         let extraText = (this.transitionIDs.length > 1) ? " ..." : "";
         this.redrawText(`📖:${onSymbol}, 📝:${outputSymbol}, ${actionAsString} ${extraText}`);
+    }
+
+    setCurved(b: boolean){
+        this.isCurved = b;
     }
 }
