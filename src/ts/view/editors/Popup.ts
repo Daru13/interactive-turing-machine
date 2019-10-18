@@ -17,15 +17,18 @@ export class Popup{
 
     initUI() {
         let t = this;
+
         this.holder
             .append("div")
-                .attr("id", "popup-title");
+                .classed("popup-title", true);
+
         this.holder
             .append("button")
-                .attr("id", "popup-close-button")
+                .classed("popup-close-button", true)
                 .on("click", () => { t.close() })
                 .text("close");
-        this.content = this.holder.append("div").attr("id", "popup-content");
+
+        this.content = this.holder.append("div").classed("popup-content", true);
     }
 
     initMask() {
