@@ -77,7 +77,7 @@ export abstract class Edge{
                     + (len - c) + "," + (y - c / 2) + " "
                     + (len) + "," + y); 
             
-            xText = (len) / 2 + Graph.sizeNode;
+            xText = (len) / 2;
             yText = (y + 3 * (y - c / 2)) / 4 - 5;
         }
         
