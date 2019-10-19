@@ -112,7 +112,17 @@ export class Graph {
                 thisGraph
                     .turingMachine
                         .stateMachine
-                           .hasTransitionBetween(e.transition.toState, e.transition.fromState);
+                           .hasTransitionFromStateToState(e.transition.toState, e.transition.fromState);
+            
+            if(isCurved){
+                e.transition.toState.getOutTransitions().forEach(t => {
+                    if (t.toState === e.transition.fromState) {
+                        let transitionEdge = thisGraph.transitionIdToTransitionEdge.get(t.id);
+                        transitionEdge.setCurved(true);
+                        transitionEdge.redrawTransitionEdge();
+                    }
+                });
+            }
 
             e.transition.fromState.getOutTransitions().forEach(t => {
                 if(t.toState === e.transition.toState && t.id !== e.transition.id && !added){
@@ -122,6 +132,7 @@ export class Graph {
                     added = true;
                 }
             });
+
             if(!added){
                 let newTransitionEdge = new TransitionEdge(thisGraph, e.transition, isCurved);
                 thisGraph.transitionIdToTransitionEdge.set(e.transition.id, newTransitionEdge);
@@ -130,7 +141,9 @@ export class Graph {
         })
 
         EventManager.registerHandler("deleteTransition", function(e: DeleteTransitionEvent) {
-            thisGraph.transitionIdToTransitionEdge.get(e.transition.id).deleteTransitionEdge(e.transition.id);
+            let transitionEdge =  thisGraph.transitionIdToTransitionEdge.get(e.transition.id)
+
+            transitionEdge.deleteTransitionEdge(e.transition.id);
             thisGraph.transitionIdToTransitionEdge.delete(e.transition.id)
         })
 

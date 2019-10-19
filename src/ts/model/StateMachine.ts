@@ -129,6 +129,10 @@ export class StateMachine {
             || state2.hasOutTransitionTo(state1);
     }
 
+    hasTransitionFromStateToState(fromState: State, toState: State) {
+        return fromState.hasOutTransitionTo(toState);
+    }
+
     getTransition(id: TransitionID): Transition {
         return this.transitions.has(id) ? this.transitions.get(id) : null;
     }
