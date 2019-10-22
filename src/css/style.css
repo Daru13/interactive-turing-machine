@@ -161,6 +161,14 @@ body {
     filter: url(#blur);
 }
 
+.edge:hover path{
+    stroke: blue;
+}
+
+.edge:hover text{
+    fill: blue;
+}
+
 .edge path {
     fill: none;
     stroke: #545555;
