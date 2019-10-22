@@ -18,12 +18,17 @@ export class Tape{
 
     addTape(): d3.Selection<HTMLDivElement, unknown, HTMLElement, any>{
         let tape = this.tapeHolder.append("div").attr("id", "tape");
+        let cell;
         for(var i = 0; i < 100; i++){
-            tape.append("div")
-                .attr("id", "cell-"+i)
-                .classed("cell", true)
-                .append("input")
-                    .attr("type", "text")
+            cell = tape.append("div")
+                .attr("id", `cell-${i}`)
+                .classed("cell", true);
+            cell.append("label")
+                .attr("for", `cell-${i}-input`)
+                .text(i);
+            cell.append("input")
+                .attr("type", "text")
+                .attr("id", `cell-${i}-input`);
         }
 
         let widthHolder = document.getElementById("tapeHolder").getBoundingClientRect().width;
