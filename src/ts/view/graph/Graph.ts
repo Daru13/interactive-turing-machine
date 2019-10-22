@@ -52,6 +52,7 @@ export class Graph {
         this.generator = new GeneratorNode(this);
 
         this.setupListeners();
+        this.setResetViewBoxButton();
     }
 
     getSVGElement(): SVGSVGElement{
@@ -70,9 +71,18 @@ export class Graph {
         return this.svg.select("#edges");
     }
 
+    setResetViewBoxButton(){
+        d3.select("#graph").append("button").attr("id", "reset-viewbox-graph-button").on("click", () => {
+            this.viewBox.x = 0;
+            this.viewBox.y = 0;
+            this.updateViewBox();
+        })
+    }
+
     updateViewBox(){
         this.svg.attr("viewBox", `${this.viewBox.x},${this.viewBox.y}, ${this.viewBox.width}, ${this.viewBox.height}`);
     }
+
     translateViewBoxBy(dx: number, dy: number){
         this.viewBox.x -= dx;
         this.viewBox.y -= dy
