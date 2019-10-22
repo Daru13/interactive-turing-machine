@@ -168,6 +168,10 @@ body {
     filter: url(#blur);
 }
 
+.node.move.bad-position {
+    filter: url(#red-outline)
+}
+
 .edge:hover path{
     stroke: blue;
 }

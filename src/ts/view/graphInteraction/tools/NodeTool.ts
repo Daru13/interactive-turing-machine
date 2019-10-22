@@ -6,9 +6,11 @@ import { CreateNodeAction } from "../../actions/CreateNodeAction";
 import { EditNodeAction } from "../../actions/EditNodeAction";
 import { TransitionEdge } from "../../graph/Edge/TransitionEdge";
 import { StateNode } from "../../graph/Node/StateNode";
+import { Node } from "../../graph/Node/Node";
 import { GeneratorEdge } from "../../graph/Edge/GeneratorEdge";
 import { EditGeneratorEdgeAction } from "../../actions/EditGeneratorEdgeAction";
 import { EditTransitionEdgeAction } from "../../actions/EditTransitionEdgeAction";
+import { Helpers } from "../../../helpers";
 
 export class NodeTool{
     previousX: number;
@@ -17,10 +19,12 @@ export class NodeTool{
     graph: Graph;
     turingMachine: TuringMachine;
     isDown: boolean;
+    bestPos: { x: number; y: number; };
 
     constructor(graph: Graph, turingMachine: TuringMachine){
         this.previousX = 0;
         this.previousY = 0;
+        this.bestPos = {x: 0, y:0};
         this.graph = graph;
         this.turingMachine = turingMachine;
         this.isDown = false;
@@ -35,6 +39,7 @@ export class NodeTool{
             this.node = StateNode.getStateNode(d3.select(e.target as any));
             this.node.handleSelection.classed("move", true);
             this.node.handleSelection.raise();
+            this.bestPos = {x: this.node.x, y: this.node.y}
             return;
         } 
         
@@ -63,6 +68,13 @@ export class NodeTool{
                     this.graph.generatorEdge.redrawGeneratorEdge();
                 }
 
+                if(this.isThisBestPosForNode()){
+                    this.bestPos.x = this.node.x;
+                    this.bestPos.y = this.node.y;
+                    this.node.handleSelection.classed("bad-position", false);
+                } else {
+                    this.node.handleSelection.classed("bad-position", true);
+                }
                 this.previousX = e.x;
                 this.previousY = e.y;
             } else {
@@ -75,14 +87,16 @@ export class NodeTool{
 
     pointerUp(e: ModifiedPointerEvent) {
         if (this.node !== undefined) {
+            this.node.translateTo(this.bestPos.x, this.bestPos.y);
             this.node.handleSelection.classed("move", false);
+            this.node.handleSelection.classed("bad-position", false);
             this.node = undefined;
         }
         this.isDown = false;
     };
 
     pointerLeave(e: ModifiedPointerEvent) {
-        this.isDown = false;
+        this.pointerUp(e);
     };
 
     pointerClick(e: ModifiedPointerEvent){
@@ -98,5 +112,18 @@ export class NodeTool{
         } else if (GeneratorEdge.isGeneratorEdge(targetSelection)){
             EditGeneratorEdgeAction.do(GeneratorEdge.getGeneratorEdge(targetSelection), this.turingMachine);
         }
+    }
+
+    private isThisBestPosForNode(): boolean{
+        let isBestPos = true;
+        let node = this.node;
+
+        d3.selectAll(".node").each(function(){
+            let thisNode = Node.getNode(d3.select(this));
+            if(thisNode.id !== node.id && isBestPos){
+                isBestPos = Helpers.distance2({ x: node.x, y: node.y }, { x: thisNode.x, y: thisNode.y }) >= Graph.sizeNode * 2
+            }
+        })
+        return isBestPos;
     }
 }
