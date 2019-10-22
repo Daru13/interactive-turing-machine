@@ -34,7 +34,7 @@ export class Helpers{
 			pointerType = "modify";
 		}
 
-		return {"pointerId":e.pointerId, "pointerType": pointerType, "x": e.clientX,"y": e.clientY, offsetX:e.offsetX, offsetY:e.offsetY, "originEvent": e, target: e.target};
+		return {"pointerId":e.pointerId, "pointerType": pointerType, "x": e.clientX,"y": e.clientY, offsetX:e.offsetX, offsetY:e.offsetY, pageX: e.clientX, pageY: e.clientY, "originEvent": e, target: e.target};
 	}
 
 	static updateXYSVG(e: ModifiedPointerEvent, graph: Graph) {

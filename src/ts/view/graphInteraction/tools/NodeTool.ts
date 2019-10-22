@@ -16,17 +16,20 @@ export class NodeTool{
     node: StateNode;
     graph: Graph;
     turingMachine: TuringMachine;
+    isDown: boolean;
 
     constructor(graph: Graph, turingMachine: TuringMachine){
         this.previousX = 0;
         this.previousY = 0;
         this.graph = graph;
         this.turingMachine = turingMachine;
+        this.isDown = false;
     }
 
     pointerDown(e: ModifiedPointerEvent) {
         this.previousX = e.x;
         this.previousY = e.y;
+        this.isDown = true;
 
         if (StateNode.isStateNode(d3.select(e.target as any))) {
             this.node = StateNode.getStateNode(d3.select(e.target as any));
@@ -34,27 +37,35 @@ export class NodeTool{
             this.node.handleSelection.raise();
         } else {
             this.node = undefined;
+            this.previousX = e.pageX;
+            this.previousY = e.pageY;
         }
     };
 
     pointerMove(e: ModifiedPointerEvent) {
-        if (this.node !== undefined) {
-            this.node.translateBy(e.x - this.previousX, e.y - this.previousY);
-            this.turingMachine
-                .stateMachine.getState(this.node.stateID)
-                .getInTransitions()
-                .forEach((t) => this.graph.transitionIdToTransitionEdge.get(t.id).redrawTransitionEdge());
-            this.turingMachine
-                .stateMachine.getState(this.node.stateID)
-                .getOutTransitions()
-                .forEach((t) => this.graph.transitionIdToTransitionEdge.get(t.id).redrawTransitionEdge());
-            if(this.node.isInitialState()){
-                this.graph.generatorEdge.redrawGeneratorEdge();
+        if(this.isDown){
+            if (this.node !== undefined) {
+                this.node.translateBy(e.x - this.previousX, e.y - this.previousY);
+                this.turingMachine
+                    .stateMachine.getState(this.node.stateID)
+                    .getInTransitions()
+                    .forEach((t) => this.graph.transitionIdToTransitionEdge.get(t.id).redrawTransitionEdge());
+                this.turingMachine
+                    .stateMachine.getState(this.node.stateID)
+                    .getOutTransitions()
+                    .forEach((t) => this.graph.transitionIdToTransitionEdge.get(t.id).redrawTransitionEdge());
+                if(this.node.isInitialState()) {
+                    this.graph.generatorEdge.redrawGeneratorEdge();
+                }
+
+                this.previousX = e.x;
+                this.previousY = e.y;
+            } else {
+                this.graph.translateViewBoxBy(e.pageX - this.previousX, e.pageY - this.previousY);
+                this.previousX = e.pageX;
+                this.previousY = e.pageY;
             }
         }
-
-        this.previousX = e.x;
-        this.previousY = e.y;
     };
 
     pointerUp(e: ModifiedPointerEvent) {
@@ -62,9 +73,11 @@ export class NodeTool{
             this.node.handleSelection.classed("move", false);
             this.node = undefined;
         }
+        this.isDown = false;
     };
 
     pointerLeave(e: ModifiedPointerEvent) {
+        this.isDown = false;
     };
 
     pointerClick(e: ModifiedPointerEvent){

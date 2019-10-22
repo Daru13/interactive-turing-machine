@@ -37,15 +37,17 @@ export class EdgeTool {
         this.node = undefined;
 
         let targetSelection = d3.select(e.target as any);
+        this.isDown = true;
 
         if (Node.isNode(targetSelection)) {
             this.node = Node.getNode(targetSelection)
         } else {
             this.node = undefined
+            this.previousX = e.pageX;
+            this.previousY = e.pageY;
             return;
         }
 
-        this.isDown = true;
         this.edgeInCreation =
             this.graph.getSVG()
                 .append("path")
@@ -56,25 +58,31 @@ export class EdgeTool {
 
     pointerMove(e: ModifiedPointerEvent) {
         if (this.isDown) {
-            this.drawEdgeInCreation();
-                
-            d3.selectAll(".node.closestNode").classed("closestNode", false);
+            if(this.node != undefined){
+                this.drawEdgeInCreation();
+                    
+                d3.selectAll(".node.closestNode").classed("closestNode", false);
 
-            let closestNode = this.closestNode({ x: this.node.x, y: this.node.y }, { x: this.previousX, y: this.previousY }, Graph.sizeNode, Graph.sizeNode * 3);
+                let closestNode = this.closestNode({ x: this.node.x, y: this.node.y }, { x: this.previousX, y: this.previousY }, Graph.sizeNode, Graph.sizeNode * 3);
 
-            if (closestNode !== undefined) {
-                closestNode.handleSelection.classed("closestNode", true);
+                if (closestNode !== undefined) {
+                    closestNode.handleSelection.classed("closestNode", true);
+                }
+
+                this.previousX = e.x;
+                this.previousY = e.y;
+            } else {
+                this.graph.translateViewBoxBy(e.pageX - this.previousX, e.pageY - this.previousY);
+                this.previousX = e.pageX;
+                this.previousY = e.pageY;
             }
 
-            this.previousX = e.x;
-            this.previousY = e.y;
         }
     };
 
     pointerUp(e: ModifiedPointerEvent) {
-        if (this.isDown) {
-            this.isDown = false;
-
+        this.isDown = false;
+        if (this.node !== undefined) {
             this.edgeInCreation.remove()
 
             d3.selectAll(".node.closestNode").classed("closestNode", false);
@@ -93,13 +101,13 @@ export class EdgeTool {
     };
 
     pointerLeave(e: ModifiedPointerEvent) {
+        this.isDown = false;
+
         if (this.isDown) {
-            this.isDown = false;
-
-            this.edgeInCreation.remove()
-
-            d3.selectAll(".node.closestNode").classed("closestNode", false);
-            console.log(this.tM.stateMachine.toString());
+            if (this.node != undefined) {
+                this.edgeInCreation.remove()
+                d3.selectAll(".node.closestNode").classed("closestNode", false);
+            }
         }
     }
 

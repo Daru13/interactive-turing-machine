@@ -5,6 +5,8 @@ export interface ModifiedPointerEvent{
    y: number, 
    offsetX: number, 
    offsetY: number, 
+   pageX: number,
+   pageY: number,
    originEvent: Event, 
    target: EventTarget
 };

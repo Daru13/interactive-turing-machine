@@ -30,6 +30,7 @@ export class Graph {
     stateIdToStateNode: Map<StateID, StateNode>;
     generator: GeneratorNode;
     generatorEdge: GeneratorEdge;
+    viewBox: {x,y,width,height};
 
     constructor(turingMachine: TuringMachine){
         this.turingMachine = turingMachine;
@@ -39,7 +40,12 @@ export class Graph {
     }
 
     init(){
-        this.svg = d3.select("#graph").append("svg");
+        this.svg = d3.select("#graph").append("svg")
+        
+        let bbox = this.svg.node().getBoundingClientRect();
+        this.viewBox = { x: 0, y: 0, width: bbox.width, height: bbox.height};
+        this.updateViewBox();
+        
         this.svg.append("g").attr("id", "edges");
         this.svg.append("g").attr("id", "nodes");
 
@@ -62,6 +68,15 @@ export class Graph {
 
     getEdgesGroup(): d3.Selection<SVGGElement, any, any, any> {
         return this.svg.select("#edges");
+    }
+
+    updateViewBox(){
+        this.svg.attr("viewBox", `${this.viewBox.x},${this.viewBox.y}, ${this.viewBox.width}, ${this.viewBox.height}`);
+    }
+    translateViewBoxBy(dx: number, dy: number){
+        this.viewBox.x -= dx;
+        this.viewBox.y -= dy
+        this.updateViewBox();
     }
 
     setupListeners(){
