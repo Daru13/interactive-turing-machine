@@ -41,19 +41,21 @@ export class EdgeTool {
 
         if (Node.isNode(targetSelection)) {
             this.node = Node.getNode(targetSelection)
-        } else {
+            this.edgeInCreation =
+                this.graph.getSVG()
+                    .append("path")
+                    .classed("edgeInCreation", true)
+            this.drawEdgeInCreation();
+            return;
+        } 
+        if (d3.select(e.target as any).node().tagName === "svg") {
             this.node = undefined
             this.previousX = e.pageX;
             this.previousY = e.pageY;
             return;
         }
 
-        this.edgeInCreation =
-            this.graph.getSVG()
-                .append("path")
-                .classed("edgeInCreation", true)
-
-        this.drawEdgeInCreation(); 
+        this.isDown = false;
     };
 
     pointerMove(e: ModifiedPointerEvent) {

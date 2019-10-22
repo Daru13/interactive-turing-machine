@@ -35,11 +35,16 @@ export class NodeTool{
             this.node = StateNode.getStateNode(d3.select(e.target as any));
             this.node.handleSelection.classed("move", true);
             this.node.handleSelection.raise();
-        } else {
+            return;
+        } 
+        
+        if (d3.select(e.target as any).node().tagName === "svg"){
             this.node = undefined;
             this.previousX = e.pageX;
             this.previousY = e.pageY;
+            return;
         }
+        this.isDown = false;
     };
 
     pointerMove(e: ModifiedPointerEvent) {
