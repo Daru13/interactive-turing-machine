@@ -141,7 +141,7 @@ export class Graph {
             
             if(isCurved){
                 e.transition.toState.getOutTransitions().forEach(t => {
-                    if (t.toState === e.transition.fromState) {
+                    if (t.toState === e.transition.fromState && t.id != e.transition.id) {
                         let transitionEdge = thisGraph.transitionIdToTransitionEdge.get(t.id);
                         transitionEdge.setCurved(true);
                         transitionEdge.redrawTransitionEdge();
