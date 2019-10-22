@@ -1,16 +1,17 @@
 import * as d3 from "d3-selection";
-import { EdgeHandleSelection } from "../graph/Edge";
+import { EdgeSelection } from "../graph/Edge/Edge";
 import { HeadAction } from "../../model/Tape";
 import { StateMachine } from "../../model/StateMachine";
 import { TransitionID } from "../../model/Transition";
 import { Editor } from "./Editor";
+import { TransitionEdge } from "../graph/Edge/TransitionEdge";
 
 export class EdgeEditor extends Editor{
     holder: d3.Selection<HTMLDivElement, {}, HTMLElement, any>;
-    edge: EdgeHandleSelection;
+    edge: TransitionEdge;
     stateMachine: StateMachine;
 
-    constructor(edge: EdgeHandleSelection, stateMachine: StateMachine){
+    constructor(edge: TransitionEdge, stateMachine: StateMachine){
         super(edge);
         this.edge = edge;
         this.stateMachine = stateMachine;
@@ -37,7 +38,7 @@ export class EdgeEditor extends Editor{
 
     addBody(table: d3.Selection<HTMLTableElement, any, any, any>){
         let body = table.append("tbody");
-        this.edge.datum().transitionID.forEach(tId => {
+        this.edge.transitionIDs.forEach(tId => {
             let transition = this.stateMachine.getTransition(tId);
             let row = body.append("tr").datum({ transitionID: tId});
             let cell;

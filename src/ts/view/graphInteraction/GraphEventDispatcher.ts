@@ -3,7 +3,7 @@ import { TuringMachine } from "../../model/TuringMachine";
 import { Helpers } from "../../helpers";
 import { ModifiedPointerEvent } from "../../events/ModifiedPointerEvent";
 
-export class GraphEventDispatcher {
+export abstract class GraphEventDispatcher {
     readonly graph: Graph;
     readonly tM: TuringMachine;
     isActivated: boolean;

@@ -96,6 +96,7 @@ export class StateMachine {
 
     resetCurrentState() {
         this.currentState = null;
+        EventManager.emit(new NewCurrentStateEvent(this.currentState));
     }
 
     addTransition(transition: Transition) {
@@ -126,6 +127,10 @@ export class StateMachine {
     hasTransitionBetween(state1: State, state2: State) {
         return state1.hasOutTransitionTo(state2)
             || state2.hasOutTransitionTo(state1);
+    }
+
+    hasTransitionFromStateToState(fromState: State, toState: State) {
+        return fromState.hasOutTransitionTo(toState);
     }
 
     getTransition(id: TransitionID): Transition {
