@@ -332,21 +332,21 @@ body {
 
 /*****************************************************************/
 
-.edge-editor {
+.transition-edge-editor {
     top: 40%;
     left: 40%;
 }
 
-.edge-editor .popup-content > table tr {
+.transition-edge-editor .popup-content > table tr {
     height: 80px;
 }
 
-.edge-editor .input-symbol input[type = text],
-.edge-editor .output-symbol input[type = text] {
+.transition-edge-editor .input-symbol input[type = text],
+.transition-edge-editor .output-symbol input[type = text] {
     max-width: 80px;
 }
 
-.edge-editor .head-action-selector {
+.transition-edge-editor .head-action-selector {
     background: white;
     margin: 5px;
     display: grid;
@@ -354,15 +354,15 @@ body {
     border: 2px solid grey;
 }
 
-.edge-editor .head-action-selector button {
+.transition-edge-editor .head-action-selector button {
     min-width: 30px;
 }
 
-.edge-editor .head-action-selector .selected {
+.transition-edge-editor .head-action-selector .selected {
     background: grey;
 }
 
-.edge-editor .delete-transition > button {
+.transition-edge-editor .delete-transition > button {
     grid-area: delete;
     width: 50px;
     height: 50px;
@@ -375,7 +375,7 @@ body {
     box-shadow: 0 -5px 0 #821e1f inset;
 }
 
-.edge-editor .delete-transition > button:hover {
+.transition-edge-editor .delete-transition > button:hover {
     background-position-y: 50%;
     background-color: #9e2627;
     box-shadow: 0 -2px 0 #821e1f inset;

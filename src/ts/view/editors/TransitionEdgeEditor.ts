@@ -6,7 +6,7 @@ import { TransitionID } from "../../model/Transition";
 import { Editor } from "./Editor";
 import { TransitionEdge } from "../graph/Edge/TransitionEdge";
 
-export class EdgeEditor extends Editor{
+export class TransitionEdgeEditor extends Editor{
     holder: d3.Selection<HTMLDivElement, {}, HTMLElement, any>;
     edge: TransitionEdge;
     stateMachine: StateMachine;
@@ -16,7 +16,7 @@ export class EdgeEditor extends Editor{
         this.edge = edge;
         this.stateMachine = stateMachine;
 
-        this.holder.classed("edge-editor", true);
+        this.holder.classed("transition-edge-editor", true);
 
         this.initContent();
         super.setOnClose(() => {this.submit()});

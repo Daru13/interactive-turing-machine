@@ -1,9 +1,9 @@
 import * as d3 from "d3-selection";
 import { Popup } from "./Popup";
-import { TransitionEdge } from "../graph/Edge/TransitionEdge";
-import { StateNode } from "../graph/Node/StateNode";
+import { Edge } from "../graph/Edge/Edge";
+import { Node } from "../graph/Node/Node";
 
-type GraphElement = StateNode | TransitionEdge;
+type GraphElement = Node | Edge;
 
 export class Editor extends Popup{
     element: GraphElement
@@ -12,7 +12,6 @@ export class Editor extends Popup{
         super();
         this.element = element;
         d3.selectAll(".selected").classed("selected", false);
-        //element.classed("selected", true);
 
         console.log(this.element);
         this.initPosition();
@@ -20,13 +19,13 @@ export class Editor extends Popup{
     }
 
     initPosition(){
-        /*console.log(this.element)
-        let bbox = this.element.node().getBoundingClientRect();
+        console.log(this.element)
+        let bbox = this.element.handleSelection.node().getBoundingClientRect();
         let bboxHolder = this.holder.node().getBoundingClientRect();
 
         this.holder
             .style("top", (bbox.top + bbox.height).toString() + "px")
-            .style("left", (bbox.left + (bbox.width - bboxHolder.width) / 2).toString() + "px");*/
+            .style("left", (bbox.left + (bbox.width - bboxHolder.width) / 2).toString() + "px");
     }
 
     addButton(text: string, callback: () => void, id: string = null, classElement: string = null, parent: d3.Selection<HTMLElement, any, any, any> = this.content): void {

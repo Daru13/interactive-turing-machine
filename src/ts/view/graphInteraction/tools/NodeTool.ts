@@ -4,9 +4,11 @@ import { TuringMachine } from "../../../model/TuringMachine";
 import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
 import { CreateNodeAction } from "../../actions/CreateNodeAction";
 import { EditNodeAction } from "../../actions/EditNodeAction";
-import { EditEdgeAction } from "../../actions/EditEdgeAction";
 import { TransitionEdge } from "../../graph/Edge/TransitionEdge";
 import { StateNode } from "../../graph/Node/StateNode";
+import { GeneratorEdge } from "../../graph/Edge/GeneratorEdge";
+import { EditGeneratorEdgeAction } from "../../actions/EditGeneratorEdgeAction";
+import { EditTransitionEdgeAction } from "../../actions/EditTransitionEdgeAction";
 
 export class NodeTool{
     previousX: number;
@@ -74,7 +76,9 @@ export class NodeTool{
         } else if (StateNode.isStateNode(targetSelection)) {
             EditNodeAction.do(StateNode.getStateNode(targetSelection), this.turingMachine);
         } else if (TransitionEdge.isTransitionEdge(targetSelection)) {
-            EditEdgeAction.do(TransitionEdge.getTransitionEdge(targetSelection), this.turingMachine);
+            EditTransitionEdgeAction.do(TransitionEdge.getTransitionEdge(targetSelection), this.turingMachine);
+        } else if (GeneratorEdge.isGeneratorEdge(targetSelection)){
+            EditGeneratorEdgeAction.do(GeneratorEdge.getGeneratorEdge(targetSelection), this.turingMachine);
         }
     }
 }

@@ -6,12 +6,13 @@ import * as d3 from "d3-selection";
 import { TuringMachine } from "../../../model/TuringMachine";
 import { Helpers } from "../../../helpers";
 import { EditNodeAction } from "../../actions/EditNodeAction";
-import { EditEdgeAction } from "../../actions/EditEdgeAction";
+import { EditTransitionEdgeAction } from "../../actions/EditTransitionEdgeAction";
 import { SetInitialNodeAction } from "../../actions/SetInitialNodeAction";
 import { TransitionEdge } from "../../graph/Edge/TransitionEdge";
 import { StateNode } from "../../graph/Node/StateNode";
 import { GeneratorEdge } from "../../graph/Edge/GeneratorEdge";
 import { GeneratorNode } from "../../graph/Node/GeneratorNode";
+import { EditGeneratorEdgeAction } from "../../actions/EditGeneratorEdgeAction";
 
 export class EdgeTool {
     previousX: number;
@@ -109,7 +110,9 @@ export class EdgeTool {
         if (this.node !== undefined && this.node instanceof StateNode) {
             EditNodeAction.do(this.node, this.tM);
         } else if (TransitionEdge.isTransitionEdge(targetSelection)) {
-            EditEdgeAction.do(TransitionEdge.getTransitionEdge(targetSelection), this.tM);
+            EditTransitionEdgeAction.do(TransitionEdge.getTransitionEdge(targetSelection), this.tM);
+        } else if (GeneratorEdge.isGeneratorEdge(targetSelection)) {
+            EditGeneratorEdgeAction.do(GeneratorEdge.getGeneratorEdge(targetSelection), this.tM);
         }
     }
 
