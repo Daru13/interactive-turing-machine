@@ -10,6 +10,8 @@ import { EditEdgeAction } from "../../actions/EditEdgeAction";
 import { SetInitialNodeAction } from "../../actions/SetInitialNodeAction";
 import { TransitionEdge } from "../../graph/Edge/TransitionEdge";
 import { StateNode } from "../../graph/Node/StateNode";
+import { GeneratorEdge } from "../../graph/Edge/GeneratorEdge";
+import { GeneratorNode } from "../../graph/Node/GeneratorNode";
 
 export class EdgeTool {
     previousX: number;
@@ -78,10 +80,12 @@ export class EdgeTool {
             let closestNode = this.closestNode({ x: this.node.x, y: this.node.y }, { x: this.previousX, y: this.previousY }, Graph.sizeNode, Graph.sizeNode * 3);
 
             if (closestNode !== undefined) {
-                if(this.node instanceof StateNode){
+                if (this.node instanceof StateNode && closestNode instanceof StateNode){
                     CreateEdgeAction.do(this.node, closestNode, this.tM);
-                }else{
+                } else if (this.node instanceof GeneratorNode && closestNode instanceof StateNode) {
                     SetInitialNodeAction.do(closestNode, this.tM);
+                } else if (this.node instanceof StateNode && closestNode instanceof GeneratorNode) {
+                    SetInitialNodeAction.do(this.node, this.tM);
                 }
             }
         }
@@ -115,13 +119,12 @@ export class EdgeTool {
                             " L" + this.previousX + "," + this.previousY);
     }
 
-    private closestNode(beginEdge: { x, y }, endEdge: { x, y }, minLength: number, distFromEnd: number): StateNode {
-        let closestNode: StateNode;
+    private closestNode(beginEdge: { x, y }, endEdge: { x, y }, minLength: number, distFromEnd: number): Node {
+        let closestNode: Node;
         let minDistance = distFromEnd; 
         let t = this;
-        console.log(d3.selectAll(".state-node"))
-        d3.selectAll(".state-node").each(function () {
-            let node = StateNode.getStateNode(d3.select(this));
+        d3.selectAll(".node").each(function () {
+            let node = Node.getNode(d3.select(this));
             let point2 = {
                 x: node.x, y: node.y };
             if (Helpers.distance2(endEdge, point2) < minDistance) {
