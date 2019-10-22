@@ -44,10 +44,10 @@ export abstract class Edge{
             .text("");
     }
 
-    protected redraw(pt1: { x: number, y: number }, pt2: { x: number, y: number }, curved: boolean = false){
+    protected redraw(pt1: { x: number, y: number }, pt2: { x: number, y: number }, curved: boolean = false, flipped = false){
         if(pt1.x == pt2.x && pt1.y == pt2.y){
             console.log("self edge drawn")
-            this.redrawBetweenOnePoint(pt1);
+            this.redrawBetweenOnePoint(pt1, flipped);
         } else {
             this.redawBetweenTwoPoints(pt1, pt2, curved);
         }
@@ -103,12 +103,12 @@ export abstract class Edge{
             .attr("transform", "rotate(" + angle + "," + (pt1.x) + "," + (pt1.y) + ")" + " translate(" + (pt1.x) + "," + (pt1.y) + ")");
     }
 
-    private redrawBetweenOnePoint(pt: { x: number, y: number }){
-        let firstYOffset = 50;
-        let secondYOffset = 75;
-        let xOffset = 20;
+    private redrawBetweenOnePoint(pt: { x: number, y: number }, flipped){
+        let firstYOffset: number = (flipped)? -50 : 50;
+        let secondYOffset = (flipped) ? - 75 : 75;
+        let xOffset = (flipped) ? -20: 20;
 
-        let c = 12; //courbature control
+        let c = (flipped) ? -12 : 12; //courbature control
 
         let startX = 0;
         let startY = 0;
@@ -120,18 +120,20 @@ export abstract class Edge{
                 "M" + startX + "," + startY + 
                 " C " + startX + "," + startY + "," + xOffset + "," + (firstYOffset - c) + " " + xOffset + "," + (firstYOffset) + 
                 " C" + xOffset + "," + (firstYOffset + c) + " " + c + "," + (secondYOffset) + " 0," + (secondYOffset) + 
-                " C" + "-" + c + "," + (secondYOffset) + " " + (-1 * xOffset) + "," + (firstYOffset + c) + " " + (-1 * xOffset) + ","    + (firstYOffset) + 
+                " C" + "" + (-1 * c) + "," + (secondYOffset) + " " + (-1 * xOffset) + "," + (firstYOffset + c) + " " + (-1 * xOffset) + ","    + (firstYOffset) + 
                 " C" + (-1 * xOffset) + "," + (firstYOffset - c) + " " + finalX + "," + finalY + " " + finalX + "," + finalY)
             .style("fill", "none"); 
         
         this.handleSelection.select("rect")
-            .attr("x", -xOffset)
-            .attr("y", 0)
-            .attr("width", 2*xOffset)
-            .attr("height", (20 + secondYOffset))
+            .attr("x", -Math.abs(xOffset))
+            .attr("y", Math.min(0, secondYOffset - 20))
+            .attr("width", Math.abs(2*xOffset))
+            .attr("height", (20 + Math.abs(secondYOffset)))
             .style("fill","red");
 
-        this.handleSelection.select("text").attr("x", 0).attr("y", secondYOffset + 18);
+        this.handleSelection.select("text")
+            .attr("x", 0)
+            .attr("y", (flipped) ? secondYOffset -2 : secondYOffset + 18);
 
         this.handleSelection.attr("transform",    " translate(" + (pt.x) + "," + (pt.y) + ")");
     }
