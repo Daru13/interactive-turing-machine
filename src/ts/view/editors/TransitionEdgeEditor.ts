@@ -13,10 +13,19 @@ export class TransitionEdgeEditor extends Editor{
 
     constructor(edge: TransitionEdge, stateMachine: StateMachine){
         super(edge);
+
         this.edge = edge;
         this.stateMachine = stateMachine;
 
+        this.init();
+    }
+
+    init() {
+        // Editor-specific class
         this.holder.classed("transition-edge-editor", true);
+
+        // Popup title
+        this.setTitle("Edit transition" + (this.edge.transitionIDs.length > 1 ? "s" : ""));
 
         this.initContent();
         super.setOnClose(() => {this.submit()});
@@ -30,10 +39,10 @@ export class TransitionEdgeEditor extends Editor{
 
     addHeader(table: d3.Selection<HTMLTableElement, any, any, any>){
         let header = table.append("thead").append("tr")
-        header.append("th").classed("input-symbol", true).text("Read");
-        header.append("th").classed("output-symbol", true).text("Write");
-        header.append("th").classed("head-action", true).text("Direction");
-        header.append("th").classed("delete-transition", true).text("");
+        header.append("th").classed("input-symbol", true).text("Input symbol");
+        header.append("th").classed("output-symbol", true).text("Output symbol");
+        header.append("th").classed("head-action", true).text("Head direction");
+        header.append("th").classed("delete-transition", true).text("Delete transition");
     }
 
     addBody(table: d3.Selection<HTMLTableElement, any, any, any>){

@@ -9,33 +9,40 @@ export class NodeEditor extends Editor{
 
     constructor(node: StateNode, tm: TuringMachine){
         super(node);
+
         this.node = node;
         this.tm = tm;
 
+        this.init();
+    }
+
+    init() {
+        // Editor-specific class
         this.holder.classed("node-editor", true);
+
+        // Popup title
+        this.setTitle("Edit state");
 
         this.initContent();
         super.setOnClose(() => {
             let label = (this.content.select("#node-set-label-field").node() as HTMLInputElement).value;
-            tm.stateMachine.getState(node.stateID).setLabel(label);
-        })
+            this.tm.stateMachine.getState(this.node.stateID).setLabel(label);
+        });
     }
 
     initContent(){
-        this.addButton("Initial", () => {
-            this.tm.stateMachine.setInitialState(this.node.stateID);
-            console.log(this.tm.stateMachine.toString());
-        }, "node-set-initial-button")
+        this.addLabel("Label", "node-set-label-field");
+        this.addTextField(this.tm.stateMachine.getState(this.node.stateID).getLabel(), "node-set-label-field");
 
+        this.addLabel("Final state", "node-set-final-button");
         this.addButton("Final",  () => {
             let state = this.tm.stateMachine.getState(this.node.stateID);
             state.setFinal(!state.isFinal());
             console.log(this.tm.stateMachine.toString());
-        }, "node-set-final-button")
+        }, "node-set-final-button");
 
-        this.addTextField(this.tm.stateMachine.getState(this.node.stateID).getLabel(),  "node-set-label-field");
-
-        this.addButton("DeleteNode", () => {this.deleteNode()}, "node-delete-button");
+        this.addLabel("Delete", "node-delete-button");
+        this.addButton("Delete", () => {this.deleteNode()}, "node-delete-button");
     }
 
     deleteNode(){
