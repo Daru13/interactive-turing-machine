@@ -16,7 +16,7 @@ export class Helpers{
 
 	static transformEvent(e: PointerEvent): ModifiedPointerEvent{
 		e.preventDefault();
-		e.stopPropagation();
+        e.stopPropagation();
 		var pointerType = e.pointerType;
 		if(e.pointerType === "mouse") {
 			pointerType = "touch";
@@ -35,8 +35,8 @@ export class Helpers{
 		}
 
 		return {"pointerId":e.pointerId, "pointerType": pointerType, "x": e.clientX,"y": e.clientY, offsetX:e.offsetX, offsetY:e.offsetY, pageX: e.clientX, pageY: e.clientY, "originEvent": e, target: e.target};
-	}
-
+    }
+    
 	static updateXYSVG(e: ModifiedPointerEvent, graph: Graph) {
 		var pt = graph.getSVGElement().createSVGPoint(), svgP;
 

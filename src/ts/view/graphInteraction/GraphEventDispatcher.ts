@@ -17,11 +17,11 @@ export abstract class GraphEventDispatcher {
 
     setInteraction() {
         var t = this;
-        let timeDown = 0;
+        let timeDown: Record<number, number> = {};
         t.graph.getSVGElement().addEventListener("pointerdown",
             function (e) {
                 if (t.isActivated) {
-                    timeDown = new Date().getTime();
+                    timeDown[e.pointerId] = new Date().getTime();
                     t.dispatchDownEvent(Helpers.transformEvent(e));
                 }
             });
@@ -35,7 +35,7 @@ export abstract class GraphEventDispatcher {
             function (e) {
                 if (t.isActivated) {
                     t.dispatchUpEvent(Helpers.transformEvent(e));
-                    if (Math.abs(new Date().getTime() - timeDown) < 200) {
+                    if (Math.abs(new Date().getTime() - timeDown[e.pointerId]) < 200) {
                         t.dispatchClickEvent(Helpers.transformEvent(e));
                     }
                 }

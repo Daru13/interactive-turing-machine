@@ -70,7 +70,7 @@ export class MouseDispatcher extends GraphEventDispatcher{
     }
 
     deactivate() {
-        super.activate();
+        super.deactivate();
         this.toolBar.hide()
     }
 }
