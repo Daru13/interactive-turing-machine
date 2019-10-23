@@ -83,7 +83,7 @@ body {
     background-color: #e3e3e5;
 }
 
-#graph #reset-viewbox-graph-button {
+#reset-viewbox-graph-button {
     width: 30px;
     height: 30px;
     position: absolute;
@@ -97,7 +97,7 @@ body {
     opacity: 0.4;
 }
 
-#graph #reset-viewbox-graph-button:hover {
+#reset-viewbox-graph-button:hover {
     opacity: 1;
 }
 
