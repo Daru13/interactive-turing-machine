@@ -517,6 +517,27 @@ body {
     position: absolute;
     width: 50px;
     height: 50px;
+    padding: 10px 20px 15px 20px;
+    background-color: #66686b;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    border: none;
+    color: transparent;
+    box-shadow: 0 -5px 0 #3b3c3d inset;
+    transition: 20ms linear;
+}
+
+#turingMachineButton button:hover {
+    padding: 13px 20px 12px 20px;
+    background-color: #494a4c;
+    box-shadow: 0 -2px 0 #3b3c3d inset;
+}
+/*
+#turingMachineButton button {
+    position: absolute;
+    width: 50px;
+    height: 50px;
     margin: 0;
     padding: 5px 10px;
     background-color: #66686b;
@@ -533,23 +554,23 @@ body {
     background-color: #494a4c;
     border-bottom-width: 3px;
     margin-bottom: 5px;
-}
+}*/
 
 #turingMachineButton #runButton {
-    top: 40px;
+    top: 25px;
     left: 40px;
     background-image: url(../img/play.svg)
 }
 
 #turingMachineButton #runOneStepButton {
-    top: 40px;
-    left: 100px;
+    top: 25px;
+    left: 105px;
     background-image: url(../img/play-one.svg)
 }
 
 #turingMachineButton #resetButton {
-    top: 40px;
-    left: 160px;
+    top: 25px;
+    left: 170px;
     background-image: url(../img/stop.svg)
 }
 
