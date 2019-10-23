@@ -665,6 +665,7 @@ body {
 }
 
 #tape .cell {
+    position: relative;
     display: inline-block;
     height: 60%;
     width: 90px;
@@ -687,6 +688,14 @@ body {
 
 #tape .cell input[type=text]:hover {
     background-color: rgba(0, 0, 0, 0.3);
+}
+
+#tape .cell label {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-size: 0.8rem;
+    color: rgba(0, 0, 0, 0.5);
 }
 
 #head {
