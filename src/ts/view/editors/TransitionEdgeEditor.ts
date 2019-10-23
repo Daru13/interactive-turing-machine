@@ -61,17 +61,17 @@ export class TransitionEdgeEditor extends Editor{
             this.addHeadActionSelector(cell, transition.getHeadAction());
 
             cell = row.append("td").classed("delete-transition", true);
-            this.addDeleteTransitionButton(cell);
+            this.addDeleteTransitionButton(cell, row);
         });
     }
 
-    addDeleteTransitionButton(holder: d3.Selection<HTMLElement, any, any, any>){
+    addDeleteTransitionButton(holder: d3.Selection<HTMLElement, any, any, any>, row: d3.Selection<HTMLElement, any, any, any>){
         let t = this;
         holder
             .append("button")
             .on("click", function(){
                 t.stateMachine.removeTransition(holder.datum()["transitionID"]);
-                holder.remove();
+                row.remove();
                 if(t.holder.select("tbody").selectAll("tr").empty()){
                     t.close();
                 }

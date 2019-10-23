@@ -132,41 +132,46 @@ export class Graph {
         })
 
         EventManager.registerHandler("newTransition", function(e: NewTransitionEvent) {
+            let stateMachine = thisGraph.turingMachine.stateMachine
             let added = false;
-            let isCurved = 
-                thisGraph
-                    .turingMachine
-                        .stateMachine
+            let isCurved = stateMachine
                            .hasTransitionFromStateToState(e.transition.toState, e.transition.fromState);
             
             if(isCurved){
-                e.transition.toState.getOutTransitions().forEach(t => {
-                    if (t.toState === e.transition.fromState && t.id != e.transition.id) {
-                        let transitionEdge = thisGraph.transitionIdToTransitionEdge.get(t.id);
-                        transitionEdge.setCurved(true);
-                        transitionEdge.redrawTransitionEdge();
-                    }
-                });
+                let transitions = stateMachine.getTransitionsFromStateToState(e.transition.toState, e.transition.fromState);
+                let transitionEdge = thisGraph.transitionIdToTransitionEdge.get(transitions[0].id);
+                transitionEdge.setCurved(true);
+                 transitionEdge.redrawTransitionEdge();
             }
 
-            e.transition.fromState.getOutTransitions().forEach(t => {
-                if(t.toState === e.transition.toState && t.id !== e.transition.id && !added){
-                    let transitionEdge = thisGraph.transitionIdToTransitionEdge.get(t.id);
-                    transitionEdge.addTransitionToEdge(e.transition);
-                    thisGraph.transitionIdToTransitionEdge.set(e.transition.id, transitionEdge);
-                    added = true;
+            let transitions = stateMachine.getTransitionsFromStateToState(e.transition.fromState, e.transition.toState);
+            if(transitions.length > 1){
+                let transitionEdge;
+                if (transitions[0].id !== e.transition.id) {
+                    transitionEdge = thisGraph.transitionIdToTransitionEdge.get(transitions[0].id);
+                } else {
+                    transitionEdge = thisGraph.transitionIdToTransitionEdge.get(transitions[1].id);
                 }
-            });
 
-            if(!added){
-                let newTransitionEdge = new TransitionEdge(thisGraph, e.transition, isCurved);
-                thisGraph.transitionIdToTransitionEdge.set(e.transition.id, newTransitionEdge);
-                console.log(thisGraph.transitionIdToTransitionEdge)
+                transitionEdge.addTransitionToEdge(e.transition);
+                thisGraph.transitionIdToTransitionEdge.set(e.transition.id, transitionEdge);
+                return;
             }
+            let newTransitionEdge = new TransitionEdge(thisGraph, e.transition, isCurved);
+            thisGraph.transitionIdToTransitionEdge.set(e.transition.id, newTransitionEdge);
         })
 
         EventManager.registerHandler("deleteTransition", function(e: DeleteTransitionEvent) {
             let transitionEdge =  thisGraph.transitionIdToTransitionEdge.get(e.transition.id)
+
+            if(!thisGraph.turingMachine.stateMachine.hasTransitionFromStateToState(e.transition.fromState, e.transition.toState)){
+                let transitions = thisGraph.turingMachine.stateMachine.getTransitionsFromStateToState(e.transition.toState, e.transition.fromState);
+                if(transitions.length > 0){
+                    let transitionEdge = thisGraph.transitionIdToTransitionEdge.get(transitions[0].id);
+                    transitionEdge.setCurved(false);
+                    transitionEdge.redrawTransitionEdge();
+                }
+            }
 
             transitionEdge.deleteTransitionEdge(e.transition.id);
             thisGraph.transitionIdToTransitionEdge.delete(e.transition.id)
