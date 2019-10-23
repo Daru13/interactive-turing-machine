@@ -29,6 +29,7 @@ export class ViewController{
 
         this.toolManager = new MouseDispatcher(this.graph, this.turingMachine);
         this.penAndTouchManager = new PenAndTouchDispatcher(this.graph, this.turingMachine);
+        this.useDefaultInteractionStyle();
 
         this.tape = new Tape();
 
@@ -51,22 +52,75 @@ export class ViewController{
         EventManager.registerHandler("tapeNewPos", function (e: TapeNewPosEvent) {
             tape.setPos(e.headPos);
         })
+    }
 
-        
+    useDefaultInteractionStyle() {
+        this.toolManager.activate();
+        this.penAndTouchManager.deactivate();
+    }
+
+    switchInteractionStyle() {
+        if (this.penAndTouchManager.isActivated) {
+            this.toolManager.activate();
+            this.penAndTouchManager.deactivate();
+        }
+        else {
+            this.toolManager.deactivate();
+            this.penAndTouchManager.activate();
+        }
     }
 
     setupMenu(){
-        var t = this;
-        this.toolManager.activate();
-        this.penAndTouchManager.deactivate();
-        d3.select("#menu").append("button").text("toggle Interaction").on("click", function(){
-            if (t.penAndTouchManager.isActivated){
-                t.toolManager.activate();
-                t.penAndTouchManager.deactivate();
-            }else{
-                t.toolManager.deactivate();
-                t.penAndTouchManager.activate();
-            }
-        })
+        let t = this;
+        let menuBar = d3.select("#menu");
+
+        // Title
+        menuBar.append("h1")
+            .attr("id", "app-title")
+            .text("Interactive Turing Machine");
+
+        // Interaction style switch
+        function getInteractionStyleSwitchText() {
+            return t.penAndTouchManager.isActivated
+            ? "Use Mouse interactions"
+            : "Use Pen&Touch interactions";
+        }
+
+        let interactionStyleSwitch = menuBar.append("button")
+            .attr("id", "switch-interaction-style-button")
+            .text(getInteractionStyleSwitchText())
+            .on("click", () => {
+                this.switchInteractionStyle();
+                interactionStyleSwitch.text(getInteractionStyleSwitchText());
+            });
+        
+        // Import and export
+        menuBar.append("button")
+            .attr("id", "import-model-button")
+            .text("Import")
+            .on("click", () => {
+                // TODO
+            });
+            
+        menuBar.append("button")
+            .attr("id", "export-model-button")
+            .text("Export")
+            .on("click", () => {
+                // TODO
+            });
+
+        // Loading
+        let predefinedModelsList = menuBar.append("select")
+            .attr("id", "predefined-models-list")
+            .on("change", () => {
+                // TODO
+            });
+
+        // TODO: fetch actual, predefined models from somewhere
+        let models = ["Test 1", "Test 2", "Test 3"];
+        for (let model of models) {
+            predefinedModelsList.append("option")
+                .text(model);
+        }
     }
 }

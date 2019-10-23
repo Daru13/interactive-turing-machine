@@ -66,8 +66,51 @@ body {
 
 #menu {
     grid-area: menu;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 160px 90px 90px auto 280px;
+    gap: 10px;
+    background-color: #3b3c3d;
+    color: #FFF;
+    z-index: 100;
 }
 
+#menu button,
+#menu select {
+    height: 40px;
+    margin: 10px 5px;
+    padding: 0;
+    /* overflow: hidden; */
+    text-overflow: ellipsis;
+}
+
+#predefined-models-list {
+    grid-row: 1;
+    grid-column: 1;
+}
+
+#import-model-button {
+    grid-row: 1;
+    grid-column: 2;
+}
+
+#export-model-button {
+    grid-row: 1;
+    grid-column: 3;
+}
+
+#app-title {
+    grid-row: 1;
+    grid-column: 4;
+    justify-self: center;
+    font-size: 1.6rem;
+    font-weight: normal;
+}
+
+#switch-interaction-style-button {
+    grid-row: 1;
+    grid-column: 5;
+}
 
 
 
