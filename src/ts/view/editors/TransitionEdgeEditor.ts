@@ -6,7 +6,7 @@ import { TransitionID } from "../../model/Transition";
 import { Editor } from "./Editor";
 import { TransitionEdge } from "../graph/Edge/TransitionEdge";
 
-export class EdgeEditor extends Editor{
+export class TransitionEdgeEditor extends Editor{
     holder: d3.Selection<HTMLDivElement, {}, HTMLElement, any>;
     edge: TransitionEdge;
     stateMachine: StateMachine;
@@ -22,7 +22,7 @@ export class EdgeEditor extends Editor{
 
     init() {
         // Editor-specific class
-        this.holder.classed("edge-editor", true);
+        this.holder.classed("transition-edge-editor", true);
 
         // Popup title
         this.setTitle("Edit transition" + (this.edge.transitionIDs.length > 1 ? "s" : ""));

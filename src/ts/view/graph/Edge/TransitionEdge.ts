@@ -11,6 +11,7 @@ export class TransitionEdge extends Edge {
     fromStateNode: StateNode;
     toStateNode: StateNode;
     isCurved: boolean;
+    graph: Graph;
 
     constructor(graph: Graph, transition: Transition, isCurved: boolean) {
         super(graph);
@@ -19,6 +20,7 @@ export class TransitionEdge extends Edge {
         this.fromStateNode = graph.stateIdToStateNode.get(transition.fromState.id);
         this.toStateNode = graph.stateIdToStateNode.get(transition.toState.id);
         this.isCurved = isCurved;
+        this.graph = graph;
         this.initTransitionEdge();
      }
 
@@ -41,9 +43,12 @@ export class TransitionEdge extends Edge {
         let dx, dy;
 
         if (pt1.x == pt2.x && pt1.y == pt2.y) {
+            let flipped = pt1.y < this.graph.viewBox.y + this.graph.viewBox.height / 2;
+
             dx = 0;
-            dy = Graph.sizeNode;
-            this.redraw({ x: pt1.x + dx, y: pt1.y + dy }, { x: pt1.x + dx, y: pt1.y + dy }, this.isCurved);
+            dy = (flipped) ? -Graph.sizeNode : Graph.sizeNode;
+
+            this.redraw({ x: pt1.x + dx, y: pt1.y + dy }, { x: pt1.x + dx, y: pt1.y + dy }, false, flipped);
         } else {
             let angle = Helpers.angleToXAxis(pt1, pt2);
             dx = Math.cos(angle) * Graph.sizeNode;

@@ -16,9 +16,9 @@ export class GeneratorNode extends Node{
     initGeneratorNode(): void{
         super.init();
 
-        let bbox = this.graph.getSVGElement().getBoundingClientRect();
+        let viewbox = this.graph.getSVG().attr("viewBox").split(",");
        
-        this.translateTo(Graph.sizeNode, bbox.height / 2);
+        this.translateTo(Graph.sizeNode, parseInt(viewbox[3]) / 2);
         this.handleSelection.attr("id", "generator") 
 
         addGenerator(this.handleSelection, Graph.sizeNode);

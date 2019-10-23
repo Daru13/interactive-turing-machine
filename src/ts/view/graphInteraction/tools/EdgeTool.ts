@@ -6,10 +6,13 @@ import * as d3 from "d3-selection";
 import { TuringMachine } from "../../../model/TuringMachine";
 import { Helpers } from "../../../helpers";
 import { EditNodeAction } from "../../actions/EditNodeAction";
-import { EditEdgeAction } from "../../actions/EditEdgeAction";
+import { EditTransitionEdgeAction } from "../../actions/EditTransitionEdgeAction";
 import { SetInitialNodeAction } from "../../actions/SetInitialNodeAction";
 import { TransitionEdge } from "../../graph/Edge/TransitionEdge";
 import { StateNode } from "../../graph/Node/StateNode";
+import { GeneratorEdge } from "../../graph/Edge/GeneratorEdge";
+import { GeneratorNode } from "../../graph/Node/GeneratorNode";
+import { EditGeneratorEdgeAction } from "../../actions/EditGeneratorEdgeAction";
 
 export class EdgeTool {
     previousX: number;
@@ -34,67 +37,79 @@ export class EdgeTool {
         this.node = undefined;
 
         let targetSelection = d3.select(e.target as any);
+        this.isDown = true;
 
         if (Node.isNode(targetSelection)) {
             this.node = Node.getNode(targetSelection)
-        } else {
+            this.edgeInCreation =
+                this.graph.getSVG()
+                    .append("path")
+                    .classed("edgeInCreation", true)
+            this.drawEdgeInCreation();
+            return;
+        } 
+        if (d3.select(e.target as any).node().tagName === "svg") {
             this.node = undefined
+            this.previousX = e.pageX;
+            this.previousY = e.pageY;
             return;
         }
 
-        this.isDown = true;
-        this.edgeInCreation =
-            this.graph.getSVG()
-                .append("path")
-                .classed("edgeInCreation", true)
-
-        this.drawEdgeInCreation(); 
+        this.isDown = false;
     };
 
     pointerMove(e: ModifiedPointerEvent) {
         if (this.isDown) {
-            this.drawEdgeInCreation();
-                
-            d3.selectAll(".node.closestNode").classed("closestNode", false);
+            if(this.node != undefined){
+                this.drawEdgeInCreation();
+                    
+                d3.selectAll(".node.closestNode").classed("closestNode", false);
 
-            let closestNode = this.closestNode({ x: this.node.x, y: this.node.y }, { x: this.previousX, y: this.previousY }, Graph.sizeNode, Graph.sizeNode * 3);
+                let closestNode = this.closestNode({ x: this.node.x, y: this.node.y }, { x: this.previousX, y: this.previousY }, Graph.sizeNode, Graph.sizeNode * 3);
 
-            if (closestNode !== undefined) {
-                closestNode.handleSelection.classed("closestNode", true);
+                if (closestNode !== undefined) {
+                    closestNode.handleSelection.classed("closestNode", true);
+                }
+
+                this.previousX = e.x;
+                this.previousY = e.y;
+            } else {
+                this.graph.translateViewBoxBy(e.pageX - this.previousX, e.pageY - this.previousY);
+                this.previousX = e.pageX;
+                this.previousY = e.pageY;
             }
 
-            this.previousX = e.x;
-            this.previousY = e.y;
         }
     };
 
     pointerUp(e: ModifiedPointerEvent) {
-        if (this.isDown) {
-            this.isDown = false;
-
+        this.isDown = false;
+        if (this.node !== undefined) {
             this.edgeInCreation.remove()
 
             d3.selectAll(".node.closestNode").classed("closestNode", false);
             let closestNode = this.closestNode({ x: this.node.x, y: this.node.y }, { x: this.previousX, y: this.previousY }, Graph.sizeNode, Graph.sizeNode * 3);
 
             if (closestNode !== undefined) {
-                if(this.node instanceof StateNode){
+                if (this.node instanceof StateNode && closestNode instanceof StateNode){
                     CreateEdgeAction.do(this.node, closestNode, this.tM);
-                }else{
+                } else if (this.node instanceof GeneratorNode && closestNode instanceof StateNode) {
                     SetInitialNodeAction.do(closestNode, this.tM);
+                } else if (this.node instanceof StateNode && closestNode instanceof GeneratorNode) {
+                    SetInitialNodeAction.do(this.node, this.tM);
                 }
             }
         }
     };
 
     pointerLeave(e: ModifiedPointerEvent) {
+        this.isDown = false;
+
         if (this.isDown) {
-            this.isDown = false;
-
-            this.edgeInCreation.remove()
-
-            d3.selectAll(".node.closestNode").classed("closestNode", false);
-            console.log(this.tM.stateMachine.toString());
+            if (this.node != undefined) {
+                this.edgeInCreation.remove()
+                d3.selectAll(".node.closestNode").classed("closestNode", false);
+            }
         }
     }
 
@@ -105,7 +120,9 @@ export class EdgeTool {
         if (this.node !== undefined && this.node instanceof StateNode) {
             EditNodeAction.do(this.node, this.tM);
         } else if (TransitionEdge.isTransitionEdge(targetSelection)) {
-            EditEdgeAction.do(TransitionEdge.getTransitionEdge(targetSelection), this.tM);
+            EditTransitionEdgeAction.do(TransitionEdge.getTransitionEdge(targetSelection), this.tM);
+        } else if (GeneratorEdge.isGeneratorEdge(targetSelection)) {
+            EditGeneratorEdgeAction.do(GeneratorEdge.getGeneratorEdge(targetSelection), this.tM);
         }
     }
 
@@ -115,13 +132,12 @@ export class EdgeTool {
                             " L" + this.previousX + "," + this.previousY);
     }
 
-    private closestNode(beginEdge: { x, y }, endEdge: { x, y }, minLength: number, distFromEnd: number): StateNode {
-        let closestNode: StateNode;
+    private closestNode(beginEdge: { x, y }, endEdge: { x, y }, minLength: number, distFromEnd: number): Node {
+        let closestNode: Node;
         let minDistance = distFromEnd; 
         let t = this;
-        console.log(d3.selectAll(".state-node"))
-        d3.selectAll(".state-node").each(function () {
-            let node = StateNode.getStateNode(d3.select(this));
+        d3.selectAll(".node").each(function () {
+            let node = Node.getNode(d3.select(this));
             let point2 = {
                 x: node.x, y: node.y };
             if (Helpers.distance2(endEdge, point2) < minDistance) {

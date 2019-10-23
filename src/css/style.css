@@ -77,9 +77,16 @@ body {
 
 #graph {
     grid-area: graph;
+    position: relative;
     width: 100%;
     height: 100%;
     background-color: #e3e3e5;
+}
+
+#graph #reset-viewbox-graph-button {
+    position: absolute;
+    left: 0%;
+    top: 0%;
 }
 
 #graph svg {
@@ -159,6 +166,18 @@ body {
 
 .node.move {
     filter: url(#blur);
+}
+
+.node.move.bad-position {
+    filter: url(#red-outline)
+}
+
+.edge:hover path{
+    stroke: blue;
+}
+
+.edge:hover text{
+    fill: blue;
 }
 
 .edge path {
@@ -360,19 +379,19 @@ body {
 
 /*****************************************************************/
 
-.edge-editor {
+.transition-edge-editor {
     top: 40%;
     left: 40%;
 }
 
-.edge-editor .popup-content > table {
+.transition-edge-editor .popup-content > table {
     width: 100%;
     height: 100%;
     margin: 0;
     border-collapse: collapse;
 }
 
-.edge-editor .popup-content > table th {
+.transition-edge-editor .popup-content > table th {
     padding: 2px 0;
     font-size: 0.8rem;
     font-weight: normal;
@@ -380,63 +399,63 @@ body {
     text-transform: uppercase;
 }
 
-.edge-editor .popup-content > table td {
+.transition-edge-editor .popup-content > table td {
     padding: 0 10px 10px 0;
 }
 
-.edge-editor .popup-content > table td:last-child {
+.transition-edge-editor .popup-content > table td:last-child {
     padding-right: 0;
 }
 
-.edge-editor .popup-content > table tr:last-child td {
+.transition-edge-editor .popup-content > table tr:last-child td {
     padding-bottom: 0;
 }
 
-.edge-editor .popup-content > table th.delete-transition {
+.transition-edge-editor .popup-content > table th.delete-transition {
     display: none;
 }
 
-.edge-editor .input-symbol input[type = text],
-.edge-editor .output-symbol input[type = text] {
+.transition-edge-editor .input-symbol input[type = text],
+.transition-edge-editor .output-symbol input[type = text] {
     max-width: 80px;
 }
 
-.edge-editor .head-action-selector {
+.transition-edge-editor .head-action-selector {
     /* border: 2px solid #3b3c3d; */
 }
 
-.edge-editor .head-action-selector button {
+.transition-edge-editor .head-action-selector button {
     width: 50px;
     height: 50px;
     padding: 0;
     vertical-align: bottom;
 }
 
-.edge-editor .head-action-selector button:first-child {
+.transition-edge-editor .head-action-selector button:first-child {
     border-radius: 10px 0 0 0;
 }
 
-.edge-editor .head-action-selector button:last-child {
+.transition-edge-editor .head-action-selector button:last-child {
     border-radius: 0 10px 0 0;
 }
 
-.edge-editor .head-action-selector button:hover,
-.edge-editor .head-action-selector button.selected {
+.transition-edge-editor .head-action-selector button:hover,
+.transition-edge-editor .head-action-selector button.selected {
     padding: 0;
     background-color: #494a4c;
 }
 
-.edge-editor .head-action-selector button.selected {
+.transition-edge-editor .head-action-selector button.selected {
     height: 45px;
     box-shadow: none;
 }
 
-.edge-editor .delete-transition > button {
+.transition-edge-editor .delete-transition > button {
     background-color: #b3484a;
     box-shadow: 0 -5px 0 #821e1f inset;
 }
 
-.edge-editor .delete-transition > button:hover {
+.transition-edge-editor .delete-transition > button:hover {
     background-color: #9e2627;
     box-shadow: 0 -2px 0 #821e1f inset;
 }
