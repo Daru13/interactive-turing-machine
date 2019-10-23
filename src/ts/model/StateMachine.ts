@@ -84,6 +84,14 @@ export class StateMachine {
         EventManager.emit(new EditInitialStateEvent(this.initialState, true));
     }
 
+    resetInitialState() {
+        if (this.initialState === null) {
+            return;
+        }
+        EventManager.emit(new EditInitialStateEvent(this.initialState, false));
+        this.initialState = null;
+    }
+
     setCurrentState(id: StateID) {
         if (! this.hasState(id)) {
             console.error("The state could not be set as current: unknown state.");
@@ -131,6 +139,16 @@ export class StateMachine {
 
     hasTransitionFromStateToState(fromState: State, toState: State) {
         return fromState.hasOutTransitionTo(toState);
+    }
+
+    getTransitionsFromStateToState(fromState: State, toState: State) {
+        let transitions = [];
+        fromState.getOutTransitions().forEach(t => {
+            if (t.toState === toState) {
+                transitions.push(t)
+            }
+        });
+        return transitions;
     }
 
     getTransition(id: TransitionID): Transition {
