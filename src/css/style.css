@@ -207,19 +207,48 @@ body {
     /* border: 5px solid #66686b; */
     /* border-radius: 10px; */
     color: #3b3c3d;
-    box-shadow: 0 0 50px #3b3c3d;
+    box-shadow: 0 0 50px #555;
+}
+
+.popup-titlebar {
+    box-sizing: border-box;
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    background-color: #3b3c3d;
 }
 
 .popup-title {
-    width: 100%;
-    background-color: #66686b;
+    margin: 0;
     color: #FFF;
     font-size: 1.6rem;
+    font-weight: bold;
     text-align: center;
 }
 
+.popup-close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    background-image: url(../img/close.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    border: none;
+    color: transparent;
+    overflow: hidden;
+}
+
+.popup-close-button:hover {
+    background-color: #b3484a;
+}
+
 .popup-content {
-    padding: 10x;
+    padding: 10px;
+    color: #3b3c3d;
 }
 
 .popup-content button {
@@ -281,43 +310,50 @@ body {
 .node-editor .popup-content {
     display: grid;
     padding: 10px;
-    grid-template-rows: 50px 50px;
+    grid-template-rows: auto;
     grid-template-columns: auto auto auto;
     grid-template-areas:
-        "initial initial initial"
         "label   final   delete";
     gap: 10px;
 }
 
-.node-editor #node-set-initial-button {
-    grid-area: initial;
-    /* width: 100%; */
-    /* margin: 20px 5px; */
+.node-editor .popup-content > *:not(label) {
+    margin: 1.2rem 0 0 0;
 }
 
-.node-editor #node-set-label-field {
+.node-editor label {
+    display: block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.node-editor #node-set-label-field,
+.node-editor label[for = "node-set-label-field"] {
     grid-area: label;
 }
 
-.node-editor #node-set-final-button {
+.node-editor #node-set-final-button,
+.node-editor label[for = "node-set-final-button"] {
     grid-area: final;
 }
 
-.node-editor #node-delete-button {
+.node-editor #node-delete-button,
+.node-editor label[for = "node-delete-button"] {
     grid-area: delete;
-    width: 50px;
-    height: 50px;
+}
+
+.node-editor label[for = "node-delete-button"] {
+    display: none;
+}
+
+.node-editor #node-delete-button {
     background-color: #b3484a;
-    background-image: url(../img/close.svg);
-    background-size: 90%;
-    background-position-y: calc(50% - 3px);
-    color: transparent;
+    color: #FFF;
     overflow: hidden;
     box-shadow: 0 -5px 0 #821e1f inset;
 }
 
 .node-editor #node-delete-button:hover {
-    background-position-y: 50%;
     background-color: #9e2627;
     box-shadow: 0 -2px 0 #821e1f inset;
 }
@@ -329,8 +365,35 @@ body {
     left: 40%;
 }
 
-.edge-editor .popup-content > table tr {
-    height: 80px;
+.edge-editor .popup-content > table {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-collapse: collapse;
+}
+
+.edge-editor .popup-content > table th {
+    padding: 2px 0;
+    font-size: 0.8rem;
+    font-weight: normal;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.edge-editor .popup-content > table td {
+    padding: 0 10px 10px 0;
+}
+
+.edge-editor .popup-content > table td:last-child {
+    padding-right: 0;
+}
+
+.edge-editor .popup-content > table tr:last-child td {
+    padding-bottom: 0;
+}
+
+.edge-editor .popup-content > table th.delete-transition {
+    display: none;
 }
 
 .edge-editor .input-symbol input[type = text],
@@ -339,40 +402,44 @@ body {
 }
 
 .edge-editor .head-action-selector {
-    background: white;
-    margin: 5px;
-    display: grid;
-    grid-template-columns: auto auto auto;
-    border: 2px solid grey;
+    /* border: 2px solid #3b3c3d; */
 }
 
 .edge-editor .head-action-selector button {
-    min-width: 30px;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    vertical-align: bottom;
 }
 
-.edge-editor .head-action-selector .selected {
-    background: grey;
+.edge-editor .head-action-selector button:first-child {
+    border-radius: 10px 0 0 0;
+}
+
+.edge-editor .head-action-selector button:last-child {
+    border-radius: 0 10px 0 0;
+}
+
+.edge-editor .head-action-selector button:hover,
+.edge-editor .head-action-selector button.selected {
+    padding: 0;
+    background-color: #494a4c;
+}
+
+.edge-editor .head-action-selector button.selected {
+    height: 45px;
+    box-shadow: none;
 }
 
 .edge-editor .delete-transition > button {
-    grid-area: delete;
-    width: 50px;
-    height: 50px;
     background-color: #b3484a;
-    background-image: url(../img/close.svg);
-    background-size: 90%;
-    background-position-y: calc(50% - 3px);
-    color: transparent;
-    overflow: hidden;
     box-shadow: 0 -5px 0 #821e1f inset;
 }
 
 .edge-editor .delete-transition > button:hover {
-    background-position-y: 50%;
     background-color: #9e2627;
     box-shadow: 0 -2px 0 #821e1f inset;
 }
-
 
 
 

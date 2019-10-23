@@ -29,6 +29,13 @@ export class Editor extends Popup{
             .style("left", (bbox.left + (bbox.width - bboxHolder.width) / 2).toString() + "px");*/
     }
 
+    addLabel(text: string, forAttribute: string, parent: d3.Selection<HTMLElement, any, any, any> = this.content) {
+        let label = parent
+            .append("label")
+            .attr("for", forAttribute)
+            .text(text);
+    }
+
     addButton(text: string, callback: () => void, id: string = null, classElement: string = null, parent: d3.Selection<HTMLElement, any, any, any> = this.content): void {
         let button = 
             parent

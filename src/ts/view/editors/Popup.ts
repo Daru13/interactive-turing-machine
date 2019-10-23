@@ -5,30 +5,35 @@ export class Popup{
     holder: d3.Selection<HTMLDivElement, {}, HTMLElement, {}>;
     maskBackground: d3.Selection<HTMLDivElement, {}, HTMLElement, {}>;
     content: d3.Selection<HTMLDivElement, {}, HTMLElement, {}>;
-    onClose: () => void;
+
+    private title: string;
+    private onClose: () => void;
 
     constructor() {
         this.holder = d3.select("body").append("div").classed("popup", true);
-        this.onClose = () => {};
-
-        this.initUI();
         this.initMask();
+        this.initUI();
+
+        this.onClose = () => {};
+        this.title = "";
     }
 
     initUI() {
         let t = this;
 
-        this.holder
-            .append("div")
-                .classed("popup-title", true);
+        let titleBar = this.holder.append("div")
+            .classed("popup-titlebar", true);
 
-        this.holder
-            .append("button")
-                .classed("popup-close-button", true)
-                .on("click", () => { t.close() })
-                .text("close");
+        titleBar.append("h2")
+            .classed("popup-title", true);
 
-        this.content = this.holder.append("div").classed("popup-content", true);
+        titleBar.append("div")
+            .classed("popup-close-button", true)
+            .on("click", () => { t.close() })
+            .text("Close");
+
+        this.content = this.holder.append("div")
+            .classed("popup-content", true);
     }
 
     initMask() {
@@ -40,7 +45,12 @@ export class Popup{
                 .on("click", () => { t.close() });
     }
 
-     close() {
+    setTitle(title: string) {
+        this.title = title;
+        this.holder.select(".popup-title").text(this.title);
+    }
+
+    close() {
         this.maskBackground.remove();
         this.holder.remove();
         this.onClose();
