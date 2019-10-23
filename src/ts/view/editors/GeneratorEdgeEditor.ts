@@ -22,6 +22,7 @@ export class GeneratorEdgeEditor extends Editor {
 
     initContent(): void {
         this.addButton("Delete", () => {
+            this.stateMachine.resetInitialState();
             this.close();
         }, "delete-generator-edge-button")
     }
