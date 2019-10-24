@@ -189,5 +189,10 @@ export class Graph {
                     e.transition.getOutputSymbol(),
                     e.transition.getHeadAction());
         })
+
+        window.addEventListener("resize", () => {
+            let bbox = this.svg.node().getBoundingClientRect();
+            this.scaleViewBoxTo(bbox.width, bbox.height);
+        });
     }
 }
