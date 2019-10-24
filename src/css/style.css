@@ -763,3 +763,26 @@ body {
     z-index: 1000;
 }
 
+
+/******************************************************************
+/* EASTER EGG
+/*****************************************************************/
+
+@keyframes fly {
+    0% { top: 100%; }
+    100% { top: -50%; }
+}
+
+.spaceman-holder {
+    position: absolute;
+    z-index: 10000000;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+     animation-name: fly;
+    animation-duration: 5s;
+    animation-iteration-count: 1;
+    width: 80px;
+    height: 260px;
+}
