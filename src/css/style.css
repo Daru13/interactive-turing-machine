@@ -194,6 +194,10 @@ body {
     fill: #DEE0E0;
 }
 
+.node #Lampe #BulbStroke{
+    stroke: #999999;
+}
+
 .node.final #Highlight {
     display: initial;
 }
@@ -209,6 +213,10 @@ body {
 .node.current #Lampe #BulbFill{
     fill: #FFE461;
     filter: url(#lightOn);
+}
+
+.node.current #Lampe #BulbStroke{
+    stroke: #969654;
 }
 
 .node.selected {
