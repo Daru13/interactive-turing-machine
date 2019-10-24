@@ -49,6 +49,10 @@ export class Tape {
         this.content = content;
     }
 
+    getContent(): TapeSymbol[] {
+        return this.content;
+    }
+
     applyHeadAction(action: HeadAction) {
         switch (action) {
             case HeadAction.MoveLeft:

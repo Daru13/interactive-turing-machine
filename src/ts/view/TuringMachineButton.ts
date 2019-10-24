@@ -2,6 +2,7 @@ import * as d3 from "d3-selection";
 import { TuringMachine } from "../model/TuringMachine";
 import { Tape } from "./Tape";
 import { Popup } from "./editors/Popup";
+import { EasterEggs } from "../easterEggs/EasterEggs";
 
 export class TuringMachineButton{
     holder: d3.Selection<HTMLDivElement, any, HTMLElement, any>;
@@ -27,6 +28,7 @@ export class TuringMachineButton{
                 tape.moveToCell(tM.tape.getHeadPosition());
                 try {
                     tM.run()
+                    new EasterEggs(tM.tape.getContent());
                 } catch (error) {
                     t.catchError(error);
                 }
