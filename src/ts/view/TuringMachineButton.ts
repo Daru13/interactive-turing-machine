@@ -1,6 +1,7 @@
 import * as d3 from "d3-selection";
 import { TuringMachine } from "../model/TuringMachine";
 import { Tape } from "./Tape";
+import { Popup } from "./editors/Popup";
 
 export class TuringMachineButton{
     holder: d3.Selection<HTMLDivElement, any, HTMLElement, any>;
@@ -55,6 +56,8 @@ export class TuringMachineButton{
     }
 
     catchError(error){
+        let popup = new Popup();
         console.log(error);
+        popup.setTitle(error.text)
     }
 }

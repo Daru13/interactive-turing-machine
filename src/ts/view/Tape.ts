@@ -101,18 +101,18 @@ export class Tape{
         this.tapeHolder.node().addEventListener("pointerdown", function(e: PointerEvent) { 
             isDown = true;
             previousX = e.clientX;
-        })
+        });
         this.tapeHolder.node().addEventListener("pointermove", function(e: PointerEvent) { 
             if(isDown){
                 t.moveTapeBy(-(e.clientX - previousX));
                 previousX = e.clientX;
             }
-        })
+        });
         this.tapeHolder.node().addEventListener("pointerup", function(e: PointerEvent) { 
             isDown = false;
-        })
+        });
         this.tapeHolder.node().addEventListener("pointerleave", function(e: PointerEvent) {
             isDown = false;
-        })
+        });
     }
 }

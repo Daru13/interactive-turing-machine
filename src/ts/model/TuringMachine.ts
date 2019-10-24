@@ -1,6 +1,8 @@
 import { Tape } from "./Tape";
 import { StateMachine } from './StateMachine';
-
+import { NoInitialStateError } from "../errors/NoInitialStateError";
+import { NoTransitionAvailableError } from "../errors/NoTransitionAvailableError";
+import { NonDeterministicError } from "../errors/NonDeterministicError";
 
 export class TuringMachine {
 
@@ -22,6 +24,7 @@ export class TuringMachine {
             let initialState = this.stateMachine.getInitialState();
             if (initialState === null) {
                 console.error("The machine could not be ran: no initial state.");
+                throw new NoInitialStateError(this);
                 return false;
             }
 
@@ -38,12 +41,14 @@ export class TuringMachine {
 
         if (! currentState.hasOutTransitionForSymbol(currentSymbol)) {
             console.error("The machine could not be ran: no transition available.");
+            throw new NoTransitionAvailableError(this, currentState);
             return false;
         }
 
         let transitions = currentState.getOutTransitionsForSymbol(currentSymbol);
         if (transitions.length > 1) {
             console.error("The machine could not be ran: nondeterministic state-machine.");
+            throw new NonDeterministicError(this, currentState, transitions);
             return false;
         }
 
