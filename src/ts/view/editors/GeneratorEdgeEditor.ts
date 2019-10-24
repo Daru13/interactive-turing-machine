@@ -18,6 +18,7 @@ export class GeneratorEdgeEditor extends Editor {
         this.holder.classed("generator-edge-editor", true);
 
         this.initContent();
+        this.initPosition();
     }
 
     initContent(): void {

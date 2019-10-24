@@ -13,19 +13,32 @@ export class Editor extends Popup{
         this.element = element;
         d3.selectAll(".selected").classed("selected", false);
 
-        console.log(this.element);
-        this.initPosition();
         this.setOnClose(() => { })
     }
 
     initPosition(){
-        console.log(this.element)
         let bbox = this.element.handleSelection.node().getBoundingClientRect();
         let bboxHolder = this.holder.node().getBoundingClientRect();
+        let windowWidth = window.innerWidth;
+        let windowHeight = window.innerHeight;
+        let top = bbox.top + bbox.height;
+        let left = bbox.left + (bbox.width - bboxHolder.width) / 2; 
+        if(top < 0){
+            top = 0;
+        }
+        if(top + bboxHolder.height > windowHeight){
+            top = windowHeight - bboxHolder.height;
+        }
+        if(left < 0){
+            left = 0;
+        }
+        if (left + bboxHolder.width > windowWidth) {
+            left = windowWidth - bboxHolder.width;
+        }
 
         this.holder
-            .style("top", (bbox.top + bbox.height).toString() + "px")
-            .style("left", (bbox.left + (bbox.width - bboxHolder.width) / 2).toString() + "px");
+            .style("top", (top).toString() + "px")
+            .style("left", (left).toString() + "px");
     }
 
     addLabel(text: string, forAttribute: string, parent: d3.Selection<HTMLElement, any, any, any> = this.content) {

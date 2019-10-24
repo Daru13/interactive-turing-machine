@@ -28,6 +28,7 @@ export class NodeEditor extends Editor{
             let label = (this.content.select("#node-set-label-field").node() as HTMLInputElement).value;
             this.tm.stateMachine.getState(this.node.stateID).setLabel(label);
         });
+        this.initPosition();
     }
 
     initContent(){

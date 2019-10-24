@@ -28,6 +28,7 @@ export class TransitionEdgeEditor extends Editor{
         this.setTitle("Edit transition" + (this.edge.transitionIDs.length > 1 ? "s" : ""));
 
         this.initContent();
+        this.initPosition();
         super.setOnClose(() => {this.submit()});
     }
 
