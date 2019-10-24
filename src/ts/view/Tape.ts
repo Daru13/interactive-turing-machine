@@ -114,5 +114,9 @@ export class Tape{
         this.tapeHolder.node().addEventListener("pointerleave", function(e: PointerEvent) {
             isDown = false;
         });
+
+        this.tapeHolder.node().addEventListener("wheel", function(e: WheelEvent){
+            t.moveTapeBy(e.deltaX * 4);
+        });
     }
 }
