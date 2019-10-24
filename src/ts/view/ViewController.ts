@@ -50,7 +50,7 @@ export class ViewController{
         })
 
         EventManager.registerHandler("tapeNewPos", function (e: TapeNewPosEvent) {
-            tape.setPos(e.headPos);
+            tape.moveToCell(e.headPos);
         })
     }
 

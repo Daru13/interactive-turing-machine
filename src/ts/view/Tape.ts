@@ -14,6 +14,7 @@ export class Tape{
         this.tapeHolder = d3.select("#tapeHolder");
         this.tape = this.addTape();
         this.head = this.addHead();
+        this.setupListener();
     }
 
     addTape(): d3.Selection<HTMLDivElement, unknown, HTMLElement, any>{
@@ -44,20 +45,32 @@ export class Tape{
         return this.tapeHolder.append("div").attr("id", "head")
     }
 
-    moveTapeBy(n: number){
+    moveTapeByNCell(n: number){
         let l = parseInt(this.tape.style("left"));
         this.tape
             .style("left", (l - n * this.stepMovement).toString() + "px")
     }
 
+    moveTapeBy(n: number) {
+        let l = parseInt(this.tape.style("left"));
+        this.tape
+            .style("left", (l-n).toString() + "px")
+    }
+
+    moveToCell(pos: number) {
+        this.tape
+            .style("left", (this.origin).toString() + "px")
+        this.moveTapeByNCell(pos);
+    }
+
     move(action: HeadAction){
         switch (action) {
             case HeadAction.MoveLeft:
-                this.moveTapeBy(-1);
+                this.moveTapeByNCell(-1);
                 break;
 
             case HeadAction.MoveRight:
-                this.moveTapeBy(1);
+                this.moveTapeByNCell(1);
                 break;
 
             case HeadAction.None:
@@ -80,9 +93,26 @@ export class Tape{
         inputCell.value = symbol;
     }
 
-    setPos(pos: number){
-        console.log(this.origin)
-        this.tape
-            .style("left", (this.origin).toString() + "px")
+    setupListener(){
+        let isDown = false;
+        let previousX = 0;
+        let t = this;
+
+        this.tapeHolder.node().addEventListener("pointerdown", function(e: PointerEvent) { 
+            isDown = true;
+            previousX = e.clientX;
+        })
+        this.tapeHolder.node().addEventListener("pointermove", function(e: PointerEvent) { 
+            if(isDown){
+                t.moveTapeBy(-(e.clientX - previousX));
+                previousX = e.clientX;
+            }
+        })
+        this.tapeHolder.node().addEventListener("pointerup", function(e: PointerEvent) { 
+            isDown = false;
+        })
+        this.tapeHolder.node().addEventListener("pointerleave", function(e: PointerEvent) {
+            isDown = false;
+        })
     }
 }

@@ -14,16 +14,21 @@ export class TuringMachineButton{
     }
 
     setupUI(){
-        var tM: TuringMachine = this.turingMachine;
-        var tape: Tape = this.tape;
+        let tM: TuringMachine = this.turingMachine;
+        let tape: Tape = this.tape;
+        let t = this;
+
         this.holder = d3.select("#turingMachineButton");
         this.holder.append("button")
             .attr("id", "runButton")
             .on("click", function(){
                 tM.tape.setContent(tape.toArray());
-                console.log(tM.toString());
-                tM.runOneStep();
-                console.log(tM.toString());
+                tape.moveToCell(tM.tape.getHeadPosition());
+                try {
+                    tM.run()
+                } catch (error) {
+                    t.catchError(error);
+                }
             })
             .text("Run");
 
@@ -31,9 +36,12 @@ export class TuringMachineButton{
             .attr("id", "runOneStepButton")
             .on("click", function () {
                 tM.tape.setContent(tape.toArray());
-                console.log(tM.toString());
-                tM.run();
-                console.log(tM.toString());
+                tape.moveToCell(tM.tape.getHeadPosition());
+                try {
+                    tM.runOneStep()
+                } catch (error) {
+                    t.catchError(error);
+                }
             })
             .text("Step");
 
@@ -41,10 +49,12 @@ export class TuringMachineButton{
             .attr("id", "resetButton")
             .on("click", function () {
                 tM.tape.setContent(tape.toArray());
-                console.log(tM.toString());
                 tM.reset();
-                console.log(tM.toString());
             })
             .text("Reset");
+    }
+
+    catchError(error){
+        console.log(error);
     }
 }
