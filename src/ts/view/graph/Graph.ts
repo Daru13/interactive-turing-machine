@@ -85,61 +85,66 @@ export class Graph {
 
     translateViewBoxBy(dx: number, dy: number){
         this.viewBox.x -= dx;
-        this.viewBox.y -= dy
+        this.viewBox.y -= dy;
+        this.updateViewBox();
+    }
+
+    scaleViewBoxTo(width: number, height: number){
+        this.viewBox.width = width;
+        this.viewBox.height = height;
         this.updateViewBox();
     }
 
     setupListeners(){
-        var thisGraph = this;
-        EventManager.registerHandler("newState", function(e: NewStateEvent) {
-            thisGraph.stateIdToStateNode.set(e.state.id, new StateNode(thisGraph, e.state));
+        EventManager.registerHandler("newState", (e: NewStateEvent) => {
+            this.stateIdToStateNode.set(e.state.id, new StateNode(this, e.state));
         })
 
-        EventManager.registerHandler("editInitialState", function (e: EditInitialStateEvent) {
-            let node = thisGraph.stateIdToStateNode.get(e.state.id);
+        EventManager.registerHandler("editInitialState", (e: EditInitialStateEvent) => {
+            let node = this.stateIdToStateNode.get(e.state.id);
             node.setInitialState(e.isInitial);
             if(e.isInitial) {
-                thisGraph.generatorEdge = new GeneratorEdge(thisGraph, thisGraph.generator, node);
+                this.generatorEdge = new GeneratorEdge(this, this.generator, node);
             } else {
-                if(thisGraph.generatorEdge !== undefined){
-                    thisGraph.generatorEdge.delete()
+                if(this.generatorEdge !== undefined){
+                    this.generatorEdge.delete()
                 }
             }
         })
 
-        EventManager.registerHandler("newCurrentState", function (e: NewCurrentStateEvent) {
+        EventManager.registerHandler("newCurrentState", (e: NewCurrentStateEvent) => {
             if(e.state === null){
                 StateNode.resetCurrentNode();
             }else{
-                thisGraph.stateIdToStateNode.get(e.state.id).setCurrentNode();
+                this.stateIdToStateNode.get(e.state.id).setCurrentNode();
             }
         })
 
-        EventManager.registerHandler("editFinalState", function (e: EditFinalStateEvent) {
-            thisGraph.stateIdToStateNode.get(e.state.id).setFinalState(e.isFinal);
+        EventManager.registerHandler("editFinalState", (e: EditFinalStateEvent) => {
+            this.stateIdToStateNode.get(e.state.id).setFinalState(e.isFinal);
         })
 
-        EventManager.registerHandler("editState", function (e: EditStateEvent) {
-            thisGraph.stateIdToStateNode.get(e.state.id).setLabel(e.state.getLabel());
+        EventManager.registerHandler("editState", (e: EditStateEvent) => {
+            this.stateIdToStateNode.get(e.state.id).setLabel(e.state.getLabel());
         })
 
-        EventManager.registerHandler("deleteState", function(e: DeleteStateEvent) {
-            let node = thisGraph.stateIdToStateNode.get(e.state.id);
+        EventManager.registerHandler("deleteState", (e: DeleteStateEvent) => {
+            let node = this.stateIdToStateNode.get(e.state.id);
             if(node.isInitialState()){
-                thisGraph.generatorEdge.delete();
+                this.generatorEdge.delete();
             }
             node.delete();
         })
 
-        EventManager.registerHandler("newTransition", function(e: NewTransitionEvent) {
-            let stateMachine = thisGraph.turingMachine.stateMachine
+        EventManager.registerHandler("newTransition", (e: NewTransitionEvent) => {
+            let stateMachine = this.turingMachine.stateMachine
             let added = false;
             let isCurved = stateMachine
                            .hasTransitionFromStateToState(e.transition.toState, e.transition.fromState);
             
             if(isCurved){
                 let transitions = stateMachine.getTransitionsFromStateToState(e.transition.toState, e.transition.fromState);
-                let transitionEdge = thisGraph.transitionIdToTransitionEdge.get(transitions[0].id);
+                let transitionEdge = this.transitionIdToTransitionEdge.get(transitions[0].id);
                 transitionEdge.setCurved(true);
                  transitionEdge.redrawTransitionEdge();
             }
@@ -148,37 +153,37 @@ export class Graph {
             if(transitions.length > 1){
                 let transitionEdge;
                 if (transitions[0].id !== e.transition.id) {
-                    transitionEdge = thisGraph.transitionIdToTransitionEdge.get(transitions[0].id);
+                    transitionEdge = this.transitionIdToTransitionEdge.get(transitions[0].id);
                 } else {
-                    transitionEdge = thisGraph.transitionIdToTransitionEdge.get(transitions[1].id);
+                    transitionEdge = this.transitionIdToTransitionEdge.get(transitions[1].id);
                 }
 
                 transitionEdge.addTransitionToEdge(e.transition);
-                thisGraph.transitionIdToTransitionEdge.set(e.transition.id, transitionEdge);
+                this.transitionIdToTransitionEdge.set(e.transition.id, transitionEdge);
                 return;
             }
-            let newTransitionEdge = new TransitionEdge(thisGraph, e.transition, isCurved);
-            thisGraph.transitionIdToTransitionEdge.set(e.transition.id, newTransitionEdge);
+            let newTransitionEdge = new TransitionEdge(this, e.transition, isCurved);
+            this.transitionIdToTransitionEdge.set(e.transition.id, newTransitionEdge);
         })
 
-        EventManager.registerHandler("deleteTransition", function(e: DeleteTransitionEvent) {
-            let transitionEdge =  thisGraph.transitionIdToTransitionEdge.get(e.transition.id)
+        EventManager.registerHandler("deleteTransition", (e: DeleteTransitionEvent) => {
+            let transitionEdge =  this.transitionIdToTransitionEdge.get(e.transition.id)
 
-            if(!thisGraph.turingMachine.stateMachine.hasTransitionFromStateToState(e.transition.fromState, e.transition.toState)){
-                let transitions = thisGraph.turingMachine.stateMachine.getTransitionsFromStateToState(e.transition.toState, e.transition.fromState);
+            if(!this.turingMachine.stateMachine.hasTransitionFromStateToState(e.transition.fromState, e.transition.toState)){
+                let transitions = this.turingMachine.stateMachine.getTransitionsFromStateToState(e.transition.toState, e.transition.fromState);
                 if(transitions.length > 0){
-                    let transitionEdge = thisGraph.transitionIdToTransitionEdge.get(transitions[0].id);
+                    let transitionEdge = this.transitionIdToTransitionEdge.get(transitions[0].id);
                     transitionEdge.setCurved(false);
                     transitionEdge.redrawTransitionEdge();
                 }
             }
 
             transitionEdge.deleteTransitionEdge(e.transition.id);
-            thisGraph.transitionIdToTransitionEdge.delete(e.transition.id)
+            this.transitionIdToTransitionEdge.delete(e.transition.id)
         })
 
-        EventManager.registerHandler("editTransition", function (e: EditTransitionEvent) {
-            thisGraph.transitionIdToTransitionEdge.get(e.transition.id)
+        EventManager.registerHandler("editTransition", (e: EditTransitionEvent) => {
+            this.transitionIdToTransitionEdge.get(e.transition.id)
                 .drawTransitionText(
                     e.transition.getOnSymbol(),
                     e.transition.getOutputSymbol(),
