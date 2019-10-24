@@ -47,6 +47,7 @@ export class NodeEditor extends Editor{
 
     deleteNode(){
         DeleteNodeAction.do(this.node, this.tm);
+        this.setOnClose(() => {});
         super.close();
     }
 }
