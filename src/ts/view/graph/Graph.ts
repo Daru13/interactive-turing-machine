@@ -140,7 +140,7 @@ export class Graph {
             let stateMachine = this.turingMachine.stateMachine
             let added = false;
             let isCurved = stateMachine
-                           .hasTransitionFromStateToState(e.transition.toState, e.transition.fromState);
+                .hasTransitionFromStateToState(e.transition.toState, e.transition.fromState) && e.transition.fromState !== e.transition.toState;
             
             if(isCurved){
                 let transitions = stateMachine.getTransitionsFromStateToState(e.transition.toState, e.transition.fromState);
