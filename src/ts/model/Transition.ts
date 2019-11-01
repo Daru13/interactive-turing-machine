@@ -1,10 +1,24 @@
-import { State } from "./State";
+import { State, StateID } from "./State";
 import { TapeSymbol, HeadAction } from './Tape';
 import { EventManager } from "../events/EventManager";
 import { EditTransitionEvent } from "../events/EditTransitionEvent";
+import { transition } from 'd3';
+import { TransitionEdge } from '../view/graph/Edge/TransitionEdge';
 
 export type TransitionID = number;
 
+interface EditableTransition extends Transition {
+    id: TransitionID;
+}
+
+export interface TransitionExport {
+    readonly id: TransitionID;
+    readonly fromStateID: StateID;
+    readonly toStateID: StateID;
+    readonly onSymbol: TapeSymbol;
+    readonly outputSymbol: TapeSymbol;
+    readonly headAction: HeadAction;
+}
 
 export class Transition {
 
@@ -19,10 +33,10 @@ export class Transition {
     private headAction: HeadAction;
 
     constructor(fromState: State,
-                toState: State,
-                onSymbol: TapeSymbol,
-                outputSymbol: TapeSymbol,
-                headAction: HeadAction) {
+        toState: State,
+        onSymbol: TapeSymbol,
+        outputSymbol: TapeSymbol,
+        headAction: HeadAction) {
         this.id = Transition.nextTransitionID;
         Transition.nextTransitionID++;
 
@@ -89,14 +103,55 @@ export class Transition {
         }
 
         return this.fromState.toString(useLabels)
-             + " → "
-             + this.toState.toString(useLabels)
-             + " ("
-             + this.onSymbol
-             + " / "
-             + this.outputSymbol
-             + ", "
-             + actionAsString
-             + ")";
+            + " → "
+            + this.toState.toString(useLabels)
+            + " ("
+            + this.onSymbol
+            + " / "
+            + this.outputSymbol
+            + ", "
+            + actionAsString
+            + ")";
+    }
+
+    export(): TransitionExport {
+        return {
+            id: this.id,
+            fromStateID: this.fromState.id,
+            toStateID: this.toState.id,
+            onSymbol: this.onSymbol,
+            outputSymbol: this.outputSymbol,
+            headAction: this.headAction
+        };
+    }
+
+    static fromExport(transitionExport: TransitionExport, states: Map<StateID, State>): Transition {
+        // Origin and destination states MUST HAVE ALREADY BEEN CREATED
+        let fromState = states.get(transitionExport.fromStateID);
+        let toState = states.get(transitionExport.toStateID);
+
+        if (fromState === undefined || toState === undefined) {
+            console.error("The transition could not be created from an export: unknown state.");
+        }
+
+        let transition = new Transition(
+            fromState,
+            toState,
+            transitionExport.onSymbol,
+            transitionExport.outputSymbol,
+            transitionExport.headAction
+        ) as EditableTransition;
+
+        // Restore the original transition ID
+        transition.id = transitionExport.id;
+        Transition.ensureIDIsAbove(transitionExport.id);
+
+        return transition;
+    }
+
+    private static ensureIDIsAbove(minID: TransitionID) {
+        if (Transition.nextTransitionID <= minID) {
+            Transition.nextTransitionID = minID + 1;
+        }
     }
 }

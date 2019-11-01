@@ -13,6 +13,17 @@ export interface Position {
     y: number;
 }
 
+interface EditableState extends State {
+    id: StateID;
+}
+
+export interface StateExport {
+    readonly id: StateID;
+    readonly position: Position;
+    readonly label: string;
+    readonly final: boolean;
+}
+
 
 export class State {
 
@@ -197,5 +208,30 @@ export class State {
         return [...this.outTransitions.values()]
             .map((t) => t.toString(useLabels))
             .reduce((str, t) => str + "\n" + t, "");
+    }
+
+    export(): StateExport {
+        return {
+           id: this.id,
+           position: this.position,
+           label: this.label,
+           final: this.final 
+        };
+    }
+
+    static fromExport(stateExport: StateExport): State {
+        let state = new State(stateExport.position, stateExport.label, stateExport.final) as EditableState;
+        
+        // Restore the original state ID        
+        state.id = stateExport.id;
+        State.ensureIDIsAbove(stateExport.id);
+
+        return state;
+    }
+
+    private static ensureIDIsAbove(minID: StateID) {
+        if (State.nextStateID <= minID) {
+            State.nextStateID = minID + 1;
+        }
     }
 }

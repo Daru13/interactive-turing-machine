@@ -1,8 +1,18 @@
-import { Tape } from "./Tape";
-import { StateMachine } from './StateMachine';
+import { Tape, TapeExport } from "./Tape";
+import { StateMachine, StateMachineExport } from './StateMachine';
 import { NoInitialStateError } from "../errors/NoInitialStateError";
 import { NoTransitionAvailableError } from "../errors/NoTransitionAvailableError";
 import { NonDeterministicError } from "../errors/NonDeterministicError";
+
+interface EditableTuringMachine extends TuringMachine {
+    stateMachine: StateMachine
+    tape: Tape;
+}
+
+interface TuringMachineExport {
+    stateMachine: StateMachineExport;
+    tape: TapeExport;
+}
 
 export class TuringMachine {
 
@@ -96,5 +106,24 @@ export class TuringMachine {
         str += this.tape.toString();
 
         return str;
+    }
+
+    export(): TuringMachineExport {
+        let exportedStateMachine = this.stateMachine.export();
+        let exportedTape =this.tape.export();
+
+        return {
+            stateMachine: exportedStateMachine,
+            tape: exportedTape
+        };
+    }
+
+    static fromExport(turingMachineExport: TuringMachineExport): TuringMachine {
+        let turingMachine = new TuringMachine() as EditableTuringMachine;
+
+        turingMachine.stateMachine = StateMachine.fromExport(turingMachineExport.stateMachine);
+        turingMachine.tape = Tape.fromExport(turingMachineExport.tape);
+
+        return turingMachine;
     }
 }

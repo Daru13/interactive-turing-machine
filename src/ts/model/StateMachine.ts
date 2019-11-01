@@ -1,5 +1,5 @@
-import { State, StateID, Position } from './State';
-import { Transition, TransitionID } from './Transition';
+import { State, StateID, Position, StateExport } from './State';
+import { Transition, TransitionID, TransitionExport } from './Transition';
 import { EventManager } from "../events/EventManager";
 import { NewStateEvent } from "../events/NewStateEvent";
 import { DeleteStateEvent } from "../events/DeleteStateEvent";
@@ -7,7 +7,15 @@ import { NewTransitionEvent } from "../events/NewTransitionEvent";
 import { DeleteTransitionEvent } from "../events/DeleteTransitionEvent";
 import { EditInitialStateEvent } from "../events/EditInitialStateEvent";
 import { NewCurrentStateEvent } from '../events/NewCurrentStateEvent';
+import { transition } from 'd3';
 
+const NO_INITIAL_STATE_ID: StateID = -1
+
+export interface StateMachineExport {
+    states: StateExport[];
+    transitions: TransitionExport[];
+    initialStateID: StateID;
+}
 
 export class StateMachine {
 
@@ -224,5 +232,35 @@ export class StateMachine {
         return str;
     }
 
+    export(): StateMachineExport {
+        let exportedStates = [...this.states.values()].map(s => s.export());
+        let exportedTransitions = [...this.transitions.values()].map(t => t.export());
+        let initialStateID = this.initialState.id === null ? NO_INITIAL_STATE_ID : this.initialState.id;
 
+        return {
+            states: exportedStates,
+            transitions: exportedTransitions,
+            initialStateID: initialStateID
+        };
+    }
+
+    static fromExport(stateMachineExport: StateMachineExport): StateMachine {
+        let stateMachine = new StateMachine();
+
+        for (let stateExport of stateMachineExport.states) {
+            let state = State.fromExport(stateExport);
+            stateMachine.addState(state);
+        }
+
+        for (let transitionExport of stateMachineExport.transitions) {
+            let transition = Transition.fromExport(transitionExport, stateMachine.states);
+            stateMachine.addTransition(transition);
+        }
+
+        if (stateMachineExport.initialStateID !== NO_INITIAL_STATE_ID) {
+            stateMachine.setInitialState(stateMachineExport.initialStateID);
+        }
+
+        return stateMachine;
+    }
 }

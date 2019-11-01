@@ -5,11 +5,14 @@ import { TapeNewPosEvent } from "../events/TapeNewPosEvent";
 
 export type TapeSymbol = string;
 
-
 export enum HeadAction {
     MoveLeft,
     MoveRight,
     None
+}
+
+export interface TapeExport {
+    content: TapeSymbol[];
 }
 
 
@@ -80,5 +83,15 @@ export class Tape {
     toString() {
         return "[head at " + this.headPosition + " ]\n"
              + this.content.toString();
+    }
+
+    export(): TapeExport {
+        return {
+            content: this.content
+        };
+    }
+
+    static fromExport(tapeExport: TapeExport): Tape {
+        return new Tape(tapeExport.content);
     }
 }
