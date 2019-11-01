@@ -118,6 +118,10 @@ export class TuringMachine {
         };
     }
 
+    exportToJSON(): string {
+        return JSON.stringify(this.export());
+    }
+
     static fromExport(turingMachineExport: TuringMachineExport): TuringMachine {
         let turingMachine = new TuringMachine() as EditableTuringMachine;
 
@@ -125,5 +129,9 @@ export class TuringMachine {
         turingMachine.tape = Tape.fromExport(turingMachineExport.tape);
 
         return turingMachine;
+    }
+
+    static fromJSONExport(json: string): TuringMachine {
+        return TuringMachine.fromExport(JSON.parse(json));
     }
 }
