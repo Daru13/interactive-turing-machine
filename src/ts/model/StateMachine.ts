@@ -235,7 +235,7 @@ export class StateMachine {
     export(): StateMachineExport {
         let exportedStates = [...this.states.values()].map(s => s.export());
         let exportedTransitions = [...this.transitions.values()].map(t => t.export());
-        let initialStateID = this.initialState.id === null ? NO_INITIAL_STATE_ID : this.initialState.id;
+        let initialStateID = this.initialState === null ? NO_INITIAL_STATE_ID : this.initialState.id;
 
         return {
             states: exportedStates,
