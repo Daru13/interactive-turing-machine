@@ -149,6 +149,10 @@ body {
     height: 100%;
 }
 
+.node.not-valid {
+    filter: url(#red-outline)
+}
+
 .node:hover {
     filter: url(#outline)
 }
@@ -232,6 +236,10 @@ body {
 }
 
 .node.move.bad-position {
+    filter: url(#red-outline)
+}
+
+.edge.not-valid {
     filter: url(#red-outline)
 }
 
@@ -370,6 +378,10 @@ body {
 
 .popup-content input[type = text]:focus {
     border-color: #3b3c3d;
+}
+
+.error-popup {
+    width: 40%;
 }
 
 .background-mask  {

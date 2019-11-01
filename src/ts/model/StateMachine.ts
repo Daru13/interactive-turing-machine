@@ -88,8 +88,9 @@ export class StateMachine {
         if (this.initialState === null) {
             return;
         }
-        EventManager.emit(new EditInitialStateEvent(this.initialState, false));
+        let temp = this.initialState;
         this.initialState = null;
+        EventManager.emit(new EditInitialStateEvent(temp, false));
     }
 
     setCurrentState(id: StateID) {

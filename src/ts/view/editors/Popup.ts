@@ -1,5 +1,4 @@
 import * as d3 from "d3-selection";
-import { VoronoiSite } from "d3";
 
 export class Popup{
     holder: d3.Selection<HTMLDivElement, {}, HTMLElement, {}>;

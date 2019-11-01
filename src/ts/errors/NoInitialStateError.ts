@@ -7,6 +7,7 @@ export class NoInitialStateError extends TMError {
 
     constructor(turingMachine: TuringMachine) {
         super(turingMachine);
-        this.text = "no initial state";
+        this.name = "No initial state";
+        this.text = "Draw an edge from the generator on the left to a state to make that state the initial state";
     }
 }

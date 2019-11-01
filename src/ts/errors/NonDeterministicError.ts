@@ -9,7 +9,8 @@ export class NonDeterministicError extends TMError {
 
     constructor(turingMachine: TuringMachine, state: State, transitions: Transition[]) {
         super(turingMachine);
-        this.text = "no deterministic";
+        this.name = `State ${state.getLabel()} is non deterministic`;
+        this.text = `There is transitions going from state ${state.getLabel()} that read the same symbol. This makes the turing machine non deterministic.`;
         this.state = state;
         this.transitions = transitions;
     }

@@ -3,6 +3,7 @@ import { TuringMachine } from "../model/TuringMachine";
 import { Tape } from "./Tape";
 import { Popup } from "./editors/Popup";
 import { EasterEggs } from "../easterEggs/EasterEggs";
+import { ErrorPopup } from "./editors/ErrorPopUp";
 
 export class TuringMachineButton{
     holder: d3.Selection<HTMLDivElement, any, HTMLElement, any>;
@@ -58,8 +59,7 @@ export class TuringMachineButton{
     }
 
     catchError(error){
-        let popup = new Popup();
+        let popup = new ErrorPopup(error);
         console.log(error);
-        popup.setTitle(error.text)
     }
 }
