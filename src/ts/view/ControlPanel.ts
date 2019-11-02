@@ -5,7 +5,7 @@ import { Popup } from "./editors/Popup";
 import { EasterEggs } from "../easterEggs/EasterEggs";
 import { ErrorPopup } from "./editors/ErrorPopUp";
 
-export class TuringMachineButton{
+export class ControlPanel {
     holder: d3.Selection<HTMLDivElement, any, HTMLElement, any>;
     turingMachine: TuringMachine;
     tape: Tape;
@@ -21,7 +21,7 @@ export class TuringMachineButton{
         let tape: Tape = this.tape;
         let t = this;
 
-        this.holder = d3.select("#turingMachineButton");
+        this.holder = d3.select("#control-panel");
         this.holder.append("button")
             .attr("id", "runButton")
             .on("click", function(){
