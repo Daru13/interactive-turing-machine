@@ -673,15 +673,15 @@ body {
     width: 180px;
     height: 45px;
     margin: 90px auto 0 auto;
-    padding: 6px 4px;
+    padding: 5px 4px;
     background-color: #aef73c;
     border: 2px solid #545555;
     box-shadow: 0 3px 0 #8cc63f inset, 0 -3px 0 #8cc63f inset;
 }
 
 #control-panel-screen.error {
-    background-color: #ff3d34;
-    box-shadow: 0 3px 0 #d1392c inset, 0 -3px 0 #d1392c inset;
+    background-color: #ffaeab;
+    box-shadow: 0 3px 0 #f08b82 inset, 0 -3px 0 #f08b82 inset;
 }
 
 #control-panel-screen p {
@@ -691,7 +691,7 @@ body {
     padding: 0;
     color: #000;
     font-family: monospace;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     text-transform: uppercase;
 }
 
