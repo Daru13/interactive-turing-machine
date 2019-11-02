@@ -10,27 +10,35 @@ export class ControlPanel {
     turingMachine: TuringMachine;
     tape: Tape;
 
-    constructor(turingMachine: TuringMachine, tape: Tape){
+    constructor(turingMachine: TuringMachine, tape: Tape) {
         this.turingMachine = turingMachine;
         this.tape = tape;
-        this.setupUI();
+
+        this.init();
     }
 
-    setupUI(){
-        let tM: TuringMachine = this.turingMachine;
-        let tape: Tape = this.tape;
+    private init() {
+        this.addControlButtons();
+        this.addScreen();
+    }
+
+    private addControlButtons() {
+        let tm = this.turingMachine;
+        let tape = this.tape;
         let t = this;
 
         this.holder = d3.select("#control-panel");
         this.holder.append("button")
             .attr("id", "runButton")
             .on("click", function(){
-                tM.tape.setContent(tape.toArray());
-                tape.moveToCell(tM.tape.getHeadPosition());
+                tm.tape.setContent(tape.toArray());
+                tape.moveToCell(tm.tape.getHeadPosition());
+
                 try {
-                    tM.run()
-                    new EasterEggs(tM.tape.getContent());
-                } catch (error) {
+                    tm.run()
+                    new EasterEggs(tm.tape.getContent());
+                }
+                catch (error) {
                     t.catchError(error);
                 }
             })
@@ -39,11 +47,13 @@ export class ControlPanel {
         this.holder.append("button")
             .attr("id", "runOneStepButton")
             .on("click", function () {
-                tM.tape.setContent(tape.toArray());
-                tape.moveToCell(tM.tape.getHeadPosition());
+                tm.tape.setContent(tape.toArray());
+                tape.moveToCell(tm.tape.getHeadPosition());
+
                 try {
-                    tM.runOneStep()
-                } catch (error) {
+                    tm.runOneStep()
+                }
+                catch (error) {
                     t.catchError(error);
                 }
             })
@@ -52,14 +62,39 @@ export class ControlPanel {
         this.holder.append("button")
             .attr("id", "resetButton")
             .on("click", function () {
-                tM.tape.setContent(tape.toArray());
-                tM.reset();
+                tm.tape.setContent(tape.toArray());
+                tm.reset();
             })
             .text("Reset");
     }
 
-    catchError(error){
+    private addScreen() {
+        let screen = this.holder.append("div")
+            .attr("id", "control-panel-screen");
+
+        screen.append("p")
+            .classed("first-line", true);
+
+        screen.append("p")
+            .classed("second-line", true);
+
+        this.updateScreen();
+    }
+
+    updateScreen() {
+        let screen = this.holder.select("#control-panel-screen");
+
+        // First line
+        screen.select(".first-line")
+            .text("Execution step: ---");
+
+        // Second line
+        screen.select(".second-line")
+            .text("No error detected.");
+    }
+
+    private catchError (error) {
         let popup = new ErrorPopup(error);
-        console.log(error);
+        console.error(error);
     }
 }
