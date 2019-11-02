@@ -4,6 +4,7 @@ import { Tape } from "./Tape";
 import { Popup } from "./editors/Popup";
 import { EasterEggs } from "../easterEggs/EasterEggs";
 import { ErrorPopup } from "./editors/ErrorPopUp";
+import { TMError } from "../errors/TMError";
 
 export class ControlPanel {
     holder: d3.Selection<HTMLDivElement, any, HTMLElement, any>;
@@ -35,7 +36,10 @@ export class ControlPanel {
                 tape.moveToCell(tm.tape.getHeadPosition());
 
                 try {
-                    tm.run()
+                    tm.reset();
+                    tm.run();
+                    t.updateScreen();
+                    
                     new EasterEggs(tm.tape.getContent());
                 }
                 catch (error) {
@@ -51,7 +55,8 @@ export class ControlPanel {
                 tape.moveToCell(tm.tape.getHeadPosition());
 
                 try {
-                    tm.runOneStep()
+                    tm.runOneStep();
+                    t.updateScreen();
                 }
                 catch (error) {
                     t.catchError(error);
@@ -64,6 +69,7 @@ export class ControlPanel {
             .on("click", function () {
                 tm.tape.setContent(tape.toArray());
                 tm.reset();
+                t.updateScreen();
             })
             .text("Reset");
     }
@@ -81,20 +87,21 @@ export class ControlPanel {
         this.updateScreen();
     }
 
-    updateScreen() {
+    updateScreen(error?: TMError) {
         let screen = this.holder.select("#control-panel-screen");
+        screen.classed("error", error !== undefined);
 
         // First line
         screen.select(".first-line")
-            .text("Execution step: ---");
+            .text(`${this.turingMachine.getState()} (step: ${this.turingMachine.getCurrentStep()})`);
 
         // Second line
         screen.select(".second-line")
-            .text("No error detected.");
+            .text(error !== undefined ? error.name : "");
     }
 
-    private catchError (error) {
-        let popup = new ErrorPopup(error);
-        console.error(error);
+    private catchError (error: TMError) {
+        this.updateScreen(error);
+        new ErrorPopup(error);
     }
 }
