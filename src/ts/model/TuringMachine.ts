@@ -4,52 +4,83 @@ import { NoInitialStateError } from "../errors/NoInitialStateError";
 import { NoTransitionAvailableError } from "../errors/NoTransitionAvailableError";
 import { NonDeterministicError } from "../errors/NonDeterministicError";
 
+export enum TuringMachineState {
+    READY = "Ready",      // before first step
+    RUNNING = "Running",  // currently running
+    STOPPED = "Stopped",  // final state reached
+    FAULTY = "Faulty"     // cannot be executed
+}
+
 export class TuringMachine {
 
     readonly stateMachine: StateMachine
     readonly tape: Tape;
+
+    private currentStep: number;
+    private state: TuringMachineState;
     
     constructor () {
         console.log("A Turing machine was created.");
 
         this.stateMachine = new StateMachine();
         this.tape = new Tape();
+
+        this.currentStep = 1;
+        this.state = TuringMachineState.READY;
     }
 
-    runOneStep(): boolean {
+    getCurrentStep(): number {
+        return this.currentStep;
+    }
+
+    getState(): TuringMachineState {
+        return this.state;
+    }
+
+    isRunnable(): boolean {
+        return this.state === TuringMachineState.READY
+            || this.state === TuringMachineState.RUNNING;
+    }
+
+    runOneStep() {
         // If the machine has not be ran yet, set the initial state as the current one
         let currentState = this.stateMachine.getCurrentState();
 
         if (currentState === null) {
             let initialState = this.stateMachine.getInitialState();
             if (initialState === null) {
+                this.state = TuringMachineState.FAULTY;
+
                 console.error("The machine could not be ran: no initial state.");
                 throw new NoInitialStateError(this);
-                return false;
             }
 
             currentState = initialState;
         }
 
-        // Check if the current state is a final state
-        if (currentState.isFinal()) {
-            return false;
+        // Check and update the state of the machine
+        if (this.state === TuringMachineState.STOPPED) {
+            return;
         }
+
+        this.state = TuringMachineState.RUNNING;
 
         // Attempt to follow a transition
         let currentSymbol = this.tape.getCurrentSymbol();
 
         if (! currentState.hasOutTransitionForSymbol(currentSymbol)) {
+            this.state = TuringMachineState.FAULTY;
+
             console.error("The machine could not be ran: no transition available.");
             throw new NoTransitionAvailableError(this, currentState);
-            return false;
         }
 
         let transitions = currentState.getOutTransitionsForSymbol(currentSymbol);
         if (transitions.length > 1) {
+            this.state = TuringMachineState.FAULTY;
+
             console.error("The machine could not be ran: nondeterministic state-machine.");
             throw new NonDeterministicError(this, currentState, transitions);
-            return false;
         }
 
         // Update the machine according to the transition
@@ -60,30 +91,25 @@ export class TuringMachine {
         this.tape.applyHeadAction(transition.getHeadAction());
         this.stateMachine.setCurrentState(nextState.id);
 
-        // Only return true if the execution is finished (final state reached)
-        return !nextState.isFinal;
+        this.currentStep++;
+        this.state = nextState.isFinal() ? TuringMachineState.STOPPED : TuringMachineState.READY;
     }
 
     run(maxNbSteps: number = 1000) {
-        if (! this.stateMachine.isDeterministic()) {
-            console.error("The machine could not be ran: nondeterministic state-machine.");
-            return false;
-        }
-
         let nbSteps = 0;
-        let keepRunning = true;
 
-        while (keepRunning && nbSteps < maxNbSteps) {
-            keepRunning = this.runOneStep();
+        while (this.isRunnable() && nbSteps < maxNbSteps) {
+            this.runOneStep();
             nbSteps++;
         }
-
-        return nbSteps;
     }
 
     reset() {
         this.tape.resetHeadPosition();
         this.stateMachine.resetCurrentState();
+
+        this.currentStep = 0;
+        this.state = TuringMachineState.READY;
     }
 
     toString(useLabels: boolean = true) {
