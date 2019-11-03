@@ -1,8 +1,8 @@
 import * as d3 from "d3-selection";
 import { EdgeSelection } from "../graph/Edge/Edge";
-import { HeadAction } from "../../model/Tape";
+import { HeadAction } from '../../model/Tape';
 import { StateMachine } from "../../model/StateMachine";
-import { TransitionID } from "../../model/Transition";
+import { TransitionID, READ_ANY_SYMBOL, WRITE_NO_SYMBOL } from '../../model/Transition';
 import { Editor } from "./Editor";
 import { TransitionEdge } from "../graph/Edge/TransitionEdge";
 
@@ -107,16 +107,17 @@ export class TransitionEdgeEditor extends Editor{
 
     submit(): void{
         var t = this
-        this.holder.select("tbody").selectAll("tr").each(function(d){
+        this.holder.select("tbody").selectAll("tr").each(function(d) {
             let row = d3.select(this);
-            let onSymbol = (row.select(".input-symbol").select("input").node() as HTMLInputElement).value;
-            let outputSymbol = (row.select(".output-symbol").select("input").node() as HTMLInputElement).value;
-            let headAction = row.select(".head-action").select(".selected").datum()["direction"];
-          
             let transition = t.stateMachine.getTransition(d["transitionID"] as TransitionID);
-          
-            transition.setOnSymbol(onSymbol);
-            transition.setOutputSymbol(outputSymbol);
+
+            let inputSymbol = (row.select(".input-symbol").select("input").node() as HTMLInputElement).value;
+            transition.setOnSymbol(inputSymbol === "" ? READ_ANY_SYMBOL : inputSymbol);
+
+            let outputSymbol = (row.select(".output-symbol").select("input").node() as HTMLInputElement).value;
+            transition.setOutputSymbol(outputSymbol === "" ? WRITE_NO_SYMBOL : outputSymbol);
+
+            let headAction = row.select(".head-action").select(".selected").datum()["direction"];
             transition.setHeadAction(headAction);
         });
 

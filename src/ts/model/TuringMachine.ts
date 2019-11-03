@@ -3,6 +3,7 @@ import { StateMachine } from './StateMachine';
 import { NoInitialStateError } from "../errors/NoInitialStateError";
 import { NoTransitionAvailableError } from "../errors/NoTransitionAvailableError";
 import { NonDeterministicError } from "../errors/NonDeterministicError";
+import { WRITE_NO_SYMBOL } from './Transition';
 
 export enum TuringMachineState {
     READY = "Ready",      // before first step
@@ -87,7 +88,10 @@ export class TuringMachine {
         let transition = [...transitions.values()][0];
         let nextState = transition.toState;
 
-        this.tape.setCurrentSymbol(transition.getOutputSymbol());
+        let outputSymbol = transition.getOutputSymbol();
+        if (outputSymbol !== WRITE_NO_SYMBOL) {
+            this.tape.setCurrentSymbol(outputSymbol);
+        }
         this.tape.applyHeadAction(transition.getHeadAction());
         this.stateMachine.setCurrentState(nextState.id);
 

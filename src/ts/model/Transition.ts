@@ -5,6 +5,8 @@ import { EditTransitionEvent } from "../events/EditTransitionEvent";
 
 export type TransitionID = number;
 
+export const READ_ANY_SYMBOL: TapeSymbol = "";
+export const WRITE_NO_SYMBOL: TapeSymbol = "";
 
 export class Transition {
 
@@ -92,9 +94,9 @@ export class Transition {
              + " → "
              + this.toState.toString(useLabels)
              + " ("
-             + this.onSymbol
+             + (this.onSymbol=== READ_ANY_SYMBOL ? "<any>" : this.onSymbol)
              + " / "
-             + this.outputSymbol
+             + (this.outputSymbol === WRITE_NO_SYMBOL ? "<none>" : this.outputSymbol)
              + ", "
              + actionAsString
              + ")";

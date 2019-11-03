@@ -4,7 +4,6 @@ import { TapeMoveEvent } from "../events/TapeMoveEvent";
 import { TapeNewPosEvent } from "../events/TapeNewPosEvent";
 
 export type TapeSymbol = string;
-export const ANY_SYMBOL: TapeSymbol = "";
 
 export enum HeadAction {
     MoveLeft,
