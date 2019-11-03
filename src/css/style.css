@@ -1,4 +1,63 @@
 /******************************************************************
+/* FONTS
+/*****************************************************************/
+
+/* This was done with the help of https://google-webfonts-helper.herokuapp.com */
+
+/* fira-sans-regular - latin */
+@font-face {
+    font-family: "Fira Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Fira Sans Regular"), local("FiraSans-Regular"),
+         url("../fonts/fira-sans-v10-latin-regular.woff2") format("woff2"),
+         url("../fonts/fira-sans-v10-latin-regular.woff") format("woff");
+}
+
+/* fira-sans-italic - latin */
+@font-face {
+    font-family: "Fira Sans";
+    font-style: italic;
+    font-weight: 400;
+    src: local("Fira Sans Italic"), local("FiraSans-Italic"),
+         url("../fonts/fira-sans-v10-latin-italic.woff2") format("woff2"),
+         url("../fonts/fira-sans-v10-latin-italic.woff") format("woff");
+}
+
+/* fira-sans-700 - latin */
+@font-face {
+    font-family: "Fira Sans";
+    font-style: normal;
+    font-weight: 700;
+    src: local("Fira Sans Bold"), local("FiraSans-Bold"),
+         url("../fonts/fira-sans-v10-latin-700.woff2") format("woff2"),
+         url("../fonts/fira-sans-v10-latin-700.woff") format("woff");
+}
+
+/* fira-sans-700italic - latin */
+@font-face {
+    font-family: "Fira Sans";
+    font-style: italic;
+    font-weight: 700;
+    src: local("Fira Sans Bold Italic"), local("FiraSans-BoldItalic"),
+         url("../fonts/fira-sans-v10-latin-700italic.woff2") format("woff2"),
+         url("../fonts/fira-sans-v10-latin-700italic.woff") format("woff");
+}
+
+/* inconsolata-regular - latin */
+@font-face {
+    font-family: "Inconsolata";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Inconsolata Regular"), local("Inconsolata-Regular"),
+         url("../fonts/inconsolata-v18-latin-regular.woff2") format("woff2"),
+         url("../fonts/inconsolata-v18-latin-regular.woff") format("woff");
+}
+  
+
+
+
+/******************************************************************
 /* GENERAL RULES
 /*****************************************************************/
 
@@ -37,6 +96,8 @@ html {
     touch-action: none;
     overscroll-behavior: none;
     user-zoom: fixed;
+    font-family: "Fira Sans";
+    font-size: 16px;
 }
 
 svg { overflow: visible; }
@@ -149,6 +210,10 @@ body {
     height: 100%;
 }
 
+.node.not-valid {
+    filter: url(#red-outline)
+}
+
 .node:hover {
     filter: url(#outline)
 }
@@ -232,6 +297,10 @@ body {
 }
 
 .node.move.bad-position {
+    filter: url(#red-outline)
+}
+
+.edge.not-valid {
     filter: url(#red-outline)
 }
 
@@ -370,6 +439,10 @@ body {
 
 .popup-content input[type = text]:focus {
     border-color: #3b3c3d;
+}
+
+.error-popup {
+    width: 40%;
 }
 
 .background-mask  {
@@ -575,7 +648,7 @@ body {
 /* TURING MACHINE CONTROLS
 /*****************************************************************/
 
-#turingMachineButton {
+#control-panel {
     grid-area: tmButtons;
     width: 100%;
     height: 100%;
@@ -586,16 +659,16 @@ body {
     background-position: center center, center bottom;
 }
 
-#turingMachineButton button:nth-child(1) {
+#control-panel button:nth-child(1) {
     top: 40px;
     left: 40px;
 }
 
-#turingMachineButton button:nth-child(2) {
+#control-panel button:nth-child(2) {
     position: absolute;
 }
 
-#turingMachineButton button {
+#control-panel button {
     position: absolute;
     width: 50px;
     height: 50px;
@@ -610,13 +683,13 @@ body {
     transition: 20ms linear;
 }
 
-#turingMachineButton button:hover {
+#control-panel button:hover {
     padding: 13px 20px 12px 20px;
     background-color: #494a4c;
     box-shadow: 0 -2px 0 #3b3c3d inset;
 }
 /*
-#turingMachineButton button {
+#control-panel button {
     position: absolute;
     width: 50px;
     height: 50px;
@@ -632,28 +705,55 @@ body {
     transition: 20ms linear;
 }
 
-#turingMachineButton button:hover {
+#control-panel button:hover {
     background-color: #494a4c;
     border-bottom-width: 3px;
     margin-bottom: 5px;
 }*/
 
-#turingMachineButton #runButton {
+#control-panel #runButton {
     top: 25px;
     left: 40px;
     background-image: url(../img/play.svg)
 }
 
-#turingMachineButton #runOneStepButton {
+#control-panel #runOneStepButton {
     top: 25px;
     left: 105px;
     background-image: url(../img/play-one.svg)
 }
 
-#turingMachineButton #resetButton {
+#control-panel #resetButton {
     top: 25px;
     left: 170px;
     background-image: url(../img/stop.svg)
+}
+
+#control-panel-screen {
+    box-sizing: border-box;
+    width: 180px;
+    height: 45px;
+    margin: 90px auto 0 auto;
+    padding: 5px 4px;
+    background-color: #aef73c;
+    border: 2px solid #545555;
+    box-shadow: 0 3px 0 #8cc63f inset, 0 -3px 0 #8cc63f inset;
+}
+
+#control-panel-screen.error {
+    background-color: #ffaeab;
+    box-shadow: 0 3px 0 #f08b82 inset, 0 -3px 0 #f08b82 inset;
+}
+
+#control-panel-screen p {
+    width: 100%;
+    max-height: 20px;
+    margin: 0;
+    padding: 0;
+    color: #000;
+    font-family: monospace;
+    font-size: 0.9rem;
+    text-transform: uppercase;
 }
 
 

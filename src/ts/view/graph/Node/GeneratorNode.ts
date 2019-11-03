@@ -2,6 +2,8 @@ import { Graph, GraphDatum } from "../Graph";
 import { addGenerator } from "../../CustomShape/generator";
 import * as d3 from "d3-selection";
 import { Node } from "./Node";
+import { ErrorPopup } from "../../editors/ErrorPopUp";
+import { NoInitialStateError } from "../../../errors/NoInitialStateError";
 
 export class GeneratorNode extends Node{
     graph: Graph;
@@ -11,6 +13,7 @@ export class GeneratorNode extends Node{
 
         this.graph = graph;
         this.initGeneratorNode();
+        this.addHoverInteraction();
     }
 
     initGeneratorNode(): void{
@@ -41,5 +44,22 @@ export class GeneratorNode extends Node{
             }
         }
         throw "GeneratorNode.ts (getGeneratorHandle): Selection is not part of a generatorNode";
+    }
+
+    addHoverInteraction() {
+        let popup = null;
+        this.handleSelection.on("mouseover", () => {
+            if (this.handleSelection.classed("not-valid") && popup === null) {
+                let tM = this.graph.turingMachine;
+                popup = new ErrorPopup(new NoInitialStateError(tM));
+            }
+        })
+
+        this.handleSelection.on("mouseleave", () => {
+            if (popup !== null) {
+                popup.close();
+                popup = null;
+            }
+        })
     }
 }

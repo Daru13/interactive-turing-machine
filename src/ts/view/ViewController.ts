@@ -2,7 +2,7 @@ import { Tape } from "./Tape";
 import { MouseDispatcher, toolName } from "./graphInteraction/tools/MouseDispatcher";
 import { Graph } from "./graph/Graph";
 import { TuringMachine } from "../model/TuringMachine";
-import { TuringMachineButton } from "./TuringMachineButton";
+import { ControlPanel } from "./ControlPanel";
 import { EventManager } from "../events/EventManager";
 import { TapeCellUpdateEvent } from "../events/TapeCellUpdateEvent";
 import * as d3 from "d3-selection";
@@ -14,7 +14,7 @@ export class ViewController{
     graph: Graph;
     tape: Tape;
     turingMachine: TuringMachine;
-    tmButtons: TuringMachineButton;
+    tmButtons: ControlPanel;
     
     toolManager: MouseDispatcher;
     penAndTouchManager: PenAndTouchDispatcher;
@@ -33,7 +33,7 @@ export class ViewController{
 
         this.tape = new Tape();
 
-        this.tmButtons = new TuringMachineButton(this.turingMachine, this.tape);
+        this.tmButtons = new ControlPanel(this.turingMachine, this.tape);
 
         this.setupTapeListener();
         this.setupMenu();

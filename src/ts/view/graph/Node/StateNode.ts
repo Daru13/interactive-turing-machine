@@ -3,6 +3,8 @@ import * as d3 from "d3-selection";
 import { State, StateID } from "../../../model/State";
 import { addLamp } from "../../CustomShape/lamps";
 import { Node } from "./Node";
+import { NonDeterministicError } from "../../../errors/NonDeterministicError";
+import { ErrorPopup } from "../../editors/ErrorPopUp";
 
 export enum StateNodeType {
     STANDARD = "standard",
@@ -45,6 +47,7 @@ export class StateNode extends Node{
         this.setLabel(state.getLabel());
 
         this.translateTo(position.x, position.y);
+        this.addHoverInteraction();
     }
 
     static isStateNode(selection: d3.Selection<any, any, any, any>): boolean {
@@ -93,5 +96,38 @@ export class StateNode extends Node{
             textToDisplay = textToDisplay.substring(0, 7) + "..."
         }
         this.handleSelection.select("#Text").select("text").text(textToDisplay);
+    }
+
+    invalidate(){
+        super.invalidate();
+        this.graph.turingMachine.stateMachine.getState(this.stateID).getNonDeterministicOutTransitions().forEach((t) => {
+            this.graph.transitionIdToTransitionEdge.get(t.id).invalidate();
+        })
+    }
+
+    validate() {
+        super.validate();
+        this.graph.turingMachine.stateMachine.getState(this.stateID).getOutTransitions().forEach((t) => {
+            this.graph.transitionIdToTransitionEdge.get(t.id).validate();
+        })
+    }
+
+    addHoverInteraction(){
+        let popup = null;
+        this.handleSelection.on("mouseover", () => {
+            if(this.handleSelection.classed("not-valid") && popup === null){
+                let tM = this.graph.turingMachine;
+                let state = tM.stateMachine.getState(this.stateID);
+                let transitions = state.getNonDeterministicOutTransitions();
+                popup = new ErrorPopup(new NonDeterministicError(tM, state, transitions));
+            }
+        })
+
+        this.handleSelection.on("mouseleave", () => {
+            if (popup !== null) {
+                popup.close();
+                popup = null;
+            }
+        })
     }
 }

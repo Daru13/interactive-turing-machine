@@ -15,7 +15,6 @@ export interface TapeExport {
     content: TapeSymbol[];
 }
 
-
 export class Tape {
 
     private content: TapeSymbol[];

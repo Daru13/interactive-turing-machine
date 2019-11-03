@@ -15,9 +15,11 @@ export abstract class Node{
     handleSelection: d3.Selection<SVGGElement, any, any, any>;
     x: number;
     y: number;
+    graph: Graph;
    
     constructor(graph: Graph){
         this.id = "node-" + Node.nodeNumber;
+        this.graph = graph;
 
         Node.nodeNumber += 1;
 
@@ -47,6 +49,14 @@ export abstract class Node{
 
     delete(): void{
         this.handleSelection.remove();
+    }
+
+    validate() {
+        this.handleSelection.classed("not-valid", false);
+    }
+
+    invalidate() {
+        this.handleSelection.classed("not-valid", true);
     }
 
     static isNode(selection: d3.Selection<any, any, any, any>): boolean{

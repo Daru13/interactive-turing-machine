@@ -7,7 +7,8 @@ export class NoTransitionAvailableError extends TMError {
 
     constructor(turingMachine: TuringMachine, state: State){
         super(turingMachine);
-        this.text = "no transition available";
+        this.name = "No transition available"
+        this.text = `There is no transition going out of state ${state.getLabel()} with the symbol ${turingMachine.tape.getCurrentSymbol()}.`;
         this.state = state;
     }
 }

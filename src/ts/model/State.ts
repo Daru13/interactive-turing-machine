@@ -1,4 +1,4 @@
-import { Transition, TransitionID } from './Transition';
+import { Transition, TransitionID, READ_ANY_SYMBOL } from './Transition';
 import { TapeSymbol } from './Tape';
 import { EventManager } from '../events/EventManager';
 import { EditStateEvent } from '../events/EditStateEvent';
@@ -143,12 +143,19 @@ export class State {
         return false;
     }
 
-    hasOutTransitionForSymbol(symbol: TapeSymbol) {
-        return this.symbolsToOutTransitions.has(symbol);
+    hasOutTransitionForSymbol(symbol: TapeSymbol): boolean {
+        return this.symbolsToOutTransitions.has(symbol)
+            || this.symbolsToOutTransitions.has(READ_ANY_SYMBOL);
     }
 
     getOutTransitionsForSymbol(symbol: TapeSymbol) {
-        return [...this.symbolsToOutTransitions.get(symbol)];
+        let transitions = this.symbolsToOutTransitions.get(symbol);
+        
+        // In case there is no transition for the given symbol,
+        // try returning a transition matching any symbol (it may be undefined)
+        return transitions === undefined
+             ? [...this.symbolsToOutTransitions.get(READ_ANY_SYMBOL)]
+             : [...transitions];
     }
 
     editOutTransitionSymbol(transition: Transition, oldSymbol: TapeSymbol, newSymbol: TapeSymbol) {

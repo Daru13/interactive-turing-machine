@@ -5,6 +5,8 @@ import { Helpers } from "../../../helpers";
 import { HeadAction, TapeSymbol } from "../../../model/Tape";
 import { Edge } from "./Edge";
 import { StateNode } from "../Node/StateNode";
+import { ErrorPopup } from "../../editors/ErrorPopUp";
+import { NonDeterministicError } from "../../../errors/NonDeterministicError";
 
 export class TransitionEdge extends Edge {
     readonly transitionIDs: TransitionID[];
@@ -22,6 +24,7 @@ export class TransitionEdge extends Edge {
         this.isCurved = isCurved;
         this.graph = graph;
         this.initTransitionEdge();
+        this.addHoverInteraction();
      }
 
      initTransitionEdge(){
@@ -104,5 +107,24 @@ export class TransitionEdge extends Edge {
 
     setCurved(b: boolean){
         this.isCurved = b;
+    }
+
+    addHoverInteraction() {
+        let popup = null;
+        this.handleSelection.on("mouseover", () => {
+            if (this.handleSelection.classed("not-valid") && popup === null) {
+                let tM = this.graph.turingMachine;
+                let state = tM.stateMachine.getTransition(this.transitionIDs[0]).fromState;
+                let transitions = state.getNonDeterministicOutTransitions();
+                popup = new ErrorPopup(new NonDeterministicError(tM, state, transitions));
+            }
+        })
+
+        this.handleSelection.on("mouseleave", () => {
+            if (popup !== null) {
+                popup.close();
+                popup = null;
+            }
+        })
     }
 }

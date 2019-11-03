@@ -7,6 +7,9 @@ import { TransitionEdge } from '../view/graph/Edge/TransitionEdge';
 
 export type TransitionID = number;
 
+export const READ_ANY_SYMBOL: TapeSymbol = "";
+export const WRITE_NO_SYMBOL: TapeSymbol = "";
+
 interface EditableTransition extends Transition {
     id: TransitionID;
 }
@@ -103,15 +106,15 @@ export class Transition {
         }
 
         return this.fromState.toString(useLabels)
-            + " → "
-            + this.toState.toString(useLabels)
-            + " ("
-            + this.onSymbol
-            + " / "
-            + this.outputSymbol
-            + ", "
-            + actionAsString
-            + ")";
+             + " → "
+             + this.toState.toString(useLabels)
+             + " ("
+             + (this.onSymbol=== READ_ANY_SYMBOL ? "<any>" : this.onSymbol)
+             + " / "
+             + (this.outputSymbol === WRITE_NO_SYMBOL ? "<none>" : this.outputSymbol)
+             + ", "
+             + actionAsString
+             + ")";
     }
 
     export(): TransitionExport {

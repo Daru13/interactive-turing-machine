@@ -146,6 +146,14 @@ export abstract class Edge{
         this.handleSelection.remove();
     }
 
+    validate() {
+        this.handleSelection.classed("not-valid", false);
+    }
+
+    invalidate() {
+        this.handleSelection.classed("not-valid", true);
+    }
+
     static isEdge(selection: d3.Selection<any, any, any, any>): boolean{
         return selection.datum() !== undefined && selection.datum()["edge"] !== undefined;
     }

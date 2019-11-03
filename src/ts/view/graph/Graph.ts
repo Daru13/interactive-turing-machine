@@ -110,6 +110,12 @@ export class Graph {
                     this.generatorEdge.delete()
                 }
             }
+            console.log(this.turingMachine.stateMachine.getInitialState());
+            if(this.turingMachine.stateMachine.getInitialState() === null) {
+                this.generator.invalidate();
+            } else {
+                this.generator.validate();
+            }
         })
 
         EventManager.registerHandler("newCurrentState", (e: NewCurrentStateEvent) => {
@@ -180,6 +186,12 @@ export class Graph {
 
             transitionEdge.deleteTransitionEdge(e.transition.id);
             this.transitionIdToTransitionEdge.delete(e.transition.id)
+
+            if (e.transition.fromState.isDeterministic()) {
+                this.stateIdToStateNode.get(e.transition.fromState.id).validate();
+            } else {
+                this.stateIdToStateNode.get(e.transition.fromState.id).invalidate();
+            }
         })
 
         EventManager.registerHandler("editTransition", (e: EditTransitionEvent) => {
@@ -188,6 +200,11 @@ export class Graph {
                     e.transition.getOnSymbol(),
                     e.transition.getOutputSymbol(),
                     e.transition.getHeadAction());
+            if (e.transition.fromState.isDeterministic()) {
+                this.stateIdToStateNode.get(e.transition.fromState.id).validate();
+            } else {
+                this.stateIdToStateNode.get(e.transition.fromState.id).invalidate();
+            }
         })
 
         window.addEventListener("resize", () => {
