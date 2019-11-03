@@ -11,10 +11,11 @@ module.exports = function (grunt) {
     // They allow to run external commands (as in a terminal).
     exec: {
       clean: "rm -Rf build .tscache",
-      mkDirs: "mkdir -p build/icons build/img build/svg build/css",
+      mkDirs: "mkdir -p build/icons build/img build/svg build/css build/fonts",
       copyHTML: "cp -f ./src/index.html build/index.html",
       copyImg: "cp -f ./src/img/* build/img/",
-      copyCSS: "cp -f ./src/css/*.css build/css/"
+      copyCSS: "cp -f ./src/css/*.css build/css/",
+      copyFonts: "cp -f ./src/fonts/* build/fonts/"
     },
 
     // Typescript task
@@ -56,7 +57,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask("copy-static-files",
     "Copy static files into the build directory.",
-    ["exec:mkDirs", "exec:copyHTML", "exec:copyCSS", "exec:copyImg"]
+    ["exec:mkDirs", "exec:copyHTML", "exec:copyCSS", "exec:copyImg", "exec:copyFonts"]
   );
 
   grunt.registerTask("compile",

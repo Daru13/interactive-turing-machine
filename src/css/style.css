@@ -1,4 +1,63 @@
 /******************************************************************
+/* FONTS
+/*****************************************************************/
+
+/* This was done with the help of https://google-webfonts-helper.herokuapp.com */
+
+/* fira-sans-regular - latin */
+@font-face {
+    font-family: "Fira Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Fira Sans Regular"), local("FiraSans-Regular"),
+         url("../fonts/fira-sans-v10-latin-regular.woff2") format("woff2"),
+         url("../fonts/fira-sans-v10-latin-regular.woff") format("woff");
+}
+
+/* fira-sans-italic - latin */
+@font-face {
+    font-family: "Fira Sans";
+    font-style: italic;
+    font-weight: 400;
+    src: local("Fira Sans Italic"), local("FiraSans-Italic"),
+         url("../fonts/fira-sans-v10-latin-italic.woff2") format("woff2"),
+         url("../fonts/fira-sans-v10-latin-italic.woff") format("woff");
+}
+
+/* fira-sans-700 - latin */
+@font-face {
+    font-family: "Fira Sans";
+    font-style: normal;
+    font-weight: 700;
+    src: local("Fira Sans Bold"), local("FiraSans-Bold"),
+         url("../fonts/fira-sans-v10-latin-700.woff2") format("woff2"),
+         url("../fonts/fira-sans-v10-latin-700.woff") format("woff");
+}
+
+/* fira-sans-700italic - latin */
+@font-face {
+    font-family: "Fira Sans";
+    font-style: italic;
+    font-weight: 700;
+    src: local("Fira Sans Bold Italic"), local("FiraSans-BoldItalic"),
+         url("../fonts/fira-sans-v10-latin-700italic.woff2") format("woff2"),
+         url("../fonts/fira-sans-v10-latin-700italic.woff") format("woff");
+}
+
+/* inconsolata-regular - latin */
+@font-face {
+    font-family: "Inconsolata";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Inconsolata Regular"), local("Inconsolata-Regular"),
+         url("../fonts/inconsolata-v18-latin-regular.woff2") format("woff2"),
+         url("../fonts/inconsolata-v18-latin-regular.woff") format("woff");
+}
+  
+
+
+
+/******************************************************************
 /* GENERAL RULES
 /*****************************************************************/
 
@@ -37,6 +96,8 @@ html {
     touch-action: none;
     overscroll-behavior: none;
     user-zoom: fixed;
+    font-family: "Fira Sans";
+    font-size: 16px;
 }
 
 svg { overflow: visible; }
