@@ -33,7 +33,10 @@ export class NodeEditor extends Editor{
 
     initContent(){
         this.addLabel("Label", "node-set-label-field");
-        this.addTextField(this.tm.stateMachine.getState(this.node.stateID).getLabel(), "Label of the node", "node-set-label-field");
+        this.addTextField(this.tm.stateMachine.getState(this.node.stateID).getLabel(), {
+            id: "node-set-label-field",
+            placeholder:  "Label of the node"
+        });
 
         this.addLabel("Final state", "node-set-final-button");
         this.addButton("Final",  () => {

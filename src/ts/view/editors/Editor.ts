@@ -62,22 +62,28 @@ export class Editor extends Popup{
         }
     }
 
-    addTextField(value: string, placeholder: string = null, id: string = null, classElement: string = null, parent: d3.Selection<HTMLElement, any, any, any> = this.content) {
+    addTextField(value: string, attributes: Record<string, string>, parent: d3.Selection<HTMLElement, any, any, any> = this.content) {
         let textField =
             parent
                 .append("input")
                 .attr("type", "text")
                 .attr("value", value);
 
-        if (placeholder !== null) {
-            textField.attr("placeholder", placeholder);
+        // Particular case of the class attribute
+        if (attributes["class"] !== undefined) {
+            let classes = attributes["class"].split(" ");
+            delete attributes["class"];
+
+            for (let className of classes) {
+                textField.classed(className, true);
+            }
         }
-        if (id !== null) {
-            textField.attr("id", id);
-        }
-        if (classElement !== null) {
-            textField.classed(classElement, true);
-        }            
+
+        // Other attributes
+        for (let attrKey of Object.keys(attributes)) {
+            let attrValue = attributes[attrKey];
+            textField.attr(attrKey, attrValue);
+        } 
     }
 
     setOnClose(onClose: () => void){
