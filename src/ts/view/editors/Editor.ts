@@ -62,12 +62,16 @@ export class Editor extends Popup{
         }
     }
 
-    addTextField(value: string, id: string = null, classElement: string = null, parent: d3.Selection<HTMLElement, any, any, any> = this.content) {
+    addTextField(value: string, placeholder: string = null, id: string = null, classElement: string = null, parent: d3.Selection<HTMLElement, any, any, any> = this.content) {
         let textField =
             parent
                 .append("input")
                 .attr("type", "text")
-                .attr("value", value)
+                .attr("value", value);
+
+        if (placeholder !== null) {
+            textField.attr("placeholder", placeholder);
+        }
         if (id !== null) {
             textField.attr("id", id);
         }

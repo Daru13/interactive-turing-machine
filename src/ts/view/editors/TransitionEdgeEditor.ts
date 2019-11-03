@@ -53,10 +53,10 @@ export class TransitionEdgeEditor extends Editor{
             let row = body.append("tr").datum({ transitionID: tId});
             let cell;
             cell = row.append("td").classed("input-symbol", true);
-            this.addTextField(transition.getOnSymbol(), null, null, cell);
+            this.addTextField(transition.getOnSymbol(), "Any", null, null, cell);
 
             cell = row.append("td").classed("output-symbol", true);
-            this.addTextField(transition.getOutputSymbol(), null, null, cell);
+            this.addTextField(transition.getOutputSymbol(), "None", null, null, cell);
 
             cell = row.append("td").classed("head-action", true);
             this.addHeadActionSelector(cell, transition.getHeadAction());
