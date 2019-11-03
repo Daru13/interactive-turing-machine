@@ -62,7 +62,6 @@ export class ImportPopup extends Popup {
         let importFieldNode = this.holder.select("#turing-machine-import-field").node() as HTMLTextAreaElement;
         let json = importFieldNode.value;
 
-        console.log(json)
         if (json.length === 0) {
             return;
         }
