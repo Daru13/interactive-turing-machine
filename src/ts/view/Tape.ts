@@ -1,6 +1,9 @@
 import * as d3 from "d3-selection";
-import * as d3Transition from "d3-transition";
 import { TapeSymbol, HeadAction } from "../model/Tape";
+import { EventManager } from "../events/EventManager";
+import { TapeCellUpdateEvent } from "../events/TapeCellUpdateEvent";
+import { TapeMoveEvent } from "../events/TapeMoveEvent";
+import { TapeNewPosEvent } from "../events/TapeNewPosEvent";
 
 export class Tape{
     tapeHolder: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
@@ -10,6 +13,8 @@ export class Tape{
     head: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
 
     constructor() {
+        d3.select("#tapeHolder").selectAll("*").remove()
+
         this.origin = 0;
         this.tapeHolder = d3.select("#tapeHolder");
         this.tape = this.addTape();
@@ -119,5 +124,17 @@ export class Tape{
         this.tapeHolder.node().addEventListener("wheel", function(e: WheelEvent){
             t.moveTapeBy(e.deltaX * 4);
         });
+
+        EventManager.registerHandler("tapeCellUpdate", (e: TapeCellUpdateEvent) => {
+            this.updateCell(e.symbol, e.index);
+        })
+
+        EventManager.registerHandler("tapeMove", (e: TapeMoveEvent) => {
+            this.move(e.headAction);
+        })
+
+        EventManager.registerHandler("tapeNewPos", (e: TapeNewPosEvent) => {
+            this.moveToCell(e.headPos);
+        })
     }
 }

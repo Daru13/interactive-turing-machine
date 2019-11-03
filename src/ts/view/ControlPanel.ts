@@ -28,6 +28,7 @@ export class ControlPanel {
         let tape = this.tape;
         let t = this;
 
+        d3.select("#control-panel").selectAll("*").remove();
         this.holder = d3.select("#control-panel");
         this.holder.append("button")
             .attr("id", "runButton")

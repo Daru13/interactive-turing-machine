@@ -93,7 +93,6 @@ export class TransitionEdgeEditor extends Editor{
                 .append("div")
                 .classed("head-action-selector", true);
         dirEntry.datum()["direction"] = defaultDir;
-        console.log(defaultDir);
 
         this.addHeadActionOption(dirEntry, "L", HeadAction.MoveLeft, defaultDir === HeadAction.MoveLeft);
         this.addHeadActionOption(dirEntry, "S", HeadAction.None, defaultDir === HeadAction.None);

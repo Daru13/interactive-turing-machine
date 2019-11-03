@@ -276,4 +276,12 @@ export class StateMachine {
 
         return stateMachine;
     }
+
+    getStates(){
+        return this.states;
+    }
+
+    getTransitions(){
+        return this.transitions;
+    }
 }

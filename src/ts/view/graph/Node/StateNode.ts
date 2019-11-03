@@ -18,6 +18,7 @@ export class StateNode extends Node{
     constructor(graph: Graph, state: State) {
         super(graph);
 
+        console.log(graph, this.handleSelection);
         this.stateID = state.id;
 
         this.initStateNode(state);

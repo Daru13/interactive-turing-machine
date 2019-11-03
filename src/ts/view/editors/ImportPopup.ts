@@ -1,14 +1,15 @@
 import { Popup } from "./Popup";
 import { ViewController } from '../ViewController';
 import { TuringMachine } from "../../model/TuringMachine";
+import { Main } from "../../main";
 
 export class ImportPopup extends Popup {
 
-    private viewController: ViewController;
+    private main: Main;
 
-    constructor(viewController: ViewController) {
+    constructor(main: Main) {
         super();
-        this.viewController = viewController;
+        this.main = main;
 
         this.init();
     }
@@ -69,8 +70,7 @@ export class ImportPopup extends Popup {
         // TODO: clean up this part and avoid using the view controller!
 
         try {
-            this.viewController.turingMachine.empty();
-            this.viewController.turingMachine = TuringMachine.fromJSONExport(json);
+            this.main.setTuringMachine(TuringMachine.fromJSONExport(json));
         }
         catch (exception) {
             console.error("The Turing machine could not be imported: import from JSON failed.");

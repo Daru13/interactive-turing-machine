@@ -23,16 +23,16 @@ export class TransitionEdge extends Edge {
         this.toStateNode = graph.stateIdToStateNode.get(transition.toState.id);
         this.isCurved = isCurved;
         this.graph = graph;
-        this.initTransitionEdge();
+        this.initTransitionEdge(transition);
         this.addHoverInteraction();
      }
 
-     initTransitionEdge(){
+     initTransitionEdge(transition: Transition){
          super.init();
 
          this.handleSelection.classed("transition-edge", true);
          this.redrawTransitionEdge();
-         this.redrawText("click to set");
+         this.drawTransitionText(transition.getOnSymbol(), transition.getOutputSymbol(), transition.getHeadAction());
      }
 
     addTransitionToEdge (transition: Transition) {

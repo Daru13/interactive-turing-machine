@@ -8,6 +8,7 @@ export class ToolBar {
 
     constructor(toolManager: MouseDispatcher) {
         this.toolManager = toolManager;
+        d3.select("#toolBar").selectAll("*").remove();
         this.setupUI();
     }
 
