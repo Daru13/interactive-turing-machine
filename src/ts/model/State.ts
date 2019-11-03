@@ -1,5 +1,5 @@
 import { Transition, TransitionID } from './Transition';
-import { TapeSymbol } from './Tape';
+import { TapeSymbol, ANY_SYMBOL } from './Tape';
 import { EventManager } from '../events/EventManager';
 import { EditStateEvent } from '../events/EditStateEvent';
 import { transition, symbol } from 'd3';
@@ -12,7 +12,6 @@ export interface Position {
     x: number;
     y: number;
 }
-
 
 export class State {
 
@@ -132,12 +131,19 @@ export class State {
         return false;
     }
 
-    hasOutTransitionForSymbol(symbol: TapeSymbol) {
-        return this.symbolsToOutTransitions.has(symbol);
+    hasOutTransitionForSymbol(symbol: TapeSymbol): boolean {
+        return this.symbolsToOutTransitions.has(symbol)
+            || this.symbolsToOutTransitions.has(ANY_SYMBOL);
     }
 
     getOutTransitionsForSymbol(symbol: TapeSymbol) {
-        return [...this.symbolsToOutTransitions.get(symbol)];
+        let transitions = this.symbolsToOutTransitions.get(symbol);
+        
+        // In case there is no transition for the given symbol,
+        // try returning a transition matching any symbol (it may be undefined)
+        return transitions === undefined
+             ? [...this.symbolsToOutTransitions.get(ANY_SYMBOL)]
+             : [...transitions];
     }
 
     editOutTransitionSymbol(transition: Transition, oldSymbol: TapeSymbol, newSymbol: TapeSymbol) {
