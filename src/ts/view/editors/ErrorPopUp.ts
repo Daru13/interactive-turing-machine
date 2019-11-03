@@ -15,19 +15,6 @@ export class ErrorPopup extends Popup {
 
         this.setOnClose(() => { })
         this.maskBackground.remove();
-        this.initPosition();
-    }
-
-    initPosition() {
-        let bboxHolder = this.holder.node().getBoundingClientRect();
-        let windowWidth = window.innerWidth;
-        let windowHeight = window.innerHeight;
-    
-        let top = windowHeight / 2 - bboxHolder.height/2;
-        let left = windowWidth / 2 - bboxHolder.width / 2;
-
-        this.holder
-            .style("top", (top).toString() + "px")
-            .style("left", (left).toString() + "px");
+        this.center();
     }
 }

@@ -49,6 +49,19 @@ export class Popup{
         this.holder.select(".popup-title").text(this.title);
     }
 
+    center() {
+        let popupBoundingBox = this.holder.node().getBoundingClientRect();
+        let windowWidth = window.innerWidth;
+        let windowHeight = window.innerHeight;
+    
+        let top = (windowHeight / 2) - (popupBoundingBox.height / 2);
+        let left = (windowWidth / 2) - (popupBoundingBox.width / 2);
+
+        this.holder
+            .style("top", top.toString() + "px")
+            .style("left", left.toString() + "px");
+    }
+
     close() {
         this.maskBackground.remove();
         this.holder.remove();
