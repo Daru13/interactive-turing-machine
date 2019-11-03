@@ -29,7 +29,8 @@ export class Tape{
                 .text(i);
             cell.append("input")
                 .attr("type", "text")
-                .attr("id", `cell-${i}-input`);
+                .attr("id", `cell-${i}-input`)
+                .attr("maxlength", "1");
         }
 
         let widthHolder = document.getElementById("tapeHolder").getBoundingClientRect().width;
