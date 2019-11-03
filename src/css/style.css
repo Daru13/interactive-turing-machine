@@ -608,6 +608,11 @@ body {
     width: 100%;
 }
 
+#turing-machine-import-field,
+#turing-machine-export-field {
+    height: 200px;
+}
+
 #import-popup .instructions,
 #export-popup .instructions {
     margin: 0;
