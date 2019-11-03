@@ -54,12 +54,14 @@ export class TransitionEdgeEditor extends Editor{
             let cell;
             cell = row.append("td").classed("input-symbol", true);
             this.addTextField(transition.getOnSymbol(), {
-                placeholder: "Any"
+                placeholder: "Any",
+                maxlength: "1"
             }, cell);
 
             cell = row.append("td").classed("output-symbol", true);
             this.addTextField(transition.getOutputSymbol(), {
-                placeholder: "None"
+                placeholder: "None",
+                maxlength: "1"
             }, cell);
 
             cell = row.append("td").classed("head-action", true);
