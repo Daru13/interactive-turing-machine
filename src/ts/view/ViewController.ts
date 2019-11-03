@@ -9,6 +9,8 @@ import * as d3 from "d3-selection";
 import { TapeMoveEvent } from "../events/TapeMoveEvent";
 import { PenAndTouchDispatcher } from "./graphInteraction/penAndTouch/PenAndTouchDispatcher";
 import { TapeNewPosEvent } from "../events/TapeNewPosEvent";
+import { ImportPopup } from "./editors/ImportPopup";
+import { ExportPopup } from "./editors/ExportPopup";
 
 export class ViewController{
     graph: Graph;
@@ -99,14 +101,14 @@ export class ViewController{
             .attr("id", "import-model-button")
             .text("Import")
             .on("click", () => {
-                // TODO
+                new ImportPopup(this);
             });
             
         menuBar.append("button")
             .attr("id", "export-model-button")
             .text("Export")
             .on("click", () => {
-                // TODO
+                new ExportPopup(this.turingMachine);
             });
 
         // Loading

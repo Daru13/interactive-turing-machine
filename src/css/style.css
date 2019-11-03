@@ -599,6 +599,23 @@ body {
 
 
 /******************************************************************
+/* IMPORT/EXPORT POPUPS
+/*****************************************************************/
+
+#turing-machine-import-field,
+#turing-machine-export-field,
+#import-popup .action-button-container {
+    width: 100%;
+}
+
+#import-popup .instructions,
+#export-popup .instructions {
+    margin: 0;
+}
+
+
+
+/******************************************************************
 /* TOOLS
 /*****************************************************************/
 
