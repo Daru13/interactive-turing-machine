@@ -126,6 +126,14 @@ export class TuringMachine {
         this.state = TuringMachineState.READY;
     }
 
+    empty() {
+        this.stateMachine.removeAllStates();
+        this.stateMachine.removeAllTransitions();
+        this.tape.clearContent();
+
+        this.reset();
+    }
+
     toString(useLabels: boolean = true) {
         let str = "";
 

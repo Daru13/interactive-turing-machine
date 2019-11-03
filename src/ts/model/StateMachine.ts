@@ -71,6 +71,12 @@ export class StateMachine {
         EventManager.emit(new DeleteStateEvent(state));
     }
 
+    removeAllStates() {
+        for (let id of this.states.keys()) {
+            this.removeState(id);
+        }
+    }
+
     getInitialState() {
         return this.initialState;
     }
@@ -177,6 +183,12 @@ export class StateMachine {
         transition.fromState.removeOutTransition(transition);
 
         EventManager.emit(new DeleteTransitionEvent(transition));
+    }
+
+    removeAllTransitions() {
+        for (let id of this.transitions.keys()) {
+            this.removeTransition(id);
+        }
     }
 
     getNonDeterministicTransitions(): Transition[] {

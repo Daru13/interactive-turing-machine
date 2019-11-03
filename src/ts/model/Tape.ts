@@ -55,6 +55,10 @@ export class Tape {
         return this.content;
     }
 
+    clearContent() {
+        this.content = [];
+    }
+
     applyHeadAction(action: HeadAction) {
         switch (action) {
             case HeadAction.MoveLeft:
