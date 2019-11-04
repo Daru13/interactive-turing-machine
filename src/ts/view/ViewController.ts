@@ -54,4 +54,9 @@ export class ViewController{
                 console.error("(ViewController.ts) setInteractionStyle(): interaction style not recognise")
         }
     }
+
+    removeHandler(){
+        this.graph.removeHandler();
+        this.tape.removeHandler();
+    }
 }
