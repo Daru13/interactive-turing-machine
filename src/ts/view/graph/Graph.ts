@@ -1,5 +1,5 @@
 import * as d3 from "d3-selection";
-import { EventManager } from "../../events/EventManager";
+import { EventManager, Event, EventHandler, EventID } from "../../events/EventManager";
 import { NewStateEvent } from "../../events/NewStateEvent";
 import { DeleteStateEvent } from "../../events/DeleteStateEvent";
 import { NewTransitionEvent } from "../../events/NewTransitionEvent";
@@ -21,10 +21,8 @@ export interface GraphDatum {};
 export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, {}>;
 
 export class Graph {
-    static nb = 0;
     static sizeNode: number = parseInt(getComputedStyle(document.documentElement)
         .getPropertyValue('--node-size'));
-    id
     turingMachine: TuringMachine;
     svg: GraphSelection;
     transitionIdToTransitionEdge: Map<TransitionID, TransitionEdge>;
@@ -32,13 +30,14 @@ export class Graph {
     generator: GeneratorNode;
     generatorEdge: GeneratorEdge;
     viewBox: {x,y,width,height};
+    eventsHandlers: Record<EventID, (EventHandler<any>)>;
+    windowHandler: ()=>void;
 
     constructor(turingMachine: TuringMachine){
-        Graph.nb += 1;
-        this.id = Graph.nb;
         this.turingMachine = turingMachine;
         this.transitionIdToTransitionEdge = new Map();
         this.stateIdToStateNode = new Map();
+        this.eventsHandlers = {};
         this.setupUI();
         this.setupListeners();
         this.setResetViewBoxButton();
@@ -48,9 +47,7 @@ export class Graph {
     init(){
         let stateMachine = this.turingMachine.stateMachine;
         stateMachine.getStates().forEach((state: State) => {
-            console.log(state);
             this.addNode(state);
-            console.log(this.stateIdToStateNode.get(state.id))
         })
 
         stateMachine.getTransitions().forEach((transition: Transition) => {
@@ -123,7 +120,6 @@ export class Graph {
     }
 
     addNode(state: State){
-        console.log(this);
         this.stateIdToStateNode.set(state.id, new StateNode(this, state));
     }
 
@@ -233,45 +229,72 @@ export class Graph {
     }
 
     setupListeners(){
-        EventManager.registerHandler("newState", (e: NewStateEvent) => {
-              this.addNode(e.state);
+        //New state
+        this.eventsHandlers["newState"] = ((e: NewStateEvent) => {
+            this.addNode(e.state);
         })
+        EventManager.registerHandler("newState", this.eventsHandlers["newState"])
 
-        EventManager.registerHandler("editInitialState", (e: EditInitialStateEvent) => {
+        //edit initial state
+        this.eventsHandlers["editInitialState"] = ((e: EditInitialStateEvent) => {
             this.editInitialNode(e.state, e.isInitial);
-        })
+        });
+        EventManager.registerHandler("editInitialState", this.eventsHandlers["editInitialState"])
 
-        EventManager.registerHandler("newCurrentState", (e: NewCurrentStateEvent) => {
+        //new current state
+        this.eventsHandlers["newCurrentState"] = (e: NewCurrentStateEvent) => {
             this.newCurrentNode(e.state);
-        })
+        };
+        EventManager.registerHandler("newCurrentState", this.eventsHandlers["newCurrentState"]);
 
-        EventManager.registerHandler("editFinalState", (e: EditFinalStateEvent) => {
+        //edit final
+        this.eventsHandlers["editFinalState"] = ((e: EditFinalStateEvent) => {
             this.editFinalNode(e.state, e.isFinal);
-        })
+        });
+        EventManager.registerHandler("editFinalState", this.eventsHandlers["editFinalState"]);
 
-        EventManager.registerHandler("editState", (e: EditStateEvent) => {
+        //edit state
+        this.eventsHandlers["editState"] = ((e: EditStateEvent) => {
             this.editNode(e.state);
-        })
+        });
+        EventManager.registerHandler("editState", this.eventsHandlers["editState"]);
 
-        EventManager.registerHandler("deleteState", (e: DeleteStateEvent) => {
+        //delete state
+        this.eventsHandlers["deleteState"] = ((e: DeleteStateEvent) => {
             this.deleteNode(e.state);
         })
+        EventManager.registerHandler("deleteState", this.eventsHandlers["deleteState"]);
 
-        EventManager.registerHandler("newTransition", (e: NewTransitionEvent) => {
+        //new transition
+        this.eventsHandlers["newTransition"] = ((e: NewTransitionEvent) => {
             this.addEdge(e.transition);
         })
+        EventManager.registerHandler("newTransition", this.eventsHandlers["newTransition"]);
 
-        EventManager.registerHandler("deleteTransition", (e: DeleteTransitionEvent) => {
-           this.deleteEdge(e.transition);
+        //delete transition
+        this.eventsHandlers["deleteTransition"] = ((e: DeleteTransitionEvent) => {
+            this.deleteEdge(e.transition);
         })
+        EventManager.registerHandler("deleteTransition", this.eventsHandlers["deleteTransition"]);
 
-        EventManager.registerHandler("editTransition", (e: EditTransitionEvent) => {
+        //edit transition
+        this.eventsHandlers["editTransition"] = ((e: EditTransitionEvent) => {
             this.editEdge(e.transition);
         })
+        EventManager.registerHandler("editTransition", this.eventsHandlers["editTransition"]);
 
-        window.addEventListener("resize", () => {
+        this.windowHandler = () => {
             let bbox = this.svg.node().getBoundingClientRect();
             this.scaleViewBoxTo(bbox.width, bbox.height);
-        });
+        };
+        window.addEventListener("resize", this.windowHandler);
+    }
+
+    removeHandler(){
+        for(var eventId of Object.keys(this.eventsHandlers)){
+            EventManager.unregisterHandler(eventId, this.eventsHandlers[eventId]);
+        }
+
+        window.removeEventListener("resize", this.windowHandler);
     }
 }
