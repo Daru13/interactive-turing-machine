@@ -1,6 +1,6 @@
 import * as d3 from "d3-selection";
 import { TapeSymbol, HeadAction } from "../model/Tape";
-import { EventManager } from "../events/EventManager";
+import { EventManager, EventHandler, EventID } from "../events/EventManager";
 import { TapeCellUpdateEvent } from "../events/TapeCellUpdateEvent";
 import { TapeMoveEvent } from "../events/TapeMoveEvent";
 import { TapeNewPosEvent } from "../events/TapeNewPosEvent";
@@ -11,6 +11,8 @@ export class Tape{
     origin: number;
     stepMovement: number;
     head: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
+    eventsHandlers: Record<EventID, (EventHandler<any>)>;
+    pointerHandlers: Record<any, any>;
 
     constructor() {
         d3.select("#tapeHolder").selectAll("*").remove()
@@ -19,6 +21,8 @@ export class Tape{
         this.tapeHolder = d3.select("#tapeHolder");
         this.tape = this.addTape();
         this.head = this.addHead();
+        this.eventsHandlers = {};
+        this.pointerHandlers = {};
         this.setupListener();
     }
 
@@ -104,37 +108,66 @@ export class Tape{
         let previousX = 0;
         let t = this;
 
-        this.tapeHolder.node().addEventListener("pointerdown", function(e: PointerEvent) { 
+        //pointer down
+        this.pointerHandlers["pointerdown"] = function (e: PointerEvent) {
             isDown = true;
             previousX = e.clientX;
-        });
-        this.tapeHolder.node().addEventListener("pointermove", function(e: PointerEvent) { 
-            if(isDown){
+        }
+        this.tapeHolder.node().addEventListener("pointerdown", this.pointerHandlers["pointerdown"]);
+
+        //pointer move
+        this.pointerHandlers["pointermove"] = function (e: PointerEvent) {
+            if (isDown) {
                 t.moveTapeBy(-(e.clientX - previousX));
                 previousX = e.clientX;
             }
-        });
-        this.tapeHolder.node().addEventListener("pointerup", function(e: PointerEvent) { 
-            isDown = false;
-        });
-        this.tapeHolder.node().addEventListener("pointerleave", function(e: PointerEvent) {
-            isDown = false;
-        });
+        }
+        this.tapeHolder.node().addEventListener("pointermove", this.pointerHandlers["pointermove"]);
 
-        this.tapeHolder.node().addEventListener("wheel", function(e: WheelEvent){
+        //pointer up
+        this.pointerHandlers["pointerup"] = function (e: PointerEvent) {
+            isDown = false;
+        }
+        this.tapeHolder.node().addEventListener("pointerup", this.pointerHandlers["pointerup"]);
+
+        //pointer leave
+        this.pointerHandlers["pointerleave"] = function (e: PointerEvent) {
+            isDown = false;
+        }
+        this.tapeHolder.node().addEventListener("pointerleave", this.pointerHandlers["pointerleave"] );
+
+        //wheel
+        this.pointerHandlers["wheel"] = function (e: WheelEvent) {
             t.moveTapeBy(e.deltaX * 4);
-        });
+        }
+        this.tapeHolder.node().addEventListener("wheel", this.pointerHandlers["wheel"]);
 
-        EventManager.registerHandler("tapeCellUpdate", (e: TapeCellUpdateEvent) => {
+        //tape cell update
+        this.eventsHandlers["tapeCellUpdate"] = (e: TapeCellUpdateEvent) => {
             this.updateCell(e.symbol, e.index);
-        })
+        }
+        EventManager.registerHandler("tapeCellUpdate", this.eventsHandlers["tapeCellUpdate"])
 
-        EventManager.registerHandler("tapeMove", (e: TapeMoveEvent) => {
+        //tape move
+        this.eventsHandlers["tapeMove"] = (e: TapeMoveEvent) => {
             this.move(e.headAction);
-        })
+        };
+        EventManager.registerHandler("tapeMove", this.eventsHandlers["tapeMove"]);
 
-        EventManager.registerHandler("tapeNewPos", (e: TapeNewPosEvent) => {
+        //tape new pos
+        this.eventsHandlers["tapeNewPos"] = (e: TapeNewPosEvent) => {
             this.moveToCell(e.headPos);
-        })
+        };
+        EventManager.registerHandler("tapeNewPos", this.eventsHandlers["tapeNewPos"])
+    }
+
+    removeHandler(){
+        for (var eventId of Object.keys(this.eventsHandlers)) {
+            EventManager.unregisterHandler(eventId, this.eventsHandlers[eventId]);
+        }
+
+        for (var pevent of Object.keys(this.pointerHandlers)) {
+            this.tapeHolder.node().removeEventListener(pevent, this.pointerHandlers[eventId]);
+        }
     }
 }
