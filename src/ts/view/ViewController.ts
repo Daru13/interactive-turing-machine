@@ -30,7 +30,7 @@ export class ViewController{
         this.penAndTouchManager = new PenAndTouchDispatcher(this.graph, this.turingMachine);
         this.setInteractionStyle(InteractionStyles.MOUSE);
 
-        this.tape = new Tape();
+        this.tape = new Tape(this.turingMachine);
         this.tmButtons = new ControlPanel(this.turingMachine, this.tape);
     }
 

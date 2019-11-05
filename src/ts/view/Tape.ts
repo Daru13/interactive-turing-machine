@@ -4,6 +4,7 @@ import { EventManager, EventHandler, EventID } from "../events/EventManager";
 import { TapeCellUpdateEvent } from "../events/TapeCellUpdateEvent";
 import { TapeMoveEvent } from "../events/TapeMoveEvent";
 import { TapeNewPosEvent } from "../events/TapeNewPosEvent";
+import { TuringMachine } from "../model/TuringMachine";
 
 export class Tape{
     tapeHolder: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
@@ -13,58 +14,77 @@ export class Tape{
     head: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
     eventsHandlers: Record<EventID, (EventHandler<any>)>;
     pointerHandlers: Record<any, any>;
+    tM: TuringMachine;
+    length: number;
 
-    constructor() {
-        d3.select("#tapeHolder").selectAll("*").remove()
-
+    constructor(tM: TuringMachine) {
         this.origin = 0;
         this.tapeHolder = d3.select("#tapeHolder");
-        this.tape = this.addTape();
-        this.head = this.addHead();
         this.eventsHandlers = {};
         this.pointerHandlers = {};
+        this.tM = tM;
+        this.setupUI();
         this.setupListener();
+        this.init();
     }
 
-    addTape(): d3.Selection<HTMLDivElement, unknown, HTMLElement, any>{
-        let tape = this.tapeHolder.append("div").attr("id", "tape");
-        let cell;
-        for(var i = 0; i < 100; i++){
-            cell = tape.append("div")
-                .attr("id", `cell-${i}`)
-                .classed("cell", true);
-            cell.append("label")
-                .attr("for", `cell-${i}-input`)
-                .text(i);
-            cell.append("input")
-                .attr("type", "text")
-                .attr("id", `cell-${i}-input`)
-                .attr("maxlength", "1");
-        }
+    setupUI(){
+        d3.select("#tapeHolder").selectAll("*").remove();
+        this.head = this.tapeHolder.append("div").attr("id", "head");
+        this.tape = this.tapeHolder.append("div").attr("id", "tape");
 
         let widthHolder = document.getElementById("tapeHolder").getBoundingClientRect().width;
 
         this.origin = widthHolder / 2 - 2 - 45;
-        tape.style("left", (this.origin).toString() + "px");
-
+        this.tape.style("left", (this.origin).toString() + "px");
         this.stepMovement = 90 + 2 + 2;
-        return tape;
     }
 
-    addHead(): d3.Selection<HTMLDivElement, unknown, HTMLElement, any>{
-        return this.tapeHolder.append("div").attr("id", "head")
+    init(){
+        this.length = 0;
+        let tapeContent = this.tM.tape.getContent();
+        for(var i = 0; i < tapeContent.length; i++){
+            this.addCell(i, tapeContent[i]);
+        }
+
+        for (var i = tapeContent.length; i < 100 - tapeContent.length; i++) {
+            this.addCell(i, "");
+        }
     }
 
-    moveTapeByNCell(n: number){
-        let l = parseInt(this.tape.style("left"));
-        this.tape
-            .style("left", (l - n * this.stepMovement).toString() + "px")
+    addCell(index, value){
+        let cell;
+        cell = this.tape.append("div")
+            .attr("id", `cell-${index}`)
+            .classed("cell", true);
+        cell.append("label")
+            .attr("for", `cell-${index}-input`)
+            .text(index);
+        cell.append("input")
+            .attr("type", "text")
+            .attr("id", `cell-${index}-input`)
+            .attr("maxlength", "1")
+            .attr("value", value);
+        this.length += 1;
+    }
+
+    addNeededCell(l:number){
+        let nbDisplayedCell = Math.floor(Math.abs(l - this.origin) / this.stepMovement - 0.5) + 1;
+        while(nbDisplayedCell > this.length - 10){
+            this.addCell(this.length, "");
+        }
     }
 
     moveTapeBy(n: number) {
         let l = parseInt(this.tape.style("left"));
+        let newL = Math.min(l - n, this.origin);
+        this.addNeededCell(newL);
         this.tape
-            .style("left", (l-n).toString() + "px")
+            .style("left", (newL).toString() + "px")
+    }
+
+    moveTapeByNCell(n: number) {
+        this.moveTapeBy(n * this.stepMovement)
     }
 
     moveToCell(pos: number) {
