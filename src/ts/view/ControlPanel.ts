@@ -98,7 +98,7 @@ export class ControlPanel {
 
         // Second line
         screen.select(".second-line")
-            .text(error !== undefined ? error.name : "");
+            .text(error !== undefined ? error.getShortName() : "");
     }
 
     private catchError (error: TMError) {

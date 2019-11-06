@@ -3,11 +3,10 @@ import { TuringMachine } from "../model/TuringMachine";
 import { StateNode } from "../view/graph/Node/StateNode";
 
 export class NoInitialStateError extends TMError {
-    node: StateNode;
-
     constructor(turingMachine: TuringMachine) {
-        super(turingMachine);
-        this.name = "No initial state";
-        this.text = "Draw an edge from the generator on the left to a state to make that state the initial state";
+        super(turingMachine,
+            "No initial state", 
+            "There is no <strong>initial state</strong>: the Turing machine <strong>does not know where to start</strong>! To fix the problem, you can draw a transition from the generator (the element with a lightning) to any state to make it initial."
+        );
     }
 }

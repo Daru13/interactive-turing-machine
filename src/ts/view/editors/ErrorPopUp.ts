@@ -8,12 +8,17 @@ export class ErrorPopup extends Popup {
     constructor(error: TMError) {
         super();
         this.error = error;
+        
+        this.init();
+    }
+
+    init() {
+        this.setTitle(this.error.getName());
         this.holder.classed("error-popup", true);
 
-        this.setTitle(error.name);
-        this.content.append("p").text(error.text);
+        this.content.append("p")
+            .html(this.error.getDescription());
 
-        this.setOnClose(() => { })
         this.maskBackground.remove();
         this.center();
     }
