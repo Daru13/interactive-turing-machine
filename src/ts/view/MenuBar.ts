@@ -32,7 +32,7 @@ export class MenuBar {
 
         // Interaction style switch
         function getInteractionStyleSwitchText() {
-            return t.interactionStyle == InteractionStyles.MOUSE
+            return t.interactionStyle != InteractionStyles.MOUSE
                 ? "Use Mouse interactions"
                 : "Use Pen&Touch interactions";
         }
