@@ -8,6 +8,7 @@ import { TuringMachine } from "../model/TuringMachine";
 
 export class Tape{
     static minLength = 10;
+    static sizeCell = 90;
     tapeHolder: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
     tape: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
     origin: number;
@@ -16,8 +17,7 @@ export class Tape{
     eventsHandlers: Record<EventID, (EventHandler<any>)>;
     pointerHandlers: Record<any, any>;
     tM: TuringMachine;
-    length: number;
-    lastIndexWithValueSet: number;
+    cellsDisplayed: {min: number, max:number}
 
     constructor(tM: TuringMachine) {
         this.origin = 0;
@@ -37,26 +37,24 @@ export class Tape{
 
         let widthHolder = document.getElementById("tapeHolder").getBoundingClientRect().width;
 
-        this.origin = widthHolder / 2 - 2 - 45;
+        this.origin = widthHolder / 2 - 2 - Tape.sizeCell / 2;
         this.tape.style("left", (this.origin).toString() + "px");
-        this.stepMovement = 90 + 2 + 2;
+        this.stepMovement = Tape.sizeCell + 2 + 2;
     }
 
     init(){
-        this.length = 0;
-        let tapeContent = this.tM.tape.getContent();
-        this.lastIndexWithValueSet = tapeContent.length;
-        for(var i = 0; i < tapeContent.length; i++){
-            this.addCell(i, tapeContent[i]);
-        }
-
-        for (var i = tapeContent.length; i < Tape.minLength - tapeContent.length; i++) {
-            this.addCell(i, "");
+        this.cellsDisplayed = {min: 0, max: Tape.minLength - 1};
+        for (var i = 0; i < Tape.minLength; i++) {
+            this.addCell(i);
         }
     }
 
-    addCell(index, value){
-        let cell;
+    private addCell(index){
+        let cell, value;
+        let tapeContent = this.tM.tape.getContent();
+
+        value = (index < tapeContent.length)? tapeContent[index] : "";
+        
         cell = this.tape.append("div")
             .attr("id", `cell-${index}`)
             .classed("cell", true);
@@ -69,37 +67,64 @@ export class Tape{
             .attr("maxlength", "1")
             .attr("value", value)
             .on("change", () => {
-                this.lastIndexWithValueSet = Math.max(this.lastIndexWithValueSet, index);
                 this.tM.tape.setSymbolAt(index, cell.select("input").node().value);
+                console.log(this.tM.tape.toString());
             })
-        this.length += 1;
+        return cell;
+    }
+
+    private addCellAtTheBeginning() {
+        this.cellsDisplayed.min -= 1;
+        this.addCell(this.cellsDisplayed.min).lower();
+        this.tape.style("padding-left", (this.cellsDisplayed.min * this.stepMovement).toString() + "px");
+    }
+
+    private addCellAtTheEnd() {
+        this.cellsDisplayed.max += 1;
+        this.addCell(this.cellsDisplayed.max);
     }
 
     private removeCell(index){
         if(!d3.select(`#cell-${index}`).empty()){
             d3.select(`#cell-${index}`).remove();
-            this.length -= 1;
         }
     }
 
-    addNeededCells(l:number){
+    private removeCellAtTheBeginning() {
+        this.removeCell(this.cellsDisplayed.min);
+        this.cellsDisplayed.min += 1;
+        this.tape.style("padding-left", (this.cellsDisplayed.min * this.stepMovement).toString() + "px");
+    }
+
+    private removeCellAtTheEnd() {
+        this.removeCell(this.cellsDisplayed.max);
+        this.cellsDisplayed.max -= 1;
+    }
+
+    updateDisplayedCell(l:number){
         let nbDisplayedCell = Math.floor(Math.abs(l - this.origin) / this.stepMovement - 0.5) + 1;
-        while(nbDisplayedCell > this.length - Tape.minLength){
-            this.addCell(this.length, "");
+
+        while(this.cellsDisplayed.min < Math.max(0, nbDisplayedCell - Tape.minLength)){
+            this.removeCellAtTheBeginning();
+        }
+        while (this.cellsDisplayed.min > Math.max(0, nbDisplayedCell - Tape.minLength)) {
+            this.addCellAtTheBeginning();
         }
 
-        let lastIndexToDisplay = Math.max(nbDisplayedCell, this.lastIndexWithValueSet);
-        while(this.length - Tape.minLength > lastIndexToDisplay){
-            this.removeCell(this.length-1);
+        while (this.cellsDisplayed.max > nbDisplayedCell + Tape.minLength) {
+            this.removeCellAtTheEnd();
+        }
+        while (this.cellsDisplayed.max < nbDisplayedCell + Tape.minLength) {
+            this.addCellAtTheEnd();
         }
     }
 
     moveTapeBy(n: number) {
         let l = parseInt(this.tape.style("left"));
         let newL = Math.min(l - n, this.origin);
-        this.addNeededCells(newL);
         this.tape
-            .style("left", (newL).toString() + "px")
+            .style("left", (newL).toString() + "px");
+        this.updateDisplayedCell(newL);
     }
 
     moveTapeByNCell(n: number) {
@@ -126,15 +151,6 @@ export class Tape{
             default:
                 break;
         }
-    }
-
-    toArray(): TapeSymbol[]{
-        let tapeSymbols = [];
-        this.tape.selectAll("input").each(function(){
-            let input = this as HTMLInputElement;
-            tapeSymbols.push(input.value);
-        })
-        return tapeSymbols;
     }
 
     updateCell(symbol: TapeSymbol, index: number){

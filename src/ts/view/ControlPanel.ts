@@ -33,7 +33,6 @@ export class ControlPanel {
         this.holder.append("button")
             .attr("id", "runButton")
             .on("click", function(){
-                tm.tape.setContent(tape.toArray());
                 tape.moveToCell(tm.tape.getHeadPosition());
 
                 try {
@@ -52,7 +51,6 @@ export class ControlPanel {
         this.holder.append("button")
             .attr("id", "runOneStepButton")
             .on("click", function () {
-                tm.tape.setContent(tape.toArray());
                 tape.moveToCell(tm.tape.getHeadPosition());
 
                 try {
@@ -68,7 +66,6 @@ export class ControlPanel {
         this.holder.append("button")
             .attr("id", "resetButton")
             .on("click", function () {
-                tm.tape.setContent(tape.toArray());
                 tm.reset();
                 t.updateScreen();
             })
