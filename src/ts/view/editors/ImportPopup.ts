@@ -71,6 +71,7 @@ export class ImportPopup extends Popup {
 
         try {
             this.main.setTuringMachine(TuringMachine.fromJSONExport(json));
+            this.close();
         }
         catch (exception) {
             console.error("The Turing machine could not be imported: import from JSON failed.");
