@@ -678,8 +678,7 @@ body {
 /*****************************************************************/
 
 .error-popup {
-    min-width: 50%;
-    max-width: 80%;
+    max-width: 800px;
 }
 
 .error-popup h3 {
