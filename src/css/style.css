@@ -760,6 +760,7 @@ body {
     background-color: #aef73c;
     border: 2px solid #545555;
     box-shadow: 0 3px 0 #8cc63f inset, 0 -3px 0 #8cc63f inset;
+    overflow: hidden;
 }
 
 #control-panel-screen.error {
