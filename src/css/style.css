@@ -602,9 +602,15 @@ body {
 /* IMPORT/EXPORT POPUPS
 /*****************************************************************/
 
-#turing-machine-import-field,
-#turing-machine-export-field,
-#import-popup .action-button-container {
+#import-popup,
+#export-popup {
+    min-width: 50%;
+    max-width: 80%;
+}
+
+#import-popup .popup-content > *,
+#export-popup .popup-content > * {
+    box-sizing: border-box;
     width: 100%;
 }
 
@@ -613,9 +619,60 @@ body {
     height: 200px;
 }
 
-#import-popup .instructions,
-#export-popup .instructions {
+#import-popup .instruction,
+#export-popup .instruction {
     margin: 0;
+    padding: 0;
+    font-size: 1.2rem;
+    text-align: justify;
+}
+
+#import-popup .instruction:first-child,
+#export-popup .instruction:first-child {
+    margin-top: 10px;
+}
+
+#import-popup .instruction.warning {
+    margin: 5px 0 0 0;
+    padding: 3px 6px;
+    color: #b3484a;
+    border: 2px solid #b3484a;
+}
+
+#import-popup textarea,
+#export-popup textarea {
+    margin: 20px 0 10px 0;
+    padding: 5px;
+    background-color: #FFF;
+    border: 2px solid #9a9a9a;
+    font-family: "Inconsolata", monospace;
+}
+
+#export-popup textarea {
+    margin-bottom: 0;
+}
+
+#import-popup .action-button-container {
+    display: flex;
+}
+
+#import-popup button {
+    flex: 1 1 0;
+    margin: 0 10px 0 0;
+}
+
+#import-popup .cancel-button {
+    background-color: #b3484a;
+    box-shadow: 0 -5px 0 #821e1f inset;
+}
+
+#import-popup .cancel-button:hover {
+    background-color: #9e2627;
+    box-shadow: 0 -2px 0 #821e1f inset;
+}
+
+#import-popup button:last-child {
+    margin-right: 0;
 }
 
 

@@ -28,12 +28,12 @@ export class ImportPopup extends Popup {
     private addInstructions() {
         this.content.append("p")
             .classed("instruction", true)
-            .text("Paste the code of an exported Turing machine below and click the Import button to import the machine.");
+            .html("<strong>Paste the code</strong> of an exported Turing machine below and <strong>click the Import button</strong> to import the machine.");
 
         this.content.append("p")
             .classed("instruction", true)
             .classed("warning", true)
-            .html("Be careful: importing a machine will <strong>replace your current machine</strong>!");
+            .html("<strong>Be careful:</strong> importing a machine will <strong>replace your current machine</strong>!");
     }
 
     private addImportField() {
@@ -47,12 +47,14 @@ export class ImportPopup extends Popup {
             .attr("class", "action-button-container");
 
         container.append("button")
+            .classed("import-button", true)
             .text("Import")
             .on("click", () => {
                 this.importTuringMachine();
             });
 
         container.append("button")
+            .classed("cancel-button", true)
             .text("Cancel")
             .on("click", () => {
                 this.close();
