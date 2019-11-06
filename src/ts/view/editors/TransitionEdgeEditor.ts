@@ -82,7 +82,6 @@ export class TransitionEdgeEditor extends Editor{
                 if(t.holder.select("tbody").selectAll("tr").empty()){
                     t.close();
                 }
-                console.log(t.stateMachine.toString())
             })
             .text("Delete");
     }
@@ -125,7 +124,5 @@ export class TransitionEdgeEditor extends Editor{
             let headAction = row.select(".head-action").select(".selected").datum()["direction"];
             transition.setHeadAction(headAction);
         });
-
-        console.log(this.stateMachine.toString());
     }
 }

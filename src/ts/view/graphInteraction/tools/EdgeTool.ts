@@ -103,12 +103,11 @@ export class EdgeTool {
     };
 
     pointerLeave(e: ModifiedPointerEvent) {
-        this.isDown = false;
-
         if (this.isDown) {
             if (this.node != undefined) {
                 this.edgeInCreation.remove()
                 d3.selectAll(".node.closestNode").classed("closestNode", false);
+                this.isDown = false;
             }
         }
     }

@@ -61,8 +61,7 @@ export class TransitionEdge extends Edge {
     }
 
     deleteTransitionEdge(transitionId: TransitionID): void {
-        let index = this.transitionIDs.indexOf[transitionId];
-
+        let index = this.transitionIDs.indexOf(transitionId);
         this.transitionIDs.splice(index, 1);
         this.handleSelection.classed("bigger", this.transitionIDs.length !== 1);
         if (this.transitionIDs.length === 0) {
