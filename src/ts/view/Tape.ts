@@ -7,6 +7,7 @@ import { TapeNewPosEvent } from "../events/TapeNewPosEvent";
 import { TuringMachine } from "../model/TuringMachine";
 
 export class Tape{
+    static minLength = 10;
     tapeHolder: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
     tape: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
     origin: number;
@@ -16,6 +17,7 @@ export class Tape{
     pointerHandlers: Record<any, any>;
     tM: TuringMachine;
     length: number;
+    lastIndexWithValueSet: number;
 
     constructor(tM: TuringMachine) {
         this.origin = 0;
@@ -43,11 +45,12 @@ export class Tape{
     init(){
         this.length = 0;
         let tapeContent = this.tM.tape.getContent();
+        this.lastIndexWithValueSet = tapeContent.length;
         for(var i = 0; i < tapeContent.length; i++){
             this.addCell(i, tapeContent[i]);
         }
 
-        for (var i = tapeContent.length; i < 100 - tapeContent.length; i++) {
+        for (var i = tapeContent.length; i < Tape.minLength - tapeContent.length; i++) {
             this.addCell(i, "");
         }
     }
@@ -64,21 +67,37 @@ export class Tape{
             .attr("type", "text")
             .attr("id", `cell-${index}-input`)
             .attr("maxlength", "1")
-            .attr("value", value);
+            .attr("value", value)
+            .on("change", () => {
+                this.lastIndexWithValueSet = Math.max(this.lastIndexWithValueSet, index);
+                this.tM.tape.setSymbolAt(index, cell.select("input").node().value);
+            })
         this.length += 1;
     }
 
-    addNeededCell(l:number){
+    private removeCell(index){
+        if(!d3.select(`#cell-${index}`).empty()){
+            d3.select(`#cell-${index}`).remove();
+            this.length -= 1;
+        }
+    }
+
+    addNeededCells(l:number){
         let nbDisplayedCell = Math.floor(Math.abs(l - this.origin) / this.stepMovement - 0.5) + 1;
-        while(nbDisplayedCell > this.length - 10){
+        while(nbDisplayedCell > this.length - Tape.minLength){
             this.addCell(this.length, "");
+        }
+
+        let lastIndexToDisplay = Math.max(nbDisplayedCell, this.lastIndexWithValueSet);
+        while(this.length - Tape.minLength > lastIndexToDisplay){
+            this.removeCell(this.length-1);
         }
     }
 
     moveTapeBy(n: number) {
         let l = parseInt(this.tape.style("left"));
         let newL = Math.min(l - n, this.origin);
-        this.addNeededCell(newL);
+        this.addNeededCells(newL);
         this.tape
             .style("left", (newL).toString() + "px")
     }
