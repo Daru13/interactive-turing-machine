@@ -47,7 +47,7 @@ export class GeneratorNode extends Node{
     }
 
     addHoverInteraction() {
-        let popup = null;
+        /*let popup = null;
         this.handleSelection.on("mouseover", () => {
             if (this.handleSelection.classed("not-valid") && popup === null) {
                 let tM = this.graph.turingMachine;
@@ -60,6 +60,6 @@ export class GeneratorNode extends Node{
                 popup.close();
                 popup = null;
             }
-        })
+        })*/
     }
 }

@@ -18,7 +18,6 @@ export class StateNode extends Node{
     constructor(graph: Graph, state: State) {
         super(graph);
 
-        console.log(graph, this.handleSelection);
         this.stateID = state.id;
 
         this.initStateNode(state);
@@ -114,7 +113,7 @@ export class StateNode extends Node{
     }
 
     addHoverInteraction(){
-        let popup = null;
+        /*let popup = null;
         this.handleSelection.on("mouseover", () => {
             if(this.handleSelection.classed("not-valid") && popup === null){
                 let tM = this.graph.turingMachine;
@@ -129,6 +128,6 @@ export class StateNode extends Node{
                 popup.close();
                 popup = null;
             }
-        })
+        })*/
     }
 }

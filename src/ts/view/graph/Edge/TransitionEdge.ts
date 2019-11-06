@@ -110,7 +110,7 @@ export class TransitionEdge extends Edge {
     }
 
     addHoverInteraction() {
-        let popup = null;
+        /*let popup = null;
         this.handleSelection.on("mouseover", () => {
             if (this.handleSelection.classed("not-valid") && popup === null) {
                 let tM = this.graph.turingMachine;
@@ -125,6 +125,6 @@ export class TransitionEdge extends Edge {
                 popup.close();
                 popup = null;
             }
-        })
+        })*/
     }
 }
