@@ -12,7 +12,6 @@ install:
 
 script:
   - grunt
-  - mv build
 
 deploy:
   provider: pages
