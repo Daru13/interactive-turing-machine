@@ -12,11 +12,11 @@ install:
 
 script:
   - grunt
-  - mv -Rf build deploy
+  - mv build
 
 deploy:
   provider: pages
-  local-dir: deploy
+  local-dir: build
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
   keep-history: false
