@@ -7,8 +7,9 @@ export class NoTransitionAvailableError extends TMError {
 
     constructor(turingMachine: TuringMachine, state: State){
         super(turingMachine,
-            `No transition available in ${state.getLabel()}`, 
-            `There is <strong>no transition</strong> going out of state ${state.getLabel()} for the symbol ${turingMachine.tape.getCurrentSymbol()}: the Turing machine is <strong>blocked</strong>! To fix the problem, either add more transitions or make state ${state.getLabel()} final to tell the Turing machine it can stop here (click on a state to edit its properties).`
+            `No transition available in state ${state.getLabel()}`, 
+            `There is no transition going out of state ${state.getLabel()} for symbol "${turingMachine.tape.getCurrentSymbol()}": the Turing machine is stuck!`,
+            `Either add more transitions or make state ${state.getLabel()} final to tell the Turing machine it can stop here (you can click on a state to change whether it is final or not).`
         );
 
         this.state = state;

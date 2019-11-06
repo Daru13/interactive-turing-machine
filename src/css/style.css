@@ -441,10 +441,6 @@ body {
     border-color: #3b3c3d;
 }
 
-.error-popup {
-    width: 40%;
-}
-
 .background-mask  {
     position: absolute;
     z-index: 2999;
@@ -673,6 +669,34 @@ body {
 
 #import-popup button:last-child {
     margin-right: 0;
+}
+
+
+
+/******************************************************************
+/* ERROR POPUPS
+/*****************************************************************/
+
+.error-popup {
+    min-width: 50%;
+    max-width: 80%;
+}
+
+.error-popup h3 {
+    margin: 10px 0 0 0;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.error-popup p {
+    margin: 5px 0 20px 0;
+    padding: 0;
+    font-size: 1.2rem;
+    text-align: justify;
+}
+
+.error-popup p:last-child {
+    margin-bottom: 0;
 }
 
 

@@ -12,14 +12,30 @@ export class ErrorPopup extends Popup {
         this.init();
     }
 
-    init() {
+    private init() {
         this.setTitle(this.error.getName());
         this.holder.classed("error-popup", true);
 
-        this.content.append("p")
-            .html(this.error.getDescription());
+        this.createProblemDescription();
+        this.createSolutionDescription();
 
         this.maskBackground.remove();
         this.center();
+    }
+
+    private createProblemDescription() {
+        this.content.append("h3")
+            .text("Problem");
+
+        this.content.append("p")
+            .html(this.error.getProblem());
+    }
+
+    private createSolutionDescription() {
+        this.content.append("h3")
+            .text("Solution");
+
+        this.content.append("p")
+            .html(this.error.getSolution());
     }
 }

@@ -5,28 +5,35 @@ export class TMError {
 
     protected readonly name: string;
     protected readonly shortName: string; // Used in the small screen of the control panel
-    protected readonly description: string;
+    protected readonly problem: string;
+    protected readonly solution: string;
 
     constructor(turingMachine: TuringMachine,
                 name: string,
-                description: string = "",
+                problem: string,
+                solution: string,
                 shortName: string = name) {
         this.turingMachine = turingMachine;
 
         this.name = name;
         this.shortName = shortName;
-        this.description = description;
+        this.problem = problem;
+        this.solution = solution;
     }
 
-    getName() {
+    getName(): string {
         return this.name;
     }
 
-    getShortName() {
+    getShortName(): string {
         return this.shortName;
     }
 
-    getDescription() {
-        return this.description;
+    getProblem(): string {
+        return this.problem;
+    }
+
+    getSolution(): string {
+        return this.solution;
     }
 }

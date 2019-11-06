@@ -6,7 +6,8 @@ export class NoInitialStateError extends TMError {
     constructor(turingMachine: TuringMachine) {
         super(turingMachine,
             "No initial state", 
-            "There is no <strong>initial state</strong>: the Turing machine <strong>does not know where to start</strong>! To fix the problem, you can draw a transition from the generator (the element with a lightning) to any state to make it initial."
+            "There is no <strong>initial state</strong>: the Turing machine does not know where to start!",
+            "Draw a transition from the generator (the element with a lightning) to any state to make it initial."
         );
     }
 }

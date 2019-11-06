@@ -10,7 +10,8 @@ export class NonDeterministicError extends TMError {
     constructor(turingMachine: TuringMachine, state: State, transitions: Transition[]) {
         super(turingMachine,
             `State ${state.getLabel()} is not deterministic`, 
-            `There are more than one transition going out of state ${state.getLabel()} for the same symbol. This makes the Turing machine <strong>non-deterministic</strong>: it cannot decide <strong>which transition should be followed</strong>! To fix the problem, you can remove or modify the conflicting transitions.`,
+            `There are more than one transition going out of state ${state.getLabel()} for the same symbol. This makes the Turing machine <strong>non-deterministic</strong>: it cannot decide which transition to follow!`,
+            `Remove or modify the conflicting transitions going out of state ${state.getLabel()} (you can click on a transition to change the input symbol).`,
             "Non-deterministic state"
         );
 
