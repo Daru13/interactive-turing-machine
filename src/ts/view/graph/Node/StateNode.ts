@@ -112,6 +112,14 @@ export class StateNode extends Node{
         })
     }
 
+    updateValidateProperty(){
+        if(this.graph.turingMachine.stateMachine.getState(this.stateID).isDeterministic()){
+            this.validate();
+        } else {
+            this.invalidate();
+        }
+    }
+
     addHoverInteraction(){
         /*let popup = null;
         this.handleSelection.on("mouseover", () => {

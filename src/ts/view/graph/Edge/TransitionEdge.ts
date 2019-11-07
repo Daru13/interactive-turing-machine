@@ -101,7 +101,7 @@ export class TransitionEdge extends Edge {
         }
 
         let extraText = (this.transitionIDs.length > 1) ? " ..." : "";
-        this.redrawText(`📖:${onSymbol}, 📝:${outputSymbol}, ${actionAsString} ${extraText}`);
+        this.redrawText(`📖 ${onSymbol} 📝 ${outputSymbol} ${actionAsString} ${extraText}`);
     }
 
     setCurved(b: boolean){

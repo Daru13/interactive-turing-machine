@@ -29,7 +29,7 @@ export class Graph {
     stateIdToStateNode: Map<StateID, StateNode>;
     generator: GeneratorNode;
     generatorEdge: GeneratorEdge;
-    viewBox: {x,y,width,height};
+    viewBox: {x:number, y:number, width: number, height: number};
     eventsHandlers: Record<EventID, (EventHandler<any>)>;
     windowHandler: ()=>void;
 
@@ -164,55 +164,55 @@ export class Graph {
         node.delete();
     }
 
-    addEdge(transition: Transition){
-        let stateMachine = this.turingMachine.stateMachine
-        let isCurved = stateMachine
-            .hasTransitionFromStateToState(transition.toState, transition.fromState) && transition.fromState !== transition.toState;
-
-        if (isCurved) {
-            let transitions = stateMachine.getTransitionsFromStateToState(transition.toState, transition.fromState);
-            let transitionEdge = this.transitionIdToTransitionEdge.get(transitions[0].id);
-            transitionEdge.setCurved(true);
-            transitionEdge.redrawTransitionEdge();
+    setEdgeCurved(transition: Transition){
+        if (transition.fromState === transition.toState){
+            return;
         }
 
+        let sm = this.turingMachine.stateMachine;
+        let isCurved = sm.hasTransitionFromStateToState(transition.fromState, transition.toState) 
+                           && sm.hasTransitionFromStateToState(transition.toState, transition.fromState);
+
+        this.transitionIdToTransitionEdge.get(transition.id).setCurved(isCurved);
+        this.transitionIdToTransitionEdge.get(transition.id).redrawTransitionEdge();
+
+        let oppositeTransitions = sm.getTransitionsFromStateToState(transition.toState, transition.fromState);
+        if(oppositeTransitions.length > 0){
+            let transitionEdge = this.transitionIdToTransitionEdge.get(oppositeTransitions[0].id);
+            transitionEdge.setCurved(isCurved);
+            transitionEdge.redrawTransitionEdge();
+        }
+    }
+
+    addEdge(transition: Transition){
+        let stateMachine = this.turingMachine.stateMachine;
+        let transitionEdge;
         let transitions = stateMachine.getTransitionsFromStateToState(transition.fromState, transition.toState);
+
         if (transitions.length > 1) {
-            let transitionEdge;
             if (transitions[0].id !== transition.id) {
                 transitionEdge = this.transitionIdToTransitionEdge.get(transitions[0].id);
             } else {
                 transitionEdge = this.transitionIdToTransitionEdge.get(transitions[1].id);
             }
-
             transitionEdge.addTransitionToEdge(transition);
-            this.transitionIdToTransitionEdge.set(transition.id, transitionEdge);
-            return;
+        } else {
+            transitionEdge = new TransitionEdge(this, transition, false);
         }
-        let newTransitionEdge = new TransitionEdge(this, transition, isCurved);
-        this.transitionIdToTransitionEdge.set(transition.id, newTransitionEdge);
+
+        this.transitionIdToTransitionEdge.set(transition.id, transitionEdge);
+        this.setEdgeCurved(transition);
+        this.stateIdToStateNode.get(transition.fromState.id).updateValidateProperty();
     }
 
     deleteEdge(transition: Transition){
         let transitionEdge = this.transitionIdToTransitionEdge.get(transition.id)
 
-        if (!this.turingMachine.stateMachine.hasTransitionFromStateToState(transition.fromState, transition.toState)) {
-            let transitions = this.turingMachine.stateMachine.getTransitionsFromStateToState(transition.toState, transition.fromState);
-            if (transitions.length > 0) {
-                let transitionEdge = this.transitionIdToTransitionEdge.get(transitions[0].id);
-                transitionEdge.setCurved(false);
-                transitionEdge.redrawTransitionEdge();
-            }
-        }
+        this.setEdgeCurved(transition);
+        this.stateIdToStateNode.get(transition.fromState.id).updateValidateProperty();
 
         transitionEdge.deleteTransitionEdge(transition.id);
-        this.transitionIdToTransitionEdge.delete(transition.id)
-
-        if (transition.fromState.isDeterministic()) {
-            this.stateIdToStateNode.get(transition.fromState.id).validate();
-        } else {
-            this.stateIdToStateNode.get(transition.fromState.id).invalidate();
-        }
+        this.transitionIdToTransitionEdge.delete(transition.id);
     }
 
     editEdge(transition: Transition){
@@ -221,11 +221,8 @@ export class Graph {
                 transition.getOnSymbol(),
                 transition.getOutputSymbol(),
                 transition.getHeadAction());
-        if (transition.fromState.isDeterministic()) {
-            this.stateIdToStateNode.get(transition.fromState.id).validate();
-        } else {
-            this.stateIdToStateNode.get(transition.fromState.id).invalidate();
-        }
+        
+        this.stateIdToStateNode.get(transition.fromState.id).updateValidateProperty();
     }
 
     setupListeners(){
