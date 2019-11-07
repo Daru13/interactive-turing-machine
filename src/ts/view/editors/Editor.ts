@@ -11,7 +11,7 @@ export class Editor extends Popup{
     constructor(element: GraphElement){
         super();
         this.element = element;
-        d3.selectAll(".selected").classed("selected", false);
+        d3.selectAll(".node, .edge").classed("selected", false);
 
         this.setOnClose(() => { })
     }
