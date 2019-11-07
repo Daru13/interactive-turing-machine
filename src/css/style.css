@@ -966,6 +966,13 @@ body {
     z-index: 1000;
 }
 
+#reset-head-button {
+    position: absolute;
+}
+
+#set-tape-content-button{
+    position: absolute;
+}
 
 /******************************************************************
 /* EASTER EGG

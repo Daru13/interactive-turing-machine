@@ -35,6 +35,9 @@ export class Tape{
         this.head = this.tapeHolder.append("div").attr("id", "head");
         this.tape = this.tapeHolder.append("div").attr("id", "tape");
 
+        this.tapeHolder.append("button").attr("id", "reset-head-button");
+        this.tapeHolder.append("button").attr("id", "set-tape-content-button");
+
         let widthHolder = document.getElementById("tapeHolder").getBoundingClientRect().width;
 
         this.origin = widthHolder / 2 - 2 - Tape.sizeCell / 2;
