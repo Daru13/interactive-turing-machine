@@ -101,7 +101,7 @@ export class Tape{
         this.cellsDisplayed.max -= 1;
     }
 
-    updateDisplayedCell(l:number){
+    private updateDisplayedCell(l:number){
         let nbDisplayedCell = Math.floor(Math.abs(l - this.origin) / this.stepMovement - 0.5) + 1;
 
         while(this.cellsDisplayed.min < Math.max(0, nbDisplayedCell - Tape.minLength)){
@@ -156,6 +156,19 @@ export class Tape{
     updateCell(symbol: TapeSymbol, index: number){
         let inputCell = this.tape.select("#cell-"+index).select("input").node() as HTMLInputElement;
         inputCell.value = symbol;
+    }
+
+    updateContent(){
+        let tapeContent = this.tM.tape.getContent();
+        let symbol;
+        for(var i = this.cellsDisplayed.min; i <= this.cellsDisplayed.max; i++){
+            if(i < tapeContent.length){
+                symbol = tapeContent[i];
+            } else {
+                symbol = "";
+            }
+            this.updateCell(symbol, i);
+        }
     }
 
     setupListener(){
