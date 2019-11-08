@@ -1,43 +1,53 @@
 import * as d3 from "d3-selection";
 import { TapeSymbol, HeadAction } from "../model/Tape";
-import { EventManager, EventHandler, EventID } from "../events/EventManager";
+import { EventManager, EventHandler, EventID, Event } from "../events/EventManager";
 import { TapeCellUpdateEvent } from "../events/TapeCellUpdateEvent";
 import { TapeMoveEvent } from "../events/TapeMoveEvent";
 import { TapeNewPosEvent } from "../events/TapeNewPosEvent";
 import { TuringMachine } from "../model/TuringMachine";
 
-export class Tape{
-    static minLength = 10;
-    static marginCell = 2;
-    static sizeCell = 90;
-    tapeHolder: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
-    tape: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
-    origin: number;
-    stepMovement: number;
-    head: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
-    eventsHandlers: Record<EventID, (EventHandler<any>)>;
-    pointerHandlers: Record<any, any>;
-    tM: TuringMachine;
-    cellsDisplayed: {minIndex: number, maxIndex:number}
+export class Tape {
+    private static readonly minLength = 10;
+    private static readonly marginCell = 2;
+    private static readonly sizeCell = 90;
 
-    constructor(tM: TuringMachine) {
-        this.origin = 0;
+    private tapeHolder: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
+    private tape: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
+    private head: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
+    
+    private tm: TuringMachine;
+    private origin: number;
+    private stepMovement: number;
+    private displayedCellsIndices: {minIndex: number, maxIndex: number};
+
+    private internalEventsHandlers: Record<EventID, EventHandler<Event>>;
+    private DOMEventHandlers: Record<string, (event: any) => void>;
+
+    constructor(tm: TuringMachine) {
         this.tapeHolder = d3.select("#tapeHolder");
-        this.eventsHandlers = {};
-        this.pointerHandlers = {};
-        this.tM = tM;
-        this.setupUI();
-        this.setupListener();
+        this.origin = 0;
+        this.tm = tm;
+
         this.init();
     }
 
-    setupUI(){
+    private init() {
+        this.setupUI();
+
+        this.createEventListeners();
+        this.addEventListeners();
+
+        this.displayedCellsIndices = {minIndex: 0, maxIndex: Tape.minLength - 1};
+        for (var i = 0; i < Tape.minLength; i++) {
+            this.addCell(i);
+        }
+    }
+
+    private setupUI() {
         d3.select("#tapeHolder").selectAll("*").remove();
         this.head = this.tapeHolder.append("div").attr("id", "head");
         this.tape = this.tapeHolder.append("div").attr("id", "tape");
-
-        this.tapeHolder.append("button").attr("id", "reset-head-button");
-        this.tapeHolder.append("button").attr("id", "set-tape-content-button");
+        this.addActionButtons();
 
         let widthHolder = document.getElementById("tapeHolder").getBoundingClientRect().width;
 
@@ -46,16 +56,28 @@ export class Tape{
         this.stepMovement = Tape.sizeCell + 2 * Tape.marginCell;
     }
 
-    init(){
-        this.cellsDisplayed = {minIndex: 0, maxIndex: Tape.minLength - 1};
-        for (var i = 0; i < Tape.minLength; i++) {
-            this.addCell(i);
-        }
+    private addActionButtons() {
+        let container = this.tapeHolder.append("div")
+            .classed("action-button-container", true);
+
+        // Button to reset the position of the head
+        container.append("button")
+            .attr("id", "reset-head-button")
+            .on("click", () => {
+                this.moveToCell(this.tm.tape.getHeadPosition());
+            });
+
+        // Button to edit the content of the tape as text
+        container.append("button")
+            .attr("id", "set-tape-content-button")
+            .on("click", () => {
+                // TODO
+            });
     }
 
-    private addCell(index){
+    private addCell(index: number) {
         let cell, value;
-        let tapeContent = this.tM.tape.getContent();
+        let tapeContent = this.tm.tape.getContent();
 
         value = (index < tapeContent.length)? tapeContent[index] : "";
         
@@ -71,53 +93,53 @@ export class Tape{
             .attr("maxlength", "1")
             .attr("value", value)
             .on("change", () => {
-                this.tM.tape.setSymbolAt(index, cell.select("input").node().value);
+                this.tm.tape.setSymbolAt(index, cell.select("input").node().value);
             })
         return cell;
     }
 
     private addCellAtTheBeginning() {
-        this.cellsDisplayed.minIndex -= 1;
-        this.addCell(this.cellsDisplayed.minIndex).lower();
-        this.tape.style("padding-left", (this.cellsDisplayed.minIndex * this.stepMovement).toString() + "px");
+        this.displayedCellsIndices.minIndex -= 1;
+        this.addCell(this.displayedCellsIndices.minIndex).lower();
+        this.tape.style("padding-left", (this.displayedCellsIndices.minIndex * this.stepMovement).toString() + "px");
     }
 
     private addCellAtTheEnd() {
-        this.cellsDisplayed.maxIndex += 1;
-        this.addCell(this.cellsDisplayed.maxIndex);
+        this.displayedCellsIndices.maxIndex += 1;
+        this.addCell(this.displayedCellsIndices.maxIndex);
     }
 
-    private removeCell(index){
+    private removeCell(index: number) {
         if(!d3.select(`#cell-${index}`).empty()){
             d3.select(`#cell-${index}`).remove();
         }
     }
 
     private removeCellAtTheBeginning() {
-        this.removeCell(this.cellsDisplayed.minIndex);
-        this.cellsDisplayed.minIndex += 1;
-        this.tape.style("padding-left", (this.cellsDisplayed.minIndex * this.stepMovement).toString() + "px");
+        this.removeCell(this.displayedCellsIndices.minIndex);
+        this.displayedCellsIndices.minIndex += 1;
+        this.tape.style("padding-left", (this.displayedCellsIndices.minIndex * this.stepMovement).toString() + "px");
     }
 
     private removeCellAtTheEnd() {
-        this.removeCell(this.cellsDisplayed.maxIndex);
-        this.cellsDisplayed.maxIndex -= 1;
+        this.removeCell(this.displayedCellsIndices.maxIndex);
+        this.displayedCellsIndices.maxIndex -= 1;
     }
 
     private updateDisplayedCell(l:number){
         let displayedCellIndex = Math.floor(Math.abs(l - this.origin) / this.stepMovement - 0.5) + 1;
 
-        while(this.cellsDisplayed.minIndex < Math.max(0, displayedCellIndex - Tape.minLength)){
+        while(this.displayedCellsIndices.minIndex < Math.max(0, displayedCellIndex - Tape.minLength)){
             this.removeCellAtTheBeginning();
         }
-        while (this.cellsDisplayed.minIndex > Math.max(0, displayedCellIndex - Tape.minLength)) {
+        while (this.displayedCellsIndices.minIndex > Math.max(0, displayedCellIndex - Tape.minLength)) {
             this.addCellAtTheBeginning();
         }
 
-        while (this.cellsDisplayed.maxIndex > displayedCellIndex + Tape.minLength) {
+        while (this.displayedCellsIndices.maxIndex > displayedCellIndex + Tape.minLength) {
             this.removeCellAtTheEnd();
         }
-        while (this.cellsDisplayed.maxIndex < displayedCellIndex + Tape.minLength) {
+        while (this.displayedCellsIndices.maxIndex < displayedCellIndex + Tape.minLength) {
             this.addCellAtTheEnd();
         }
     }
@@ -140,7 +162,7 @@ export class Tape{
         this.moveTapeByNCell(pos);
     }
 
-    move(action: HeadAction){
+    move(action: HeadAction) {
         switch (action) {
             case HeadAction.MoveLeft:
                 this.moveTapeByNCell(-1);
@@ -156,15 +178,15 @@ export class Tape{
         }
     }
 
-    updateCell(symbol: TapeSymbol, index: number){
+    updateCell(symbol: TapeSymbol, index: number) {
         let inputCell = this.tape.select("#cell-"+index).select("input").node() as HTMLInputElement;
         inputCell.value = symbol;
     }
 
-    updateContent(){
-        let tapeContent = this.tM.tape.getContent();
+    updateContent() {
+        let tapeContent = this.tm.tape.getContent();
         let symbol;
-        for(var i = this.cellsDisplayed.minIndex; i <= this.cellsDisplayed.maxIndex; i++){
+        for(var i = this.displayedCellsIndices.minIndex; i <= this.displayedCellsIndices.maxIndex; i++){
             if(i < tapeContent.length){
                 symbol = tapeContent[i];
             } else {
@@ -174,75 +196,68 @@ export class Tape{
         }
     }
 
-    setupListener(){
+    private createEventListeners() {
         let isDown = false;
         let previousX = 0;
-        let t = this;
 
-        //pointer down
-        this.pointerHandlers["pointerdown"] = function (e: PointerEvent) {
-            isDown = true;
-            previousX = e.clientX;
-        }
-        this.tapeHolder.node().addEventListener("pointerdown", this.pointerHandlers["pointerdown"]);
-
-        //pointer move
-        this.pointerHandlers["pointermove"] = function (e: PointerEvent) {
-            if (isDown) {
-                t.moveTapeBy(-(e.clientX - previousX));
+        this.DOMEventHandlers = {
+            "pointerdown": (e: PointerEvent) => {
+                isDown = true;
                 previousX = e.clientX;
+            },
+
+            "pointermove": (e: PointerEvent) => {
+                if (isDown) {
+                    this.moveTapeBy(-(e.clientX - previousX));
+                    previousX = e.clientX;
+                }
+            },
+
+            "pointerup": (e: PointerEvent) => {
+                isDown = false;
+            },
+
+            "wheel": (e: WheelEvent) => {
+                this.moveTapeBy(e.deltaY * 4);
             }
-        }
-        this.tapeHolder.node().addEventListener("pointermove", this.pointerHandlers["pointermove"]);
-
-        //pointer up
-        this.pointerHandlers["pointerup"] = function (e: PointerEvent) {
-            isDown = false;
-        }
-        this.tapeHolder.node().addEventListener("pointerup", this.pointerHandlers["pointerup"]);
-
-        //pointer leave
-        this.pointerHandlers["pointerleave"] = function (e: PointerEvent) {
-            isDown = false;
-        }
-        this.tapeHolder.node().addEventListener("pointerleave", this.pointerHandlers["pointerleave"] );
-
-        //wheel
-        this.pointerHandlers["wheel"] = function (e: WheelEvent) {
-            t.moveTapeBy(e.deltaY * 4);
-        }
-        this.tapeHolder.node().addEventListener("wheel", this.pointerHandlers["wheel"]);
-
-        //tape cell update
-        this.eventsHandlers["tapeCellUpdate"] = (e: TapeCellUpdateEvent) => {
-            this.updateCell(e.symbol, e.index);
-        }
-        EventManager.registerHandler("tapeCellUpdate", this.eventsHandlers["tapeCellUpdate"])
-
-        //tape move
-        this.eventsHandlers["tapeMove"] = (e: TapeMoveEvent) => {
-            this.move(e.headAction);
         };
-        EventManager.registerHandler("tapeMove", this.eventsHandlers["tapeMove"]);
 
-        //tape new pos
-        this.eventsHandlers["tapeNewPos"] = (e: TapeNewPosEvent) => {
-            this.moveToCell(e.headPos);
+        this.internalEventsHandlers = { 
+            "tapeCellUpdate": (e: TapeCellUpdateEvent) => {
+                this.updateCell(e.symbol, e.index);
+            },
+            
+            "tapeMove": (e: TapeMoveEvent) => {
+                this.move(e.headAction);
+            },
+            
+            "tapeNewPos": (e: TapeNewPosEvent) => {
+                this.moveToCell(e.headPos);
+            }
         };
-        EventManager.registerHandler("tapeNewPos", this.eventsHandlers["tapeNewPos"])
     }
 
-    removeHandler(){
-        for (var eventId of Object.keys(this.eventsHandlers)) {
-            EventManager.unregisterHandler(eventId, this.eventsHandlers[eventId]);
+    addEventListeners() {
+        for (let id of Object.keys(this.internalEventsHandlers)) {
+            EventManager.registerHandler(id, this.internalEventsHandlers[id]);
         }
 
-        for (var pevent of Object.keys(this.pointerHandlers)) {
-            this.tapeHolder.node().removeEventListener(pevent, this.pointerHandlers[eventId]);
+        for (let eventName of Object.keys(this.DOMEventHandlers)) {
+            this.tapeHolder.node().addEventListener(eventName, this.DOMEventHandlers[eventName]);
         }
     }
 
-    resize(){
+    removeEventListeners() {
+        for (let id of Object.keys(this.internalEventsHandlers)) {
+            EventManager.unregisterHandler(id, this.internalEventsHandlers[id]);
+        }
+
+        for (let eventName of Object.keys(this.DOMEventHandlers)) {
+            this.tapeHolder.node().removeEventListener(eventName, this.DOMEventHandlers[eventName]);
+        }
+    }
+
+    resize() {
         let widthHolder = document.getElementById("tapeHolder").getBoundingClientRect().width;
         let previousOrigin = this.origin;
         this.origin = widthHolder / 2 - Tape.marginCell - Tape.sizeCell / 2;

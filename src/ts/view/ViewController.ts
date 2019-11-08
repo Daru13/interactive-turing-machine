@@ -49,7 +49,7 @@ export class ViewController{
 
     removeHandler() {
         this.graph.removeHandler();
-        this.tape.removeHandler();
+        this.tape.removeEventListeners();
         window.removeEventListener("resize", this.windowHandler);
     }
 
