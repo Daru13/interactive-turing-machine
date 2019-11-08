@@ -85,6 +85,7 @@ export class TransitionEdgeEditor extends Editor{
         row.append("td").attr("colspan", "4")
             .append("button")
                 .on("click", () => {
+                    this.submit();
                     CreateEdgeAction.do(fromNode, toNode, this.turingMachine);
                     body.remove();
                     this.addBody(this.content.select("table"));
@@ -129,7 +130,7 @@ export class TransitionEdgeEditor extends Editor{
 
     submit(): void{
         var t = this
-        this.holder.select("tbody").selectAll("tr").each(function(d) {
+        this.holder.select("tbody").selectAll("tr:not(.new-transition-button-row)").each(function(d) {
             let row = d3.select(this);
             let transition = t.stateMachine.getTransition(d["transitionID"] as TransitionID);
 
