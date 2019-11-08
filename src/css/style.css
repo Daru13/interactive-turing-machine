@@ -967,13 +967,37 @@ body {
     z-index: 1000;
 }
 
-#reset-head-button {
+#set-tape-content-button,
+#reset-head-button {
+    width: 30px;
+    height: 30px;
     position: absolute;
+    top: 15px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    border: none;
+    opacity: 0.4;
+    z-index: 500;
 }
 
-#set-tape-content-button{
-    position: absolute;
+#set-tape-content-button:hover,
+#reset-head-button:hover {
+    opacity: 1;
 }
+
+#set-tape-content-button {
+    left: 5px;
+    background-image: url(../img/edit.svg);
+}
+
+#reset-head-button {
+    left: 40px;
+    background-image: url(../img/recenter-head.svg);
+}
+
+
+
 
 /******************************************************************
 /* EASTER EGG
