@@ -994,7 +994,7 @@ body {
     background-repeat: no-repeat;
     background-size: 100%;
     border: none;
-    opacity: 0.8;
+    opacity: 0.4;
     z-index: 1000;
 }
 
@@ -1005,12 +1005,12 @@ body {
 
 #set-tape-content-button {
     top: 5px;
-    background-image: url(../img/edit.svg);
+    background-image: url(../img/edit-white.svg);
 }
 
 #reset-head-button {
     top: 40px;
-    background-image: url(../img/recenter-head.svg);
+    background-image: url(../img/recenter-head-white.svg);
 }
 
 
