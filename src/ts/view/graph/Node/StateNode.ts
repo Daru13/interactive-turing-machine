@@ -1,10 +1,8 @@
-import { Graph, GraphDatum } from "../Graph";
+import { Graph } from "../Graph";
 import * as d3 from "d3-selection";
 import { State, StateID } from "../../../model/State";
 import { addLamp } from "../../CustomShape/lamps";
 import { Node } from "./Node";
-import { NonDeterministicError } from "../../../errors/NonDeterministicError";
-import { ErrorPopup } from "../../editors/ErrorPopUp";
 
 export enum StateNodeType {
     STANDARD = "standard",

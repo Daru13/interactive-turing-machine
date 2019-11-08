@@ -1,5 +1,4 @@
 import { Popup } from "./Popup";
-import * as d3 from "d3-selection";
 import { TMError } from "../../errors/TMError";
 
 export class ErrorPopup extends Popup {

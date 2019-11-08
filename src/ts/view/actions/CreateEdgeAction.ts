@@ -1,4 +1,4 @@
-import {    TuringMachine } from "../../model/TuringMachine";
+import { TuringMachine } from "../../model/TuringMachine";
 import { Transition } from "../../model/Transition";
 import { HeadAction } from "../../model/Tape";
 import { Action } from "./Action";

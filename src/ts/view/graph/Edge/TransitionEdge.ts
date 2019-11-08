@@ -5,8 +5,6 @@ import { Helpers } from "../../../helpers";
 import { HeadAction, TapeSymbol } from "../../../model/Tape";
 import { Edge } from "./Edge";
 import { StateNode } from "../Node/StateNode";
-import { ErrorPopup } from "../../editors/ErrorPopUp";
-import { NonDeterministicError } from "../../../errors/NonDeterministicError";
 
 export class TransitionEdge extends Edge {
     readonly transitionIDs: TransitionID[];

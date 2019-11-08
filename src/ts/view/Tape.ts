@@ -18,7 +18,7 @@ export class Tape{
     eventsHandlers: Record<EventID, (EventHandler<any>)>;
     pointerHandlers: Record<any, any>;
     tM: TuringMachine;
-    cellsDisplayed: {min: number, max:number}
+    cellsDisplayed: {minIndex: number, maxIndex:number}
 
     constructor(tM: TuringMachine) {
         this.origin = 0;
@@ -47,7 +47,7 @@ export class Tape{
     }
 
     init(){
-        this.cellsDisplayed = {min: 0, max: Tape.minLength - 1};
+        this.cellsDisplayed = {minIndex: 0, maxIndex: Tape.minLength - 1};
         for (var i = 0; i < Tape.minLength; i++) {
             this.addCell(i);
         }
@@ -61,7 +61,8 @@ export class Tape{
         
         cell = this.tape.append("div")
             .attr("id", `cell-${index}`)
-            .classed("cell", true);
+            .classed("cell", true)
+            .datum(index);
         cell.append("label")
             .attr("for", `cell-${index}-input`)
             .text(index);
@@ -77,14 +78,14 @@ export class Tape{
     }
 
     private addCellAtTheBeginning() {
-        this.cellsDisplayed.min -= 1;
-        this.addCell(this.cellsDisplayed.min).lower();
-        this.tape.style("padding-left", (this.cellsDisplayed.min * this.stepMovement).toString() + "px");
+        this.cellsDisplayed.minIndex -= 1;
+        this.addCell(this.cellsDisplayed.minIndex).lower();
+        this.tape.style("padding-left", (this.cellsDisplayed.minIndex * this.stepMovement).toString() + "px");
     }
 
     private addCellAtTheEnd() {
-        this.cellsDisplayed.max += 1;
-        this.addCell(this.cellsDisplayed.max);
+        this.cellsDisplayed.maxIndex += 1;
+        this.addCell(this.cellsDisplayed.maxIndex);
     }
 
     private removeCell(index){
@@ -94,40 +95,45 @@ export class Tape{
     }
 
     private removeCellAtTheBeginning() {
-        this.removeCell(this.cellsDisplayed.min);
-        this.cellsDisplayed.min += 1;
-        this.tape.style("padding-left", (this.cellsDisplayed.min * this.stepMovement).toString() + "px");
+        this.removeCell(this.cellsDisplayed.minIndex);
+        this.cellsDisplayed.minIndex += 1;
+        this.tape.style("padding-left", (this.cellsDisplayed.minIndex * this.stepMovement).toString() + "px");
     }
 
     private removeCellAtTheEnd() {
-        this.removeCell(this.cellsDisplayed.max);
-        this.cellsDisplayed.max -= 1;
+        this.removeCell(this.cellsDisplayed.maxIndex);
+        this.cellsDisplayed.maxIndex -= 1;
     }
 
     private updateDisplayedCell(l:number){
-        let nbDisplayedCell = Math.floor(Math.abs(l - this.origin) / this.stepMovement - 0.5) + 1;
+        let displayedCellIndex = Math.floor(Math.abs(l - this.origin) / this.stepMovement - 0.5) + 1;
+        let minIndex = displayedCellIndex - Tape.minLength;
+        let maxIndex = displayedCellIndex + Tape.minLength;
 
-        while(this.cellsDisplayed.min < Math.max(0, nbDisplayedCell - Tape.minLength)){
-            this.removeCellAtTheBeginning();
-        }
-        while (this.cellsDisplayed.min > Math.max(0, nbDisplayedCell - Tape.minLength)) {
-            this.addCellAtTheBeginning();
-        }
+        let displayedCellsIndex = [];
+        this.tape.selectAll(".cell").each(function(d){
+            displayedCellsIndex.push(d);
+        })
 
-        while (this.cellsDisplayed.max > nbDisplayedCell + Tape.minLength) {
-            this.removeCellAtTheEnd();
-        }
-        while (this.cellsDisplayed.max < nbDisplayedCell + Tape.minLength) {
-            this.addCellAtTheEnd();
+        displayedCellsIndex.forEach((i) => {
+            if (i > maxIndex && i < minIndex){
+                this.removeCell(i);
+            }
+        })
+
+        for (var i = minIndex; i <= maxIndex; i++){
+            if(!(displayedCellsIndex.includes(i))){
+                this.addCell(i);
+            }
         }
     }
 
     moveTapeBy(n: number) {
-        let l = parseInt(this.tape.style("left"));
-        let newL = Math.min(l - n, this.origin);
+        let left = parseInt(this.tape.style("left"));
+        let newLeft = Math.min(left - n, this.origin);
         this.tape
-            .style("left", (newL).toString() + "px");
-        this.updateDisplayedCell(newL);
+            .style("left", (newLeft).toString() + "px");
+        this.updateDisplayedCell(newLeft);
     }
 
     moveTapeByNCell(n: number) {
@@ -164,7 +170,7 @@ export class Tape{
     updateContent(){
         let tapeContent = this.tM.tape.getContent();
         let symbol;
-        for(var i = this.cellsDisplayed.min; i <= this.cellsDisplayed.max; i++){
+        for(var i = this.cellsDisplayed.minIndex; i <= this.cellsDisplayed.maxIndex; i++){
             if(i < tapeContent.length){
                 symbol = tapeContent[i];
             } else {

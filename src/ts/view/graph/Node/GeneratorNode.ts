@@ -1,9 +1,7 @@
-import { Graph, GraphDatum } from "../Graph";
+import { Graph } from "../Graph";
 import { addGenerator } from "../../CustomShape/generator";
 import * as d3 from "d3-selection";
 import { Node } from "./Node";
-import { ErrorPopup } from "../../editors/ErrorPopUp";
-import { NoInitialStateError } from "../../../errors/NoInitialStateError";
 
 export class GeneratorNode extends Node{
     graph: Graph;

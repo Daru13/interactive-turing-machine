@@ -1,5 +1,5 @@
 import * as d3 from "d3-selection";
-import { EventManager, Event, EventHandler, EventID } from "../../events/EventManager";
+import { EventManager, EventHandler, EventID } from "../../events/EventManager";
 import { NewStateEvent } from "../../events/NewStateEvent";
 import { DeleteStateEvent } from "../../events/DeleteStateEvent";
 import { NewTransitionEvent } from "../../events/NewTransitionEvent";

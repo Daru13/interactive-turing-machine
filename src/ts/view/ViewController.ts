@@ -1,5 +1,5 @@
 import { Tape } from "./Tape";
-import { MouseDispatcher, toolName } from "./graphInteraction/tools/MouseDispatcher";
+import { MouseDispatcher } from "./graphInteraction/tools/MouseDispatcher";
 import { Graph } from "./graph/Graph";
 import { TuringMachine } from "../model/TuringMachine";
 import { ControlPanel } from "./ControlPanel";

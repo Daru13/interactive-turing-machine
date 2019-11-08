@@ -1,6 +1,4 @@
-import { Graph } from "../graph/Graph";
 import { TuringMachine } from "../../model/TuringMachine";
-import { State } from "../../model/State";
 import { Action } from "./Action";
 
 export class CreateNodeAction extends Action{

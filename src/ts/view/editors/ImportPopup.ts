@@ -1,5 +1,4 @@
 import { Popup } from "./Popup";
-import { ViewController } from '../ViewController';
 import { TuringMachine } from "../../model/TuringMachine";
 import { Main } from "../../main";
 

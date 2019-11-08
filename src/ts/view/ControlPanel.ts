@@ -1,7 +1,6 @@
 import * as d3 from "d3-selection";
 import { TuringMachine } from "../model/TuringMachine";
 import { Tape } from "./Tape";
-import { Popup } from "./editors/Popup";
 import { EasterEggs } from "../easterEggs/EasterEggs";
 import { ErrorPopup } from "./editors/ErrorPopUp";
 import { TMError } from "../errors/TMError";

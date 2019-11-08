@@ -1,5 +1,4 @@
 import * as d3 from "d3-selection";
-import { EdgeSelection } from "../graph/Edge/Edge";
 import { HeadAction } from '../../model/Tape';
 import { StateMachine } from "../../model/StateMachine";
 import { TransitionID, READ_ANY_SYMBOL, WRITE_NO_SYMBOL } from '../../model/Transition';
