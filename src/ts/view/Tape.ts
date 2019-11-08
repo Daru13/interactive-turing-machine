@@ -8,6 +8,7 @@ import { TuringMachine } from "../model/TuringMachine";
 
 export class Tape{
     static minLength = 10;
+    static marginCell = 2;
     static sizeCell = 90;
     tapeHolder: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
     tape: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
@@ -40,9 +41,9 @@ export class Tape{
 
         let widthHolder = document.getElementById("tapeHolder").getBoundingClientRect().width;
 
-        this.origin = widthHolder / 2 - 2 - Tape.sizeCell / 2;
+        this.origin = widthHolder / 2 - Tape.marginCell - Tape.sizeCell / 2;
         this.tape.style("left", (this.origin).toString() + "px");
-        this.stepMovement = Tape.sizeCell + 2 + 2;
+        this.stepMovement = Tape.sizeCell + 2 * Tape.marginCell;
     }
 
     init(){
@@ -240,5 +241,12 @@ export class Tape{
         for (var pevent of Object.keys(this.pointerHandlers)) {
             this.tapeHolder.node().removeEventListener(pevent, this.pointerHandlers[eventId]);
         }
+    }
+
+    resize(){
+        let widthHolder = document.getElementById("tapeHolder").getBoundingClientRect().width;
+        let previousOrigin = this.origin;
+        this.origin = widthHolder / 2 - Tape.marginCell - Tape.sizeCell / 2;
+        this.moveTapeBy(previousOrigin - this.origin);
     }
 }

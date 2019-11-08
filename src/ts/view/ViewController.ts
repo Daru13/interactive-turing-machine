@@ -13,6 +13,7 @@ export class ViewController{
     tape: Tape;
     turingMachine: TuringMachine;
     tmButtons: ControlPanel;
+    windowHandler: () => void;
     
     toolManager: MouseDispatcher;
     penAndTouchManager: PenAndTouchDispatcher;
@@ -38,6 +39,23 @@ export class ViewController{
         EventManager.registerHandler("changeInteractionStyle", (e: ChangeInteractionStyle) => {
             this.setInteractionStyle(e.interactionStyle)
         })
+
+        this.windowHandler = () => {
+            this.resize();
+        };
+        window.addEventListener("resize", this.windowHandler);
+    }
+
+
+    removeHandler() {
+        this.graph.removeHandler();
+        this.tape.removeHandler();
+        window.removeEventListener("resize", this.windowHandler);
+    }
+
+    resize(){
+        this.graph.resize();
+        this.tape.resize();
     }
 
     setInteractionStyle(interactionStyle: InteractionStyles) {
@@ -53,10 +71,5 @@ export class ViewController{
             default:
                 console.error("(ViewController.ts) setInteractionStyle(): interaction style not recognise")
         }
-    }
-
-    removeHandler(){
-        this.graph.removeHandler();
-        this.tape.removeHandler();
     }
 }

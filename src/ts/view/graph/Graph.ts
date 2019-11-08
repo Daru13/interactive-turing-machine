@@ -31,7 +31,6 @@ export class Graph {
     generatorEdge: GeneratorEdge;
     viewBox: {x:number, y:number, width: number, height: number};
     eventsHandlers: Record<EventID, (EventHandler<any>)>;
-    windowHandler: ()=>void;
 
     constructor(turingMachine: TuringMachine){
         this.turingMachine = turingMachine;
@@ -279,19 +278,16 @@ export class Graph {
             this.editEdge(e.transition);
         })
         EventManager.registerHandler("editTransition", this.eventsHandlers["editTransition"]);
+    }
 
-        this.windowHandler = () => {
-            let bbox = this.svg.node().getBoundingClientRect();
-            this.scaleViewBoxTo(bbox.width, bbox.height);
-        };
-        window.addEventListener("resize", this.windowHandler);
+    resize(){
+        let bbox = this.svg.node().getBoundingClientRect();
+        this.scaleViewBoxTo(bbox.width, bbox.height);
     }
 
     removeHandler(){
         for(var eventId of Object.keys(this.eventsHandlers)){
             EventManager.unregisterHandler(eventId, this.eventsHandlers[eventId]);
         }
-
-        window.removeEventListener("resize", this.windowHandler);
     }
 }
