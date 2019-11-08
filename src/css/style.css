@@ -967,18 +967,35 @@ body {
     z-index: 1000;
 }
 
+#tapeHolder .action-button-container {
+    position: relative;
+    top: 10px;
+    left: 0;
+    width: 35px;
+    height: calc(100% - 10px);
+    background-color: rgba(84, 85, 85);
+    box-shadow: 10px 7px 5px 5px rgba(84, 85, 85);
+    z-index: 500;
+    transition: ease-in-out 100ms;
+}
+
+#tapeHolder .action-button-container:hover {
+    background-color: rgba(84, 85, 85);
+    box-shadow: 10px 7px 5px 5px rgba(84, 85, 85);
+}
+
 #set-tape-content-button,
 #reset-head-button {
     width: 30px;
     height: 30px;
     position: absolute;
-    top: 15px;
+    left: 5px;
     background-color: transparent;
     background-repeat: no-repeat;
     background-size: 100%;
     border: none;
-    opacity: 0.4;
-    z-index: 500;
+    opacity: 0.8;
+    z-index: 1000;
 }
 
 #set-tape-content-button:hover,
@@ -987,12 +1004,12 @@ body {
 }
 
 #set-tape-content-button {
-    left: 5px;
+    top: 5px;
     background-image: url(../img/edit.svg);
 }
 
 #reset-head-button {
-    left: 40px;
+    top: 40px;
     background-image: url(../img/recenter-head.svg);
 }
 
