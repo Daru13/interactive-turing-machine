@@ -61,8 +61,7 @@ export class Tape{
         
         cell = this.tape.append("div")
             .attr("id", `cell-${index}`)
-            .classed("cell", true)
-            .datum(index);
+            .classed("cell", true);
         cell.append("label")
             .attr("for", `cell-${index}-input`)
             .text(index);
@@ -107,24 +106,19 @@ export class Tape{
 
     private updateDisplayedCell(l:number){
         let displayedCellIndex = Math.floor(Math.abs(l - this.origin) / this.stepMovement - 0.5) + 1;
-        let minIndex = displayedCellIndex - Tape.minLength;
-        let maxIndex = displayedCellIndex + Tape.minLength;
 
-        let displayedCellsIndex = [];
-        this.tape.selectAll(".cell").each(function(d){
-            displayedCellsIndex.push(d);
-        })
+        while(this.cellsDisplayed.minIndex < Math.max(0, displayedCellIndex - Tape.minLength)){
+            this.removeCellAtTheBeginning();
+        }
+        while (this.cellsDisplayed.minIndex > Math.max(0, displayedCellIndex - Tape.minLength)) {
+            this.addCellAtTheBeginning();
+        }
 
-        displayedCellsIndex.forEach((i) => {
-            if (i > maxIndex && i < minIndex){
-                this.removeCell(i);
-            }
-        })
-
-        for (var i = minIndex; i <= maxIndex; i++){
-            if(!(displayedCellsIndex.includes(i))){
-                this.addCell(i);
-            }
+        while (this.cellsDisplayed.maxIndex > displayedCellIndex + Tape.minLength) {
+            this.removeCellAtTheEnd();
+        }
+        while (this.cellsDisplayed.maxIndex < displayedCellIndex + Tape.minLength) {
+            this.addCellAtTheEnd();
         }
     }
 
@@ -215,7 +209,7 @@ export class Tape{
 
         //wheel
         this.pointerHandlers["wheel"] = function (e: WheelEvent) {
-            t.moveTapeBy(e.deltaX * 4);
+            t.moveTapeBy(e.deltaY * 4);
         }
         this.tapeHolder.node().addEventListener("wheel", this.pointerHandlers["wheel"]);
 
