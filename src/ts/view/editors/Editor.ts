@@ -22,12 +22,10 @@ export class Editor extends Popup{
         let windowWidth = window.innerWidth;
         let windowHeight = window.innerHeight;
         let top = bbox.top + bbox.height;
-        let left = bbox.left + (bbox.width - bboxHolder.width) / 2; 
+        let left = bbox.left + (bbox.width - bboxHolder.width) / 2;
+
         if(top < 0){
             top = 0;
-        }
-        if(top + bboxHolder.height > windowHeight){
-            top = windowHeight - bboxHolder.height;
         }
         if(left < 0){
             left = 0;
@@ -39,6 +37,9 @@ export class Editor extends Popup{
         this.holder
             .style("top", (top).toString() + "px")
             .style("left", (left).toString() + "px");
+        
+        let maxHeight = windowHeight - this.content.node().getBoundingClientRect().top;
+        this.setMaxSizeContent(maxHeight);
     }
 
     addLabel(text: string, forAttribute: string, parent: d3.Selection<HTMLElement, any, any, any> = this.content) {
