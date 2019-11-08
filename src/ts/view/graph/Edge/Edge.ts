@@ -46,7 +46,6 @@ export abstract class Edge{
 
     protected redraw(pt1: { x: number, y: number }, pt2: { x: number, y: number }, curved: boolean = false, flipped = false){
         if(pt1.x == pt2.x && pt1.y == pt2.y){
-            console.log("self edge drawn")
             this.redrawBetweenOnePoint(pt1, flipped);
         } else {
             this.redawBetweenTwoPoints(pt1, pt2, curved);

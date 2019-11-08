@@ -72,7 +72,6 @@ export class Tape{
             .attr("value", value)
             .on("change", () => {
                 this.tM.tape.setSymbolAt(index, cell.select("input").node().value);
-                console.log(this.tM.tape.toString());
             })
         return cell;
     }

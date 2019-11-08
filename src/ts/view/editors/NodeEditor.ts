@@ -42,7 +42,6 @@ export class NodeEditor extends Editor{
         this.addButton("Final",  () => {
             let state = this.tm.stateMachine.getState(this.node.stateID);
             state.setFinal(!state.isFinal());
-            console.log(this.tm.stateMachine.toString());
         }, "node-set-final-button");
 
         this.addLabel("Delete", "node-delete-button");

@@ -16,7 +16,6 @@ export class Main{
 
     setTuringMachine(turingMachine: TuringMachine){
         this.turingMachine = turingMachine;
-        console.log(this.turingMachine.toString());
         this.viewController.removeHandler();
         this.viewController = new ViewController(this.turingMachine);
         this.viewController.setInteractionStyle(this.menuBar.interactionStyle);
