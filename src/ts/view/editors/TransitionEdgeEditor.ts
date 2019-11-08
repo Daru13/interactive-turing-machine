@@ -5,17 +5,21 @@ import { StateMachine } from "../../model/StateMachine";
 import { TransitionID, READ_ANY_SYMBOL, WRITE_NO_SYMBOL } from '../../model/Transition';
 import { Editor } from "./Editor";
 import { TransitionEdge } from "../graph/Edge/TransitionEdge";
+import { CreateEdgeAction } from "../actions/CreateEdgeAction";
+import { TuringMachine } from "../../model/TuringMachine";
 
 export class TransitionEdgeEditor extends Editor{
     holder: d3.Selection<HTMLDivElement, {}, HTMLElement, any>;
     edge: TransitionEdge;
     stateMachine: StateMachine;
+    turingMachine: TuringMachine;
 
-    constructor(edge: TransitionEdge, stateMachine: StateMachine){
+    constructor(edge: TransitionEdge, turingMachine: TuringMachine){
         super(edge);
 
         this.edge = edge;
-        this.stateMachine = stateMachine;
+        this.turingMachine = turingMachine;
+        this.stateMachine = turingMachine.stateMachine;
 
         this.init();
     }
@@ -70,17 +74,31 @@ export class TransitionEdgeEditor extends Editor{
             cell = row.append("td").classed("delete-transition", true);
             this.addDeleteTransitionButton(cell, row);
         });
+
+        this.addPlusButton(body);
+    }
+
+    addPlusButton(body){
+        let fromNode = this.edge.fromStateNode;
+        let toNode = this.edge.toStateNode;
+        let row = body.append("tr").classed("new-transition-button-row", true);
+        row.append("td").attr("colspan", "4")
+            .append("button")
+                .on("click", () => {
+                    CreateEdgeAction.do(fromNode, toNode, this.turingMachine);
+                    body.remove();
+                    this.addBody(this.content.select("table"));
+                })
     }
 
     addDeleteTransitionButton(holder: d3.Selection<HTMLElement, any, any, any>, row: d3.Selection<HTMLElement, any, any, any>){
-        let t = this;
         holder
             .append("button")
-            .on("click", function(){
-                t.stateMachine.removeTransition(holder.datum()["transitionID"]);
+            .on("click", () => {
+                this.stateMachine.removeTransition(holder.datum()["transitionID"]);
                 row.remove();
-                if(t.holder.select("tbody").selectAll("tr").empty()){
-                    t.close();
+                if(this.holder.select("tbody").selectAll("tr").empty()){
+                    this.close();
                 }
             })
             .text("Delete");

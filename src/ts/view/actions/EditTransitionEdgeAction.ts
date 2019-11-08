@@ -5,6 +5,6 @@ import { TransitionEdgeEditor } from "../editors/TransitionEdgeEditor";
 
 export class EditTransitionEdgeAction extends Action{
     static do(edge: TransitionEdge, turingMachine: TuringMachine) {
-        new TransitionEdgeEditor(edge, turingMachine.stateMachine);
+        new TransitionEdgeEditor(edge, turingMachine);
     }
 }

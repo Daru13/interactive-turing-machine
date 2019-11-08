@@ -13,6 +13,5 @@ export class CreateEdgeAction extends Action {
                 "",
                 "",
                 HeadAction.MoveRight));
-        console.log(tM.stateMachine.toString());
     }
 }
