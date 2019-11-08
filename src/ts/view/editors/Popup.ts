@@ -49,6 +49,14 @@ export class Popup{
         this.holder.select(".popup-title").text(this.title);
     }
 
+    setMaxSizeContent(maxHeight: number) {
+        let computedStyle = window.getComputedStyle(this.content.node(), null);
+        let paddingTop = parseInt(computedStyle.getPropertyValue("padding-top"));
+        let paddingBottom = parseInt(computedStyle.getPropertyValue("padding-bottom"));
+        
+        this.content.style("max-height", (maxHeight - paddingTop - paddingBottom).toString() + "px");
+    }
+
     center() {
         let popupBoundingBox = this.holder.node().getBoundingClientRect();
         let windowWidth = window.innerWidth;

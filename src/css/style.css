@@ -398,6 +398,7 @@ body {
 }
 
 .popup-content {
+    overflow-y: scroll;
     padding: 10px;
     color: #3b3c3d;
 }
