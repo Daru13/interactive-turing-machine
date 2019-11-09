@@ -224,8 +224,8 @@ export class Tape {
         };
 
         this.internalEventsHandlers = { 
-            "tapeCellUpdate": (e: TapeCellUpdateEvent) => {
-                this.updateCell(e.symbol, e.index);
+            "tapeCellUpdate": () => {
+                this.updateContent();
             },
 
             "tapeContentUpdate": () => {

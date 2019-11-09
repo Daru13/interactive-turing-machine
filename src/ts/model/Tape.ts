@@ -17,6 +17,7 @@ export interface TapeExport {
 }
 
 export class Tape {
+    private static readonly EMPTY_CELL_FILLING_CHAR = " ";
 
     private content: TapeSymbol[];
     private headPosition: number;
@@ -36,6 +37,7 @@ export class Tape {
 
     setSymbolAt(index: number, symbol: TapeSymbol) {
         this.content[index] = symbol;
+        this.fillEmptyCellsBefore(index);
         EventManager.emit(new TapeCellUpdateEvent(symbol, index));
     }
 
@@ -67,6 +69,14 @@ export class Tape {
 
     clearContent() {
         this.content = [];
+    }
+
+    private fillEmptyCellsBefore(index: number = this.content.length) {
+        for (let i = 0; i < index; i++) {
+            if (this.content[i] === undefined) {
+                this.content[i] = Tape.EMPTY_CELL_FILLING_CHAR;
+            }
+        }
     }
 
     applyHeadAction(action: HeadAction) {
