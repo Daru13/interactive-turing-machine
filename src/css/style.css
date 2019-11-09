@@ -1028,17 +1028,16 @@ body {
     position: relative;
     top: 10px;
     left: 0;
-    width: 35px;
+    width: 40px;
     height: calc(100% - 10px);
-    background-color: rgba(84, 85, 85);
-    box-shadow: 10px 7px 5px 5px rgba(84, 85, 85);
+    background-color: rgba(84, 85, 85, 0.8);
+    box-shadow: 5px 5px 5px rgba(84, 85, 85, 0.4);
     z-index: 500;
     transition: ease-in-out 100ms;
 }
 
 #tapeHolder .action-button-container:hover {
-    background-color: rgba(84, 85, 85);
-    box-shadow: 10px 7px 5px 5px rgba(84, 85, 85);
+    background-color: rgb(84, 85, 85);
 }
 
 #set-tape-content-button,
