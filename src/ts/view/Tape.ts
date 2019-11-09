@@ -5,6 +5,7 @@ import { TapeCellUpdateEvent } from "../events/TapeCellUpdateEvent";
 import { TapeMoveEvent } from "../events/TapeMoveEvent";
 import { TapeNewPosEvent } from "../events/TapeNewPosEvent";
 import { TuringMachine } from "../model/TuringMachine";
+import { TapeContentEditorPopup } from './editors/TapeContentEditorPopup';
 
 export class Tape {
     private static readonly minLength = 10;
@@ -71,7 +72,7 @@ export class Tape {
         container.append("button")
             .attr("id", "set-tape-content-button")
             .on("click", () => {
-                // TODO
+                new TapeContentEditorPopup(this.tm.tape);
             });
     }
 
@@ -225,6 +226,10 @@ export class Tape {
         this.internalEventsHandlers = { 
             "tapeCellUpdate": (e: TapeCellUpdateEvent) => {
                 this.updateCell(e.symbol, e.index);
+            },
+
+            "tapeContentUpdate": () => {
+                this.updateContent();
             },
             
             "tapeMove": (e: TapeMoveEvent) => {

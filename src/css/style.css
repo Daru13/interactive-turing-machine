@@ -441,6 +441,14 @@ body {
     border-color: #3b3c3d;
 }
 
+.popup-content textarea {
+    margin: 20px 0 10px 0;
+    padding: 5px;
+    background-color: #FFF;
+    border: 2px solid #9a9a9a;
+    font-family: "Inconsolata", monospace;
+}
+
 .background-mask  {
     position: absolute;
     z-index: 2999;
@@ -640,15 +648,6 @@ body {
     border: 2px solid #b3484a;
 }
 
-#import-popup textarea,
-#export-popup textarea {
-    margin: 20px 0 10px 0;
-    padding: 5px;
-    background-color: #FFF;
-    border: 2px solid #9a9a9a;
-    font-family: "Inconsolata", monospace;
-}
-
 #export-popup textarea {
     margin-bottom: 0;
 }
@@ -673,6 +672,60 @@ body {
 }
 
 #import-popup button:last-child {
+    margin-right: 0;
+}
+
+
+
+/******************************************************************
+/* TAPE EDITOR POPUP
+/*****************************************************************/
+
+#tape-content-editor-popup {
+    min-width: 50%;
+    max-width: 80%;
+}
+
+#tape-content-editor-popup .popup-content > * {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+#tape-content-edit-field {
+    height: 200px;
+}
+
+#tape-content-editor-popup .instruction {
+    margin: 0;
+    padding: 0;
+    font-size: 1.2rem;
+    text-align: justify;
+}
+
+#tape-content-editor-popup .instruction:first-child {
+    margin-top: 10px;
+}
+
+#tape-content-editor-popup .action-button-container {
+    display: flex;
+}
+
+#tape-content-editor-popup button {
+    flex: 1 1 0;
+    margin: 0 10px 0 0;
+}
+
+#tape-content-editor-popup .cancel-button {
+    background-color: #b3484a;
+    box-shadow: 0 -5px 0 #821e1f inset;
+}
+
+#tape-content-editor-popup .cancel-button:hover {
+    background-color: #9e2627;
+    box-shadow: 0 -2px 0 #821e1f inset;
+}
+
+#tape-content-editor-popup button:last-child {
     margin-right: 0;
 }
 

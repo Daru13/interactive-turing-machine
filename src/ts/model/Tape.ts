@@ -2,6 +2,7 @@ import { EventManager } from "../events/EventManager";
 import { TapeCellUpdateEvent } from "../events/TapeCellUpdateEvent";
 import { TapeMoveEvent } from "../events/TapeMoveEvent";
 import { TapeNewPosEvent } from "../events/TapeNewPosEvent";
+import { TapeContentUpdateEvent } from "../events/TapeContentUpdateEvent";
 
 export type TapeSymbol = string;
 
@@ -49,10 +50,19 @@ export class Tape {
 
     setContent(content: TapeSymbol[]) {
         this.content = content;
+        EventManager.emit(new TapeContentUpdateEvent());
+    }
+
+    setContentFromString(content: string) {
+        this.setContent(Array.from(content));
     }
 
     getContent(): TapeSymbol[] {
         return this.content;
+    }
+
+    getContentAsString(): string {
+        return this.content.join("");
     }
 
     clearContent() {
@@ -62,7 +72,7 @@ export class Tape {
     applyHeadAction(action: HeadAction) {
         switch (action) {
             case HeadAction.MoveLeft:
-                Math.max(0, this.headPosition--);
+                this.headPosition = Math.max(0, this.headPosition - 1);
                 break;
 
             case HeadAction.MoveRight:
