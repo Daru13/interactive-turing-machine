@@ -739,6 +739,18 @@ body {
     max-width: 800px;
 }
 
+.error-popup .popup-titlebar {
+    background-color: #9e2627;
+}
+
+.error-popup .popup-close-button {
+    background-color: #9e2627;
+}
+
+.error-popup .popup-close-button:hover {
+    background-color: #821e1f;
+}
+
 .error-popup h3 {
     margin: 10px 0 0 0;
     font-size: 1.3rem;

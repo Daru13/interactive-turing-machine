@@ -18,7 +18,6 @@ export class ErrorPopup extends Popup {
         this.createProblemDescription();
         this.createSolutionDescription();
 
-        this.maskBackground.remove();
         this.center();
     }
 
