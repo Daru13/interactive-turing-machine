@@ -672,6 +672,16 @@ body {
     margin: 0 10px 0 0;
 }
 
+#import-popup .import-button {
+    background-color: #53a544;
+    box-shadow: 0 -5px 0 #25701b inset;
+}
+
+#import-popup .import-button:hover {
+    background-color: #388126;
+    box-shadow: 0 -2px 0 #25701b inset;
+}
+
 #import-popup .cancel-button {
     background-color: #b3484a;
     box-shadow: 0 -5px 0 #821e1f inset;
@@ -724,6 +734,16 @@ body {
 #tape-content-editor-popup button {
     flex: 1 1 0;
     margin: 0 10px 0 0;
+}
+
+#tape-content-editor-popup .update-button {
+    background-color: #53a544;
+    box-shadow: 0 -5px 0 #25701b inset;
+}
+
+#tape-content-editor-popup .update-button:hover {
+    background-color: #388126;
+    box-shadow: 0 -2px 0 #25701b inset;
 }
 
 #tape-content-editor-popup .cancel-button {
