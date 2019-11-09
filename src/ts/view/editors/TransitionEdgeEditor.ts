@@ -80,11 +80,17 @@ export class TransitionEdgeEditor extends Editor{
     addPlusButton(body){
         let fromNode = this.edge.fromStateNode;
         let toNode = this.edge.toStateNode;
-        let row = body.append("tr").classed("new-transition-button-row", true);
-        row.append("td").attr("colspan", "4")
+
+        let row = body.append("tr")
+            .classed("new-transition-button-row", true);
+            
+        row.append("td")
+            .attr("colspan", "4")
             .append("button")
+                .text("New transition")
                 .on("click", () => {
                     this.submit();
+
                     CreateEdgeAction.do(fromNode, toNode, this.turingMachine);
                     body.remove();
                     this.addBody(this.content.select("table"));

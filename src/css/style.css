@@ -605,6 +605,17 @@ body {
     box-shadow: 0 -2px 0 #821e1f inset;
 }
 
+.transition-edge-editor .new-transition-button-row button {
+    width: 100%;
+    background-color: #53a544;
+    box-shadow: 0 -5px 0 #25701b inset;
+}
+
+.transition-edge-editor .new-transition-button-row button:hover {
+    background-color: #388126;
+    box-shadow: 0 -2px 0 #25701b inset;
+}
+
 
 
 /******************************************************************
