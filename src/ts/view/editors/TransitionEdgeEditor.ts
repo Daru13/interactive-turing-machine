@@ -117,9 +117,9 @@ export class TransitionEdgeEditor extends Editor{
                 .classed("head-action-selector", true);
         dirEntry.datum()["direction"] = defaultDir;
 
-        this.addHeadActionOption(dirEntry, "L", HeadAction.MoveLeft, defaultDir === HeadAction.MoveLeft);
-        this.addHeadActionOption(dirEntry, "S", HeadAction.None, defaultDir === HeadAction.None);
-        this.addHeadActionOption(dirEntry, "R", HeadAction.MoveRight, defaultDir === HeadAction.MoveRight);
+        this.addHeadActionOption(dirEntry, "←", HeadAction.MoveLeft, defaultDir === HeadAction.MoveLeft);
+        this.addHeadActionOption(dirEntry, "∅", HeadAction.None, defaultDir === HeadAction.None);
+        this.addHeadActionOption(dirEntry, "→", HeadAction.MoveRight, defaultDir === HeadAction.MoveRight);
     }
 
     addHeadActionOption(holder: d3.Selection<HTMLDivElement, any, any, any>, text:string, datum: HeadAction, selected: boolean){
