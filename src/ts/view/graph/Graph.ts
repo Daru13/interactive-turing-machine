@@ -23,6 +23,8 @@ export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, {
 export class Graph {
     static sizeNode: number = parseInt(getComputedStyle(document.documentElement)
         .getPropertyValue('--node-size'));
+    static id = 0
+    id;
     turingMachine: TuringMachine;
     svg: GraphSelection;
     transitionIdToTransitionEdge: Map<TransitionID, TransitionEdge>;
@@ -33,6 +35,8 @@ export class Graph {
     eventsHandlers: Record<EventID, (EventHandler<any>)>;
 
     constructor(turingMachine: TuringMachine){
+        this.id = Graph.id;
+        Graph.id += 1;
         this.turingMachine = turingMachine;
         this.transitionIdToTransitionEdge = new Map();
         this.stateIdToStateNode = new Map();
@@ -119,6 +123,7 @@ export class Graph {
     }
 
     addNode(state: State){
+        console.log("add state " + state.id + " in " + this.id)
         this.stateIdToStateNode.set(state.id, new StateNode(this, state));
     }
 

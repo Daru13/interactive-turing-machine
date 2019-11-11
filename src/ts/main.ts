@@ -14,9 +14,9 @@ export class Main{
         this.viewController = new ViewController(this.turingMachine);
     }
 
-    setTuringMachine(turingMachine: TuringMachine){
-        this.turingMachine = turingMachine;
+    setTuringMachineFromImport(json: string) {
         this.viewController.removeHandler();
+        this.turingMachine = TuringMachine.fromJSONExport(json);
         this.viewController = new ViewController(this.turingMachine);
         this.viewController.setInteractionStyle(this.menuBar.interactionStyle);
     }

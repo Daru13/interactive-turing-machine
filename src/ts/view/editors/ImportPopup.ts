@@ -71,7 +71,7 @@ export class ImportPopup extends Popup {
         // TODO: clean up this part and avoid using the view controller!
 
         try {
-            this.main.setTuringMachine(TuringMachine.fromJSONExport(json));
+            this.main.setTuringMachineFromImport(json);
             this.close();
         }
         catch (exception) {

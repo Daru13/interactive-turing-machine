@@ -103,7 +103,7 @@ export class TransitionEdgeEditor extends Editor{
             .on("click", () => {
                 this.stateMachine.removeTransition(holder.datum()["transitionID"]);
                 row.remove();
-                if(this.holder.select("tbody").selectAll("tr").empty()){
+                if (this.holder.select("tbody").selectAll("tr:not(.new-transition-button-row)").empty()){
                     this.close();
                 }
             })

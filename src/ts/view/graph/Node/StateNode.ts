@@ -98,16 +98,30 @@ export class StateNode extends Node{
 
     invalidate(){
         super.invalidate();
-        this.graph.turingMachine.stateMachine.getState(this.stateID).getNonDeterministicOutTransitions().forEach((t) => {
-            this.graph.transitionIdToTransitionEdge.get(t.id).invalidate();
-        })
+        let transitions = this.graph.turingMachine.stateMachine.getState(this.stateID).getOutTransitions();
+        let edge;
+        if (transitions !== undefined && transitions !== null) {
+            transitions.forEach((t) => {
+                edge = this.graph.transitionIdToTransitionEdge.get(t.id);
+                if (edge !== undefined && edge !== null) {
+                    edge.invalidate();
+                }
+            })
+        }
     }
 
     validate() {
         super.validate();
-        this.graph.turingMachine.stateMachine.getState(this.stateID).getOutTransitions().forEach((t) => {
-            this.graph.transitionIdToTransitionEdge.get(t.id).validate();
-        })
+        let transitions = this.graph.turingMachine.stateMachine.getState(this.stateID).getOutTransitions();
+        let edge;
+        if(transitions !== undefined && transitions !== null){
+            transitions.forEach((t) => {
+                edge = this.graph.transitionIdToTransitionEdge.get(t.id);
+                if (edge !== undefined && edge !== null) {
+                    edge.validate();
+                }
+            })
+        }
     }
 
     updateValidateProperty(){
