@@ -70,7 +70,13 @@ export class TuringMachine {
         }
 
         // Check and update the state of the machine
+        // If the current state is final or the machine has already stopped, nothing happens
         if (this.state === TuringMachineState.STOPPED) {
+            return;
+        }
+
+        if (currentState.isFinal()) {
+            this.state = TuringMachineState.STOPPED;
             return;
         }
 
