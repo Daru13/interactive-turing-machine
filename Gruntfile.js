@@ -26,6 +26,21 @@ module.exports = function (grunt) {
       }
     },
 
+    // Typescript linter task
+    tslint: {
+      options: {
+        project: "./tsconfig.json",
+        configuration: "./tslint.json",
+        formatter: "codeFrame",
+        force: false,
+        fix: false
+      },
+
+      files: {
+        src: ["./src/ts/**/*.ts"]
+      }
+    },
+
     // Browserify task
     // It aggregates all compiled JavaScript files into a single file.
     browserify: {
@@ -44,6 +59,7 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks("grunt-exec");
   grunt.loadNpmTasks("grunt-ts");
+  grunt.loadNpmTasks("grunt-tslint");
   grunt.loadNpmTasks("grunt-browserify");
 
   /***************************************************************************/
@@ -65,11 +81,16 @@ module.exports = function (grunt) {
     ["ts", "browserify"]
   );
 
+  grunt.registerTask("lint",
+    "Check the style of the Typescript sources for the specified rules.",
+    ["tslint"]
+  );
+
   grunt.registerTask("build",
     "Copy static files and compile Typescript sources into the build directory.",
     ["copy-static-files", "compile"]
   );
 
 
-  grunt.registerTask("default", "build");
+  grunt.registerTask("default", ["lint", "build"]);
 };
