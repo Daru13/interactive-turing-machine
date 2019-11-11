@@ -1,7 +1,5 @@
 import * as d3 from "d3-selection";
-import { HeadAction } from "../../model/Tape";
 import { StateMachine } from "../../model/StateMachine";
-import { TransitionID } from "../../model/Transition";
 import { Editor } from "./Editor";
 import { GeneratorEdge } from "../graph/Edge/GeneratorEdge";
 

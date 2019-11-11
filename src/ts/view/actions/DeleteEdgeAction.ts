@@ -3,11 +3,10 @@ import { Action } from "./Action";
 import { TransitionEdge } from "../graph/Edge/TransitionEdge";
 
 export class DeleteEdgeAction extends Action{
-    static do(edge: TransitionEdge, tM: TuringMachine) {
-        let transitions = edge.transitionIDs.slice();
-        transitions.forEach((t) => {
-            tM.stateMachine.removeTransition(t);
+    static do(edge: TransitionEdge, turingMachine: TuringMachine) {
+        let transitionIDs = edge.transitionIDs.slice();
+        transitionIDs.forEach((transitionID) => {
+            turingMachine.stateMachine.removeTransition(transitionID);
         });
-        console.log(tM.stateMachine.toString());
     }
 }

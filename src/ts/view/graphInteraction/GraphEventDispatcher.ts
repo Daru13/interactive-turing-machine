@@ -5,12 +5,12 @@ import { ModifiedPointerEvent } from "../../events/ModifiedPointerEvent";
 
 export abstract class GraphEventDispatcher {
     readonly graph: Graph;
-    readonly tM: TuringMachine;
+    readonly turingMachine: TuringMachine;
     isActivated: boolean;
 
     constructor(graph: Graph, turingMachine: TuringMachine) {
         this.graph = graph;
-        this.tM = turingMachine;
+        this.turingMachine = turingMachine;
         this.isActivated = false;
         this.setInteraction();
     }
@@ -18,6 +18,7 @@ export abstract class GraphEventDispatcher {
     setInteraction() {
         var t = this;
         let timeDown: Record<number, number> = {};
+
         t.graph.getSVGElement().addEventListener("pointerdown",
             function (e) {
                 if (t.isActivated) {
@@ -25,12 +26,14 @@ export abstract class GraphEventDispatcher {
                     t.dispatchDownEvent(Helpers.transformEvent(e));
                 }
             });
+
         t.graph.getSVGElement().addEventListener("pointermove",
             function (e) {
                 if (t.isActivated) {
                     t.dispatchMoveEvent(Helpers.transformEvent(e));
                 }
             });
+
         t.graph.getSVGElement().addEventListener("pointerup",
             function (e) {
                 if (t.isActivated) {
@@ -40,12 +43,14 @@ export abstract class GraphEventDispatcher {
                     }
                 }
             });
+
         t.graph.getSVGElement().addEventListener("pointerleave",
             function (e) {
                 if (t.isActivated) {
                     t.dispatchLeaveEvent(Helpers.transformEvent(e));
                 }
             });
+
         t.graph.getSVGElement().addEventListener("pointercancel",
             function (e) {
                 if (t.isActivated) {

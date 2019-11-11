@@ -5,10 +5,10 @@ import { NodeTool } from "../tools/NodeTool";
 
 export class Touch{
     nodeTool : NodeTool
-    tM: TuringMachine;
+    turingMachine: TuringMachine;
 
     constructor(graph: Graph, turingMachine: TuringMachine){
-        this.tM = turingMachine;
+        this.turingMachine = turingMachine;
         this.nodeTool = new NodeTool(graph, turingMachine);
     }
 

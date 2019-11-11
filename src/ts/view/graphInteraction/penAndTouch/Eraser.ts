@@ -8,11 +8,11 @@ import { TransitionEdge } from "../../graph/Edge/TransitionEdge";
 import { StateNode } from "../../graph/Node/StateNode";
 
 export class Eraser{
-    tM: TuringMachine;
+    turingMachine: TuringMachine;
     target: d3.BaseType;
 
     constructor(graph: Graph, turingMachine: TuringMachine){
-        this.tM = turingMachine;
+        this.turingMachine = turingMachine;
     }
 
     pointerDown(e: ModifiedPointerEvent) { 
@@ -24,9 +24,9 @@ export class Eraser{
         let targetSelection = d3.select(this.target);
 
         if (StateNode.isStateNode(targetSelection)) {
-            DeleteNodeAction.do(StateNode.getStateNode(targetSelection), this.tM)
+            DeleteNodeAction.do(StateNode.getStateNode(targetSelection), this.turingMachine)
         } else if (TransitionEdge.isTransitionEdge(targetSelection)) {
-            DeleteEdgeAction.do(TransitionEdge.getTransitionEdge(targetSelection), this.tM);
+            DeleteEdgeAction.do(TransitionEdge.getTransitionEdge(targetSelection), this.turingMachine);
         }
     };
     pointerLeave(e: ModifiedPointerEvent) { 

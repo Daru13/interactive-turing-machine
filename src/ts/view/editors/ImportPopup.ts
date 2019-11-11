@@ -68,8 +68,6 @@ export class ImportPopup extends Popup {
             return;
         }
 
-        // TODO: clean up this part and avoid using the view controller!
-
         try {
             this.main.setTuringMachineFromImport(json);
             this.close();

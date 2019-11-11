@@ -36,7 +36,7 @@ export class Popup{
     }
 
     initMask() {
-        var t = this;
+        let t = this;
         this.maskBackground =
             d3.select("body")
                 .append("div")

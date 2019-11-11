@@ -17,10 +17,10 @@ export class PenAndTouchDispatcher extends GraphEventDispatcher{
     dispatchDownEvent(e: ModifiedPointerEvent) {
         super.dispatchDownEvent(e);
         switch(e.pointerType){
-            case    "touch":
+            case "touch":
                 this.idToPenAndTouch[e.pointerId] = new Touch(this.graph, this.tM);
                 break;
-            case    "pen":
+            case "pen":
                 this.idToPenAndTouch[e.pointerId] = new Pen(this.graph, this.tM);
                 break;
             case "eraser":

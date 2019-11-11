@@ -35,6 +35,7 @@ export class NodeTool{
         this.previousY = e.y;
         this.isDown = true;
 
+        //drag node mode
         if (StateNode.isStateNode(d3.select(e.target as any))) {
             this.node = StateNode.getStateNode(d3.select(e.target as any));
             this.node.handleSelection.classed("move", true);
@@ -43,6 +44,7 @@ export class NodeTool{
             return;
         } 
         
+        //pan svg mode
         if (d3.select(e.target as any).node().tagName === "svg"){
             this.node = undefined;
             this.previousX = e.pageX;
@@ -54,16 +56,20 @@ export class NodeTool{
 
     pointerMove(e: ModifiedPointerEvent) {
         if(this.isDown){
+            //drag node
             if (this.node !== undefined) {
                 this.node.translateBy(e.x - this.previousX, e.y - this.previousY);
+
                 this.turingMachine
                     .stateMachine.getState(this.node.stateID)
                     .getInTransitions()
                     .forEach((t) => this.graph.transitionIdToTransitionEdge.get(t.id).redrawTransitionEdge());
+
                 this.turingMachine
                     .stateMachine.getState(this.node.stateID)
                     .getOutTransitions()
                     .forEach((t) => this.graph.transitionIdToTransitionEdge.get(t.id).redrawTransitionEdge());
+
                 if(this.node.isInitialState()) {
                     this.graph.generatorEdge.redrawGeneratorEdge();
                 }
@@ -75,9 +81,12 @@ export class NodeTool{
                 } else {
                     this.node.handleSelection.classed("bad-position", true);
                 }
+
                 this.previousX = e.x;
                 this.previousY = e.y;
-            } else {
+            }
+            //pan svg mode 
+            else {
                 this.graph.translateViewBoxBy(e.pageX - this.previousX, e.pageY - this.previousY);
                 this.previousX = e.pageX;
                 this.previousY = e.pageY;

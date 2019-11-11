@@ -51,33 +51,43 @@ export class TransitionEdgeEditor extends Editor{
 
     addBody(table: d3.Selection<HTMLTableElement, any, any, any>){
         let body = table.append("tbody");
-        this.edge.transitionIDs.forEach(tId => {
-            let transition = this.stateMachine.getTransition(tId);
-            let row = body.append("tr").datum({ transitionID: tId});
-            let cell;
-            cell = row.append("td").classed("input-symbol", true);
-            this.addTextField(transition.getOnSymbol(), {
-                placeholder: "Any",
-                maxlength: "1"
-            }, cell);
 
-            cell = row.append("td").classed("output-symbol", true);
-            this.addTextField(transition.getOutputSymbol(), {
-                placeholder: "None",
-                maxlength: "1"
-            }, cell);
-
-            cell = row.append("td").classed("head-action", true);
-            this.addHeadActionSelector(cell, transition.getHeadAction());
-
-            cell = row.append("td").classed("delete-transition", true);
-            this.addDeleteTransitionButton(cell, row);
+        this.edge.transitionIDs.forEach((transitionId) => {
+            this.addTransitionRow(transitionId, body);
         });
 
         this.addPlusButton(body);
     }
 
-    addPlusButton(body){
+    addTransitionRow(transitionId: TransitionID, body: d3.Selection<HTMLTableSectionElement, any, any, any>) {
+        let transition = this.stateMachine.getTransition(transitionId);
+        let row = body.append("tr").datum({ transitionID: transitionId });
+        let cell;
+        
+        //add text field for the input text field
+        cell = row.append("td").classed("input-symbol", true);
+        this.addTextField(transition.getOnSymbol(), {
+            placeholder: "Any",
+            maxlength: "1"
+        }, cell);
+
+        //add text field for the output symbol
+        cell = row.append("td").classed("output-symbol", true);
+        this.addTextField(transition.getOutputSymbol(), {
+            placeholder: "None",
+            maxlength: "1"
+        }, cell);
+
+        //add button to select the direction of the head
+        cell = row.append("td").classed("head-action", true);
+        this.addHeadActionSelector(cell, transition.getHeadAction());
+
+        //add delete transition button
+        cell = row.append("td").classed("delete-transition", true);
+        this.addDeleteTransitionButton(cell, row);
+    }
+
+    addPlusButton(body: d3.Selection<HTMLTableSectionElement, any, any, any>){
         let fromNode = this.edge.fromStateNode;
         let toNode = this.edge.toStateNode;
 
@@ -97,11 +107,11 @@ export class TransitionEdgeEditor extends Editor{
                 })
     }
 
-    addDeleteTransitionButton(holder: d3.Selection<HTMLElement, any, any, any>, row: d3.Selection<HTMLElement, any, any, any>){
-        holder
+    addDeleteTransitionButton(parent: d3.Selection<HTMLElement, any, any, any>, row: d3.Selection<HTMLElement, any, any, any>){
+        parent
             .append("button")
             .on("click", () => {
-                this.stateMachine.removeTransition(holder.datum()["transitionID"]);
+                this.stateMachine.removeTransition(parent.datum()["transitionID"]);
                 row.remove();
                 if (this.holder.select("tbody").selectAll("tr:not(.new-transition-button-row)").empty()){
                     this.close();
@@ -110,9 +120,9 @@ export class TransitionEdgeEditor extends Editor{
             .text("Delete");
     }
 
-    addHeadActionSelector(holder: d3.Selection<HTMLElement, any, any, any>, defaultDir: HeadAction) {
+    addHeadActionSelector(parent: d3.Selection<HTMLElement, any, any, any>, defaultDir: HeadAction) {
         let dirEntry =
-            holder
+            parent
                 .append("div")
                 .classed("head-action-selector", true);
         dirEntry.datum()["direction"] = defaultDir;
@@ -122,14 +132,14 @@ export class TransitionEdgeEditor extends Editor{
         this.addHeadActionOption(dirEntry, "→", HeadAction.MoveRight, defaultDir === HeadAction.MoveRight);
     }
 
-    addHeadActionOption(holder: d3.Selection<HTMLDivElement, any, any, any>, text:string, datum: HeadAction, selected: boolean){
-        holder.append("button")
+    addHeadActionOption(parent: d3.Selection<HTMLDivElement, any, any, any>, text:string, datum: HeadAction, selected: boolean) {
+        parent.append("button")
             .text(text)
             .classed("selected", selected)
             .on("click", function () {
-                holder.selectAll(".selected").classed("selected", false);
+                parent.selectAll(".selected").classed("selected", false);
                 d3.select(this).classed("selected", true);
-                holder.datum()["direction"] = datum;
+                parent.datum()["direction"] = datum;
             });
     }
 

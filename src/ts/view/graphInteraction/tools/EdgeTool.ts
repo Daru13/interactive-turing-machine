@@ -20,7 +20,7 @@ export class EdgeTool {
     graph: Graph;
     node: Node;
     isDown: boolean;
-    tM: TuringMachine;
+    turingMachine: TuringMachine;
     edgeInCreation: d3.Selection<SVGElement, any, any, any>
 
     constructor(graph: Graph, turingMachine: TuringMachine) {
@@ -28,7 +28,7 @@ export class EdgeTool {
         this.previousY = 0;
         this.graph = graph
         this.isDown = false;
-        this.tM = turingMachine;
+        this.turingMachine = turingMachine;
     }
 
     pointerDown(e: ModifiedPointerEvent) {
@@ -39,6 +39,7 @@ export class EdgeTool {
         let targetSelection = d3.select(e.target as any);
         this.isDown = true;
 
+        //create an edge mode
         if (Node.isNode(targetSelection)) {
             this.node = Node.getNode(targetSelection)
             this.edgeInCreation =
@@ -48,6 +49,8 @@ export class EdgeTool {
             this.drawEdgeInCreation();
             return;
         } 
+
+        //pan svg mode
         if (d3.select(e.target as any).node().tagName === "svg") {
             this.node = undefined
             this.previousX = e.pageX;
@@ -60,6 +63,7 @@ export class EdgeTool {
 
     pointerMove(e: ModifiedPointerEvent) {
         if (this.isDown) {
+            //draw an edge
             if(this.node != undefined){
                 this.drawEdgeInCreation();
                     
@@ -73,7 +77,9 @@ export class EdgeTool {
 
                 this.previousX = e.x;
                 this.previousY = e.y;
-            } else {
+            } 
+            //pan svg
+            else {
                 this.graph.translateViewBoxBy(e.pageX - this.previousX, e.pageY - this.previousY);
                 this.previousX = e.pageX;
                 this.previousY = e.pageY;
@@ -92,11 +98,11 @@ export class EdgeTool {
 
             if (closestNode !== undefined) {
                 if (this.node instanceof StateNode && closestNode instanceof StateNode){
-                    CreateEdgeAction.do(this.node, closestNode, this.tM);
+                    CreateEdgeAction.do(this.node, closestNode, this.turingMachine);
                 } else if (this.node instanceof GeneratorNode && closestNode instanceof StateNode) {
-                    SetInitialNodeAction.do(closestNode, this.tM);
+                    SetInitialNodeAction.do(closestNode, this.turingMachine);
                 } else if (this.node instanceof StateNode && closestNode instanceof GeneratorNode) {
-                    SetInitialNodeAction.do(this.node, this.tM);
+                    SetInitialNodeAction.do(this.node, this.turingMachine);
                 }
             }
         }
@@ -117,24 +123,23 @@ export class EdgeTool {
         let targetSelection = d3.select(target);
 
         if (this.node !== undefined && this.node instanceof StateNode) {
-            EditNodeAction.do(this.node, this.tM);
+            EditNodeAction.do(this.node, this.turingMachine);
         } else if (TransitionEdge.isTransitionEdge(targetSelection)) {
-            EditTransitionEdgeAction.do(TransitionEdge.getTransitionEdge(targetSelection), this.tM);
+            EditTransitionEdgeAction.do(TransitionEdge.getTransitionEdge(targetSelection), this.turingMachine);
         } else if (GeneratorEdge.isGeneratorEdge(targetSelection)) {
-            EditGeneratorEdgeAction.do(GeneratorEdge.getGeneratorEdge(targetSelection), this.tM);
+            EditGeneratorEdgeAction.do(GeneratorEdge.getGeneratorEdge(targetSelection), this.turingMachine);
         }
     }
 
     private drawEdgeInCreation(){
         this.edgeInCreation
             .attr("d", "M" + this.node.x + "," + this.node.y + 
-                            " L" + this.previousX + "," + this.previousY);
+                        " L" + this.previousX + "," + this.previousY);
     }
 
     private closestNode(beginEdge: { x, y }, endEdge: { x, y }, minLength: number, distFromEnd: number): Node {
         let closestNode: Node;
         let minDistance = distFromEnd; 
-        let t = this;
         d3.selectAll(".node").each(function () {
             let node = Node.getNode(d3.select(this));
             let point2 = {

@@ -23,8 +23,6 @@ export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, {
 export class Graph {
     static sizeNode: number = parseInt(getComputedStyle(document.documentElement)
         .getPropertyValue('--node-size'));
-    static id = 0
-    id;
     turingMachine: TuringMachine;
     svg: GraphSelection;
     transitionIdToTransitionEdge: Map<TransitionID, TransitionEdge>;
@@ -35,8 +33,6 @@ export class Graph {
     eventsHandlers: Record<EventID, (EventHandler<any>)>;
 
     constructor(turingMachine: TuringMachine){
-        this.id = Graph.id;
-        Graph.id += 1;
         this.turingMachine = turingMachine;
         this.transitionIdToTransitionEdge = new Map();
         this.stateIdToStateNode = new Map();
@@ -177,7 +173,7 @@ export class Graph {
 
         let sm = this.turingMachine.stateMachine;
         let isCurved = sm.hasTransitionFromStateToState(transition.fromState, transition.toState) 
-                           && sm.hasTransitionFromStateToState(transition.toState, transition.fromState);
+                        && sm.hasTransitionFromStateToState(transition.toState, transition.fromState);
 
         this.transitionIdToTransitionEdge.get(transition.id).setCurved(isCurved);
         this.transitionIdToTransitionEdge.get(transition.id).redrawTransitionEdge();
@@ -288,8 +284,8 @@ export class Graph {
     }
 
     resize(){
-        let bbox = this.svg.node().getBoundingClientRect();
-        this.scaleViewBoxTo(bbox.width, bbox.height);
+        let svgBoundingBox = this.svg.node().getBoundingClientRect();
+        this.scaleViewBoxTo(svgBoundingBox.width, svgBoundingBox.height);
     }
 
     removeHandler(){

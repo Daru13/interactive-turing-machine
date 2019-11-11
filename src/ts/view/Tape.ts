@@ -16,7 +16,7 @@ export class Tape {
     private tape: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
     private head: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
     
-    private tm: TuringMachine;
+    private turingMachine: TuringMachine;
     private origin: number;
     private stepMovement: number;
     private displayedCellsIndices: {minIndex: number, maxIndex: number};
@@ -24,10 +24,10 @@ export class Tape {
     private internalEventsHandlers: Record<EventID, EventHandler<Event>>;
     private DOMEventHandlers: Record<string, (event: any) => void>;
 
-    constructor(tm: TuringMachine) {
+    constructor(turingMachine: TuringMachine) {
         this.tapeHolder = d3.select("#tapeHolder");
         this.origin = 0;
-        this.tm = tm;
+        this.turingMachine = turingMachine;
 
         this.init();
     }
@@ -39,7 +39,7 @@ export class Tape {
         this.addEventListeners();
 
         this.displayedCellsIndices = {minIndex: 0, maxIndex: Tape.minLength - 1};
-        for (var i = 0; i < Tape.minLength; i++) {
+        for (let i = 0; i < Tape.minLength; i++) {
             this.addCell(i);
         }
     }
@@ -65,20 +65,20 @@ export class Tape {
         container.append("button")
             .attr("id", "reset-head-button")
             .on("click", () => {
-                this.moveToCell(this.tm.tape.getHeadPosition());
+                this.moveToCell(this.turingMachine.tape.getHeadPosition());
             });
 
         // Button to edit the content of the tape as text
         container.append("button")
             .attr("id", "set-tape-content-button")
             .on("click", () => {
-                new TapeContentEditorPopup(this.tm.tape);
+                new TapeContentEditorPopup(this.turingMachine.tape);
             });
     }
 
     private addCell(index: number) {
         let cell, value;
-        let tapeContent = this.tm.tape.getContent();
+        let tapeContent = this.turingMachine.tape.getContent();
 
         value = (index < tapeContent.length)? tapeContent[index] : "";
         
@@ -94,7 +94,7 @@ export class Tape {
             .attr("maxlength", "1")
             .attr("value", value)
             .on("change", () => {
-                this.tm.tape.setSymbolAt(index, cell.select("input").node().value);
+                this.turingMachine.tape.setSymbolAt(index, cell.select("input").node().value);
             })
         return cell;
     }
@@ -185,7 +185,7 @@ export class Tape {
     }
 
     updateContent() {
-        let tapeContent = this.tm.tape.getContent();
+        let tapeContent = this.turingMachine.tape.getContent();
         let symbol;
         for(var i = this.displayedCellsIndices.minIndex; i <= this.displayedCellsIndices.maxIndex; i++){
             if(i < tapeContent.length){
