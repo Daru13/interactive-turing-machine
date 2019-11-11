@@ -15,70 +15,69 @@ export abstract class GraphEventDispatcher {
         this.setInteraction();
     }
 
-    setInteraction() {
-        var t = this;
-        let timeDown: Record<number, number> = {};
-        t.graph.getSVGElement().addEventListener("pointerdown",
-            function (e) {
-                if (t.isActivated) {
+    setInteraction(): void {
+        let timeDown: Record<number, number> = { };
+        this.graph.getSVGElement().addEventListener("pointerdown",
+            (e: PointerEvent) => {
+                if (this.isActivated) {
                     timeDown[e.pointerId] = new Date().getTime();
-                    t.dispatchDownEvent(Helpers.transformEvent(e));
+                    this.dispatchDownEvent(Helpers.transformEvent(e));
                 }
             });
-        t.graph.getSVGElement().addEventListener("pointermove",
-            function (e) {
-                if (t.isActivated) {
-                    t.dispatchMoveEvent(Helpers.transformEvent(e));
+        this.graph.getSVGElement().addEventListener("pointermove",
+            (e: PointerEvent) => {
+                if (this.isActivated) {
+                    this.dispatchMoveEvent(Helpers.transformEvent(e));
                 }
             });
-        t.graph.getSVGElement().addEventListener("pointerup",
-            function (e) {
-                if (t.isActivated) {
-                    t.dispatchUpEvent(Helpers.transformEvent(e));
+        this.graph.getSVGElement().addEventListener("pointerup",
+            (e: PointerEvent) => {
+                if (this.isActivated) {
+                    this.dispatchUpEvent(Helpers.transformEvent(e));
                     if (Math.abs(new Date().getTime() - timeDown[e.pointerId]) < 200) {
-                        t.dispatchClickEvent(Helpers.transformEvent(e));
+                        this.dispatchClickEvent(Helpers.transformEvent(e));
                     }
                 }
             });
-        t.graph.getSVGElement().addEventListener("pointerleave",
-            function (e) {
-                if (t.isActivated) {
-                    t.dispatchLeaveEvent(Helpers.transformEvent(e));
+        this.graph.getSVGElement().addEventListener("pointerleave",
+            (e: PointerEvent) => {
+                if (this.isActivated) {
+                    this.dispatchLeaveEvent(Helpers.transformEvent(e));
                 }
             });
-        t.graph.getSVGElement().addEventListener("pointercancel",
-            function (e) {
-                if (t.isActivated) {
+        this.graph.getSVGElement().addEventListener("pointercancel",
+            (e: PointerEvent) => {
+                if (this.isActivated) {
                     console.log("cancel");
                 }
             });
     }
 
-    dispatchDownEvent(e: ModifiedPointerEvent) {
+    dispatchDownEvent(e: ModifiedPointerEvent): void {
         Helpers.updateXYSVG(e, this.graph);
     }
 
-    dispatchMoveEvent(e: ModifiedPointerEvent) {
+    dispatchMoveEvent(e: ModifiedPointerEvent): void {
         Helpers.updateXYSVG(e, this.graph);
     }
 
-    dispatchUpEvent(e: ModifiedPointerEvent) {
+    dispatchUpEvent(e: ModifiedPointerEvent): void {
         Helpers.updateXYSVG(e, this.graph);
     }
 
-    dispatchLeaveEvent(e: ModifiedPointerEvent) {
+    dispatchLeaveEvent(e: ModifiedPointerEvent): void {
         Helpers.updateXYSVG(e, this.graph);
     }
 
-    dispatchClickEvent(e: ModifiedPointerEvent) {
+    dispatchClickEvent(e: ModifiedPointerEvent): void {
         Helpers.updateXYSVG(e, this.graph);
     }
 
-    activate() {
+    activate(): void {
         this.isActivated = true;
     }
 
-    deactivate() {
+    deactivate(): void {
         this.isActivated = false;
     }
 }

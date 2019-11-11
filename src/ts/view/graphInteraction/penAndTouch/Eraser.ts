@@ -11,25 +11,29 @@ export class Eraser{
     tM: TuringMachine;
     target: d3.BaseType;
 
-    constructor(graph: Graph, turingMachine: TuringMachine){
+    constructor(graph: Graph, turingMachine: TuringMachine) {
         this.tM = turingMachine;
     }
 
-    pointerDown(e: ModifiedPointerEvent) { 
+    pointerDown(e: ModifiedPointerEvent): void { 
         this.target = e.target as d3.BaseType;
-    };
-    pointerMove(e: ModifiedPointerEvent) { 
-    };
-    pointerUp(e: ModifiedPointerEvent) { 
+    }
+
+    pointerMove(e: ModifiedPointerEvent): void { 
+    }
+
+    pointerUp(e: ModifiedPointerEvent): void { 
         let targetSelection = d3.select(this.target);
 
         if (StateNode.isStateNode(targetSelection)) {
-            DeleteNodeAction.do(StateNode.getStateNode(targetSelection), this.tM)
+            DeleteNodeAction.do(StateNode.getStateNode(targetSelection), this.tM);
         } else if (TransitionEdge.isTransitionEdge(targetSelection)) {
             DeleteEdgeAction.do(TransitionEdge.getTransitionEdge(targetSelection), this.tM);
         }
-    };
-    pointerLeave(e: ModifiedPointerEvent) { 
-    };
-    click(e: ModifiedPointerEvent) { }
+    }
+
+    pointerLeave(e: ModifiedPointerEvent): void { 
+    }
+
+    click(e: ModifiedPointerEvent): void { }
 }

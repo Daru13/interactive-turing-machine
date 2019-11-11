@@ -6,16 +6,16 @@ export type EdgeId = String;
 
 export interface EdgeDatum {
     edge: Edge;
-};
+}
 
 export type EdgeSelection = d3.Selection<SVGGElement, EdgeDatum, any, any>;
 
 export abstract class Edge{
-    static edgeNumber = 0;
+    static edgeNumber: number = 0;
     id: string;
-    handleSelection: d3.Selection<SVGGElement, any, any, any>
+    handleSelection: d3.Selection<SVGGElement, any, any, any>;
 
-    constructor(graph: Graph){
+    constructor(graph: Graph) {
         this.id = "edge-" + Edge.edgeNumber;
 
         Edge.edgeNumber += 1;
@@ -23,12 +23,12 @@ export abstract class Edge{
         this.handleSelection = 
             graph.getEdgesGroup()
                 .append("g")
-                .datum({edge: this})
+                .datum({ edge: this})
                 .attr("id", this.id)
                 .classed("edge", true);
     }
 
-    init(){
+    init(): void {
         this.handleSelection
             .append("rect")
             .attr("x", 0)
@@ -44,27 +44,27 @@ export abstract class Edge{
             .text("");
     }
 
-    protected redraw(pt1: { x: number, y: number }, pt2: { x: number, y: number }, curved: boolean = false, flipped = false){
-        if(pt1.x == pt2.x && pt1.y == pt2.y){
+    protected redraw(pt1: { x: number, y: number }, pt2: { x: number, y: number }, curved: boolean = false, flipped: boolean = false): void {
+        if (pt1.x === pt2.x && pt1.y === pt2.y) {
             this.redrawBetweenOnePoint(pt1, flipped);
         } else {
             this.redawBetweenTwoPoints(pt1, pt2, curved);
         }
     }
 
-    private redawBetweenTwoPoints(pt1: { x: number, y: number }, pt2: { x: number, y: number }, curved: boolean = false){
+    private redawBetweenTwoPoints(pt1: { x: number, y: number }, pt2: { x: number, y: number }, curved: boolean = false): void {
         let len = Helpers.distance2(pt1, pt2);
         let angle = 180 * Helpers.angleToXAxis(pt1, pt2) / Math.PI;
-        let xText = len/2;
+        let xText = len / 2;
         let yText = - 5;
 
-        if(!curved){
+        if (!curved) {
             this.handleSelection
                 .select("path")
                     .attr("d",
                         "M0,0" +
                         " L" + (len).toString() + ",0");
-        }else{
+        }else {
             let c = Math.min(40 * len / 200, 100); //courbature controller
             let y = -2;
 
@@ -89,7 +89,7 @@ export abstract class Edge{
                 .attr("transform", "rotate(180," + xText + "," + yText + ") " +
                                               "translate(0, 9)");
         } else {
-            this.handleSelection.select("text").attr("transform", "")
+            this.handleSelection.select("text").attr("transform", "");
         }
 
         this.handleSelection
@@ -102,10 +102,10 @@ export abstract class Edge{
             .attr("transform", "rotate(" + angle + "," + (pt1.x) + "," + (pt1.y) + ")" + " translate(" + (pt1.x) + "," + (pt1.y) + ")");
     }
 
-    private redrawBetweenOnePoint(pt: { x: number, y: number }, flipped){
-        let firstYOffset: number = (flipped)? -50 : 50;
+    private redrawBetweenOnePoint(pt: { x: number, y: number }, flipped: boolean): void {
+        let firstYOffset: number = (flipped) ? -50 : 50;
         let secondYOffset = (flipped) ? - 75 : 75;
-        let xOffset = (flipped) ? -20: 20;
+        let xOffset = (flipped) ? -20 : 20;
 
         let c = (flipped) ? -12 : 12; //courbature control
 
@@ -126,41 +126,41 @@ export abstract class Edge{
         this.handleSelection.select("rect")
             .attr("x", -Math.abs(xOffset))
             .attr("y", Math.min(0, secondYOffset - 20))
-            .attr("width", Math.abs(2*xOffset))
+            .attr("width", Math.abs(2 * xOffset))
             .attr("height", (20 + Math.abs(secondYOffset)))
-            .style("fill","red");
+            .style("fill", "red");
 
         this.handleSelection.select("text")
             .attr("x", 0)
-            .attr("y", (flipped) ? secondYOffset -2 : secondYOffset + 18);
+            .attr("y", (flipped) ? secondYOffset - 2 : secondYOffset + 18);
 
-        this.handleSelection.attr("transform",    " translate(" + (pt.x) + "," + (pt.y) + ")");
+        this.handleSelection.attr("transform", " translate(" + (pt.x) + "," + (pt.y) + ")");
     }
 
     protected redrawText(text: string): void {
         this.handleSelection.select("text").text(text);
     }
 
-    delete(): void{
+    delete(): void {
         this.handleSelection.remove();
     }
 
-    validate() {
+    validate(): void  {
         this.handleSelection.classed("not-valid", false);
     }
 
-    invalidate() {
+    invalidate(): void  {
         this.handleSelection.classed("not-valid", true);
     }
 
-    static isEdge(selection: d3.Selection<any, any, any, any>): boolean{
+    static isEdge(selection: d3.Selection<any, any, any, any>): boolean {
         return selection.datum() !== undefined && selection.datum()["edge"] !== undefined;
     }
 
-    static getEdge(selection: d3.Selection<any, any, any, any>): Edge{
-        if(Edge.isEdge(selection)){
+    static getEdge(selection: d3.Selection<any, any, any, any>): Edge {
+        if (Edge.isEdge(selection)) {
             return selection.datum()["edge"];
         }
-        throw "Graph.ts (getEdge): Selection is not part of a edge"
+        throw "Graph.ts (getEdge): Selection is not part of a edge";
     }
 }

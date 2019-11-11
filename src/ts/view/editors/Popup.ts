@@ -1,9 +1,9 @@
 import * as d3 from "d3-selection";
 
 export class Popup{
-    holder: d3.Selection<HTMLDivElement, {}, HTMLElement, {}>;
-    maskBackground: d3.Selection<HTMLDivElement, {}, HTMLElement, {}>;
-    content: d3.Selection<HTMLDivElement, {}, HTMLElement, {}>;
+    holder: d3.Selection<HTMLDivElement, { }, HTMLElement, { }>;
+    maskBackground: d3.Selection<HTMLDivElement, { }, HTMLElement, { }>;
+    content: d3.Selection<HTMLDivElement, { }, HTMLElement, { }>;
 
     private title: string;
     private onClose: () => void;
@@ -13,11 +13,11 @@ export class Popup{
         this.initMask();
         this.initUI();
 
-        this.onClose = () => {};
+        this.onClose = () => { };
         this.title = "";
     }
 
-    initUI() {
+    initUI(): void {
         let t = this;
 
         let titleBar = this.holder.append("div")
@@ -28,28 +28,28 @@ export class Popup{
 
         titleBar.append("div")
             .classed("popup-close-button", true)
-            .on("click", () => { t.close() })
+            .on("click", () => { t.close(); } )
             .text("Close");
 
         this.content = this.holder.append("div")
             .classed("popup-content", true);
     }
 
-    initMask() {
-        var t = this;
+    initMask(): void {
+        let t = this;
         this.maskBackground =
             d3.select("body")
                 .append("div")
                 .classed("background-mask", true)
-                .on("click", () => { t.close() });
+                .on("click", () => { t.close(); });
     }
 
-    setTitle(title: string) {
+    setTitle(title: string): void {
         this.title = title;
         this.holder.select(".popup-title").text(this.title);
     }
 
-    setMaxSizeContent(maxHeight: number) {
+    setMaxSizeContent(maxHeight: number): void {
         let computedStyle = window.getComputedStyle(this.content.node(), null);
         let paddingTop = parseInt(computedStyle.getPropertyValue("padding-top"));
         let paddingBottom = parseInt(computedStyle.getPropertyValue("padding-bottom"));
@@ -57,7 +57,7 @@ export class Popup{
         this.content.style("max-height", (maxHeight - paddingTop - paddingBottom).toString() + "px");
     }
 
-    center() {
+    center(): void {
         let popupBoundingBox = this.holder.node().getBoundingClientRect();
         let windowWidth = window.innerWidth;
         let windowHeight = window.innerHeight;
@@ -70,13 +70,13 @@ export class Popup{
             .style("left", left.toString() + "px");
     }
 
-    close() {
+    close(): void {
         this.maskBackground.remove();
         this.holder.remove();
         this.onClose();
     }
 
-    setOnClose(onClose: () => void){
+    setOnClose(onClose: () => void): void {
         this.onClose = onClose;
     }
 }

@@ -10,19 +10,19 @@ export class Pen {
         this.edgeTool = new EdgeTool(graph, turingMachine);
     }
 
-    pointerDown(e: ModifiedPointerEvent) {
+    pointerDown(e: ModifiedPointerEvent): void {
         this.edgeTool.pointerDown(e);
-    };
-    pointerMove(e: ModifiedPointerEvent) {
+    }
+    pointerMove(e: ModifiedPointerEvent): void {
         this.edgeTool.pointerMove(e);
-    };
-    pointerUp(e: ModifiedPointerEvent) {
+    }
+    pointerUp(e: ModifiedPointerEvent): void {
         this.edgeTool.pointerUp(e);
-    };
-    pointerLeave(e: ModifiedPointerEvent) {
+    }
+    pointerLeave(e: ModifiedPointerEvent): void {
         this.edgeTool.pointerLeave(e);
-    };
-    click(e: ModifiedPointerEvent){
+    }
+    click(e: ModifiedPointerEvent): void {
         this.edgeTool.pointerClick(e);
     }
 }

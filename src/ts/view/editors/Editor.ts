@@ -6,17 +6,17 @@ import { Node } from "../graph/Node/Node";
 type GraphElement = Node | Edge;
 
 export class Editor extends Popup{
-    element: GraphElement
+    element: GraphElement;
 
-    constructor(element: GraphElement){
+    constructor(element: GraphElement) {
         super();
         this.element = element;
         d3.selectAll(".node, .edge").classed("selected", false);
 
-        this.setOnClose(() => { })
+        this.setOnClose(() => { });
     }
 
-    initPosition(){
+    initPosition(): void {
         let bbox = this.element.handleSelection.node().getBoundingClientRect();
         let bboxHolder = this.holder.node().getBoundingClientRect();
         let windowWidth = window.innerWidth;
@@ -24,10 +24,10 @@ export class Editor extends Popup{
         let top = bbox.top + bbox.height;
         let left = bbox.left + (bbox.width - bboxHolder.width) / 2;
 
-        if(top < 0){
+        if (top < 0) {
             top = 0;
         }
-        if(left < 0){
+        if (left < 0) {
             left = 0;
         }
         if (left + bboxHolder.width > windowWidth) {
@@ -42,7 +42,7 @@ export class Editor extends Popup{
         this.setMaxSizeContent(maxHeight);
     }
 
-    addLabel(text: string, forAttribute: string, parent: d3.Selection<HTMLElement, any, any, any> = this.content) {
+    addLabel(text: string, forAttribute: string, parent: d3.Selection<HTMLElement, any, any, any> = this.content): void {
         let label = parent
             .append("label")
             .attr("for", forAttribute)
@@ -55,7 +55,7 @@ export class Editor extends Popup{
                 .append("button")
                 .on("click", callback)
                 .text(text);
-        if(id !== null){
+        if (id !== null) {
             button.attr("id", id);
         }
         if (id !== null) {
@@ -63,7 +63,7 @@ export class Editor extends Popup{
         }
     }
 
-    addTextField(value: string, attributes: Record<string, string>, parent: d3.Selection<HTMLElement, any, any, any> = this.content) {
+    addTextField(value: string, attributes: Record<string, string>, parent: d3.Selection<HTMLElement, any, any, any> = this.content): void {
         let textField =
             parent
                 .append("input")
@@ -87,10 +87,10 @@ export class Editor extends Popup{
         } 
     }
 
-    setOnClose(onClose: () => void){
+    setOnClose(onClose: () => void): void {
         super.setOnClose(() => {
             //this.element.classed("selected", false);
             onClose();
-        })
+        });
     }
 }

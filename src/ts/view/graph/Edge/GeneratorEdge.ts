@@ -7,16 +7,16 @@ import { StateNode } from "../Node/StateNode";
 
 export class GeneratorEdge extends Edge {
     generatorNode: GeneratorNode;
-    stateNode: StateNode
+    stateNode: StateNode;
 
     constructor(graph: Graph, generatorNode: GeneratorNode, stateNode: StateNode) {
         super(graph);
         this.generatorNode = generatorNode;
-        this.stateNode = stateNode
+        this.stateNode = stateNode;
         this.initGeneratorEdge();
     }
 
-    initGeneratorEdge() {
+    initGeneratorEdge(): void {
         super.init();
 
         this.handleSelection.classed("generator-edge", true);
@@ -24,9 +24,9 @@ export class GeneratorEdge extends Edge {
         this.redrawGeneratorEdge();
     }
 
-    redrawGeneratorEdge() {
+    redrawGeneratorEdge(): void {
         let pt1 = { x: this.generatorNode.x, y: this.generatorNode.y };
-        let pt2 = { x: this.stateNode.x, y: this.stateNode.y }
+        let pt2 = { x: this.stateNode.x, y: this.stateNode.y };
         let dx, dy;
 
         let angle = Helpers.angleToXAxis(pt1, pt2);

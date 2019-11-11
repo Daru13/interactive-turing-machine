@@ -7,7 +7,7 @@ export class NodeEditor extends Editor{
     node: StateNode;
     tm: TuringMachine;
 
-    constructor(node: StateNode, tm: TuringMachine){
+    constructor(node: StateNode, tm: TuringMachine) {
         super(node);
 
         this.node = node;
@@ -16,7 +16,7 @@ export class NodeEditor extends Editor{
         this.init();
     }
 
-    init() {
+    init(): void {
         // Editor-specific class
         this.holder.classed("node-editor", true);
 
@@ -31,7 +31,7 @@ export class NodeEditor extends Editor{
         this.initPosition();
     }
 
-    initContent(){
+    initContent(): void {
         this.addLabel("Label", "node-set-label-field");
         this.addTextField(this.tm.stateMachine.getState(this.node.stateID).getLabel(), {
             id: "node-set-label-field",
@@ -45,12 +45,12 @@ export class NodeEditor extends Editor{
         }, "node-set-final-button");
 
         this.addLabel("Delete", "node-delete-button");
-        this.addButton("Delete", () => {this.deleteNode()}, "node-delete-button");
+        this.addButton("Delete", () => { this.deleteNode(); }, "node-delete-button");
     }
 
-    deleteNode(){
+    deleteNode(): void {
         DeleteNodeAction.do(this.node, this.tm);
-        this.setOnClose(() => {});
+        this.setOnClose(() => { });
         super.close();
     }
 }

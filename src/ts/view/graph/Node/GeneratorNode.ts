@@ -6,21 +6,20 @@ import { Node } from "./Node";
 export class GeneratorNode extends Node{
     graph: Graph;
 
-    constructor(graph: Graph){
+    constructor(graph: Graph) {
         super(graph);
 
         this.graph = graph;
         this.initGeneratorNode();
-        this.addHoverInteraction();
     }
-
-    initGeneratorNode(): void{
+ 
+    initGeneratorNode(): void {
         super.init();
 
         let viewbox = this.graph.getSVG().attr("viewBox").split(",");
        
         this.translateTo(Graph.sizeNode, parseInt(viewbox[3]) / 2);
-        this.handleSelection.attr("id", "generator") 
+        this.handleSelection.attr("id", "generator") ;
 
         addGenerator(this.handleSelection, Graph.sizeNode);
     }
@@ -28,7 +27,7 @@ export class GeneratorNode extends Node{
     static isGenerator(selection: d3.Selection<any, any, any, any>): boolean {
         if (Node.isNode(selection)) {
             if (Node.getNode(selection) instanceof GeneratorNode) {
-                return true
+                return true;
             }
         }
         return false;
@@ -36,28 +35,11 @@ export class GeneratorNode extends Node{
 
     static getGeneratorHandle(selection: d3.Selection<any, any, any, any>): GeneratorNode {
         if (Node.isNode(selection)) {
-            let node = Node.getNode(selection)
+            let node = Node.getNode(selection);
             if (node instanceof GeneratorNode) {
-                return node
+                return node;
             }
         }
         throw "GeneratorNode.ts (getGeneratorHandle): Selection is not part of a generatorNode";
-    }
-
-    addHoverInteraction() {
-        /*let popup = null;
-        this.handleSelection.on("mouseover", () => {
-            if (this.handleSelection.classed("not-valid") && popup === null) {
-                let tM = this.graph.turingMachine;
-                popup = new ErrorPopup(new NoInitialStateError(tM));
-            }
-        })
-
-        this.handleSelection.on("mouseleave", () => {
-            if (popup !== null) {
-                popup.close();
-                popup = null;
-            }
-        })*/
     }
 }

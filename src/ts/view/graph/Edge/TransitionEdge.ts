@@ -22,10 +22,9 @@ export class TransitionEdge extends Edge {
         this.isCurved = isCurved;
         this.graph = graph;
         this.initTransitionEdge(transition);
-        this.addHoverInteraction();
      }
 
-     initTransitionEdge(transition: Transition){
+    initTransitionEdge(transition: Transition): void {
          super.init();
 
          this.handleSelection.classed("transition-edge", true);
@@ -33,17 +32,17 @@ export class TransitionEdge extends Edge {
          this.drawTransitionText(transition.getOnSymbol(), transition.getOutputSymbol(), transition.getHeadAction());
      }
 
-    addTransitionToEdge (transition: Transition) {
+    addTransitionToEdge(transition: Transition): void {
         this.transitionIDs.push(transition.id);
         this.handleSelection.classed("bigger", true);
     }
 
-    redrawTransitionEdge() {
+    redrawTransitionEdge(): void {
         let pt1 = { x: this.fromStateNode.x, y: this.fromStateNode.y };
         let pt2 = { x: this.toStateNode.x, y: this.toStateNode.y };
         let dx, dy;
 
-        if (pt1.x == pt2.x && pt1.y == pt2.y) {
+        if (pt1.x === pt2.x && pt1.y === pt2.y) {
             let flipped = pt1.y < this.graph.viewBox.y + this.graph.viewBox.height / 2;
 
             dx = 0;
@@ -72,7 +71,7 @@ export class TransitionEdge extends Edge {
     }
 
     static getTransitionEdge(selection: d3.Selection<any, any, any, any>): TransitionEdge {
-        if(TransitionEdge.isTransitionEdge(selection)){
+        if (TransitionEdge.isTransitionEdge(selection)) {
             return selection.datum()["edge"];
         }
         
@@ -101,26 +100,7 @@ export class TransitionEdge extends Edge {
                       + extraTransitionsSymbol);
     }
 
-    setCurved(b: boolean){
+    setCurved(b: boolean): void {
         this.isCurved = b;
-    }
-
-    addHoverInteraction() {
-        /*let popup = null;
-        this.handleSelection.on("mouseover", () => {
-            if (this.handleSelection.classed("not-valid") && popup === null) {
-                let tM = this.graph.turingMachine;
-                let state = tM.stateMachine.getTransition(this.transitionIDs[0]).fromState;
-                let transitions = state.getNonDeterministicOutTransitions();
-                popup = new ErrorPopup(new NonDeterministicError(tM, state, transitions));
-            }
-        })
-
-        this.handleSelection.on("mouseleave", () => {
-            if (popup !== null) {
-                popup.close();
-                popup = null;
-            }
-        })*/
     }
 }

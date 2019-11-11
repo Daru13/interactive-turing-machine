@@ -18,13 +18,13 @@ export class ViewController{
     toolManager: MouseDispatcher;
     penAndTouchManager: PenAndTouchDispatcher;
 
-    constructor(turingMachine: TuringMachine){
+    constructor(turingMachine: TuringMachine) {
         this.turingMachine = turingMachine;
         this.setupUI();
         this.setupListeners();
     }
 
-    setupUI(){
+    setupUI(): void {
         this.graph = new Graph(this.turingMachine);
 
         this.toolManager = new MouseDispatcher(this.graph, this.turingMachine);
@@ -35,10 +35,10 @@ export class ViewController{
         this.tmButtons = new ControlPanel(this.turingMachine, this.tape);
     }
 
-    setupListeners() {
+    setupListeners(): void {
         EventManager.registerHandler("changeInteractionStyle", (e: ChangeInteractionStyle) => {
-            this.setInteractionStyle(e.interactionStyle)
-        })
+            this.setInteractionStyle(e.interactionStyle);
+        });
 
         this.windowHandler = () => {
             this.resize();
@@ -47,19 +47,19 @@ export class ViewController{
     }
 
 
-    removeHandler() {
+    removeHandler(): void {
         this.graph.removeHandler();
         this.tape.removeEventListeners();
         window.removeEventListener("resize", this.windowHandler);
     }
 
-    resize(){
+    resize(): void {
         this.graph.resize();
         this.tape.resize();
     }
 
-    setInteractionStyle(interactionStyle: InteractionStyles) {
-        switch(interactionStyle){
+    setInteractionStyle(interactionStyle: InteractionStyles): void {
+        switch (interactionStyle){
             case InteractionStyles.MOUSE:
                 this.toolManager.activate();
                 this.penAndTouchManager.deactivate();
@@ -69,7 +69,7 @@ export class ViewController{
                 this.penAndTouchManager.activate();
                 break;
             default:
-                console.error("(ViewController.ts) setInteractionStyle(): interaction style not recognise")
+                console.error("(ViewController.ts) setInteractionStyle(): interaction style not recognise");
         }
     }
 }

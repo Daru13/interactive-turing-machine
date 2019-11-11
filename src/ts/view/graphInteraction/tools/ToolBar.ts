@@ -12,7 +12,7 @@ export class ToolBar {
         this.setupUI();
     }
 
-    setupUI(){
+    setupUI(): void {
         this.nodeToolButton = this.addButton("nodeButton");
         this.edgeToolButton = this.addButton("edgeButton");
 
@@ -20,28 +20,31 @@ export class ToolBar {
         this.selectTool(toolName.NODE_TOOL, this.nodeToolButton);
     }
 
-    setInteraction(){
-        let t = this;
-        this.nodeToolButton.on("click", function () { t.selectTool(toolName.NODE_TOOL,t.nodeToolButton)});
-        this.edgeToolButton.on("click", function () { t.selectTool(toolName.EDGE_TOOL, t.edgeToolButton)});
+    setInteraction(): void {
+        this.nodeToolButton.on("click", () =>  { 
+            this.selectTool(toolName.NODE_TOOL, this.nodeToolButton); 
+        });
+        this.edgeToolButton.on("click", () => { 
+            this.selectTool(toolName.EDGE_TOOL, this.edgeToolButton);
+        });
     }
 
-    addButton(id: string){
+    addButton(id: string): d3.Selection<HTMLButtonElement, any, any, any> {
         return d3.select("#toolBar")
             .append("button").attr("id", id);
     }
 
-    selectTool(id: toolName, buttonToSelect: d3.Selection<HTMLButtonElement, any, any, any>){
+    selectTool(id: toolName, buttonToSelect: d3.Selection<HTMLButtonElement, any, any, any>): void {
         d3.select("#toolBar").selectAll("button").classed("selected", false);
         buttonToSelect.classed("selected", true);
         this.toolManager.selectTool(id);
     }
 
-    display(){
+    display(): void {
         d3.select("#toolBar").classed("hidden", false);
     }
 
-    hide(){
+    hide(): void {
         d3.select("#toolBar").classed("hidden", true);
     }
 }

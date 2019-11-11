@@ -45,13 +45,12 @@ export class StateNode extends Node{
         this.setLabel(state.getLabel());
 
         this.translateTo(position.x, position.y);
-        this.addHoverInteraction();
     }
 
     static isStateNode(selection: d3.Selection<any, any, any, any>): boolean {
-        if(Node.isNode(selection)){
-            if(Node.getNode(selection) instanceof StateNode){
-                return true
+        if (Node.isNode(selection)) {
+            if (Node.getNode(selection) instanceof StateNode) {
+                return true;
             }
         }
         return false;
@@ -59,9 +58,9 @@ export class StateNode extends Node{
 
     static getStateNode(selection: d3.Selection<any, any, any, any>): StateNode {
         if (Node.isNode(selection)) {
-            let node = Node.getNode(selection)
+            let node = Node.getNode(selection);
             if (node instanceof StateNode) {
-                return node
+                return node;
             }
         }
         throw "StateNode.ts (getStateNode): Selection is not part of a stateNode";
@@ -71,69 +70,50 @@ export class StateNode extends Node{
         return this.handleSelection.classed("start");
     }
 
-    setInitialState(isInital: boolean) {
+    setInitialState(isInital: boolean): void {
         this.handleSelection.classed("start", isInital);
     }
 
-    setFinalState(isFinal: boolean) {
+    setFinalState(isFinal: boolean): void {
         this.handleSelection.classed("final", isFinal);
     }
 
-    static resetCurrentNode() {
+    static resetCurrentNode(): void {
         d3.selectAll(".current").classed("current", false);
     }
 
-    setCurrentNode() {
+    setCurrentNode(): void {
         StateNode.resetCurrentNode();
         this.handleSelection.classed("current", true);
     }
 
-    setLabel(label: string) {
+    setLabel(label: string): void {
         let textToDisplay = label;
         if (textToDisplay.length > 10) {
-            textToDisplay = textToDisplay.substring(0, 7) + "..."
+            textToDisplay = textToDisplay.substring(0, 7) + "...";
         }
         this.handleSelection.select("#Text").select("text").text(textToDisplay);
     }
 
-    invalidate(){
+    invalidate(): void {
         super.invalidate();
         this.graph.turingMachine.stateMachine.getState(this.stateID).getNonDeterministicOutTransitions().forEach((t) => {
             this.graph.transitionIdToTransitionEdge.get(t.id).invalidate();
-        })
+        });
     }
 
-    validate() {
+    validate(): void {
         super.validate();
         this.graph.turingMachine.stateMachine.getState(this.stateID).getOutTransitions().forEach((t) => {
             this.graph.transitionIdToTransitionEdge.get(t.id).validate();
-        })
+        });
     }
 
-    updateValidateProperty(){
-        if(this.graph.turingMachine.stateMachine.getState(this.stateID).isDeterministic()){
+    updateValidateProperty(): void {
+        if (this.graph.turingMachine.stateMachine.getState(this.stateID).isDeterministic()) {
             this.validate();
         } else {
             this.invalidate();
         }
-    }
-
-    addHoverInteraction(){
-        /*let popup = null;
-        this.handleSelection.on("mouseover", () => {
-            if(this.handleSelection.classed("not-valid") && popup === null){
-                let tM = this.graph.turingMachine;
-                let state = tM.stateMachine.getState(this.stateID);
-                let transitions = state.getNonDeterministicOutTransitions();
-                popup = new ErrorPopup(new NonDeterministicError(tM, state, transitions));
-            }
-        })
-
-        this.handleSelection.on("mouseleave", () => {
-            if (popup !== null) {
-                popup.close();
-                popup = null;
-            }
-        })*/
     }
 }

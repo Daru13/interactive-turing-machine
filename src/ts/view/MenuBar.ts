@@ -11,17 +11,17 @@ export enum InteractionStyles {
 }
 
 export class MenuBar {
-    main:Main;
+    main: Main;
     interactionStyle: InteractionStyles;
 
-    constructor(main: Main){
-        this.main = main
+    constructor(main: Main) {
+        this.main = main;
         this.interactionStyle = InteractionStyles.MOUSE;
 
         this.setupMenu();
     }
 
-    setupMenu() {
+    setupMenu(): void {
         let t = this;
         let menuBar = d3.select("#menu");
 
@@ -31,8 +31,8 @@ export class MenuBar {
             .text("Interactive Turing Machine");
 
         // Interaction style switch
-        function getInteractionStyleSwitchText() {
-            return t.interactionStyle != InteractionStyles.MOUSE
+        function getInteractionStyleSwitchText(): string {
+            return t.interactionStyle !== InteractionStyles.MOUSE
                 ? "Use Mouse interactions"
                 : "Use Pen&Touch interactions";
         }
@@ -75,8 +75,8 @@ export class MenuBar {
         }
     }
 
-    switchInteractionStyle() {
-        this.interactionStyle = (this.interactionStyle + 1)%2;
-        EventManager.emit(new ChangeInteractionStyle(this.interactionStyle))
+    switchInteractionStyle(): void {
+        this.interactionStyle = (this.interactionStyle + 1) % 2;
+        EventManager.emit(new ChangeInteractionStyle(this.interactionStyle));
     }
 }

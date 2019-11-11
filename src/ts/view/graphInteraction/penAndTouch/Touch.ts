@@ -4,28 +4,28 @@ import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
 import { NodeTool } from "../tools/NodeTool";
 
 export class Touch{
-    nodeTool : NodeTool
+    nodeTool : NodeTool;
     tM: TuringMachine;
 
-    constructor(graph: Graph, turingMachine: TuringMachine){
+    constructor(graph: Graph, turingMachine: TuringMachine) {
         this.tM = turingMachine;
         this.nodeTool = new NodeTool(graph, turingMachine);
     }
 
-    pointerDown(e: ModifiedPointerEvent) {
+    pointerDown(e: ModifiedPointerEvent): void {
         this.nodeTool.pointerDown(e);
-    };
-    pointerMove(e: ModifiedPointerEvent) {
+    }
+    pointerMove(e: ModifiedPointerEvent): void {
         this.nodeTool.pointerMove(e);
-    };
-    pointerUp(e: ModifiedPointerEvent) {
+    }
+    pointerUp(e: ModifiedPointerEvent): void {
         this.nodeTool.pointerUp(e);
-    };
-    pointerLeave(e: ModifiedPointerEvent) {
+    }
+    pointerLeave(e: ModifiedPointerEvent): void {
         this.nodeTool.pointerLeave(e);
-    };
+    }
 
-    click(e: ModifiedPointerEvent){
+    click(e: ModifiedPointerEvent): void {
         this.nodeTool.pointerClick(e);
     }
 }

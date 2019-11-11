@@ -12,7 +12,7 @@ export class ExportPopup extends Popup {
         this.init();
     }
 
-    private init() {
+    private init(): void {
         this.setTitle("Export your Turing machine");
         this.holder.attr("id", "export-popup");
 
@@ -22,13 +22,13 @@ export class ExportPopup extends Popup {
         this.center();
     }
 
-    private addInstructions() {
+    private addInstructions(): void {
         this.content.append("p")
             .classed("instruction", true)
             .html("<strong>Copy the code</strong> below to <strong>share</strong> your Turing machine with other people!<br>Anyone can load it by using the Import button in the top bar.");
     }
 
-    private addImportField() {
+    private addImportField(): void {
         this.content.append("textarea")
             .attr("id", "turing-machine-export-field")
             .property("readOnly", true) // A capital "O" is required because D3 refers to the element's key

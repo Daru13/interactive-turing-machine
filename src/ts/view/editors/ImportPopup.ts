@@ -13,8 +13,8 @@ export class ImportPopup extends Popup {
         this.init();
     }
 
-    private init() {
-        this.setTitle("Import a Turing machine")
+    private init(): void {
+        this.setTitle("Import a Turing machine");
         this.holder.attr("id", "import-popup");
 
         this.addInstructions();
@@ -24,7 +24,7 @@ export class ImportPopup extends Popup {
         this.center();
     }
 
-    private addInstructions() {
+    private addInstructions(): void {
         this.content.append("p")
             .classed("instruction", true)
             .html("<strong>Paste the code</strong> of an exported Turing machine below and <strong>click the Import button</strong> to import the machine.");
@@ -35,13 +35,13 @@ export class ImportPopup extends Popup {
             .html("<strong>Be careful:</strong> importing a machine will <strong>replace your current machine</strong>!");
     }
 
-    private addImportField() {
+    private addImportField(): void {
         this.content.append("textarea")
             .attr("id", "turing-machine-import-field")
             .attr("placeholder", "Code of the Turing machine to import...");
     }
 
-    private addActionButtons() {
+    private addActionButtons(): void {
         let container = this.content.append("div")
             .attr("class", "action-button-container");
 
@@ -60,7 +60,7 @@ export class ImportPopup extends Popup {
             });
     }
 
-    private importTuringMachine() {
+    private importTuringMachine(): void {
         let importFieldNode = this.holder.select("#turing-machine-import-field").node() as HTMLTextAreaElement;
         let json = importFieldNode.value;
 

@@ -7,14 +7,14 @@ export class Main{
     viewController: ViewController;
     menuBar: MenuBar;
 
-    constructor(){
+    constructor() {
         this.menuBar = new MenuBar(this);
 
         this.turingMachine = new TuringMachine();
         this.viewController = new ViewController(this.turingMachine);
     }
 
-    setTuringMachine(turingMachine: TuringMachine){
+    setTuringMachine(turingMachine: TuringMachine): void {
         this.turingMachine = turingMachine;
         this.viewController.removeHandler();
         this.viewController = new ViewController(this.turingMachine);

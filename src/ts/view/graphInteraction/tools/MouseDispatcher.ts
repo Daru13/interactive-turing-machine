@@ -19,58 +19,58 @@ export class MouseDispatcher extends GraphEventDispatcher{
     readonly toolToInteraction: Record<toolName, Tool>;
     toolBar: ToolBar;
 
-    constructor(graph: Graph, turingMachine: TuringMachine){
+    constructor(graph: Graph, turingMachine: TuringMachine) {
         super(graph, turingMachine);
-        this.toolToInteraction = {} as Record<toolName, Tool>;
+        this.toolToInteraction = { } as Record<toolName, Tool>;
         this.toolBar = new ToolBar(this);
         this.setTool(graph, turingMachine);
     }
 
-    setTool(graph: Graph, turingMachine: TuringMachine): void{
+    setTool(graph: Graph, turingMachine: TuringMachine): void {
         this.toolToInteraction[toolName.NODE_TOOL] = new NodeTool(graph, turingMachine);
         this.toolToInteraction[toolName.EDGE_TOOL] = new EdgeTool(graph, turingMachine);
     }
 
-    selectTool(tool: toolName): void{
+    selectTool(tool: toolName): void {
         this.selectedTool = tool;
     }
 
-    getTool(): toolName{
+    getTool(): toolName {
         return this.selectedTool;
     }
 
-    dispatchDownEvent(e: ModifiedPointerEvent){
+    dispatchDownEvent(e: ModifiedPointerEvent): void {
         super.dispatchDownEvent(e);
         this.toolToInteraction[this.selectedTool].pointerDown(e);
     }
 
-    dispatchMoveEvent(e: ModifiedPointerEvent){
+    dispatchMoveEvent(e: ModifiedPointerEvent): void {
         super.dispatchMoveEvent(e);        
         this.toolToInteraction[this.selectedTool].pointerMove(e);
     }
 
-    dispatchUpEvent(e: ModifiedPointerEvent){
+    dispatchUpEvent(e: ModifiedPointerEvent): void {
         super.dispatchUpEvent(e);
         this.toolToInteraction[this.selectedTool].pointerUp(e);
     }
 
-    dispatchLeaveEvent(e: ModifiedPointerEvent) {
+    dispatchLeaveEvent(e: ModifiedPointerEvent): void {
         super.dispatchLeaveEvent(e);
         this.toolToInteraction[this.selectedTool].pointerLeave(e);
     }
 
-    dispatchClickEvent(e: ModifiedPointerEvent){
+    dispatchClickEvent(e: ModifiedPointerEvent): void {
         super.dispatchClickEvent(e);
         this.toolToInteraction[this.selectedTool].pointerClick(e);
     }
 
-    activate(){
+    activate(): void {
         super.activate();
         this.toolBar.display();
     }
 
-    deactivate() {
+    deactivate(): void {
         super.deactivate();
-        this.toolBar.hide()
+        this.toolBar.hide();
     }
 }

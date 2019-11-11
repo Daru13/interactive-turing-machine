@@ -17,61 +17,60 @@ export class ControlPanel {
         this.init();
     }
 
-    private init() {
+    private init(): void {
         this.addControlButtons();
         this.addScreen();
     }
 
-    private addControlButtons() {
+    private addControlButtons(): void {
         let tm = this.turingMachine;
         let tape = this.tape;
-        let t = this;
 
         d3.select("#control-panel").selectAll("*").remove();
         this.holder = d3.select("#control-panel");
         this.holder.append("button")
             .attr("id", "runButton")
-            .on("click", function(){
+            .on("click", () => {
                 tape.moveToCell(tm.tape.getHeadPosition());
 
                 try {
                     tm.reset();
                     tm.run();
-                    t.updateScreen();
+                    this.updateScreen();
                     
                     new EasterEggs(tm.tape.getContent());
                 }
                 catch (error) {
-                    t.catchError(error);
+                    this.catchError(error);
                 }
             })
             .text("Run");
 
         this.holder.append("button")
             .attr("id", "runOneStepButton")
-            .on("click", function () {
+            .on("click", () => {
                 tape.moveToCell(tm.tape.getHeadPosition());
 
                 try {
                     tm.runOneStep();
-                    t.updateScreen();
+                    this.updateScreen();
                 }
                 catch (error) {
-                    t.catchError(error);
+                    this.catchError(error);
                 }
             })
             .text("Step");
 
         this.holder.append("button")
             .attr("id", "resetButton")
-            .on("click", function () {
+            .on("click", () => {
                 tm.reset();
-                t.updateScreen();
+                this.updateScreen();
             })
             .text("Reset");
     }
 
-    private addScreen() {
+    private addScreen(): void {
         let screen = this.holder.append("div")
             .attr("id", "control-panel-screen");
 
@@ -84,7 +83,7 @@ export class ControlPanel {
         this.updateScreen();
     }
 
-    updateScreen(error?: TMError) {
+    updateScreen(error?: TMError): void {
         let screen = this.holder.select("#control-panel-screen");
         screen.classed("error", error !== undefined);
 
@@ -97,7 +96,7 @@ export class ControlPanel {
             .text(error !== undefined ? error.getShortName() : "");
     }
 
-    private catchError (error: TMError) {
+    private catchError(error: TMError): void {
         this.updateScreen(error);
         new ErrorPopup(error);
     }

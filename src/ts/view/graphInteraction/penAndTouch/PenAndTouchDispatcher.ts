@@ -10,13 +10,13 @@ export class PenAndTouchDispatcher extends GraphEventDispatcher{
     readonly idToPenAndTouch: Record<string, any>;
 
     constructor(graph: Graph, turingMachine: TuringMachine) {
-        super(graph, turingMachine)
-        this.idToPenAndTouch = {} as Record<string, any>;
+        super(graph, turingMachine);
+        this.idToPenAndTouch = { } as Record<string, any>;
     }
 
-    dispatchDownEvent(e: ModifiedPointerEvent) {
+    dispatchDownEvent(e: ModifiedPointerEvent): void {
         super.dispatchDownEvent(e);
-        switch(e.pointerType){
+        switch (e.pointerType){
             case    "touch":
                 this.idToPenAndTouch[e.pointerId] = new Touch(this.graph, this.tM);
                 break;
@@ -32,28 +32,28 @@ export class PenAndTouchDispatcher extends GraphEventDispatcher{
         this.idToPenAndTouch[e.pointerId].pointerDown(e);
     }
 
-    dispatchMoveEvent(e: ModifiedPointerEvent) {
+    dispatchMoveEvent(e: ModifiedPointerEvent): void {
         super.dispatchMoveEvent(e);
-        if (this.idToPenAndTouch[e.pointerId] !== undefined){
+        if (this.idToPenAndTouch[e.pointerId] !== undefined) {
             this.idToPenAndTouch[e.pointerId].pointerMove(e);
         }
     }
 
-    dispatchUpEvent(e: ModifiedPointerEvent) {
+    dispatchUpEvent(e: ModifiedPointerEvent): void {
         super.dispatchUpEvent(e);
         if (this.idToPenAndTouch[e.pointerId] !== undefined) {
             this.idToPenAndTouch[e.pointerId].pointerUp(e);
         }
     }
 
-    dispatchLeaveEvent(e: ModifiedPointerEvent) {
+    dispatchLeaveEvent(e: ModifiedPointerEvent): void {
         super.dispatchLeaveEvent(e);
         if (this.idToPenAndTouch[e.pointerId] !== undefined) {
             this.idToPenAndTouch[e.pointerId].pointerLeave(e);
         }
     }
 
-    dispatchClickEvent(e: ModifiedPointerEvent) {
+    dispatchClickEvent(e: ModifiedPointerEvent): void {
         super.dispatchClickEvent(e);
         if (this.idToPenAndTouch[e.pointerId] !== undefined) {
             this.idToPenAndTouch[e.pointerId].click(e);

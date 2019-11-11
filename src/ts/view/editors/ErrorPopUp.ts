@@ -11,7 +11,7 @@ export class ErrorPopup extends Popup {
         this.init();
     }
 
-    private init() {
+    private init(): void {
         this.setTitle(this.error.getName());
         this.holder.classed("error-popup", true);
 
@@ -21,7 +21,7 @@ export class ErrorPopup extends Popup {
         this.center();
     }
 
-    private createProblemDescription() {
+    private createProblemDescription(): void {
         this.content.append("h3")
             .text("Problem");
 
@@ -29,7 +29,7 @@ export class ErrorPopup extends Popup {
             .html(this.error.getProblem());
     }
 
-    private createSolutionDescription() {
+    private createSolutionDescription(): void {
         this.content.append("h3")
             .text("Solution");
 

@@ -5,7 +5,7 @@ import { Action } from "./Action";
 import { StateNode } from "../graph/Node/StateNode";
 
 export class CreateEdgeAction extends Action {
-    static do(fromNode: StateNode, toNode: StateNode, tM: TuringMachine){
+    static do(fromNode: StateNode, toNode: StateNode, tM: TuringMachine): void {
         tM.stateMachine
             .addTransition(new Transition(
                 tM.stateMachine.getState(fromNode.stateID),

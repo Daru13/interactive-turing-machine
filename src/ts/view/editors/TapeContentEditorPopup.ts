@@ -13,8 +13,8 @@ export class TapeContentEditorPopup extends Popup {
         this.init();
     }
 
-    private init() {
-        this.setTitle("Edit the tape")
+    private init(): void {
+        this.setTitle("Edit the tape");
         this.holder.attr("id", "tape-content-editor-popup");
 
         this.addInstructions();
@@ -24,20 +24,20 @@ export class TapeContentEditorPopup extends Popup {
         this.center();
     }
 
-    private addInstructions() {
+    private addInstructions(): void {
         this.content.append("p")
             .classed("instruction", true)
             .html("Edit the content of the tape and click the Update tape below to apply your changes.");
     }
 
-    private addContentField() {
+    private addContentField(): void {
         this.content.append("textarea")
             .attr("id", "tape-content-edit-field")
             .attr("placeholder", "Content of the tape...")
             .text(this.tape.getContentAsString());
     }
 
-    private addActionButtons() {
+    private addActionButtons(): void {
         let container = this.content.append("div")
             .attr("class", "action-button-container");
 
@@ -56,7 +56,7 @@ export class TapeContentEditorPopup extends Popup {
             });
     }
 
-    private updateTapeContent() {
+    private updateTapeContent(): void {
         let tapeContentFieldNode = this.holder.select("#tape-content-edit-field").node() as HTMLTextAreaElement;
         this.tape.setContentFromString(tapeContentFieldNode.value);
         this.close();

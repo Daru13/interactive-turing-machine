@@ -17,8 +17,8 @@ import { StateID, State } from "../../model/State";
 import { StateNode } from "./Node/StateNode";
 import { GeneratorEdge } from "./Edge/GeneratorEdge";
 
-export interface GraphDatum {};
-export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, {}>;
+export interface GraphDatum { }
+export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, { }>;
 
 export class Graph {
     static sizeNode: number = parseInt(getComputedStyle(document.documentElement)
@@ -29,32 +29,32 @@ export class Graph {
     stateIdToStateNode: Map<StateID, StateNode>;
     generator: GeneratorNode;
     generatorEdge: GeneratorEdge;
-    viewBox: {x:number, y:number, width: number, height: number};
+    viewBox: { x: number, y: number, width: number, height: number};
     eventsHandlers: Record<EventID, (EventHandler<any>)>;
 
-    constructor(turingMachine: TuringMachine){
+    constructor(turingMachine: TuringMachine) {
         this.turingMachine = turingMachine;
         this.transitionIdToTransitionEdge = new Map();
         this.stateIdToStateNode = new Map();
-        this.eventsHandlers = {};
+        this.eventsHandlers = { };
         this.setupUI();
         this.setupListeners();
         this.setResetViewBoxButton();
-        this.init()
+        this.init();
     }
 
-    init(){
+    init(): void {
         let stateMachine = this.turingMachine.stateMachine;
         stateMachine.getStates().forEach((state: State) => {
             this.addNode(state);
-        })
+        });
 
         stateMachine.getTransitions().forEach((transition: Transition) => {
             this.addEdge(transition);
-        })
+        });
 
         let initialState = stateMachine.getInitialState();
-        if(initialState instanceof State){
+        if (initialState instanceof State) {
             this.editInitialNode(initialState, true);
         }
         
@@ -64,7 +64,7 @@ export class Graph {
         }
     }
 
-    setupUI(){
+    setupUI(): void {
         d3.select("#graph").selectAll("*").remove();
         this.svg = d3.select("#graph").append("svg");
 
@@ -78,15 +78,15 @@ export class Graph {
         this.generator = new GeneratorNode(this);
     }
 
-    getSVGElement(): SVGSVGElement{
+    getSVGElement(): SVGSVGElement {
         return this.svg.node() as SVGSVGElement;
     }
 
-    getSVG(): GraphSelection{
+    getSVG(): GraphSelection {
         return this.svg;
     }
 
-    getNodesGroup(): d3.Selection<SVGGElement, any, any, any>{
+    getNodesGroup(): d3.Selection<SVGGElement, any, any, any> {
         return this.svg.select("#nodes");
     }
 
@@ -94,42 +94,42 @@ export class Graph {
         return this.svg.select("#edges");
     }
 
-    setResetViewBoxButton(){
+    setResetViewBoxButton(): void {
         d3.select("#graph").append("button").attr("id", "reset-viewbox-graph-button").on("click", () => {
             this.viewBox.x = 0;
             this.viewBox.y = 0;
             this.updateViewBox();
-        })
+        });
     }
 
-    updateViewBox(){
+    updateViewBox(): void {
         this.svg.attr("viewBox", `${this.viewBox.x},${this.viewBox.y}, ${this.viewBox.width}, ${this.viewBox.height}`);
     }
 
-    translateViewBoxBy(dx: number, dy: number){
+    translateViewBoxBy(dx: number, dy: number): void {
         this.viewBox.x -= dx;
         this.viewBox.y -= dy;
         this.updateViewBox();
     }
 
-    scaleViewBoxTo(width: number, height: number){
+    scaleViewBoxTo(width: number, height: number): void {
         this.viewBox.width = width;
         this.viewBox.height = height;
         this.updateViewBox();
     }
 
-    addNode(state: State){
+    addNode(state: State): void {
         this.stateIdToStateNode.set(state.id, new StateNode(this, state));
     }
 
-    editInitialNode(state: State, isInitial: boolean){
+    editInitialNode(state: State, isInitial: boolean): void {
         let node = this.stateIdToStateNode.get(state.id);
         node.setInitialState(isInitial);
         if (isInitial) {
             this.generatorEdge = new GeneratorEdge(this, this.generator, node);
         } else {
             if (this.generatorEdge !== undefined) {
-                this.generatorEdge.delete()
+                this.generatorEdge.delete();
             }
         }
         if (this.turingMachine.stateMachine.getInitialState() === null) {
@@ -139,7 +139,7 @@ export class Graph {
         }
     }
 
-    newCurrentNode(state: State){
+    newCurrentNode(state: State): void {
         if (state === null) {
             StateNode.resetCurrentNode();
         } else {
@@ -147,15 +147,15 @@ export class Graph {
         }
     }
 
-    editFinalNode(state: State, isFinal: boolean){
+    editFinalNode(state: State, isFinal: boolean): void {
         this.stateIdToStateNode.get(state.id).setFinalState(isFinal);
     }
 
-    editNode(state: State){
+    editNode(state: State): void {
         this.stateIdToStateNode.get(state.id).setLabel(state.getLabel());
     }
 
-    deleteNode(state: State){
+    deleteNode(state: State): void {
         let node = this.stateIdToStateNode.get(state.id);
         if (node.isInitialState()) {
             this.generatorEdge.delete();
@@ -163,8 +163,8 @@ export class Graph {
         node.delete();
     }
 
-    setEdgeCurved(transition: Transition){
-        if (transition.fromState === transition.toState){
+    setEdgeCurved(transition: Transition): void {
+        if (transition.fromState === transition.toState) {
             return;
         }
 
@@ -176,14 +176,14 @@ export class Graph {
         this.transitionIdToTransitionEdge.get(transition.id).redrawTransitionEdge();
 
         let oppositeTransitions = sm.getTransitionsFromStateToState(transition.toState, transition.fromState);
-        if(oppositeTransitions.length > 0){
+        if (oppositeTransitions.length > 0) {
             let transitionEdge = this.transitionIdToTransitionEdge.get(oppositeTransitions[0].id);
             transitionEdge.setCurved(isCurved);
             transitionEdge.redrawTransitionEdge();
         }
     }
 
-    addEdge(transition: Transition){
+    addEdge(transition: Transition): void {
         let stateMachine = this.turingMachine.stateMachine;
         let transitionEdge;
         let transitions = stateMachine.getTransitionsFromStateToState(transition.fromState, transition.toState);
@@ -204,8 +204,8 @@ export class Graph {
         this.stateIdToStateNode.get(transition.fromState.id).updateValidateProperty();
     }
 
-    deleteEdge(transition: Transition){
-        let transitionEdge = this.transitionIdToTransitionEdge.get(transition.id)
+    deleteEdge(transition: Transition): void {
+        let transitionEdge = this.transitionIdToTransitionEdge.get(transition.id);
 
         this.setEdgeCurved(transition);
         this.stateIdToStateNode.get(transition.fromState.id).updateValidateProperty();
@@ -214,7 +214,7 @@ export class Graph {
         this.transitionIdToTransitionEdge.delete(transition.id);
     }
 
-    editEdge(transition: Transition){
+    editEdge(transition: Transition): void {
         this.transitionIdToTransitionEdge.get(transition.id)
             .drawTransitionText(
                 transition.getOnSymbol(),
@@ -224,18 +224,18 @@ export class Graph {
         this.stateIdToStateNode.get(transition.fromState.id).updateValidateProperty();
     }
 
-    setupListeners(){
+    setupListeners(): void {
         //New state
         this.eventsHandlers["newState"] = ((e: NewStateEvent) => {
             this.addNode(e.state);
-        })
-        EventManager.registerHandler("newState", this.eventsHandlers["newState"])
+        });
+        EventManager.registerHandler("newState", this.eventsHandlers["newState"]);
 
         //edit initial state
         this.eventsHandlers["editInitialState"] = ((e: EditInitialStateEvent) => {
             this.editInitialNode(e.state, e.isInitial);
         });
-        EventManager.registerHandler("editInitialState", this.eventsHandlers["editInitialState"])
+        EventManager.registerHandler("editInitialState", this.eventsHandlers["editInitialState"]);
 
         //new current state
         this.eventsHandlers["newCurrentState"] = (e: NewCurrentStateEvent) => {
@@ -258,35 +258,35 @@ export class Graph {
         //delete state
         this.eventsHandlers["deleteState"] = ((e: DeleteStateEvent) => {
             this.deleteNode(e.state);
-        })
+        });
         EventManager.registerHandler("deleteState", this.eventsHandlers["deleteState"]);
 
         //new transition
         this.eventsHandlers["newTransition"] = ((e: NewTransitionEvent) => {
             this.addEdge(e.transition);
-        })
+        });
         EventManager.registerHandler("newTransition", this.eventsHandlers["newTransition"]);
 
         //delete transition
         this.eventsHandlers["deleteTransition"] = ((e: DeleteTransitionEvent) => {
             this.deleteEdge(e.transition);
-        })
+        });
         EventManager.registerHandler("deleteTransition", this.eventsHandlers["deleteTransition"]);
 
         //edit transition
         this.eventsHandlers["editTransition"] = ((e: EditTransitionEvent) => {
             this.editEdge(e.transition);
-        })
+        });
         EventManager.registerHandler("editTransition", this.eventsHandlers["editTransition"]);
     }
 
-    resize(){
+    resize(): void {
         let bbox = this.svg.node().getBoundingClientRect();
         this.scaleViewBoxTo(bbox.width, bbox.height);
     }
 
-    removeHandler(){
-        for(var eventId of Object.keys(this.eventsHandlers)){
+    removeHandler(): void {
+        for (let eventId of Object.keys(this.eventsHandlers)) {
             EventManager.unregisterHandler(eventId, this.eventsHandlers[eventId]);
         }
     }
