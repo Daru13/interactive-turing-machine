@@ -5,12 +5,11 @@ export class EasterEggManager {
     text: string;
     easterEggs: EasterEggs[];
 
-    constructor(tape: string[]) {
-        this.text = this.tapeToString(tape);
+    constructor() {
+        this.text = "";
         this.easterEggs = [];
 
         this.addEasterEggs();
-        this.launch();
     }
 
     tapeToString(tape: string[]) {
@@ -19,7 +18,8 @@ export class EasterEggManager {
         return s;
     }
 
-    launch() {
+    launch(tape: string[]) {
+        this.text = this.tapeToString(tape);
         this.easterEggs.forEach((easterEgg) => {
             if(easterEgg.shouldBeLaunched(this.text)){
                 easterEgg.launch(this.text);

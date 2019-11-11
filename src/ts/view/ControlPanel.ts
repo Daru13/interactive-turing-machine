@@ -1,7 +1,6 @@
 import * as d3 from "d3-selection";
 import { TuringMachine } from "../model/TuringMachine";
 import { Tape } from "./Tape";
-import { EasterEggs } from "../easterEggs/EasterEggs";
 import { ErrorPopup } from "./editors/ErrorPopUp";
 import { TMError } from "../errors/TMError";
 import { EasterEggManager } from "../easterEggs/EasterEggManager";
@@ -10,10 +9,12 @@ export class ControlPanel {
     holder: d3.Selection<HTMLDivElement, any, HTMLElement, any>;
     turingMachine: TuringMachine;
     tape: Tape;
+    easterEggManager: EasterEggManager;
 
     constructor(turingMachine: TuringMachine, tape: Tape) {
         this.turingMachine = turingMachine;
         this.tape = tape;
+        this.easterEggManager = new EasterEggManager();
 
         this.init();
     }
@@ -40,7 +41,7 @@ export class ControlPanel {
                     tm.run();
                     t.updateScreen();
                     
-                    new EasterEggManager(tm.tape.getContent());
+                    t.easterEggManager.launch(tm.tape.getContent());
                 }
                 catch (error) {
                     t.catchError(error);
@@ -56,6 +57,8 @@ export class ControlPanel {
                 try {
                     tm.runOneStep();
                     t.updateScreen();
+
+                    t.easterEggManager.launch(tm.tape.getContent());
                 }
                 catch (error) {
                     t.catchError(error);
