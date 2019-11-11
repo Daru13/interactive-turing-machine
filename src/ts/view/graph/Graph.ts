@@ -123,7 +123,6 @@ export class Graph {
     }
 
     addNode(state: State){
-        console.log("add state " + state.id + " in " + this.id)
         this.stateIdToStateNode.set(state.id, new StateNode(this, state));
     }
 
