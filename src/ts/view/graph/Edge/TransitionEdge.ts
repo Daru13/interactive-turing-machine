@@ -79,27 +79,26 @@ export class TransitionEdge extends Edge {
     }
 
     drawTransitionText(onSymbol: TapeSymbol, outputSymbol: TapeSymbol, headAction: HeadAction): void {
-        let actionAsString = "";
+        let headActionSymbol = "";
         switch (headAction) {
             case HeadAction.MoveLeft:
-                actionAsString = "⬅️";
+                headActionSymbol = "←";
                 break;
 
             case HeadAction.MoveRight:
-                actionAsString = "➡️";
+                headActionSymbol = "→";
                 break;
 
             case HeadAction.None:
-                actionAsString = "⬇️";
-                break;
-
-            default:
-                actionAsString = "<unknown action>";
+                headActionSymbol = "∅";
                 break;
         }
 
-        let extraText = (this.transitionIDs.length > 1) ? " ..." : "";
-        this.redrawText(`📖 ${onSymbol} 📝 ${outputSymbol} ${actionAsString} ${extraText}`);
+        let extraTransitionsSymbol = (this.transitionIDs.length > 1) ? " ..." : "";
+        this.redrawText((onSymbol === "" ? "" : ("\u{1F4D6} " + onSymbol + " "))
+                      + (outputSymbol === "" ? "" : ("\u{1F4DD} " + outputSymbol + " "))
+                      + ("\u{1F9ED} " + headActionSymbol)
+                      + extraTransitionsSymbol);
     }
 
     setCurved(b: boolean){
