@@ -66,13 +66,13 @@
     --node-size: 45;
 }
 
-@keyframes arrive {
+@keyframes node-appears {
     0% { transform: scale(calc(5 * var(--node-size) / 115)); }
     20% { transform: scale(calc(5 * var(--node-size) / 115)); }
     100% { transform: scale(calc(2 * var(--node-size) / 115)); }
 }
 
-@keyframes arriveShadow{
+@keyframes node-shajdow-appears {
     0% {
         transform: scale(3.5);
         fill-opacity: 0.6;
@@ -224,7 +224,7 @@ body {
 }
 
 .node.created #state {
-    animation-name: arrive;
+    animation-name: node-appears;
     animation-duration: 0.5s;
     animation-iteration-count: 1;
 }
@@ -235,7 +235,7 @@ body {
 }
 
 .node.created .shadow {
-    animation-name: arriveShadow;
+    animation-name: node-shajdow-appears;
     animation-duration: 0.5s;
     animation-iteration-count: 1;
 }
@@ -272,7 +272,7 @@ body {
     filter: url(#outline);
 }
 
-.node.closestNode {
+.node.closest-node {
     filter: url(#outline);
 }
 
@@ -321,7 +321,7 @@ body {
     stroke: blue;
 }
 
-.edgeInCreation {
+.edge-in-creation {
     stroke: #333;
     stroke-width: 2px;
     marker-end: url(#plug);
@@ -789,18 +789,18 @@ body {
 /* TOOLS
 /*****************************************************************/
 
-#toolBar {
+#toolbar {
     grid-area: graph;
     position: absolute;
     right:0;
     top: 0;
 }
 
-#toolBar.hidden {
+#toolbar.hidden {
     display: none;
 }
 
-#toolBar button {
+#toolbar button {
     display: block;
     width: 80px;
     height: 80px;
@@ -812,20 +812,20 @@ body {
     border: 4px solid #ccc;
 }
 
-#toolBar button:not(.selected):hover {
+#toolbar button:not(.selected):hover {
     background-color: #ccc; 
 }
 
-#toolBar button.selected {
+#toolbar button.selected {
     background-color: #bbb;
     border: 4px solid #333;
 }
 
-#toolBar #nodeButton {
+#toolbar #nodeButton {
     background-image: url("../img/icons/node-tool.svg");
 }
 
-#toolBar #edgeButton {
+#toolbar #edgeButton {
     background-image: url("../img/icons/edge-tool.svg");
 }
 
@@ -897,19 +897,19 @@ body {
     margin-bottom: 5px;
 }*/
 
-#control-panel #runButton {
+#control-panel #run-turing-machine-button {
     top: 25px;
     left: 40px;
     background-image: url(../img/icons/run.svg)
 }
 
-#control-panel #runOneStepButton {
+#control-panel #step-turing-machine-button {
     top: 25px;
     left: 105px;
     background-image: url(../img/icons/step.svg)
 }
 
-#control-panel #resetButton {
+#control-panel #reset-turing-machine-button {
     top: 25px;
     left: 170px;
     background-image: url(../img/icons/reset.svg)
@@ -949,7 +949,7 @@ body {
 /* TAPE
 /*****************************************************************/
 
-#tapeHolder {
+#tape-container {
     grid-area: tape;
     width: 100%;
     height: 100%;
@@ -962,7 +962,7 @@ body {
     z-index: 100;
 }
 
-#tapeHolder::after {
+#tape-container::after {
     content: url("../img/textures/tape-scroll.png");
     position: absolute;
     top: 0;
@@ -1039,7 +1039,7 @@ body {
     z-index: 1000;
 }
 
-#tapeHolder .action-button-container {
+#tape-container .action-button-container {
     position: relative;
     top: 10px;
     left: 0;
@@ -1051,7 +1051,7 @@ body {
     transition: ease-in-out 100ms;
 }
 
-#tapeHolder .action-button-container:hover {
+#tape-container .action-button-container:hover {
     background-color: rgb(84, 85, 85);
 }
 

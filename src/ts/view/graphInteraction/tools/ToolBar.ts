@@ -8,7 +8,7 @@ export class ToolBar {
 
     constructor(toolManager: MouseDispatcher) {
         this.toolManager = toolManager;
-        d3.select("#toolBar").selectAll("*").remove();
+        d3.select("#toolbar").selectAll("*").remove();
         this.setupUI();
     }
 
@@ -30,21 +30,21 @@ export class ToolBar {
     }
 
     addButton(id: string): d3.Selection<HTMLButtonElement, any, any, any> {
-        return d3.select("#toolBar")
+        return d3.select("#toolbar")
             .append("button").attr("id", id);
     }
 
     selectTool(id: toolName, buttonToSelect: d3.Selection<HTMLButtonElement, any, any, any>): void {
-        d3.select("#toolBar").selectAll("button").classed("selected", false);
+        d3.select("#toolbar").selectAll("button").classed("selected", false);
         buttonToSelect.classed("selected", true);
         this.toolManager.selectTool(id);
     }
 
     display(): void {
-        d3.select("#toolBar").classed("hidden", false);
+        d3.select("#toolbar").classed("hidden", false);
     }
 
     hide(): void {
-        d3.select("#toolBar").classed("hidden", true);
+        d3.select("#toolbar").classed("hidden", true);
     }
 }

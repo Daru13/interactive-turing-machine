@@ -45,7 +45,7 @@ export class EdgeTool {
             this.edgeInCreation =
                 this.graph.getSVG()
                     .append("path")
-                    .classed("edgeInCreation", true);
+                    .classed("edge-in-creation", true);
             this.drawEdgeInCreation();
             return;
         } 
@@ -67,12 +67,12 @@ export class EdgeTool {
             if (this.node !== undefined) {
                 this.drawEdgeInCreation();
                     
-                d3.selectAll(".node.closestNode").classed("closestNode", false);
+                d3.selectAll(".node.closest-node").classed("closest-node", false);
 
                 let closestNode = this.closestNode({ x: this.node.x, y: this.node.y }, { x: this.previousX, y: this.previousY }, Graph.sizeNode, Graph.sizeNode * 3);
 
                 if (closestNode !== undefined) {
-                    closestNode.handleSelection.classed("closestNode", true);
+                    closestNode.handleSelection.classed("closest-node", true);
                 }
 
                 this.previousX = e.x;
@@ -93,7 +93,7 @@ export class EdgeTool {
         if (this.node !== undefined) {
             this.edgeInCreation.remove();
 
-            d3.selectAll(".node.closestNode").classed("closestNode", false);
+            d3.selectAll(".node.closest-node").classed("closest-node", false);
             let closestNode = this.closestNode({ x: this.node.x, y: this.node.y }, { x: this.previousX, y: this.previousY }, Graph.sizeNode, Graph.sizeNode * 3);
 
             if (closestNode !== undefined) {
@@ -112,7 +112,7 @@ export class EdgeTool {
         if (this.isDown) {
             if (this.node !== undefined) {
                 this.edgeInCreation.remove();
-                d3.selectAll(".node.closestNode").classed("closestNode", false);
+                d3.selectAll(".node.closest-node").classed("closest-node", false);
                 this.isDown = false;
             }
         }

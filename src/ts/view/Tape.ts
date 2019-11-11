@@ -28,7 +28,7 @@ export class Tape {
     private DOMEventHandlers: Record<string, (event: any) => void>;
 
     constructor(turingMachine: TuringMachine) {
-        this.tapeHolder = d3.select("#tapeHolder");
+        this.tapeHolder = d3.select("#tape-container");
         this.origin = 0;
         this.turingMachine = turingMachine;
 
@@ -52,12 +52,12 @@ export class Tape {
     }
 
     private setupUI(): void {
-        d3.select("#tapeHolder").selectAll("*").remove();
+        d3.select("#tape-container").selectAll("*").remove();
         this.head = this.tapeHolder.append("div").attr("id", "head");
         this.tape = this.tapeHolder.append("div").attr("id", "tape");
         this.addActionButtons();
 
-        let widthHolder = document.getElementById("tapeHolder").getBoundingClientRect().width;
+        let widthHolder = document.getElementById("tape-container").getBoundingClientRect().width;
 
         this.origin = widthHolder / 2 - Tape.marginCell - Tape.sizeCell / 2;
         this.tape.style("left", (this.origin).toString() + "px");
@@ -270,7 +270,7 @@ export class Tape {
     }
 
     resize(): void {
-        let widthHolder = document.getElementById("tapeHolder").getBoundingClientRect().width;
+        let widthHolder = document.getElementById("tape-container").getBoundingClientRect().width;
         let previousOrigin = this.origin;
         this.origin = widthHolder / 2 - Tape.marginCell - Tape.sizeCell / 2;
         this.moveTapeBy(previousOrigin - this.origin);
