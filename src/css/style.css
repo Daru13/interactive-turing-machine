@@ -298,7 +298,7 @@ body {
 
 .edge path {
     fill: none;
-    stroke: #545555;
+    stroke: #000;
     stroke-width: 2px;
     marker-end: url(#arrowHead);
 }
