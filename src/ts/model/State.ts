@@ -27,7 +27,7 @@ export interface StateExport {
 
 export class State {
 
-    private static nextStateID = 1;
+    private static nextStateID: StateID = 1;
 
     readonly id: StateID;
     private position: Position;
@@ -56,7 +56,7 @@ export class State {
         return this.position;
     }
 
-    setPosition(position: Position) {
+    setPosition(position: Position): void {
         this.position = position;
     }
 
@@ -64,7 +64,7 @@ export class State {
         return this.label;
     }
 
-    setLabel(label: string) {
+    setLabel(label: string): void {
         this.label = label;
         
         EventManager.emit(new EditStateEvent(this));
@@ -74,13 +74,13 @@ export class State {
         return this.final;
     }
 
-    setFinal(final: boolean) {
+    setFinal(final: boolean): void {
         this.final = final;
 
         EventManager.emit(new EditFinalStateEvent(this, final));
     }
 
-    addInTransition(transition: Transition) {
+    addInTransition(transition: Transition): void {
         if (transition.toState !== this) {
             console.error("The transition could not be added: state and destination do not match.");
             return;
@@ -89,7 +89,7 @@ export class State {
         this.inTransitions.set(transition.id, transition);
     }
 
-    removeInTransition(transition: Transition) {
+    removeInTransition(transition: Transition): void {
         let id = transition.id;
         if (! this.inTransitions.has(id)) {
             console.error("The transition could not be deleted: unknown transition.");
@@ -99,7 +99,7 @@ export class State {
         this.inTransitions.delete(transition.id);
     }
 
-    addOutTransition(transition: Transition) {
+    addOutTransition(transition: Transition): void {
         if (transition.fromState !== this) {
             console.error("The transition could not be added: state and origin do not match.");
             return;
@@ -115,7 +115,7 @@ export class State {
         this.outTransitions.set(transition.id, transition);
     }
 
-    removeOutTransition(transition: Transition) {
+    removeOutTransition(transition: Transition): void {
         let id = transition.id;
         if (! this.outTransitions.has(id)) {
             console.error("The transition could not be deleted: unknown transition.");
@@ -142,13 +142,13 @@ export class State {
 
         return false;
     }
-
+    
     hasOutTransitionForSymbol(symbol: TapeSymbol): boolean {
         return this.symbolsToOutTransitions.has(symbol)
             || this.symbolsToOutTransitions.has(READ_ANY_SYMBOL);
     }
 
-    getOutTransitionsForSymbol(symbol: TapeSymbol) {
+    getOutTransitionsForSymbol(symbol: TapeSymbol): Transition[] {
         let transitions = this.symbolsToOutTransitions.get(symbol);
         
         // In case there is no transition for the given symbol,
@@ -158,7 +158,7 @@ export class State {
              : [...transitions];
     }
 
-    editOutTransitionSymbol(transition: Transition, oldSymbol: TapeSymbol, newSymbol: TapeSymbol) {
+    editOutTransitionSymbol(transition: Transition, oldSymbol: TapeSymbol, newSymbol: TapeSymbol): void {
         if (oldSymbol === newSymbol) {
             return;
         }
@@ -171,7 +171,7 @@ export class State {
         }
 
         if (! this.symbolsToOutTransitions.has(newSymbol)) {
-            this.symbolsToOutTransitions.set(newSymbol, new Set())
+            this.symbolsToOutTransitions.set(newSymbol, new Set());
         }
         
         this.symbolsToOutTransitions.get(newSymbol).add(transition);
@@ -207,11 +207,11 @@ export class State {
         return true;
     }
 
-    toString(useLabels: boolean = true) {
-        return useLabels ? this.label : this.id;
+    toString(useLabels: boolean = true): string {
+        return useLabels ? this.label : this.id.toString();
     }
 
-    outTransitionsToString(useLabels: boolean = true) {
+    outTransitionsToString(useLabels: boolean = true): string {
         return [...this.outTransitions.values()]
             .map((t) => t.toString(useLabels))
             .reduce((str, t) => str + "\n" + t, "");
@@ -236,7 +236,7 @@ export class State {
         return state;
     }
 
-    private static ensureIDIsAbove(minID: StateID) {
+    private static ensureIDIsAbove(minID: StateID): void {
         if (State.nextStateID <= minID) {
             State.nextStateID = minID + 1;
         }

@@ -17,7 +17,7 @@ export interface TapeExport {
 }
 
 export class Tape {
-    private static readonly EMPTY_CELL_FILLING_CHAR = " ";
+    private static readonly EMPTY_CELL_FILLING_CHAR: string = " ";
 
     private content: TapeSymbol[];
     private headPosition: number;
@@ -31,13 +31,14 @@ export class Tape {
         return this.headPosition;
     }
 
-    getSymbolAt(index: number) {
+    getSymbolAt(index: number): TapeSymbol {
         return this.content[index];
     }
 
-    setSymbolAt(index: number, symbol: TapeSymbol) {
+    setSymbolAt(index: number, symbol: TapeSymbol): void {
         this.content[index] = symbol;
         this.fillEmptyCellsBefore(index);
+
         EventManager.emit(new TapeCellUpdateEvent(symbol, index));
     }
 
@@ -45,17 +46,19 @@ export class Tape {
         return this.getSymbolAt(this.headPosition);
     }
 
-    setCurrentSymbol(symbol: TapeSymbol) {
+    setCurrentSymbol(symbol: TapeSymbol): void {
         this.setSymbolAt(this.headPosition, symbol);
+
         EventManager.emit(new TapeCellUpdateEvent(symbol, this.getHeadPosition()));
     }
 
-    setContent(content: TapeSymbol[]) {
+    setContent(content: TapeSymbol[]): void {
         this.content = content;
+
         EventManager.emit(new TapeContentUpdateEvent());
     }
 
-    setContentFromString(content: string) {
+    setContentFromString(content: string): void {
         this.setContent(Array.from(content));
     }
 
@@ -67,11 +70,11 @@ export class Tape {
         return this.content.join("");
     }
 
-    clearContent() {
+    clearContent(): void {
         this.content = [];
     }
 
-    private fillEmptyCellsBefore(index: number = this.content.length) {
+    private fillEmptyCellsBefore(index: number = this.content.length): void {
         for (let i = 0; i < index; i++) {
             if (this.content[i] === undefined) {
                 this.content[i] = Tape.EMPTY_CELL_FILLING_CHAR;
@@ -79,7 +82,7 @@ export class Tape {
         }
     }
 
-    applyHeadAction(action: HeadAction) {
+    applyHeadAction(action: HeadAction): void {
         switch (action) {
             case HeadAction.MoveLeft:
                 this.headPosition = Math.max(0, this.headPosition - 1);
@@ -97,13 +100,13 @@ export class Tape {
         EventManager.emit(new TapeMoveEvent(action));
     }
 
-    resetHeadPosition() {
+    resetHeadPosition(): void {
         this.headPosition = 0;
          
         EventManager.emit(new TapeNewPosEvent(0));
     }
 
-    toString() {
+    toString(): string {
         return "[head at " + this.headPosition + " ]\n"
              + this.content.toString();
     }

@@ -5,7 +5,7 @@ import { State } from "../model/State";
 export class NoTransitionAvailableError extends TMError {
     private readonly state: State;
 
-    constructor(turingMachine: TuringMachine, state: State){
+    constructor(turingMachine: TuringMachine, state: State) {
         super(turingMachine,
             `No transition available in state ${state.getLabel()}`, 
             `There is no transition going out of state ${state.getLabel()} for symbol "${turingMachine.tape.getCurrentSymbol()}": the Turing machine is stuck!`,

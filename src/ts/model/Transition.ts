@@ -25,7 +25,7 @@ export interface TransitionExport {
 
 export class Transition {
 
-    private static nextTransitionID = 1;
+    private static nextTransitionID: TransitionID = 1;
 
     readonly id: TransitionID;
     readonly fromState: State;
@@ -55,7 +55,7 @@ export class Transition {
         return this.onSymbol;
     }
 
-    setOnSymbol(symbol: TapeSymbol) {
+    setOnSymbol(symbol: TapeSymbol): void {
         let oldSymbol = this.onSymbol;
         this.onSymbol = symbol;
 
@@ -69,7 +69,7 @@ export class Transition {
         return this.outputSymbol;
     }
 
-    setOutputSymbol(symbol: TapeSymbol) {
+    setOutputSymbol(symbol: TapeSymbol): void {
         this.outputSymbol = symbol;
 
         EventManager.emit(new EditTransitionEvent(this));
@@ -79,13 +79,13 @@ export class Transition {
         return this.headAction;
     }
 
-    setHeadAction(action: HeadAction) {
+    setHeadAction(action: HeadAction): void {
         this.headAction = action;
 
         EventManager.emit(new EditTransitionEvent(this));
     }
 
-    toString(useLabels: boolean = true) {
+    toString(useLabels: boolean = true): string {
         let actionAsString = "";
         switch (this.headAction) {
             case HeadAction.MoveLeft:
@@ -109,7 +109,7 @@ export class Transition {
              + " → "
              + this.toState.toString(useLabels)
              + " ("
-             + (this.onSymbol=== READ_ANY_SYMBOL ? "<any>" : this.onSymbol)
+             + (this.onSymbol === READ_ANY_SYMBOL ? "<any>" : this.onSymbol)
              + " / "
              + (this.outputSymbol === WRITE_NO_SYMBOL ? "<none>" : this.outputSymbol)
              + ", "
@@ -152,7 +152,7 @@ export class Transition {
         return transition;
     }
 
-    private static ensureIDIsAbove(minID: TransitionID) {
+    private static ensureIDIsAbove(minID: TransitionID): void {
         if (Transition.nextTransitionID <= minID) {
             Transition.nextTransitionID = minID + 1;
         }

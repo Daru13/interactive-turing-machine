@@ -169,8 +169,7 @@ export class Graph {
         }
 
         let sm = this.turingMachine.stateMachine;
-        let isCurved = sm.hasTransitionFromStateToState(transition.fromState, transition.toState) 
-                           && sm.hasTransitionFromStateToState(transition.toState, transition.fromState);
+        let isCurved = sm.hasTransitionBetween(transition.toState, transition.fromState);
 
         this.transitionIdToTransitionEdge.get(transition.id).setCurved(isCurved);
         this.transitionIdToTransitionEdge.get(transition.id).redrawTransitionEdge();
@@ -233,7 +232,7 @@ export class Graph {
 
         //edit initial state
         this.eventsHandlers["editInitialState"] = ((e: EditInitialStateEvent) => {
-            this.editInitialNode(e.state, e.isInitial);
+            this.editInitialNode(e.state, e.isFirstInitialState);
         });
         EventManager.registerHandler("editInitialState", this.eventsHandlers["editInitialState"]);
 

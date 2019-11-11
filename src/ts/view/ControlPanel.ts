@@ -38,7 +38,7 @@ export class ControlPanel {
                     tm.run();
                     this.updateScreen();
                     
-                    new EasterEggs(tm.tape.getContent());
+                    new EasterEggs(tm.tape);
                 }
                 catch (error) {
                     this.catchError(error);

@@ -13,7 +13,7 @@ export enum TuringMachineState {
 }
 
 interface EditableTuringMachine extends TuringMachine {
-    stateMachine: StateMachine
+    stateMachine: StateMachine;
     tape: Tape;
 }
 
@@ -24,13 +24,13 @@ interface TuringMachineExport {
 
 export class TuringMachine {
 
-    readonly stateMachine: StateMachine
+    readonly stateMachine: StateMachine;
     readonly tape: Tape;
 
     private currentStep: number;
     private state: TuringMachineState;
     
-    constructor () {
+    constructor() {
         console.log("A Turing machine was created.");
 
         this.stateMachine = new StateMachine();
@@ -53,7 +53,7 @@ export class TuringMachine {
             || this.state === TuringMachineState.RUNNING;
     }
 
-    runOneStep() {
+    runOneStep(): void {
         // If the machine has not be ran yet, set the initial state as the current one
         let currentState = this.stateMachine.getCurrentState();
 
@@ -109,7 +109,7 @@ export class TuringMachine {
         this.state = nextState.isFinal() ? TuringMachineState.STOPPED : TuringMachineState.READY;
     }
 
-    run(maxNbSteps: number = 1000) {
+    run(maxNbSteps: number = 1000): void {
         let nbSteps = 0;
 
         while (this.isRunnable() && nbSteps < maxNbSteps) {
@@ -118,7 +118,7 @@ export class TuringMachine {
         }
     }
 
-    reset() {
+    reset(): void {
         this.tape.resetHeadPosition();
         this.stateMachine.resetCurrentState();
 
@@ -126,7 +126,7 @@ export class TuringMachine {
         this.state = TuringMachineState.READY;
     }
 
-    empty() {
+    empty(): void {
         this.stateMachine.removeAllStates();
         this.stateMachine.removeAllTransitions();
         this.tape.clearContent();
@@ -134,13 +134,13 @@ export class TuringMachine {
         this.reset();
     }
 
-    toString(useLabels: boolean = true) {
+    toString(useLabels: boolean = true): string {
         let str = "";
 
-        str += "=== STATE MACHINE ===\n"
+        str += "=== STATE MACHINE ===\n";
         str += this.stateMachine.toString(useLabels);
 
-        str += "=== MEMORY TAPE ===\n"
+        str += "=== MEMORY TAPE ===\n";
         str += this.tape.toString();
 
         return str;
@@ -148,7 +148,7 @@ export class TuringMachine {
 
     export(): TuringMachineExport {
         let exportedStateMachine = this.stateMachine.export();
-        let exportedTape =this.tape.export();
+        let exportedTape = this.tape.export();
 
         return {
             stateMachine: exportedStateMachine,

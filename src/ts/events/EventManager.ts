@@ -10,7 +10,7 @@ export class EventManager {
 
 	private static eventHandlers: Map<EventID, EventHandler<any>[]> = new Map();
 
-	static emit(event: Event) {
+	static emit(event: Event): void {
 		let eventID = event.id;
 
 		if (! EventManager.eventHandlers.has(eventID)) {
@@ -23,7 +23,7 @@ export class EventManager {
 		}
 	}
 
-	static registerHandler<E extends Event>(eventID: EventID, handler: EventHandler<E>) {
+	static registerHandler<E extends Event>(eventID: EventID, handler: EventHandler<E>): void {
 		if (! EventManager.eventHandlers.has(eventID)) {
 			EventManager.eventHandlers.set(eventID, []);
 		}
@@ -32,7 +32,7 @@ export class EventManager {
 		handlers.push(handler);
 	}
 
-	static unregisterHandler<E extends Event>(eventID: EventID, handler: EventHandler<E>) {
+	static unregisterHandler<E extends Event>(eventID: EventID, handler: EventHandler<E>): void {
 		let handlers = EventManager.eventHandlers.get(eventID);
 		let handlerIndex = handlers.indexOf(handler);
 

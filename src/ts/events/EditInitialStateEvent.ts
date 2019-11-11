@@ -4,10 +4,10 @@ import { State } from '../model/State';
 export class EditInitialStateEvent implements Event {
   id: string = "editInitialState";
   state: State;
-  isInitial: boolean;
+  isFirstInitialState: boolean;
 
-  constructor(state: State, isInitial: boolean) {
+  constructor(state: State, isFirstInitialState: boolean) {
     this.state = state;
-    this.isInitial = isInitial;
+    this.isFirstInitialState = isFirstInitialState;
   }
 }

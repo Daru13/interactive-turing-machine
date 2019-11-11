@@ -1,26 +1,23 @@
 import * as d3 from "d3-selection";
 import { addSpaceMan } from "./spaceman";
+import { Tape } from "../model/Tape";
 
 export class EasterEggs {
-    text: string;
-    constructor(tape: string[]){
-        this.text = this.tapeToString(tape);
+    private tape: Tape;
+
+    constructor(tape: Tape) {
+        this.tape = tape;
         this.launch();
     }
 
-    tapeToString(tape: string[]){
-        let s = "";
-        tape.forEach(c => s += c);
-        return s;
-    }
-
-    launch(){
-        if (this.text.includes("mars") || this.text.includes("moon") || this.text.includes("nasa")){
+    private launch(): void {
+        let tapeContent = this.tape.getContentAsString();
+        if (tapeContent.includes("mars") || tapeContent.includes("moon") || tapeContent.includes("nasa")) {
             this.spaceman();
         }
     }
 
-    spaceman(){
+    private spaceman(): void {
         let holder = 
             d3.select("body")
                 .append("div")
