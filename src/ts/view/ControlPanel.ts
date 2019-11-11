@@ -4,6 +4,7 @@ import { Tape } from "./Tape";
 import { EasterEggs } from "../easterEggs/EasterEggs";
 import { ErrorPopup } from "./editors/ErrorPopUp";
 import { TMError } from "../errors/TMError";
+import { EasterEggManager } from "../easterEggs/EasterEggManager";
 
 export class ControlPanel {
     holder: d3.Selection<HTMLDivElement, any, HTMLElement, any>;
@@ -39,7 +40,7 @@ export class ControlPanel {
                     tm.run();
                     t.updateScreen();
                     
-                    new EasterEggs(tm.tape.getContent());
+                    new EasterEggManager(tm.tape.getContent());
                 }
                 catch (error) {
                     t.catchError(error);
