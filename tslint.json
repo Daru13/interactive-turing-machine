@@ -22,7 +22,7 @@
         "curly": true,
         "no-conditional-assignment": true,
         "no-for-in-array": true,
-        "array-type": "array",
+        "array-type": [true, "array"],
         "no-angle-bracket-type-assertion": true,
         "no-boolean-literal-compare": true,
         "space-before-function-paren": [true, "never"],
