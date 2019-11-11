@@ -244,45 +244,28 @@ body {
     transform: scale(calc(2 * var(--node-size) / 115));
 }
 
-.node #Highlight {
+.node #final-on {
     display: none;
 }
 
-.node #Background {
-    fill: #545656;
-}
-
-.node #Lampe #Halo{
+.node #lamp-on {
     display: none;
 }
 
-.node #Lampe #BulbFill{
-    fill: #DEE0E0;
+.node #base-final-on{
+    display: none;
 }
 
-.node #Lampe #BulbStroke{
-    stroke: #999999;
-}
-
-.node.final #Highlight {
+.node.final #final-on {
     display: initial;
 }
 
-.node.final #Background {
-    fill: #8CC63F;
-}
-
-.node.current #Lampe #Halo{
+.node.final #base-final-on {
     display: initial;
 }
 
-.node.current #Lampe #BulbFill{
-    fill: #FFE461;
-    filter: url(#lightOn);
-}
-
-.node.current #Lampe #BulbStroke{
-    stroke: #969654;
+.node.current #lamp-on{
+    display: initial;
 }
 
 .node.selected {

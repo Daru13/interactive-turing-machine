@@ -93,7 +93,7 @@ export class StateNode extends Node{
         if (textToDisplay.length > 10) {
             textToDisplay = textToDisplay.substring(0, 7) + "..."
         }
-        this.handleSelection.select("#Text").select("text").text(textToDisplay);
+        this.handleSelection.select("#label-text").text(textToDisplay);
     }
 
     invalidate(){
