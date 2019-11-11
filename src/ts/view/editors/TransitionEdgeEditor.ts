@@ -51,33 +51,43 @@ export class TransitionEdgeEditor extends Editor{
 
     addBody(table: d3.Selection<HTMLTableElement, any, any, any>): void {
         let body = table.append("tbody");
-        this.edge.transitionIDs.forEach((tId) => {
-            let transition = this.stateMachine.getTransition(tId);
-            let row = body.append("tr").datum({ transitionID: tId});
-            let cell;
-            cell = row.append("td").classed("input-symbol", true);
-            this.addTextField(transition.getOnSymbol(), {
-                placeholder: "Any",
-                maxlength: "1"
-            }, cell);
 
-            cell = row.append("td").classed("output-symbol", true);
-            this.addTextField(transition.getOutputSymbol(), {
-                placeholder: "None",
-                maxlength: "1"
-            }, cell);
-
-            cell = row.append("td").classed("head-action", true);
-            this.addHeadActionSelector(cell, transition.getHeadAction());
-
-            cell = row.append("td").classed("delete-transition", true);
-            this.addDeleteTransitionButton(cell, row);
+        this.edge.transitionIDs.forEach((transitionId) => {
+            this.addTransitionRow(transitionId, body);
         });
 
         this.addPlusButton(body);
     }
 
-    addPlusButton(body: d3.Selection<HTMLElement, any, any, any>): void {
+    addTransitionRow(transitionId: TransitionID, body: d3.Selection<HTMLTableSectionElement, any, any, any>): void {
+        let transition = this.stateMachine.getTransition(transitionId);
+        let row = body.append("tr").datum({ transitionID: transitionId });
+        let cell;
+        
+        // Text field for the input text field
+        cell = row.append("td").classed("input-symbol", true);
+        this.addTextField(transition.getOnSymbol(), {
+            placeholder: "Any",
+            maxlength: "1"
+        }, cell);
+
+        // Text field for the output symbol
+        cell = row.append("td").classed("output-symbol", true);
+        this.addTextField(transition.getOutputSymbol(), {
+            placeholder: "None",
+            maxlength: "1"
+        }, cell);
+
+        // Button to select the direction of the head
+        cell = row.append("td").classed("head-action", true);
+        this.addHeadActionSelector(cell, transition.getHeadAction());
+
+        // Button to delete the transition
+        cell = row.append("td").classed("delete-transition", true);
+        this.addDeleteTransitionButton(cell, row);
+    }
+
+    addPlusButton(body: d3.Selection<HTMLTableSectionElement, any, any, any>): void {
         let fromNode = this.edge.fromStateNode;
         let toNode = this.edge.toStateNode;
 
@@ -97,24 +107,23 @@ export class TransitionEdgeEditor extends Editor{
                 });
     }
 
-    addDeleteTransitionButton(holder: d3.Selection<HTMLElement, any, any, any>, row: d3.Selection<HTMLElement, any, any, any>): void {
-        holder
+    addDeleteTransitionButton(parent: d3.Selection<HTMLElement, any, any, any>, row: d3.Selection<HTMLElement, any, any, any>): void {
+        parent
             .append("button")
             .on("click", () => {
-                this.stateMachine.removeTransition(holder.datum()["transitionID"]);
+                this.stateMachine.removeTransition(parent.datum()["transitionID"]);
                 row.remove();
-                if (this.holder.select("tbody").selectAll("tr").empty()) {
+                if (this.holder.select("tbody").selectAll("tr:not(.new-transition-button-row)").empty()) {
                     this.close();
                 }
             })
             .text("Delete");
     }
 
-    addHeadActionSelector(holder: d3.Selection<HTMLElement, any, any, any>, defaultDir: HeadAction): void {
-        let dirEntry =
-            holder
-                .append("div")
-                .classed("head-action-selector", true);
+    addHeadActionSelector(parent: d3.Selection<HTMLElement, any, any, any>, defaultDir: HeadAction): void {
+        let dirEntry = parent
+            .append("div")
+            .classed("head-action-selector", true);
         dirEntry.datum()["direction"] = defaultDir;
 
         this.addHeadActionOption(dirEntry, "←", HeadAction.MoveLeft, defaultDir === HeadAction.MoveLeft);
@@ -122,14 +131,14 @@ export class TransitionEdgeEditor extends Editor{
         this.addHeadActionOption(dirEntry, "→", HeadAction.MoveRight, defaultDir === HeadAction.MoveRight);
     }
 
-    addHeadActionOption(holder: d3.Selection<HTMLDivElement, any, any, any>, text: string, datum: HeadAction, selected: boolean): void {
-        holder.append("button")
+    addHeadActionOption(parent: d3.Selection<HTMLDivElement, any, any, any>, text: string, datum: HeadAction, selected: boolean): void {
+        parent.append("button")
             .text(text)
             .classed("selected", selected)
             .on("click", function(): void {
-                holder.selectAll(".selected").classed("selected", false);
+                parent.selectAll(".selected").classed("selected", false);
                 d3.select(this).classed("selected", true);
-                holder.datum()["direction"] = datum;
+                parent.datum()["direction"] = datum;
             });
     }
 

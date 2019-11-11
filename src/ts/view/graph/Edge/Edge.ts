@@ -13,7 +13,7 @@ export type EdgeSelection = d3.Selection<SVGGElement, EdgeDatum, any, any>;
 export abstract class Edge{
     static edgeNumber: number = 0;
     id: string;
-    handleSelection: d3.Selection<SVGGElement, any, any, any>;
+    handleSelection: EdgeSelection;
 
     constructor(graph: Graph) {
         this.id = "edge-" + Edge.edgeNumber;
@@ -161,6 +161,6 @@ export abstract class Edge{
         if (Edge.isEdge(selection)) {
             return selection.datum()["edge"];
         }
-        throw "Graph.ts (getEdge): Selection is not part of a edge";
+        throw "Edge.ts (getEdge): Selection is not part of a edge";
     }
 }

@@ -17,12 +17,12 @@ export class Editor extends Popup{
     }
 
     initPosition(): void {
-        let bbox = this.element.handleSelection.node().getBoundingClientRect();
-        let bboxHolder = this.holder.node().getBoundingClientRect();
+        let elementBoudingBox = this.element.handleSelection.node().getBoundingClientRect();
+        let editorBoundingBox = this.holder.node().getBoundingClientRect();
         let windowWidth = window.innerWidth;
         let windowHeight = window.innerHeight;
-        let top = bbox.top + bbox.height;
-        let left = bbox.left + (bbox.width - bboxHolder.width) / 2;
+        let top = elementBoudingBox.top + elementBoudingBox.height;
+        let left = elementBoudingBox.left + (elementBoudingBox.width - editorBoundingBox.width) / 2;
 
         if (top < 0) {
             top = 0;
@@ -30,8 +30,8 @@ export class Editor extends Popup{
         if (left < 0) {
             left = 0;
         }
-        if (left + bboxHolder.width > windowWidth) {
-            left = windowWidth - bboxHolder.width;
+        if (left + editorBoundingBox.width > windowWidth) {
+            left = windowWidth - editorBoundingBox.width;
         }
 
         this.holder

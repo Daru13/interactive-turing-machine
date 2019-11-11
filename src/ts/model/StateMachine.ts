@@ -157,16 +157,6 @@ export class StateMachine {
             || state2.hasOutTransitionTo(state1);
     }
 
-    getTransitionsFromStateToState(fromState: State, toState: State): Transition[] {
-        let transitions = [];
-        fromState.getOutTransitions().forEach((t) => {
-            if (t.toState === toState) {
-                transitions.push(t);
-            }
-        });
-        return transitions;
-    }
-
     getTransition(id: TransitionID): Transition {
         return this.transitions.has(id) ? this.transitions.get(id) : null;
     }

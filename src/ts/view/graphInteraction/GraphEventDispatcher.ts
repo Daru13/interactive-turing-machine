@@ -5,33 +5,36 @@ import { ModifiedPointerEvent } from "../../events/ModifiedPointerEvent";
 
 export abstract class GraphEventDispatcher {
     readonly graph: Graph;
-    readonly tM: TuringMachine;
+    readonly turingMachine: TuringMachine;
     isActivated: boolean;
 
     constructor(graph: Graph, turingMachine: TuringMachine) {
         this.graph = graph;
-        this.tM = turingMachine;
+        this.turingMachine = turingMachine;
         this.isActivated = false;
         this.setInteraction();
     }
 
     setInteraction(): void {
         let timeDown: Record<number, number> = { };
-        this.graph.getSVGElement().addEventListener("pointerdown",
-            (e: PointerEvent) => {
+
+        this.graph.getSVGElement()
+            .addEventListener("pointerdown", (e) => {
                 if (this.isActivated) {
                     timeDown[e.pointerId] = new Date().getTime();
                     this.dispatchDownEvent(Helpers.transformEvent(e));
                 }
             });
-        this.graph.getSVGElement().addEventListener("pointermove",
-            (e: PointerEvent) => {
+
+        this.graph.getSVGElement()
+            .addEventListener("pointermove", (e) => {
                 if (this.isActivated) {
                     this.dispatchMoveEvent(Helpers.transformEvent(e));
                 }
             });
-        this.graph.getSVGElement().addEventListener("pointerup",
-            (e: PointerEvent) => {
+
+        this.graph.getSVGElement()
+            .addEventListener("pointerup", (e) => {
                 if (this.isActivated) {
                     this.dispatchUpEvent(Helpers.transformEvent(e));
                     if (Math.abs(new Date().getTime() - timeDown[e.pointerId]) < 200) {
@@ -39,14 +42,16 @@ export abstract class GraphEventDispatcher {
                     }
                 }
             });
-        this.graph.getSVGElement().addEventListener("pointerleave",
-            (e: PointerEvent) => {
+
+        this.graph.getSVGElement()
+            .addEventListener("pointerleave", (e) => {
                 if (this.isActivated) {
                     this.dispatchLeaveEvent(Helpers.transformEvent(e));
                 }
             });
-        this.graph.getSVGElement().addEventListener("pointercancel",
-            (e: PointerEvent) => {
+
+        this.graph.getSVGElement()
+            .addEventListener("pointercancel", (e) => {
                 if (this.isActivated) {
                     console.log("cancel");
                 }

@@ -92,21 +92,39 @@ export class StateNode extends Node{
         if (textToDisplay.length > 10) {
             textToDisplay = textToDisplay.substring(0, 7) + "...";
         }
-        this.handleSelection.select("#Text").select("text").text(textToDisplay);
+        this.handleSelection.select("#label-text").text(textToDisplay);
     }
 
     invalidate(): void {
         super.invalidate();
-        this.graph.turingMachine.stateMachine.getState(this.stateID).getNonDeterministicOutTransitions().forEach((t) => {
-            this.graph.transitionIdToTransitionEdge.get(t.id).invalidate();
-        });
+
+        let transitions = this.graph.turingMachine.stateMachine.getState(this.stateID).getOutTransitions();
+        let edge;
+
+        if (transitions !== undefined && transitions !== null) {
+            transitions.forEach((t) => {
+                edge = this.graph.transitionIdToTransitionEdge.get(t.id);
+                if (edge !== undefined && edge !== null) {
+                    edge.invalidate();
+                }
+            });
+        }
     }
 
     validate(): void {
         super.validate();
-        this.graph.turingMachine.stateMachine.getState(this.stateID).getOutTransitions().forEach((t) => {
-            this.graph.transitionIdToTransitionEdge.get(t.id).validate();
-        });
+
+        let transitions = this.graph.turingMachine.stateMachine.getState(this.stateID).getOutTransitions();
+        let edge;
+        
+        if (transitions !== undefined && transitions !== null) {
+            transitions.forEach((t) => {
+                edge = this.graph.transitionIdToTransitionEdge.get(t.id);
+                if (edge !== undefined && edge !== null) {
+                    edge.validate();
+                }
+            });
+        }
     }
 
     updateValidateProperty(): void {

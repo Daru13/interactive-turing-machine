@@ -47,6 +47,9 @@ export class Graph {
         let stateMachine = this.turingMachine.stateMachine;
         stateMachine.getStates().forEach((state: State) => {
             this.addNode(state);
+            if (state.isFinal()) {
+                this.editFinalNode(state, true);
+            }
         });
 
         stateMachine.getTransitions().forEach((transition: Transition) => {
@@ -169,12 +172,13 @@ export class Graph {
         }
 
         let sm = this.turingMachine.stateMachine;
-        let isCurved = sm.hasTransitionBetween(transition.toState, transition.fromState);
+        let isCurved = transition.fromState.hasOutTransitionTo(transition.toState)
+                    && transition.toState.hasOutTransitionTo(transition.fromState);
 
         this.transitionIdToTransitionEdge.get(transition.id).setCurved(isCurved);
         this.transitionIdToTransitionEdge.get(transition.id).redrawTransitionEdge();
 
-        let oppositeTransitions = sm.getTransitionsFromStateToState(transition.toState, transition.fromState);
+        let oppositeTransitions = transition.toState.getOutTransitionsTo(transition.fromState);
         if (oppositeTransitions.length > 0) {
             let transitionEdge = this.transitionIdToTransitionEdge.get(oppositeTransitions[0].id);
             transitionEdge.setCurved(isCurved);
@@ -185,7 +189,7 @@ export class Graph {
     addEdge(transition: Transition): void {
         let stateMachine = this.turingMachine.stateMachine;
         let transitionEdge;
-        let transitions = stateMachine.getTransitionsFromStateToState(transition.fromState, transition.toState);
+        let transitions = transition.fromState.getOutTransitionsTo(transition.toState);
 
         if (transitions.length > 1) {
             if (transitions[0].id !== transition.id) {
@@ -280,8 +284,8 @@ export class Graph {
     }
 
     resize(): void {
-        let bbox = this.svg.node().getBoundingClientRect();
-        this.scaleViewBoxTo(bbox.width, bbox.height);
+        let svgBoundingBox = this.svg.node().getBoundingClientRect();
+        this.scaleViewBoxTo(svgBoundingBox.width, svgBoundingBox.height);
     }
 
     removeHandler(): void {

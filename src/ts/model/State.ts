@@ -142,6 +142,13 @@ export class State {
 
         return false;
     }
+
+    getOutTransitionsTo(state: State): Transition[] {
+        return [...this.outTransitions.values()]
+            .filter((t) => {
+                return t.toState === state;
+            });
+    }
     
     hasOutTransitionForSymbol(symbol: TapeSymbol): boolean {
         return this.symbolsToOutTransitions.has(symbol)
