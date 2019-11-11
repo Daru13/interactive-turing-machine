@@ -51,6 +51,9 @@ export class Graph {
         let stateMachine = this.turingMachine.stateMachine;
         stateMachine.getStates().forEach((state: State) => {
             this.addNode(state);
+            if(state.isFinal()){
+                this.editFinalNode(state, true);
+            }
         })
 
         stateMachine.getTransitions().forEach((transition: Transition) => {
