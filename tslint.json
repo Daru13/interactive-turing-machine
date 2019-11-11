@@ -2,7 +2,6 @@
     "rules": {
         "no-var-keyword": true,
         "triple-equals": true,
-        "typeof-compare": true,
         "typedef-whitespace": true,
         "typedef": [true,
             "call-signature",
