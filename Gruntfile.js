@@ -11,9 +11,9 @@ module.exports = function (grunt) {
     // They allow to run external commands (as in a terminal).
     exec: {
       clean: "rm -Rf build .tscache",
-      mkDirs: "mkdir -p build/icons build/img build/svg build/css build/fonts",
+      mkDirs: "mkdir -p build/img build/svg build/css build/fonts",
       copyHTML: "cp -f ./src/index.html build/index.html",
-      copyImg: "cp -f ./src/img/* build/img/",
+      copyImg: "cp -Rf ./src/img/* build/img/",
       copyCSS: "cp -f ./src/css/*.css build/css/",
       copyFonts: "cp -f ./src/fonts/* build/fonts/"
     },

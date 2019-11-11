@@ -195,7 +195,7 @@ body {
     left: 5px;
     top: 5px;
     background-color: transparent;
-    background-image: url(../img/recenter.svg);
+    background-image: url(../img/icons/recenter-graph.svg);
     background-repeat: no-repeat;
     background-size: 100%;
     border: none;
@@ -368,7 +368,7 @@ body {
     width: 50px;
     height: 50px;
     background-color: transparent;
-    background-image: url(../img/close.svg);
+    background-image: url(../img/icons/close.svg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 100%;
@@ -822,11 +822,11 @@ body {
 }
 
 #toolBar #nodeButton {
-    background-image: url("../img/node-icon.svg");
+    background-image: url("../img/icons/node-tool.svg");
 }
 
 #toolBar #edgeButton {
-    background-image: url("../img/edge-icon.svg");
+    background-image: url("../img/icons/edge-tool.svg");
 }
 
 
@@ -840,7 +840,7 @@ body {
     width: 100%;
     height: 100%;
     position: relative;
-    background-image: url("../img/controls-bg.png"), url("../img/tape-container-bg.png");
+    background-image: url("../img/textures/controls-bg.png"), url("../img/textures/tape-container-bg.png");
     background-repeat: no-repeat, repeat-x;
     background-position: center center, center bottom;
 }
@@ -900,19 +900,19 @@ body {
 #control-panel #runButton {
     top: 25px;
     left: 40px;
-    background-image: url(../img/play.svg)
+    background-image: url(../img/icons/run.svg)
 }
 
 #control-panel #runOneStepButton {
     top: 25px;
     left: 105px;
-    background-image: url(../img/play-one.svg)
+    background-image: url(../img/icons/step.svg)
 }
 
 #control-panel #resetButton {
     top: 25px;
     left: 170px;
-    background-image: url(../img/stop.svg)
+    background-image: url(../img/icons/reset.svg)
 }
 
 #control-panel-screen {
@@ -956,14 +956,14 @@ body {
     position: relative;
     overflow-y: hidden;
     overflow-x: hidden;
-    background-image: url("../img/tape-container-bg.png");
+    background-image: url("../img/textures/tape-container-bg.png");
     background-repeat: repeat-x;
     background-position: bottom;
     z-index: 100;
 }
 
 #tapeHolder::after {
-    content: url("../img/tape-scroll.png");
+    content: url("../img/textures/tape-scroll.png");
     position: absolute;
     top: 0;
     right: 0;
@@ -978,14 +978,14 @@ body {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-    background-image: url("../img/tape-bg.png");
+    background-image: url("../img/textures/tape-bg.png");
     background-repeat: repeat-x;
     background-position: 25px center;
     z-index: 500;
 }
 
 #tape::before {
-    content: url("../img/tape-end.png");
+    content: url("../img/textures/tape-end.png");
     position: absolute;
     top: 0;
     left: -25px;
@@ -1076,12 +1076,12 @@ body {
 
 #set-tape-content-button {
     top: 5px;
-    background-image: url(../img/edit-white.svg);
+    background-image: url(../img/icons/edit.svg);
 }
 
 #reset-head-button {
     top: 40px;
-    background-image: url(../img/recenter-head-white.svg);
+    background-image: url(../img/icons/recenter-head.svg);
 }
 
 
