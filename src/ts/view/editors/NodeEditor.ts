@@ -32,6 +32,8 @@ export class NodeEditor extends Editor{
     }
 
     initContent(){
+        let self = this;
+
         this.addLabel("Label", "node-set-label-field");
         this.addTextField(this.turingMachine.stateMachine.getState(this.node.stateID).getLabel(), {
             id: "node-set-label-field",
@@ -39,13 +41,27 @@ export class NodeEditor extends Editor{
         });
 
         this.addLabel("Final state", "node-set-final-button");
-        this.addButton("Final",  () => {
+        this.addButton("",  () => {
             let state = this.turingMachine.stateMachine.getState(this.node.stateID);
-            state.setFinal(!state.isFinal());
+            let newFinalState = !state.isFinal();
+            state.setFinal(newFinalState);
+
+            this.updateFinalButton(newFinalState);
         }, "node-set-final-button");
+        this.updateFinalButton();
 
         this.addLabel("Delete", "node-delete-button");
         this.addButton("Delete", () => {this.deleteNode()}, "node-delete-button");
+    }
+
+    private updateFinalButton(stateIsFinal?: boolean) {
+        if (stateIsFinal === undefined) {
+            let state = this.turingMachine.stateMachine.getState(this.node.stateID);
+            stateIsFinal = state.isFinal();
+        }
+        
+        this.content.select("#node-set-final-button")
+            .text(stateIsFinal ? "Turn off" : "Turn on");
     }
 
     deleteNode(){
