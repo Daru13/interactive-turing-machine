@@ -1,17 +1,17 @@
 import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
 import { CreateEdgeAction } from "../../actions/CreateEdgeAction";
 import { Graph } from "../../graph/Graph";
-import { Node } from "../../graph/Node/Node"; 
+import { Node } from "../../graph/nodes/Node"; 
 import * as d3 from "d3-selection";
 import { TuringMachine } from "../../../model/TuringMachine";
 import { Helpers } from "../../../helpers";
 import { EditNodeAction } from "../../actions/EditNodeAction";
 import { EditTransitionEdgeAction } from "../../actions/EditTransitionEdgeAction";
 import { SetInitialNodeAction } from "../../actions/SetInitialNodeAction";
-import { TransitionEdge } from "../../graph/Edge/TransitionEdge";
-import { StateNode } from "../../graph/Node/StateNode";
-import { GeneratorEdge } from "../../graph/Edge/GeneratorEdge";
-import { GeneratorNode } from "../../graph/Node/GeneratorNode";
+import { TransitionEdge } from "../../graph/edges/TransitionEdge";
+import { StateNode } from "../../graph/nodes/StateNode";
+import { GeneratorEdge } from "../../graph/edges/GeneratorEdge";
+import { GeneratorNode } from "../../graph/nodes/GeneratorNode";
 import { EditGeneratorEdgeAction } from "../../actions/EditGeneratorEdgeAction";
 
 export class EdgeTool {

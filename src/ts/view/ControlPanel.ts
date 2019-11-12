@@ -3,7 +3,7 @@ import { TuringMachine } from "../model/TuringMachine";
 import { Tape } from "./Tape";
 import { ErrorPopup } from "./editors/ErrorPopUp";
 import { TMError } from "../errors/TMError";
-import { EasterEggManager } from "../easterEggs/EasterEggManager";
+import { EasterEggManager } from "../easter-eggs/EasterEggManager";
 
 export class ControlPanel {
     holder: d3.Selection<HTMLDivElement, any, HTMLElement, any>;

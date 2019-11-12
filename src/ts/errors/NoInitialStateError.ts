@@ -1,6 +1,6 @@
 import { TMError } from "./TMError";
 import { TuringMachine } from "../model/TuringMachine";
-import { StateNode } from "../view/graph/Node/StateNode";
+import { StateNode } from "../view/graph/nodes/StateNode";
 
 export class NoInitialStateError extends TMError {
     constructor(turingMachine: TuringMachine) {

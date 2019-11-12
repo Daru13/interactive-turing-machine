@@ -1,7 +1,7 @@
 import { DeleteNodeAction } from "../actions/DeleteNodeAction";
 import { TuringMachine } from "../../model/TuringMachine";
 import { Editor } from "./Editor";
-import { StateNode } from "../graph/Node/StateNode";
+import { StateNode } from "../graph/nodes/StateNode";
 
 export class NodeEditor extends Editor{
     node: StateNode;

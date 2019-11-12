@@ -1,10 +1,10 @@
 import { Tape } from "./Tape";
-import { MouseDispatcher } from "./graphInteraction/tools/MouseDispatcher";
+import { MouseDispatcher } from "./graph-interaction/tools/MouseDispatcher";
 import { Graph } from "./graph/Graph";
 import { TuringMachine } from "../model/TuringMachine";
 import { ControlPanel } from "./ControlPanel";
 import { EventManager } from "../events/EventManager";
-import { PenAndTouchDispatcher } from "./graphInteraction/penAndTouch/PenAndTouchDispatcher";
+import { PenAndTouchDispatcher } from "./graph-interaction/pen-and-touch/PenAndTouchDispatcher";
 import { ChangeInteractionStyle } from "../events/ChangeInteractionStyleEvent";
 import { InteractionStyles } from "./MenuBar";
 

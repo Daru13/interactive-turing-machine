@@ -10,12 +10,12 @@ import { EditFinalStateEvent } from "../../events/EditFinalStateEvent";
 import { TuringMachine } from "../../model/TuringMachine";
 import { NewCurrentStateEvent } from "../../events/NewCurrentStateEvent";
 import { EditStateEvent } from "../../events/EditStateEvent";
-import { GeneratorNode } from "./Node/GeneratorNode";
-import { TransitionEdge } from "./Edge/TransitionEdge";
+import { GeneratorNode } from "./nodes/GeneratorNode";
+import { TransitionEdge } from "./edges/TransitionEdge";
 import { TransitionID, Transition } from "../../model/Transition";
 import { StateID, State } from "../../model/State";
-import { StateNode } from "./Node/StateNode";
-import { GeneratorEdge } from "./Edge/GeneratorEdge";
+import { StateNode } from "./nodes/StateNode";
+import { GeneratorEdge } from "./edges/GeneratorEdge";
 
 export interface GraphDatum { }
 export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, { }>;

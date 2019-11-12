@@ -3,7 +3,7 @@ import { HeadAction } from '../../model/Tape';
 import { StateMachine } from "../../model/StateMachine";
 import { TransitionID, READ_ANY_SYMBOL, WRITE_NO_SYMBOL } from '../../model/Transition';
 import { Editor } from "./Editor";
-import { TransitionEdge } from "../graph/Edge/TransitionEdge";
+import { TransitionEdge } from "../graph/edges/TransitionEdge";
 import { CreateEdgeAction } from "../actions/CreateEdgeAction";
 import { TuringMachine } from "../../model/TuringMachine";
 

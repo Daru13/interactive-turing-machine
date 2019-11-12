@@ -4,7 +4,7 @@ import { Transition, TransitionID } from "../../../model/Transition";
 import { Helpers } from "../../../helpers";
 import { HeadAction, TapeSymbol } from "../../../model/Tape";
 import { Edge } from "./Edge";
-import { StateNode } from "../Node/StateNode";
+import { StateNode } from "../nodes/StateNode";
 
 export class TransitionEdge extends Edge {
     readonly transitionIDs: TransitionID[];

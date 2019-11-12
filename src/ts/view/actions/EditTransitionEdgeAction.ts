@@ -1,6 +1,6 @@
 import { TuringMachine } from "../../model/TuringMachine";
 import { Action } from "./Action";
-import { TransitionEdge } from "../graph/Edge/TransitionEdge";
+import { TransitionEdge } from "../graph/edges/TransitionEdge";
 import { TransitionEdgeEditor } from "../editors/TransitionEdgeEditor";
 
 export class EditTransitionEdgeAction extends Action{

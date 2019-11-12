@@ -3,7 +3,7 @@ import { TapeSymbol, HeadAction } from './Tape';
 import { EventManager } from "../events/EventManager";
 import { EditTransitionEvent } from "../events/EditTransitionEvent";
 import { transition } from 'd3';
-import { TransitionEdge } from '../view/graph/Edge/TransitionEdge';
+import { TransitionEdge } from '../view/graph/edges/TransitionEdge';
 
 export type TransitionID = number;
 

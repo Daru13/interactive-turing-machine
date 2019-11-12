@@ -1,7 +1,7 @@
 import * as d3 from "d3-selection";
 import { StateMachine } from "../../model/StateMachine";
 import { Editor } from "./Editor";
-import { GeneratorEdge } from "../graph/Edge/GeneratorEdge";
+import { GeneratorEdge } from "../graph/edges/GeneratorEdge";
 
 export class GeneratorEdgeEditor extends Editor {
     holder: d3.Selection<HTMLDivElement, { }, HTMLElement, any>;

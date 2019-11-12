@@ -4,8 +4,8 @@ import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
 import * as d3 from "d3-selection";
 import { DeleteEdgeAction } from "../../actions/DeleteEdgeAction";
 import { DeleteNodeAction } from "../../actions/DeleteNodeAction";
-import { TransitionEdge } from "../../graph/Edge/TransitionEdge";
-import { StateNode } from "../../graph/Node/StateNode";
+import { TransitionEdge } from "../../graph/edges/TransitionEdge";
+import { StateNode } from "../../graph/nodes/StateNode";
 
 export class Eraser{
     turingMachine: TuringMachine;
