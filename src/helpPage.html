@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    .section-title{
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+<head>
+    <meta charset="utf-8">
+    <title>Interactive Turing machine - Help</title>
+</head>
+
+<body id="body">
+    <!-- Content goes here! -->
+    <h1>Graph</h1>
+    
+    The graph is the central part of the application. In that part, you can draw a state machine.
+    
+    <div class="section-title">
+        <img src="./img/helpPage/state-node.png" alt="State" height="42">
+        <h2 id="node">Node</h2>
+    </div>
+    A node in the graph represents a state of the Turing machine. 
+    
+    When you click on the node, a pop up appears. In that popup you can change:
+    <ul>
+        <li>the name of the state;</li>
+        <li>if the state is final, i.e. if the Turing machine stops when reaching this state. When the state is final, the node will looks like <img src="./img/helpPage/state-node-final.png" alt="Final State" height="42">;</li>
+        <li>delete the state.</li>
+    </ul>
+
+    When the Turing machine is running, the node of the current state will looks like :<img src="./img/helpPage/state-node-current.png" alt="Current State" height="42">.
+
+    To set a state as an initial state, draw a transition from the <a href="#generator">generator</a> to the node.
+
+    <div class="section-title">
+        <img src="./img/helpPage/generator.png" alt="State" height="42">
+        <h2 id="generator">Generator</h2>
+    </div>
+    When linking a node to the generator, the corresponding state will be set as the initial state of the machine.
+
+    <h2 id="transition">Transition</h2>
+    Between two nodes, you can draw one edge. One edge correspond to one or more transitions in between the two corresponding states. If the edge represents one transition only, it would looks like <img src="./img/helpPage/transition.png" alt="State" height="42">, if the edge represents two transitions or more, it would look like <img src="./img/helpPage/transition-thicker.png" alt="State" height="42">.
+
+    When you click the edge, you can set for each corresponding transition:
+    <ul>
+        <li>the symbol to read from the tape to go through this transition;</li>
+        <li>the symbol to write on the tape when going through this transition;</li>
+        <li>the movement of the head of the tape to do after going through this transition;</li>
+        <li>delete the transition.</li>
+    </ul>
+
+    <h1>Tape</h1>
+
+    <h1>Import/Export</h1>
+    <h2>Import</h2>
+    <h2>Export</h2>
+
+    <h1>Interaction Mode</h1>
+</body>
+</html>

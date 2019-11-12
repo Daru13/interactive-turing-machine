@@ -130,7 +130,7 @@ body {
     grid-area: menu;
     display: grid;
     grid-template-rows: auto;
-    grid-template-columns: 160px 90px 90px auto 280px;
+    grid-template-columns: 160px 90px 90px auto 280px 40px;
     gap: 10px;
     background-color: #3b3c3d;
     color: #FFF;
@@ -172,6 +172,11 @@ body {
 #switch-interaction-style-button {
     grid-row: 1;
     grid-column: 5;
+}
+
+#help-button {
+    grid-row: 1;
+    grid-column: 6;
 }
 
 

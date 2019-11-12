@@ -45,6 +45,13 @@ export class MenuBar {
                 interactionStyleSwitch.text(getInteractionStyleSwitchText());
             });
 
+        // Help button 
+        menuBar.append("a")
+            .attr("id", "help-button")
+            .attr("href", "../../helpPage.html")
+            .attr("target", "_blank")
+            .text("Help");
+
         // Import and export
         menuBar.append("button")
             .attr("id", "import-model-button")
