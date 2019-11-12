@@ -5,6 +5,11 @@
         display: flex;
         align-items: center;
     }
+
+    ul.image-list > li{
+        display: flex;
+        align-items: center;
+    }
 </style>
 
 <head>
@@ -15,16 +20,17 @@
 <body id="body">
     <!-- Content goes here! -->
     <h1>Interactive Turing Machine - Help</h1>
-    In our application we have three main parts:
+    In our application we have four main parts:
     <ul>
         <li>A menu bar at the top with an <a href="#import">import button</a>, an <a href="#export">export button</a>, a <a href="#interaction-modes">button to change the interaction mode</a> and a button to open this page.</li>
         <li>A <a href="#graph">graph</a></li>
         <li>A <a href="#tape">tape</a></li>
+        <li>A <a href="#control-buttons">Turing machine control panel</a></li>
     </ul>
 
     <h1 id="graph">Graph</h1>
     
-    The graph is the central part of the application. In that part, you can draw a state machine. 
+    The graph is the central part of the application <img src="./img/helpPage/graph.png" alt="State" height="42">. In that part, you can draw a state machine. 
 
     You can pan the graph by dragging the background of the graph. To go back to the initial position of the graph, click on the top left button: <img src="./img/helpPage/recenter-graph.png" alt="State" height="42">.
     
@@ -65,12 +71,23 @@
 
 
     <h1 id="tape">Tape</h1>
-    The tape is the bottom part of our application. It can be dragged and scroll. It contains cells <img src="./img/helpPage/cells.png" alt="State" height="42">. If you click on a cell, you can set one character as the content of the cell.
+    The tape is the bottom left part of our application <img src="./img/helpPage/tape.png" alt="State" height="42">. It can be dragged and scroll. It contains cells <img src="./img/helpPage/cell.png" alt="State" height="42">. If you click on a cell, you can set one character as the content of the cell.
 
     At the left of the tape you can see two buttons <img src="./img/helpPage/tape-buttons.png" alt="State" height="42">: 
-    <ul>
-    <li>The first one allow you to input a string to fill the tape. Each character of the string provided will fill one cell.</li>
-    <li>The second one allows you to recenter the tape at the current cell, i.e. the next cell that the Turing machine will read.</li>
+    <ul class="image-list">
+    <li><img src="./img/helpPage/import-tape.png" alt="State" height="42">: The first one allow you to input a string to fill the tape. Each character of the string provided will fill one cell.</li>
+    <li><img src="./img/helpPage/reset-head.png" alt="State" height="42">: The second one allows you to recenter the tape at the current cell, i.e. the next cell that the Turing machine will read.</li>
+    </ul>
+
+    
+
+    <h1 id="control-buttons">Turing Machine Control Panel</h1>
+    The Turing machine control panel is the bottom right part of our application <img src="./img/helpPage/control-buttons.png" alt="State" height="42">.
+    The three buttons from left to right correspond to:
+    <ul class="image-list">
+        <li><img src="./img/helpPage/run-button.png" alt="State" height="42">: Run the Turing machine until it crashes, arrives to a final state or did 1000 steps.</li>
+        <li><img src="./img/helpPage/run-one-step-button.png" alt="State" height="42">: Run the Turing machine for one step.</li>
+        <li><img src="./img/helpPage/reset-button.png" alt="State" height="42">: Reset the Turing machine.</li>
     </ul>
 
 
@@ -90,12 +107,15 @@
 
     <h2>Mouse Interaction</h2>
     In the mouse mode, you will see on the side of the <a href="#graph">graph</a> a tool bar with two tools <img src="./img/helpPage/tool-bar.png" alt="State" height="42">:
-    <ul>
-        <li>The first one is the node tool. With that tool you can: <ul>
-            <li>Add a node by clicking on the graph</li>
-            <li>Move a node by dragging a node</li>
-        </ul></li>
-        <li>The second one is the edge tool. With that tool you can: <ul>
+    <ul class="image-list">
+        <li><img src="./img/helpPage/node-tool.png" alt="State" height="42">: The first one is the node tool. With that tool you can: 
+            <ul>
+                <li>Add a node by clicking on the graph</li>
+                <li>Move a node by dragging a node</li>
+            </ul>
+        </li>
+        <li><img src="./img/helpPage/edge-tool.png" alt="State" height="42">: The second one is the edge tool. With that tool you can: 
+            <ul>
                 <li>Add a transition by dragging from one node to another</li>
             </ul>
         </li>
