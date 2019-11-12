@@ -32,6 +32,7 @@ export class ControlPanel {
         this.holder = d3.select("#control-panel");
         this.holder.append("button")
             .attr("id", "run-turing-machine-button")
+            .attr("title", "Simulate the machine")
             .on("click", () => {
                 tape.moveToCell(tm.tape.getHeadPosition());
 
@@ -50,6 +51,7 @@ export class ControlPanel {
 
         this.holder.append("button")
             .attr("id", "step-turing-machine-button")
+            .attr("title", "Simulate one computation step")
             .on("click", () => {
                 tape.moveToCell(tm.tape.getHeadPosition());
 
@@ -67,6 +69,7 @@ export class ControlPanel {
 
         this.holder.append("button")
             .attr("id", "reset-turing-machine-button")
+            .attr("title", "Reset the machine and rewind the tape")
             .on("click", () => {
                 tm.reset();
                 this.updateScreen();

@@ -13,8 +13,8 @@ export class ToolBar {
     }
 
     setupUI(): void {
-        this.nodeToolButton = this.addButton("nodeButton");
-        this.edgeToolButton = this.addButton("edgeButton");
+        this.nodeToolButton = this.addButton("nodeButton", "State tool");
+        this.edgeToolButton = this.addButton("edgeButton", "Transition tool");
 
         this.setInteraction();
         this.selectTool(toolName.NODE_TOOL, this.nodeToolButton);
@@ -28,10 +28,12 @@ export class ToolBar {
             this.selectTool(toolName.EDGE_TOOL, this.edgeToolButton);
         });
     }
-
-    addButton(id: string): d3.Selection<HTMLButtonElement, any, any, any> {
+    
+    addButton(id: string, description: string): d3.Selection<HTMLButtonElement, any, any, any> {
         return d3.select("#toolbar")
-            .append("button").attr("id", id);
+            .append("button")
+                .attr("id", id)
+                .attr("title", description);
     }
 
     selectTool(id: toolName, buttonToSelect: d3.Selection<HTMLButtonElement, any, any, any>): void {

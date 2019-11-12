@@ -71,6 +71,7 @@ export class Tape {
         // Button to reset the position of the head
         container.append("button")
             .attr("id", "reset-head-button")
+            .attr("title", "Scroll the tape to the current cell")
             .on("click", () => {
                 this.moveToCell(this.turingMachine.tape.getHeadPosition());
             });
@@ -78,6 +79,7 @@ export class Tape {
         // Button to edit the content of the tape as text
         container.append("button")
             .attr("id", "set-tape-content-button")
+            .attr("title", "Edit the content of the tape as text")
             .on("click", () => {
                 new TapeContentEditorPopup(this.turingMachine.tape);
             });
