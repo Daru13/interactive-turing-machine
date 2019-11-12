@@ -4,6 +4,7 @@ import { Main } from "../main";
 import { EventManager } from "../events/EventManager";
 import { ChangeInteractionStyle } from "../events/ChangeInteractionStyleEvent";
 import { ImportPopup } from "./editors/ImportPopup";
+import { LoadExamplePopup } from './editors/LoadExamplePopup';
 
 export enum InteractionStyles {
     MOUSE = 0,
@@ -67,19 +68,13 @@ export class MenuBar {
                 new ExportPopup(this.main.turingMachine);
             });
 
-        // Loading
-        let predefinedModelsList = menuBar.append("select")
-            .attr("id", "predefined-models-list")
-            .on("change", () => {
-                // TODO
+        // Example loading button
+        menuBar.append("button")
+            .attr("id", "load-example-button")
+            .text("Load example")
+            .on("click", () => {
+                new LoadExamplePopup(this.main);
             });
-
-        // TODO: fetch actual, predefined models from somewhere
-        let models = ["Test 1", "Test 2", "Test 3"];
-        for (let model of models) {
-            predefinedModelsList.append("option")
-                .text(model);
-        }
     }
 
     switchInteractionStyle(): void {

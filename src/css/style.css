@@ -688,6 +688,53 @@ body {
 
 
 /******************************************************************
+/* LOAD EXAMPLE POPUP
+/*****************************************************************/
+
+#example-machine-list {
+    min-width: 600px;
+    padding: 10px;
+}
+
+#example-machine-list .example-machine {
+    position: relative;
+    margin: 0 0 10px 0;
+    padding: 10px;
+    background-color: #eef6f6;
+    border: 2px solid #555;
+}
+
+#example-machine-list .example-machine:last-child {
+    margin-bottom: 0;
+}
+
+#example-machine-list .example-machine .title {
+    display: inline-block;
+    margin: 10px 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+#example-machine-list .example-machine .author {
+    display: inline-block;
+    margin: 0 0 0 10px;
+    font-size: 1.1rem;
+    font-style: italic;
+}
+
+#example-machine-list .example-machine .description {
+
+}
+
+#example-machine-list .example-machine .load-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+
+
+/******************************************************************
 /* TAPE EDITOR POPUP
 /*****************************************************************/
 
