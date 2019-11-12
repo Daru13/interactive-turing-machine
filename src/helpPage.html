@@ -14,9 +14,19 @@
 
 <body id="body">
     <!-- Content goes here! -->
-    <h1>Graph</h1>
+    <h1>Interactive Turing Machine - Help</h1>
+    In our application we have three main parts:
+    <ul>
+        <li>A menu bar at the top with an <a href="#import">import button</a>, an <a href="#export">export button</a>, a <a href="#interaction-modes">button to change the interaction mode</a> and a button to open this page.</li>
+        <li>A <a href="#graph">graph</a></li>
+        <li>A <a href="#tape">tape</a></li>
+    </ul>
+
+    <h1 id="graph">Graph</h1>
     
-    The graph is the central part of the application. In that part, you can draw a state machine.
+    The graph is the central part of the application. In that part, you can draw a state machine. 
+
+    You can pan the graph by dragging the background of the graph. To go back to the initial position of the graph, click on the top left button: <img src="./img/helpPage/recenter-graph.png" alt="State" height="42">.
     
     <div class="section-title">
         <img src="./img/helpPage/state-node.png" alt="State" height="42">
@@ -52,12 +62,57 @@
         <li>delete the transition.</li>
     </ul>
 
-    <h1>Tape</h1>
+
+
+    <h1 id="tape">Tape</h1>
+    The tape is the bottom part of our application. It can be dragged and scroll. It contains cells <img src="./img/helpPage/cells.png" alt="State" height="42">. If you click on a cell, you can set one character as the content of the cell.
+
+    At the left of the tape you can see two buttons <img src="./img/helpPage/tape-buttons.png" alt="State" height="42">: 
+    <ul>
+    <li>The first one allow you to input a string to fill the tape. Each character of the string provided will fill one cell.</li>
+    <li>The second one allows you to recenter the tape at the current cell, i.e. the next cell that the Turing machine will read.</li>
+    </ul>
+
+
 
     <h1>Import/Export</h1>
-    <h2>Import</h2>
-    <h2>Export</h2>
+    In the menu bar at the top, you can see two buttons: Import and Export.
+    <h2 id="import">Import</h2>
+    The import button is used to load a Turing Machine from a JSon.
+    <h2 id="export">Export</h2>
+    The export button is used to export the current Turing machine as a JSon
 
-    <h1>Interaction Mode</h1>
+
+
+
+    <h1 id="interaction-modes">Interaction Mode</h1>
+    In our application, we support two interaction types: mouse interaction and Pen & Touch interaction.
+
+    <h2>Mouse Interaction</h2>
+    In the mouse mode, you will see on the side of the <a href="#graph">graph</a> a tool bar with two tools <img src="./img/helpPage/tool-bar.png" alt="State" height="42">:
+    <ul>
+        <li>The first one is the node tool. With that tool you can: <ul>
+            <li>Add a node by clicking on the graph</li>
+            <li>Move a node by dragging a node</li>
+        </ul></li>
+        <li>The second one is the edge tool. With that tool you can: <ul>
+                <li>Add a transition by dragging from one node to another</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>Pen & Touch Interaction</h2>
+    In the pen & touch mode:
+    <ul>
+        <li>By using your finger you can: <ul>
+                <li>Add a node by clicking on the graph</li>
+                <li>Move a node by dragging a node</li>
+            </ul>
+        </li>
+        <li>By using the pen you can: <ul>
+                <li>Add a transition by drawing a line from one node to another</li>
+            </ul>
+        </li>
+    </ul>
 </body>
 </html>
