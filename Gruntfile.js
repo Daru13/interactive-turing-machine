@@ -12,7 +12,7 @@ module.exports = function (grunt) {
     exec: {
       clean: "rm -Rf build .tscache",
       mkDirs: "mkdir -p build/img build/svg build/css build/fonts",
-      copyHTML: "cp -f ./src/index.html build/index.html",
+      copyHTML: "cp -f ./src/*.html build/",
       copyImg: "cp -Rf ./src/img/* build/img/",
       copyCSS: "cp -f ./src/css/*.css build/css/",
       copyFonts: "cp -f ./src/fonts/* build/fonts/"
