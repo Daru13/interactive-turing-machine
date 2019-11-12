@@ -1,5 +1,4 @@
 import { Popup } from "./Popup";
-import { TuringMachine } from "../../model/TuringMachine";
 import { Tape } from "../../model/Tape";
 
 export class TapeContentEditorPopup extends Popup {

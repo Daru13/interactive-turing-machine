@@ -1,9 +1,10 @@
 import * as d3 from "d3-selection";
+import { Selection } from "../../helpers";
 
 export class Popup{
-    holder: d3.Selection<HTMLDivElement, { }, HTMLElement, { }>;
-    maskBackground: d3.Selection<HTMLDivElement, { }, HTMLElement, { }>;
-    content: d3.Selection<HTMLDivElement, { }, HTMLElement, { }>;
+    holder: Selection<HTMLDivElement, Element, Object, Object>;
+    maskBackground: Selection<HTMLDivElement, Element, Object, Object>;
+    content: Selection<HTMLDivElement>;
 
     private title: string;
     private onClose: () => void;

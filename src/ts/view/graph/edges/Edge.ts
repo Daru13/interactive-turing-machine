@@ -1,6 +1,6 @@
 import { Graph } from "../Graph";
 import * as d3 from "d3-selection";
-import { Helpers } from "../../../helpers";
+import { Helpers, Selection } from "../../../helpers";
 
 export type EdgeId = String;
 
@@ -153,11 +153,11 @@ export abstract class Edge{
         this.handleSelection.classed("not-valid", true);
     }
 
-    static isEdge(selection: d3.Selection<any, any, any, any>): boolean {
+    static isEdge(selection: Selection<any>): boolean {
         return selection.datum() !== undefined && selection.datum()["edge"] !== undefined;
     }
 
-    static getEdge(selection: d3.Selection<any, any, any, any>): Edge {
+    static getEdge(selection: Selection<any>): Edge {
         if (Edge.isEdge(selection)) {
             return selection.datum()["edge"];
         }

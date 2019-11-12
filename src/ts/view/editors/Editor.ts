@@ -2,6 +2,7 @@ import * as d3 from "d3-selection";
 import { Popup } from "./Popup";
 import { Edge } from "../graph/edges/Edge";
 import { Node } from "../graph/nodes/Node";
+import { Selection } from "../../helpers";
 
 type GraphElement = Node | Edge;
 
@@ -42,14 +43,14 @@ export class Editor extends Popup{
         this.setMaxSizeContent(maxHeight);
     }
 
-    addLabel(text: string, forAttribute: string, parent: d3.Selection<HTMLElement, any, any, any> = this.content): void {
+    addLabel(text: string, forAttribute: string, parent: Selection<HTMLElement> = this.content): void {
         let label = parent
             .append("label")
             .attr("for", forAttribute)
             .text(text);
     }
 
-    addButton(text: string, callback: () => void, id: string = null, classElement: string = null, parent: d3.Selection<HTMLElement, any, any, any> = this.content): void {
+    addButton(text: string, callback: () => void, id: string = null, classElement: string = null, parent: Selection<HTMLElement> = this.content): void {
         let button = 
             parent
                 .append("button")
@@ -63,7 +64,7 @@ export class Editor extends Popup{
         }
     }
 
-    addTextField(value: string, attributes: Record<string, string>, parent: d3.Selection<HTMLElement, any, any, any> = this.content): void {
+    addTextField(value: string, attributes: Record<string, string>, parent: Selection<HTMLElement> = this.content): void {
         let textField =
             parent
                 .append("input")

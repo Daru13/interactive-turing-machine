@@ -8,7 +8,6 @@ import { CreateEdgeAction } from "../actions/CreateEdgeAction";
 import { TuringMachine } from "../../model/TuringMachine";
 
 export class TransitionEdgeEditor extends Editor{
-    holder: d3.Selection<HTMLDivElement, { }, HTMLElement, any>;
     edge: TransitionEdge;
     stateMachine: StateMachine;
     turingMachine: TuringMachine;

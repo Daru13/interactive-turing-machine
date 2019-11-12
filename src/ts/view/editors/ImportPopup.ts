@@ -1,5 +1,4 @@
 import { Popup } from "./Popup";
-import { TuringMachine } from "../../model/TuringMachine";
 import { Main } from "../../main";
 
 export class ImportPopup extends Popup {

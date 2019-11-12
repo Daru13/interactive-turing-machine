@@ -1,4 +1,6 @@
-export function addGenerator(holder: d3.Selection<SVGElement, any, any, any>, r: number): void {
+import { Selection } from "../../helpers";
+
+export function addGenerator(holder: Selection<SVGElement>, r: number): void {
     //size of drawing: 115
     holder.append("g")
         .attr("transform", "scale(" + (2 * r / 115).toString() + ")")
