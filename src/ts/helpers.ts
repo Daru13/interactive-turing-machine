@@ -1,6 +1,13 @@
 import { ModifiedPointerEvent } from "./events/ModifiedPointerEvent";
 import { Graph } from "./view/graph/Graph";
 
+export interface Selection<
+	E extends Element,
+	P extends Element = Element,
+	EDatum extends object = object,
+	PDatum extends object = object
+> extends d3.Selection<E, EDatum, P, PDatum> { }
+
 export interface Point {
 	x: number;
 	y: number;
