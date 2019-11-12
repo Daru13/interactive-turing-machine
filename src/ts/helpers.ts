@@ -1,16 +1,21 @@
 import { ModifiedPointerEvent } from "./events/ModifiedPointerEvent";
 import { Graph } from "./view/graph/Graph";
 
+export interface Point {
+	x: number;
+	y: number;
+}
+
 export class Helpers{
-    static distance2(p1: { x: number, y: number }, p2: { x: number, y: number }): number {
+    static distance2(p1: Point, p2: Point): number {
 		return Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
 	}
 
-    static norm2(v: { x: number, y: number }): number {
+    static norm2(v: Point): number {
 		return Math.sqrt(v.x * v.x + v.y * v.y);
 	}
 
-    static angleToXAxis(p1: { x: number, y: number }, p2: { x: number, y: number }): number {
+    static angleToXAxis(p1: Point, p2: Point): number {
 		return Math.atan2(p2.y - p1.y, p2.x - p1.x);
 	}
 
