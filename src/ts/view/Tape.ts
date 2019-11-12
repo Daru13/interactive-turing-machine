@@ -96,7 +96,7 @@ export class Tape {
             .classed("cell", true);
         cell.append("label")
             .attr("for", `cell-${index}-input`)
-            .text(index);
+            .text(index + 1);
         cell.append("input")
             .attr("type", "text")
             .attr("id", `cell-${index}-input`)
