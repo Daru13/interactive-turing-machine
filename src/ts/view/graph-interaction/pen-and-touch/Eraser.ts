@@ -1,6 +1,6 @@
 import { Graph } from "../../graph/Graph";
 import { TuringMachine } from "../../../model/TuringMachine";
-import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
+import { ModifiedPointerEvent } from "../ModifiedPointerEvent";
 import * as d3 from "d3-selection";
 import { DeleteEdgeAction } from "../../actions/DeleteEdgeAction";
 import { DeleteNodeAction } from "../../actions/DeleteNodeAction";

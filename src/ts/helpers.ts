@@ -1,4 +1,4 @@
-import { ModifiedPointerEvent } from "./events/ModifiedPointerEvent";
+import { ModifiedPointerEvent } from "./view/graph-interaction/ModifiedPointerEvent";
 import { Graph } from "./view/graph/Graph";
 
 export interface Selection<

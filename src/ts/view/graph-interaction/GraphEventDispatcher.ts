@@ -1,7 +1,7 @@
 import { Graph } from "../graph/Graph";
 import { TuringMachine } from "../../model/TuringMachine";
 import { Helpers } from "../../helpers";
-import { ModifiedPointerEvent } from "../../events/ModifiedPointerEvent";
+import { ModifiedPointerEvent } from "./ModifiedPointerEvent";
 
 export abstract class GraphEventDispatcher {
     readonly graph: Graph;

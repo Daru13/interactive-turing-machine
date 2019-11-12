@@ -1,7 +1,7 @@
 import * as d3 from "d3-selection";
 import { Graph } from "../../graph/Graph";
 import { TuringMachine } from "../../../model/TuringMachine";
-import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
+import { ModifiedPointerEvent } from "../ModifiedPointerEvent";
 import { CreateNodeAction } from "../../actions/CreateNodeAction";
 import { EditNodeAction } from "../../actions/EditNodeAction";
 import { TransitionEdge } from "../../graph/edges/TransitionEdge";

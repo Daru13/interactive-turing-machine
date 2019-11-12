@@ -1,4 +1,4 @@
-import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
+import { ModifiedPointerEvent } from "../ModifiedPointerEvent";
 import { EdgeTool } from "../tools/EdgeTool";
 import { Graph } from "../../graph/Graph";
 import { TuringMachine } from "../../../model/TuringMachine";

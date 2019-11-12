@@ -1,4 +1,4 @@
-import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
+import { ModifiedPointerEvent } from "../ModifiedPointerEvent";
 import { CreateEdgeAction } from "../../actions/CreateEdgeAction";
 import { Graph } from "../../graph/Graph";
 import { Node } from "../../graph/nodes/Node"; 

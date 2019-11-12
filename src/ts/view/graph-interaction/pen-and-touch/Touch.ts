@@ -1,6 +1,6 @@
 import { Graph } from "../../graph/Graph";
 import { TuringMachine } from "../../../model/TuringMachine";
-import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
+import { ModifiedPointerEvent } from "../ModifiedPointerEvent";
 import { NodeTool } from "../tools/NodeTool";
 
 export class Touch{

@@ -1,6 +1,6 @@
 import { TuringMachine } from "../../../model/TuringMachine";
 import { Graph } from "../../graph/Graph";
-import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
+import { ModifiedPointerEvent } from "../ModifiedPointerEvent";
 import { Pen } from "./Pen";
 import { Eraser } from "./Eraser";
 import { Touch } from "./Touch";

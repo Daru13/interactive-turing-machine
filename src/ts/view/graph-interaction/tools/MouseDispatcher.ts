@@ -1,6 +1,6 @@
 import { TuringMachine } from "../../../model/TuringMachine";
 import { Graph } from "../../graph/Graph";
-import { ModifiedPointerEvent } from "../../../events/ModifiedPointerEvent";
+import { ModifiedPointerEvent } from "../ModifiedPointerEvent";
 import { ToolBar } from "./ToolBar";
 import { EdgeTool } from "./EdgeTool";
 import { NodeTool } from "./NodeTool";
