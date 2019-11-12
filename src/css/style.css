@@ -821,11 +821,11 @@ body {
     border: 4px solid #333;
 }
 
-#toolbar #nodeButton {
+#toolbar #node-button {
     background-image: url("../img/icons/node-tool.svg");
 }
 
-#toolbar #edgeButton {
+#toolbar #edge-button {
     background-image: url("../img/icons/edge-tool.svg");
 }
 
