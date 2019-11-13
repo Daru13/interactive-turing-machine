@@ -6,13 +6,17 @@ import { ChangeInteractionStyle } from "../events/ChangeInteractionStyleEvent";
 import { ImportPopup } from "./editors/ImportPopup";
 import { LoadExamplePopup } from './editors/LoadExamplePopup';
 
+/** Possible interaction styles in our application */
 export enum InteractionStyles {
     MOUSE = 0,
     PEN_AND_TOUCH = 1
 }
 
+/** A class to create a menu bar for the application */
 export class MenuBar {
+    /** the application */
     main: Main;
+    /** current interaction style. Mouse by default */
     interactionStyle: InteractionStyles;
 
     constructor(main: Main) {
@@ -22,6 +26,9 @@ export class MenuBar {
         this.setupMenu();
     }
 
+    /**
+     * Setups the menu bar: an import button, an export button, a title, a button to change interaction style and a button to open the help page
+     */
     setupMenu(): void {
         let t = this;
         let menuBar = d3.select("#menu");
@@ -77,6 +84,9 @@ export class MenuBar {
             });
     }
 
+    /**
+     * Switchs the interaction style
+     */
     switchInteractionStyle(): void {
         this.interactionStyle = (this.interactionStyle + 1) % 2;
         EventManager.emit(new ChangeInteractionStyle(this.interactionStyle));

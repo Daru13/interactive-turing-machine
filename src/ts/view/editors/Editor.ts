@@ -4,9 +4,14 @@ import { Edge } from "../graph/edges/Edge";
 import { Node } from "../graph/nodes/Node";
 import { Selection } from "../../helpers";
 
+
 type GraphElement = Node | Edge;
 
+/**
+ * A class to create an editor for an element in the graph
+ */
 export class Editor extends Popup{
+    /** element edited in this editor */
     element: GraphElement;
 
     constructor(element: GraphElement) {
@@ -17,6 +22,9 @@ export class Editor extends Popup{
         this.setOnClose(() => { });
     }
 
+    /**
+     * Inits position of the editor centered under the this.element
+     */
     initPosition(): void {
         let elementBoudingBox = this.element.handleSelection.node().getBoundingClientRect();
         let editorBoundingBox = this.holder.node().getBoundingClientRect();
@@ -40,9 +48,15 @@ export class Editor extends Popup{
             .style("left", (left).toString() + "px");
         
         let maxHeight = windowHeight - this.content.node().getBoundingClientRect().top;
-        this.setMaxSizeContent(maxHeight);
+        this.setMaxHeightContent(maxHeight);
     }
 
+    /**
+     * Adds an HTML label
+     * @param text the text of the label
+     * @param forAttribute for attribute of the label
+     * @param parent parent of the holder
+     */
     addLabel(text: string, forAttribute: string, parent: Selection<HTMLElement> = this.content): void {
         let label = parent
             .append("label")
@@ -50,6 +64,14 @@ export class Editor extends Popup{
             .text(text);
     }
 
+    /**
+     * Adds a html button
+     * @param text text of the button
+     * @param callback function called when the button is cliked
+     * @param id id of the button
+     * @param classElement class of the button
+     * @param parent parent of the button
+     */
     addButton(text: string, callback: () => void, id: string = null, classElement: string = null, parent: Selection<HTMLElement> = this.content): void {
         let button = 
             parent
@@ -64,6 +86,12 @@ export class Editor extends Popup{
         }
     }
 
+    /**
+     * Adds a html text field
+     * @param value the value of the text field
+     * @param attributes the different attributes of the text field
+     * @param parent the parent of the text field 
+     */
     addTextField(value: string, attributes: Record<string, string>, parent: Selection<HTMLElement> = this.content): void {
         let textField =
             parent
@@ -88,6 +116,10 @@ export class Editor extends Popup{
         } 
     }
 
+    /**
+     * Sets the function to execute when closing the editor
+     * @param onClose function executed when the editor is closing
+     */
     setOnClose(onClose: () => void): void {
         super.setOnClose(() => {
             //this.element.classed("selected", false);

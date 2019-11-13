@@ -4,13 +4,20 @@ import { State, StateID } from "../../../model/State";
 import { addLamp } from "../../custom-shapes/lamps";
 import { Node } from "./Node";
 
+/**
+ * Possible types of node
+ */
 export enum StateNodeType {
     STANDARD = "standard",
     START = "start",
     FINAL = "final"
 }
 
+/**
+ * A class to represent a state of the turing machine as a node in the graph
+ */
 export class StateNode extends Node{
+    /** id of the state node */
     readonly stateID: StateID;
 
     constructor(graph: Graph, state: State) {
@@ -21,6 +28,10 @@ export class StateNode extends Node{
         this.initStateNode(state);
      }
 
+    /**
+     * Inits the state node by adding a lamp (lamp.ts) and creating a falling animation for the node
+     * @param state state represented by the node
+     */
     initStateNode(state: State): void {
         super.init();
 
@@ -34,7 +45,7 @@ export class StateNode extends Node{
             .attr("r", Graph.sizeNode + 2)
             .classed("shadow", true);
 
-        addLamp(this.handleSelection, Graph.sizeNode, "nodeCircle");
+        addLamp(this.handleSelection, "nodeCircle");
 
         this.handleSelection.on("animationend", () => {
             this.handleSelection.classed("created", false);
@@ -47,6 +58,11 @@ export class StateNode extends Node{
         this.translateTo(position.x, position.y);
     }
 
+    /**
+     * Determines whether a d3 selection is a state node
+     * @param selection d3 selection to test
+     * @returns true if is a state node 
+     */
     static isStateNode(selection: d3.Selection<any, any, any, any>): boolean {
         if (Node.isNode(selection)) {
             if (Node.getNode(selection) instanceof StateNode) {
@@ -56,6 +72,11 @@ export class StateNode extends Node{
         return false;
     }
 
+    /**
+     * Gets the state node containing the d3 selection
+     * @param selection d3 selection of a part of a state node
+     * @returns state node 
+     */
     static getStateNode(selection: d3.Selection<any, any, any, any>): StateNode {
         if (Node.isNode(selection)) {
             let node = Node.getNode(selection);
@@ -66,27 +87,49 @@ export class StateNode extends Node{
         throw "StateNode.ts (getStateNode): Selection is not part of a stateNode";
     }
 
-    isInitialState(): boolean {
+    /**
+     * Determines whether the node is initial
+     * @returns true if is initial 
+     */
+    isInitialNode(): boolean {
         return this.handleSelection.classed("start");
     }
 
-    setInitialState(isInital: boolean): void {
+    /**
+     * Sets the node as initial or not
+     * @param isInital 
+     */
+    setInitialNode(isInital: boolean): void {
         this.handleSelection.classed("start", isInital);
     }
 
-    setFinalState(isFinal: boolean): void {
+    /**
+     * Sets the node as final or not
+     * @param isFinal 
+     */
+    setFinalNode(isFinal: boolean): void {
         this.handleSelection.classed("final", isFinal);
     }
 
+    /**
+     * Reset the current node of the class
+     */
     static resetCurrentNode(): void {
         d3.selectAll(".current").classed("current", false);
     }
 
+    /**
+     * Sets the node as the current node
+     */
     setCurrentNode(): void {
         StateNode.resetCurrentNode();
         this.handleSelection.classed("current", true);
     }
 
+    /**
+     * Display the label of the node
+     * @param label label to display
+     */
     setLabel(label: string): void {
         let textToDisplay = label;
         if (textToDisplay.length > 10) {
@@ -95,6 +138,9 @@ export class StateNode extends Node{
         this.handleSelection.select("#label-text").text(textToDisplay);
     }
 
+    /**
+     * Invalidates the state node and every edges going from this node
+     */
     invalidate(): void {
         super.invalidate();
 
@@ -111,6 +157,9 @@ export class StateNode extends Node{
         }
     }
 
+    /**
+     * Validates the state node and every edges going from this node
+     */
     validate(): void {
         super.validate();
 
@@ -127,6 +176,9 @@ export class StateNode extends Node{
         }
     }
 
+    /**
+     * Updates if a state node is valid or not. A state node is not valid if the corresponding is not deterministic
+     */
     updateValidateProperty(): void {
         if (this.graph.turingMachine.stateMachine.getState(this.stateID).isDeterministic()) {
             this.validate();

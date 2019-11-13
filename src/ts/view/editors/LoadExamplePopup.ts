@@ -8,8 +8,11 @@ interface ExampleMachine {
     readonly json: string;
 }
 
+/** a pop up to load predefined turing machine */
 export class LoadExamplePopup extends Popup {
+    /** the application */
     private main: Main;
+    /** list of predefined turing machines */
     private examples: ExampleMachine[];
 
     constructor(main: Main) {
@@ -19,6 +22,9 @@ export class LoadExamplePopup extends Popup {
         this.init();
     }
 
+    /**
+     * Inits the load example popup
+     */
     private init(): void {
         this.setTitle("Load an example machine");
         this.holder.attr("id", "load-example-machine-popup");
@@ -29,6 +35,9 @@ export class LoadExamplePopup extends Popup {
         this.center();
     }
 
+    /**
+     * Inits predefined turing machine
+     */
     private initExamples(): void {
         this.examples = [
             // Add loadable machines here
@@ -41,6 +50,9 @@ export class LoadExamplePopup extends Popup {
         ];
     }
 
+    /**
+     * Display the list of possible predefined turing machine
+     */
     private addExampleList(): void {
         let list = this.content.append("div")
             .attr("id", "example-machine-list");

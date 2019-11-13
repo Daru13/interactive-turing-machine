@@ -6,7 +6,11 @@ import { Eraser } from "./Eraser";
 import { Touch } from "./Touch";
 import { GraphEventDispatcher } from "../GraphEventDispatcher";
 
+/**
+ * A class to dispatch event based on type of the pointer used in Pen and touch interaction
+ */
 export class PenAndTouchDispatcher extends GraphEventDispatcher{
+    /** Event id to the corresponding pen, touch or eraser */
     readonly idToPenAndTouch: Record<string, any>;
 
     constructor(graph: Graph, turingMachine: TuringMachine) {
@@ -14,6 +18,10 @@ export class PenAndTouchDispatcher extends GraphEventDispatcher{
         this.idToPenAndTouch = { } as Record<string, any>;
     }
 
+    /**
+     * Dispatchs down event
+     * @param e 
+     */
     dispatchDownEvent(e: ModifiedPointerEvent): void {
         super.dispatchDownEvent(e);
         switch (e.pointerType) {
@@ -32,6 +40,10 @@ export class PenAndTouchDispatcher extends GraphEventDispatcher{
         this.idToPenAndTouch[e.pointerId].pointerDown(e);
     }
 
+    /**
+     * Dispatchs move event
+     * @param e 
+     */
     dispatchMoveEvent(e: ModifiedPointerEvent): void {
         super.dispatchMoveEvent(e);
         if (this.idToPenAndTouch[e.pointerId] !== undefined) {
@@ -39,6 +51,10 @@ export class PenAndTouchDispatcher extends GraphEventDispatcher{
         }
     }
 
+    /**
+     * Dispatchs up event
+     * @param e 
+     */
     dispatchUpEvent(e: ModifiedPointerEvent): void {
         super.dispatchUpEvent(e);
         if (this.idToPenAndTouch[e.pointerId] !== undefined) {
@@ -46,6 +62,10 @@ export class PenAndTouchDispatcher extends GraphEventDispatcher{
         }
     }
 
+    /**
+     * Dispatchs leave event
+     * @param e 
+     */
     dispatchLeaveEvent(e: ModifiedPointerEvent): void {
         super.dispatchLeaveEvent(e);
         if (this.idToPenAndTouch[e.pointerId] !== undefined) {
@@ -53,6 +73,10 @@ export class PenAndTouchDispatcher extends GraphEventDispatcher{
         }
     }
 
+    /**
+     * Dispatchs click event
+     * @param e 
+     */
     dispatchClickEvent(e: ModifiedPointerEvent): void {
         super.dispatchClickEvent(e);
         if (this.idToPenAndTouch[e.pointerId] !== undefined) {

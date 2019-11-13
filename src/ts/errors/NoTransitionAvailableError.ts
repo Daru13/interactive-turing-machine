@@ -2,6 +2,9 @@ import { TMError } from "./TMError";
 import { TuringMachine } from "../model/TuringMachine";
 import { State } from "../model/State";
 
+/**
+ * A class to throw an error when the turing machine tries to run but there is no available transition
+ */
 export class NoTransitionAvailableError extends TMError {
     private readonly state: State;
 

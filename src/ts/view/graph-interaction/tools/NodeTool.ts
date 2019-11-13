@@ -13,13 +13,21 @@ import { NodeEditor } from "../../editors/NodeEditor";
 import { TransitionEdgeEditor } from "../../editors/TransitionEdgeEditor";
 import { GeneratorEdgeEditor } from "../../editors/GeneratorEdgeEditor";
 
+/** A class to create a tool to create nodes and moves them */
 export class NodeTool{
+    /** previous x position */
     previousX: number;
+    /** previous y position */
     previousY: number;
+    /** node to move */
     node: StateNode;
+    /** graph where to add nodes */
     graph: Graph;
+    /** turing machine where to add states */
     turingMachine: TuringMachine;
+    /** is the mouse down */
     isDown: boolean;
+    /** best position where to put the node. If a node is moved above another one, the best position is the one before goign above the other node */
     bestPos: { x: number; y: number; };
 
     constructor(graph: Graph, turingMachine: TuringMachine) {
@@ -31,6 +39,10 @@ export class NodeTool{
         this.isDown = false;
     }
 
+    /**
+     * When the mouse is down, detect if we are on a node or not
+     * @param e
+     */
     pointerDown(e: ModifiedPointerEvent): void {
         this.previousX = e.x;
         this.previousY = e.y;
@@ -55,6 +67,10 @@ export class NodeTool{
         this.isDown = false;
     }
 
+    /**
+     * When the mouse moves, if we are on a node, drags it. Otherwise pan the svg of the graph
+     * @param e
+     */
     pointerMove(e: ModifiedPointerEvent): void {
         if (this.isDown) {
             // Drag node
@@ -71,7 +87,7 @@ export class NodeTool{
                     .getOutTransitions()
                     .forEach((t) => this.graph.transitionIdToTransitionEdge.get(t.id).redrawTransitionEdge());
 
-                if (this.node.isInitialState()) {
+                if (this.node.isInitialNode()) {
                     this.graph.generatorEdge.redrawGeneratorEdge();
                 }
 
@@ -95,6 +111,10 @@ export class NodeTool{
         }
     }
 
+    /**
+     * When the mouse is up, update the corresponding state position in the turing machine
+     * @param e
+     */
     pointerUp(e: ModifiedPointerEvent): void {
         if (this.node !== undefined) {
             this.node.handleSelection.classed("move", false);
@@ -107,10 +127,18 @@ export class NodeTool{
         this.isDown = false;
     }
 
+    /**
+     * When the mouse leaves, it is considered as the mouse up
+     * @param e 
+     */
     pointerLeave(e: ModifiedPointerEvent): void {
         this.pointerUp(e);
     }
 
+    /** 
+     * When the mouse clicks, if it is on an element (node or edge), opens an editor for that element. Otherwise, adds a node where the click happened
+     * @param e
+     */
     pointerClick(e: ModifiedPointerEvent): void {
         let target = e.target as d3.BaseType;
         let targetSelection = d3.select(target);
@@ -126,6 +154,10 @@ export class NodeTool{
         }
     }
 
+    /**
+     * Determines whether this is the best position for node
+     * @returns true if this best pos for node 
+     */
     private isThisBestPosForNode(): boolean {
         let isBestPos = true;
         let node = this.node;

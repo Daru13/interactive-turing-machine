@@ -1,19 +1,33 @@
 import * as d3 from "d3-selection";
 import { addSpaceMan } from "./spaceman";
-import { EasterEggs } from "./EasterEggs";
+import { EasterEgg } from "./EasterEggs";
+import { Tape } from "../model/Tape";
 
-export class SpacemanEasterEgg extends EasterEggs {
+/**
+ * A class to make a space man move on the screen if the tape contain space related word
+ */
+export class SpacemanEasterEgg extends EasterEgg {
     constructor() { 
         super();
     }
 
-    shouldBeLaunched(text: string): boolean {
+    /**
+     * Tests if the tape contains some space related word
+     * @param tape 
+     * @returns true if be launched 
+     */
+    shouldBeLaunched(tape: Tape): boolean {
+        let text = tape.getContentAsString();
         return text.includes("mars")
             || text.includes("moon")
             || text.includes("nasa");
     }
 
-    launch(text: string): void {
+    /**
+     * Draw a flying spaceman on the screen
+     * @param tape 
+     */
+    launch(tape: Tape): void {
         let holder = 
             d3.select("body")
                 .append("div")

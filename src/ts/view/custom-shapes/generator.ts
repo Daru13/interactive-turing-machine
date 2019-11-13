@@ -1,5 +1,10 @@
 import { Selection } from "../../helpers";
 
+/**
+ * Draw a generator in the holder with a radius r
+ * @param holder 
+ * @param r 
+ */
 export function addGenerator(holder: Selection<SVGElement>, r: number): void {
     //size of drawing: 115
     holder.append("g")

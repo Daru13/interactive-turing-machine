@@ -6,11 +6,19 @@ import { HeadAction, TapeSymbol } from "../../../model/Tape";
 import { Edge } from "./Edge";
 import { StateNode } from "../nodes/StateNode";
 
+/**
+ * A class to reprensent every transitions between two states of the turing machine as an edge in the graph
+ */
 export class TransitionEdge extends Edge {
+    /** List of transition ids reprensented by this edge */
     readonly transitionIDs: TransitionID[];
+    /** The state from where the edge is comming from */
     fromStateNode: StateNode;
+    /** The state where the edge is going */
     toStateNode: StateNode;
+    /** Is the edge curved */
     isCurved: boolean;
+    /** The graph containing the edge */
     graph: Graph;
 
     constructor(graph: Graph, transition: Transition, isCurved: boolean) {
@@ -24,6 +32,10 @@ export class TransitionEdge extends Edge {
         this.initTransitionEdge(transition);
      }
 
+    /**
+     * Inits the transition edge
+     * @param transition first transition represented by the edge
+     */
     initTransitionEdge(transition: Transition): void {
          super.init();
 
@@ -32,16 +44,24 @@ export class TransitionEdge extends Edge {
          this.drawTransitionText(transition.getOnSymbol(), transition.getOutputSymbol(), transition.getHeadAction());
      }
 
+    /**
+     * Adds a transition to the edge
+     * @param transition transitions to add
+     */
     addTransitionToEdge(transition: Transition): void {
         this.transitionIDs.push(transition.id);
         this.handleSelection.classed("bigger", true);
     }
 
+    /**
+     * Redraws the transition edge
+     */
     redrawTransitionEdge(): void {
         let pt1 = { x: this.fromStateNode.x, y: this.fromStateNode.y };
         let pt2 = { x: this.toStateNode.x, y: this.toStateNode.y };
         let dx, dy;
 
+        //case where the edge is going from and to the same point
         if (pt1.x === pt2.x && pt1.y === pt2.y) {
             let flipped = pt1.y < this.graph.viewBox.y + this.graph.viewBox.height / 2;
 
@@ -57,6 +77,10 @@ export class TransitionEdge extends Edge {
         }
     }
 
+    /**
+     * Removes a transition from the edge. If there is no more transition between the fromStateNode and toStateNode, the edge is deleted
+     * @param transitionId 
+     */
     deleteTransitionEdge(transitionId: TransitionID): void {
         let index = this.transitionIDs.indexOf(transitionId);
         this.transitionIDs.splice(index, 1);
@@ -66,10 +90,20 @@ export class TransitionEdge extends Edge {
         }
     }
 
+    /**
+     * Determines whether a d3 selection is a transition edge
+     * @param selection d3 selection to test
+     * @returns true if selection is a transition edge 
+     */
     static isTransitionEdge(selection: d3.Selection<any, any, any, any>): boolean {
         return selection.datum() !== undefined && selection.datum()["edge"] !== undefined && selection.datum()["edge"] instanceof TransitionEdge;
     }
 
+    /**
+     * Gets the transition edge containing the selection
+     * @param selection d3 selection of an element of a transition edge
+     * @returns the transition edge containing the selection
+     */
     static getTransitionEdge(selection: d3.Selection<any, any, any, any>): TransitionEdge {
         if (TransitionEdge.isTransitionEdge(selection)) {
             return selection.datum()["edge"];
@@ -77,6 +111,12 @@ export class TransitionEdge extends Edge {
         
     }
 
+    /**
+     * Draws the text of the last modified transition represented by the edge
+     * @param onSymbol onSymbol of the transition
+     * @param outputSymbol outputSymbol of the transition
+     * @param headAction headAction of the transition
+     */
     drawTransitionText(onSymbol: TapeSymbol, outputSymbol: TapeSymbol, headAction: HeadAction): void {
         let headActionSymbol = "";
         switch (headAction) {
@@ -100,6 +140,10 @@ export class TransitionEdge extends Edge {
                       + extraTransitionsSymbol);
     }
 
+    /**
+     * Sets the curved property of the edge
+     * @param b 
+     */
     setCurved(b: boolean): void {
         this.isCurved = b;
     }

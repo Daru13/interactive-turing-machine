@@ -1,6 +1,6 @@
 import { Event } from './EventManager';
-import { HeadAction } from "../model/Tape";
 
+/** A class for an event when the tape position changed */
 export class TapeNewPosEvent implements Event {
   id: string = "tapeNewPos";
   headPos: number;

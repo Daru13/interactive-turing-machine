@@ -1,8 +1,13 @@
 import { Popup } from "./Popup";
 import { Main } from "../../main";
 
+/**
+ * A class to create a pop up to import the turing machine from a JSON
+ */
 export class ImportPopup extends Popup {
-
+    /**
+     * Main of the application
+     */
     private main: Main;
 
     constructor(main: Main) {
@@ -12,6 +17,9 @@ export class ImportPopup extends Popup {
         this.init();
     }
 
+    /**
+     * Inits import popup
+     */
     private init(): void {
         this.setTitle("Import a Turing machine");
         this.holder.attr("id", "import-popup");
@@ -23,6 +31,9 @@ export class ImportPopup extends Popup {
         this.center();
     }
 
+    /**
+     * Adds instructions on how to import a Turing machine
+     */
     private addInstructions(): void {
         this.content.append("p")
             .classed("instruction", true)
@@ -34,12 +45,18 @@ export class ImportPopup extends Popup {
             .html("<strong>Be careful:</strong> importing a machine will <strong>replace your current machine</strong>!");
     }
 
+    /**
+     * Adds an import field where to paste the Turing machine
+     */
     private addImportField(): void {
         this.content.append("textarea")
             .attr("id", "turing-machine-import-field")
             .attr("placeholder", "Code of the Turing machine to import...");
     }
 
+    /**
+     * Adds buttons import and cancel to the pop up
+     */
     private addActionButtons(): void {
         let container = this.content.append("div")
             .attr("class", "action-button-container");
@@ -59,6 +76,9 @@ export class ImportPopup extends Popup {
             });
     }
 
+    /**
+     * Imports the Turing machine pasted in the pop up
+     */
     private importTuringMachine(): void {
         let importFieldNode = this.holder.select("#turing-machine-import-field").node() as HTMLTextAreaElement;
         let json = importFieldNode.value;

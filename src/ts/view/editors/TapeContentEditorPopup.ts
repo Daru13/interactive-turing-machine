@@ -1,8 +1,11 @@
 import { Popup } from "./Popup";
 import { Tape } from "../../model/Tape";
 
+/**
+ * A class to create a pop up where you can paste the content for the tape
+ */
 export class TapeContentEditorPopup extends Popup {
-
+    /** Tape of where to insert content */
     private readonly tape: Tape;
 
     constructor(tape: Tape) {
@@ -12,6 +15,9 @@ export class TapeContentEditorPopup extends Popup {
         this.init();
     }
 
+    /**
+     * Inits tape content editor popup
+     */
     private init(): void {
         this.setTitle("Edit the tape");
         this.holder.attr("id", "tape-content-editor-popup");
@@ -23,12 +29,18 @@ export class TapeContentEditorPopup extends Popup {
         this.center();
     }
 
+    /**
+     * Adds instructions on how to insert content
+     */
     private addInstructions(): void {
         this.content.append("p")
             .classed("instruction", true)
             .html("Edit the content of the tape and click the Update tape below to apply your changes.");
     }
 
+    /**
+     * Adds a field where to paste the content
+     */
     private addContentField(): void {
         this.content.append("textarea")
             .attr("id", "tape-content-edit-field")
@@ -36,6 +48,9 @@ export class TapeContentEditorPopup extends Popup {
             .text(this.tape.getContentAsString());
     }
 
+    /**
+     * Adds Update and Cancel buttons
+     */
     private addActionButtons(): void {
         let container = this.content.append("div")
             .attr("class", "action-button-container");
@@ -55,6 +70,9 @@ export class TapeContentEditorPopup extends Popup {
             });
     }
 
+    /**
+     * Updates the content of the tape based on the content field
+     */
     private updateTapeContent(): void {
         let tapeContentFieldNode = this.holder.select("#tape-content-edit-field").node() as HTMLTextAreaElement;
         this.tape.setContentFromString(tapeContentFieldNode.value);

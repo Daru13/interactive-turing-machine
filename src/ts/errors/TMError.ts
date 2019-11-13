@@ -1,5 +1,6 @@
 import { TuringMachine } from "../model/TuringMachine";
 
+/** A generic class to defines errors thrown by a turing machine */
 export class TMError {
     protected readonly turingMachine: TuringMachine;
 

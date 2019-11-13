@@ -5,25 +5,36 @@ import { ErrorPopup } from "./editors/ErrorPopUp";
 import { TMError } from "../errors/TMError";
 import { EasterEggManager } from "../easter-eggs/EasterEggManager";
 
+/** A class to display a panel with buttons to control the turing machine */
 export class ControlPanel {
+    /** Main div of the panel */
     holder: d3.Selection<HTMLDivElement, any, HTMLElement, any>;
+    /** Turing machine to control */
     turingMachine: TuringMachine;
+    /** Tape in the view to move */
     tape: Tape;
+    /** Manage easter eggs based on the tape content */
     easterEggManager: EasterEggManager;
 
     constructor(turingMachine: TuringMachine, tape: Tape) {
         this.turingMachine = turingMachine;
         this.tape = tape;
-        this.easterEggManager = new EasterEggManager(turingMachine.tape);
+        this.easterEggManager = new EasterEggManager();
 
         this.init();
     }
 
+    /**
+     * Inits control panel
+     */
     private init(): void {
         this.addControlButtons();
         this.addScreen();
     }
 
+    /**
+     * Adds control buttons: run, run on step and reset
+     */
     private addControlButtons(): void {
         let tm = this.turingMachine;
         let tape = this.tape;
@@ -41,7 +52,7 @@ export class ControlPanel {
                     tm.run();
                     this.updateScreen();
                     
-                    this.easterEggManager.launch(tm.tape.getContent());
+                    this.easterEggManager.launch(tm.tape);
                 }
                 catch (error) {
                     this.catchError(error);
@@ -59,7 +70,7 @@ export class ControlPanel {
                     tm.runOneStep();
                     this.updateScreen();
 
-                    this.easterEggManager.launch(tm.tape.getContent());
+                    this.easterEggManager.launch(tm.tape);
                 }
                 catch (error) {
                     this.catchError(error);
@@ -77,6 +88,9 @@ export class ControlPanel {
             .text("Reset");
     }
 
+    /**
+     * Adds a screen to display the Turing machine status
+     */
     private addScreen(): void {
         let screen = this.holder.append("div")
             .attr("id", "control-panel-screen");
@@ -90,6 +104,10 @@ export class ControlPanel {
         this.updateScreen();
     }
 
+    /**
+     * Updates the screen screen with an error
+     * @param [error] 
+     */
     updateScreen(error?: TMError): void {
         let screen = this.holder.select("#control-panel-screen");
         screen.classed("error", error !== undefined);
@@ -103,6 +121,10 @@ export class ControlPanel {
             .text(error !== undefined ? error.getShortName() : "");
     }
 
+    /**
+     * Open a popup to explain the error launched by the Turing machine
+     * @param error 
+     */
     private catchError(error: TMError): void {
         this.updateScreen(error);
         new ErrorPopup(error);

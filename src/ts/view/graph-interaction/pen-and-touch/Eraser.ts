@@ -7,21 +7,38 @@ import { DeleteStateAction } from "../../actions/DeleteStateAction";
 import { TransitionEdge } from "../../graph/edges/TransitionEdge";
 import { StateNode } from "../../graph/nodes/StateNode";
 
+/**
+ * A class to defines action to do when a user uses the eraser of the microsoft pen
+ */
 export class Eraser{
+    /** Turing machine to modify */
     turingMachine: TuringMachine;
+    /** Target touched by the eraser */
     target: d3.BaseType;
 
     constructor(graph: Graph, turingMachine: TuringMachine) {
         this.turingMachine = turingMachine;
     }
 
+    /**
+     * Action when the eraser is down
+     * @param e 
+     */
     pointerDown(e: ModifiedPointerEvent): void { 
         this.target = e.target as d3.BaseType;
     }
 
+    /**
+     * Action when the eraser moves
+     * @param e
+     */
     pointerMove(e: ModifiedPointerEvent): void { 
     }
 
+    /**
+     * Action when the eraser is up
+     * @param e
+     */
     pointerUp(e: ModifiedPointerEvent): void { 
         let targetSelection = d3.select(this.target);
 
@@ -32,8 +49,16 @@ export class Eraser{
         }
     }
 
+    /**
+     * Action when the eraser leaves
+     * @param e
+     */
     pointerLeave(e: ModifiedPointerEvent): void { 
     }
 
+    /**
+     * Action when the eraser clicks
+     * @param e
+     */
     click(e: ModifiedPointerEvent): void { }
 }

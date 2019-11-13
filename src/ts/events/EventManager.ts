@@ -1,16 +1,23 @@
 export type EventID = string;
 
+/** Interface for personalized events */
 export interface Event {
 	id: EventID;
 }
 
 export type EventHandler<E extends Event> = (event: E) => void;
 
+/** A class to emit events, add event listeners and remove event listeners */
 export class EventManager {
 
+    /** List of event listener per personalized event */
 	private static eventHandlers: Map<EventID, EventHandler<any>[]> = new Map();
 
-	static emit(event: Event): void {
+    /**
+     * Emits an event 
+     * @param event emited event
+     */
+    static emit(event: Event): void {
 		let eventID = event.id;
 
 		if (! EventManager.eventHandlers.has(eventID)) {
@@ -23,15 +30,25 @@ export class EventManager {
 		}
 	}
 
-	static registerHandler<E extends Event>(eventID: EventID, handler: EventHandler<E>): void {
+    /**
+     * Registers a handler for an event
+     * @param eventID event registered for
+     * @param handler the handler registered
+     */
+    static registerHandler<E extends Event>(eventID: EventID, handler: EventHandler<E>): void {
 		if (! EventManager.eventHandlers.has(eventID)) {
 			EventManager.eventHandlers.set(eventID, []);
 		}
 
 		let handlers = EventManager.eventHandlers.get(eventID);
 		handlers.push(handler);
-	}
-
+    }
+    
+    /**
+     * Unregisters a handler for an event
+     * @param eventID event to remove the handler for
+     * @param handler the handler to unregister
+     */
 	static unregisterHandler<E extends Event>(eventID: EventID, handler: EventHandler<E>): void {
 		let handlers = EventManager.eventHandlers.get(eventID);
 		let handlerIndex = handlers.indexOf(handler);

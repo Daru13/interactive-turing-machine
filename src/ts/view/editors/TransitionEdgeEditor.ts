@@ -7,9 +7,15 @@ import { TransitionEdge } from "../graph/edges/TransitionEdge";
 import { CreateTransitionAction } from "../actions/CreateTransitionAction";
 import { TuringMachine } from "../../model/TuringMachine";
 
+/**
+ * A class to create an editor for a transition edge
+ */
 export class TransitionEdgeEditor extends Editor{
+    /** The edge to edit */
     edge: TransitionEdge;
+    /** State machine containing the transitions associated to the edge */
     stateMachine: StateMachine;
+    /** The Turing machine containting the state machine*/
     turingMachine: TuringMachine;
 
     constructor(edge: TransitionEdge, turingMachine: TuringMachine) {
@@ -22,6 +28,9 @@ export class TransitionEdgeEditor extends Editor{
         this.init();
     }
 
+    /**
+     * Inits transition edge editor
+     */
     init(): void {
         // Editor-specific class
         this.holder.classed("transition-edge-editor", true);
@@ -34,12 +43,19 @@ export class TransitionEdgeEditor extends Editor{
         super.setOnClose(() => { this.submit(); });
     }
 
+    /**
+     * Inits the table containing the properties of one transition per row
+     */
     initContent(): void {
         let table = this.content.append("table");
         this.addHeader(table);
         this.addBody(table);
     }
 
+    /**
+     * Adds header to the table with the label of transition properties that can be set
+     * @param table 
+     */
     addHeader(table: d3.Selection<HTMLTableElement, any, any, any>): void {
         let header = table.append("thead").append("tr");
         header.append("th").classed("input-symbol", true).text("Input symbol");
@@ -48,6 +64,10 @@ export class TransitionEdgeEditor extends Editor{
         header.append("th").classed("delete-transition", true).text("Delete transition");
     }
 
+    /**
+     * Adds body to the table with one row per transition plus a row with a plus button to add a new transition
+     * @param table 
+     */
     addBody(table: d3.Selection<HTMLTableElement, any, any, any>): void {
         let body = table.append("tbody");
 
@@ -58,6 +78,11 @@ export class TransitionEdgeEditor extends Editor{
         this.addPlusButton(body);
     }
 
+    /**
+     * Adds a row for a transition with a field for: input symbol, output symbol, head action and a delete button
+     * @param transitionId Id of the transition
+     * @param body body where to add the row
+     */
     addTransitionRow(transitionId: TransitionID, body: d3.Selection<HTMLTableSectionElement, any, any, any>): void {
         let transition = this.stateMachine.getTransition(transitionId);
         let row = body.append("tr").datum({ transitionID: transitionId });
@@ -86,6 +111,10 @@ export class TransitionEdgeEditor extends Editor{
         this.addDeleteTransitionButton(cell, row);
     }
 
+    /**
+     * Adds plus button in the body to add a new transition
+     * @param body 
+     */
     addPlusButton(body: d3.Selection<HTMLTableSectionElement, any, any, any>): void {
         let fromNode = this.edge.fromStateNode;
         let toNode = this.edge.toStateNode;
@@ -106,6 +135,11 @@ export class TransitionEdgeEditor extends Editor{
                 });
     }
 
+    /**
+     * Adds a button to delete a transition
+     * @param parent where to put the button
+     * @param row row corresponding to the transition to delete
+     */
     addDeleteTransitionButton(parent: d3.Selection<HTMLElement, any, any, any>, row: d3.Selection<HTMLElement, any, any, any>): void {
         parent
             .append("button")
@@ -119,6 +153,11 @@ export class TransitionEdgeEditor extends Editor{
             .text("Delete");
     }
 
+    /**
+     * Adds selector for the action of the head of the tape
+     * @param parent where to put the selector
+     * @param defaultDir default action to be selected
+     */
     addHeadActionSelector(parent: d3.Selection<HTMLElement, any, any, any>, defaultDir: HeadAction): void {
         let dirEntry = parent
             .append("div")
@@ -130,6 +169,13 @@ export class TransitionEdgeEditor extends Editor{
         this.addHeadActionOption(dirEntry, "→", HeadAction.MoveRight, defaultDir === HeadAction.MoveRight);
     }
 
+    /**
+     * Adds button to a select on action for the head of the tape
+     * @param parent where to put the button
+     * @param text text of the button
+     * @param datum the action for this button
+     * @param selected if the button is selected by default
+     */
     addHeadActionOption(parent: d3.Selection<HTMLDivElement, any, any, any>, text: string, datum: HeadAction, selected: boolean): void {
         parent.append("button")
             .text(text)
@@ -141,6 +187,9 @@ export class TransitionEdgeEditor extends Editor{
             });
     }
 
+    /**
+     * Submits every changes done in the editor on transitions
+     */
     submit(): void {
         let t = this;
         this.holder.select("tbody").selectAll("tr:not(.new-transition-button-row)").each(function(d: { transitionID: TransitionID}): void {

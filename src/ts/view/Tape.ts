@@ -1,30 +1,44 @@
 import * as d3 from "d3-selection";
 import { TapeSymbol, HeadAction } from "../model/Tape";
 import { EventManager, EventHandler, EventID, Event } from "../events/EventManager";
-import { TapeCellUpdateEvent } from "../events/TapeCellUpdateEvent";
 import { TapeMoveEvent } from "../events/TapeMoveEvent";
 import { TapeNewPosEvent } from "../events/TapeNewPosEvent";
 import { TuringMachine } from "../model/TuringMachine";
 import { TapeContentEditorPopup } from './editors/TapeContentEditorPopup';
 
+/**
+ * A class to display a tape in the view
+ */
 export class Tape {
+    /** minimal number of cell around the current one */
     private static readonly minLength: number = 10;
+    /** margin property of the cell */
     private static readonly marginCell: number = 2;
+    /** size of the cell */
     private static readonly sizeCell: number = 90;
 
+    /** d3 selection of the div #tapeHolder */
     private tapeHolder: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
+    /** d3 selection of the div #tape */
     private tape: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
+    /** d3 selection of the head of the tape */
     private head: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
     
+    /** Corresponding turing machine */
     private turingMachine: TuringMachine;
+    /** initial left property of the tape */
     private origin: number;
+    /** pixel to move to go from cell n to cell n +/- 1 */
     private stepMovement: number;
+    /** Index of the displayed cells */
     private displayedCellsIndices: {
         minIndex: number, 
         maxIndex: number
     };
 
+    /** Events handlers for event from the tape in the turing machine */
     private internalEventsHandlers: Record<EventID, EventHandler<Event>>;
+    /** Events handlers for event from the DOM */
     private DOMEventHandlers: Record<string, (event: any) => void>;
 
     constructor(turingMachine: TuringMachine) {
@@ -35,6 +49,9 @@ export class Tape {
         this.init();
     }
 
+    /**
+     * Inits tape by displaying minLength cells
+     */
     private init(): void {
         this.setupUI();
 
@@ -51,6 +68,9 @@ export class Tape {
         }
     }
 
+    /**
+     * Setups ui by creating a div #tape, a div #head and actions buttons: import tape content and go to current cell
+     */
     private setupUI(): void {
         d3.select("#tape-container").selectAll("*").remove();
         this.head = this.tapeHolder.append("div").attr("id", "head");
@@ -64,6 +84,9 @@ export class Tape {
         this.stepMovement = Tape.sizeCell + 2 * Tape.marginCell;
     }
 
+    /**
+     * Adds action buttons: import tape content and go to current cell
+     */
     private addActionButtons(): void {
         let container = this.tapeHolder.append("div")
             .classed("action-button-container", true);
@@ -85,6 +108,11 @@ export class Tape {
             });
     }
 
+    /**
+     * Adds a cell in the tape
+     * @param index of the cell
+     * @returns return the added cell 
+     */
     private addCell(index: number): d3.Selection<HTMLDivElement, any, any, any> {
         let cell, value;
         let tapeContent = this.turingMachine.tape.getContent();
@@ -108,34 +136,54 @@ export class Tape {
         return cell;
     }
 
+    /**
+     * Adds a cell at the beginning of the tape
+     */
     private addCellAtTheBeginning(): void {
         this.displayedCellsIndices.minIndex -= 1;
         this.addCell(this.displayedCellsIndices.minIndex).lower();
         this.tape.style("padding-left", (this.displayedCellsIndices.minIndex * this.stepMovement).toString() + "px");
     }
 
+    /**
+     * Adds a cell at the end of the tape
+     */
     private addCellAtTheEnd(): void {
         this.displayedCellsIndices.maxIndex += 1;
         this.addCell(this.displayedCellsIndices.maxIndex);
     }
 
+    /**
+     * Removes a cell from the tape
+     * @param index index of the cell to remove
+     */
     private removeCell(index: number): void {
         if (!d3.select(`#cell-${index}`).empty()) {
             d3.select(`#cell-${index}`).remove();
         }
     }
 
-    private removeCellAtTheBeginning(): void {
+   /**
+    * Removes the cell at the beginning of the tape
+    */
+   private removeCellAtTheBeginning(): void {
         this.removeCell(this.displayedCellsIndices.minIndex);
         this.displayedCellsIndices.minIndex += 1;
         this.tape.style("padding-left", (this.displayedCellsIndices.minIndex * this.stepMovement).toString() + "px");
     }
 
+    /**
+     * Removes the cell at the end of the tape
+     */
     private removeCellAtTheEnd(): void {
         this.removeCell(this.displayedCellsIndices.maxIndex);
         this.displayedCellsIndices.maxIndex -= 1;
     }
 
+    /**
+     * Updates the displayed cell on the tape
+     * @param l left property of the tape
+     */
     private updateDisplayedCell(l: number): void {
         let displayedCellIndex = Math.floor(Math.abs(l - this.origin) / this.stepMovement - 0.5) + 1;
 
@@ -154,6 +202,10 @@ export class Tape {
         }
     }
 
+    /**
+     * Moves the tape by n pixels
+     * @param n number of pixels to move by
+     */
     moveTapeBy(n: number): void {
         let left = parseInt(this.tape.style("left"));
         let newLeft = Math.min(left - n, this.origin);
@@ -162,16 +214,28 @@ export class Tape {
         this.updateDisplayedCell(newLeft);
     }
 
+    /**
+     * Moves tape by n cell
+     * @param n number of cell to move by
+     */
     moveTapeByNCell(n: number): void {
         this.moveTapeBy(n * this.stepMovement);
     }
 
-    moveToCell(pos: number): void {
+    /**
+     * Moves tape to cell
+     * @param index index of the cell
+     */
+    moveToCell(index: number): void {
         this.tape
             .style("left", (this.origin).toString() + "px");
-        this.moveTapeByNCell(pos);
+        this.moveTapeByNCell(index);
     }
 
+    /**
+     * Moves the tape according to a head action from the turing machine
+     * @param action an Head action
+     */
     move(action: HeadAction): void {
         switch (action) {
             case HeadAction.MoveLeft:
@@ -188,11 +252,19 @@ export class Tape {
         }
     }
 
+    /**
+     * Updates the value of the cell
+     * @param symbol new value of the cell
+     * @param index index of the cell to upadte
+     */
     updateCell(symbol: TapeSymbol, index: number): void {
         let inputCell = this.tape.select("#cell-" + index).select("input").node() as HTMLInputElement;
         inputCell.value = symbol;
     }
 
+    /**
+     * Updates content of the tape
+     */
     updateContent(): void {
         let tapeContent = this.turingMachine.tape.getContent();
         let symbol;
@@ -206,6 +278,9 @@ export class Tape {
         }
     }
 
+    /**
+     * Creates event listeners for events from the turing machine and the DOM
+     */
     private createEventListeners(): void {
         let isDown = false;
         let previousX = 0;
@@ -251,6 +326,9 @@ export class Tape {
         };
     }
 
+    /**
+     * Adds the event listeners
+     */
     addEventListeners(): void {
         for (let id of Object.keys(this.internalEventsHandlers)) {
             EventManager.registerHandler(id, this.internalEventsHandlers[id]);
@@ -261,6 +339,9 @@ export class Tape {
         }
     }
 
+    /**
+     * Removes the event listeners
+     */
     removeEventListeners(): void {
         for (let id of Object.keys(this.internalEventsHandlers)) {
             EventManager.unregisterHandler(id, this.internalEventsHandlers[id]);
@@ -271,6 +352,9 @@ export class Tape {
         }
     }
 
+    /**
+     * When the windows is resized, adapt the position of the tape inside the tapeHolder
+     */
     resize(): void {
         let widthHolder = document.getElementById("tape-container").getBoundingClientRect().width;
         let previousOrigin = this.origin;

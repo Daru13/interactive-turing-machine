@@ -1,7 +1,9 @@
 import { TMError } from "./TMError";
 import { TuringMachine } from "../model/TuringMachine";
-import { StateNode } from "../view/graph/nodes/StateNode";
 
+/**
+ * A class to throw an error when the turing machine tries to run but there is no intial state
+ */
 export class NoInitialStateError extends TMError {
     constructor(turingMachine: TuringMachine) {
         super(turingMachine,

@@ -3,9 +3,13 @@ import { TuringMachine } from "../../model/TuringMachine";
 import { Helpers } from "../../helpers";
 import { ModifiedPointerEvent } from "./ModifiedPointerEvent";
 
+/** An abstract class to defines a dispatcher of pointer event happening on a graph */
 export abstract class GraphEventDispatcher {
+    /** graph where the events are happening */
     readonly graph: Graph;
+    /** turing machine associated to the graph */
     readonly turingMachine: TuringMachine;
+    /** should this dispatcher process the events */
     isActivated: boolean;
 
     constructor(graph: Graph, turingMachine: TuringMachine) {
@@ -15,6 +19,9 @@ export abstract class GraphEventDispatcher {
         this.setInteraction();
     }
 
+    /**
+     * Sets pointer events on the graph
+     */
     setInteraction(): void {
         let timeDown: Record<number, number> = { };
 
@@ -58,30 +65,56 @@ export abstract class GraphEventDispatcher {
             });
     }
 
+    /**
+     * Dispatchs down event
+     * @param e 
+     */
     dispatchDownEvent(e: ModifiedPointerEvent): void {
         Helpers.updateXYSVG(e, this.graph);
     }
 
+    /**
+     * Dispatchs move event
+     * @param e 
+     */
     dispatchMoveEvent(e: ModifiedPointerEvent): void {
         Helpers.updateXYSVG(e, this.graph);
     }
 
+    /**
+     * Dispatchs up event
+     * @param e 
+     */
     dispatchUpEvent(e: ModifiedPointerEvent): void {
         Helpers.updateXYSVG(e, this.graph);
     }
 
+    /**
+     * Dispatchs leave event
+     * @param e 
+     */
     dispatchLeaveEvent(e: ModifiedPointerEvent): void {
         Helpers.updateXYSVG(e, this.graph);
     }
 
+    /**
+     * Dispatchs click event
+     * @param e 
+     */
     dispatchClickEvent(e: ModifiedPointerEvent): void {
         Helpers.updateXYSVG(e, this.graph);
     }
 
+    /**
+     * Activates the graph event dispatcher
+     */
     activate(): void {
         this.isActivated = true;
     }
 
+    /**
+     * Deactivates the graph event dispatcher
+     */
     deactivate(): void {
         this.isActivated = false;
     }

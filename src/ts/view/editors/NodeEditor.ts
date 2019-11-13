@@ -3,8 +3,13 @@ import { TuringMachine } from "../../model/TuringMachine";
 import { Editor } from "./Editor";
 import { StateNode } from "../graph/nodes/StateNode";
 
+/**
+ * A class to create an editor for a state node
+ */
 export class NodeEditor extends Editor{
+    /** The state node to edit */
     node: StateNode;
+    /** The Turing machine containing the state associated to node */
     turingMachine: TuringMachine;
 
     constructor(node: StateNode, turingMachine: TuringMachine) {
@@ -16,6 +21,9 @@ export class NodeEditor extends Editor{
         this.init();
     }
 
+    /**
+     * Inits node editor
+     */
     init(): void {
         // Editor-specific class
         this.holder.classed("node-editor", true);
@@ -31,6 +39,9 @@ export class NodeEditor extends Editor{
         this.initPosition();
     }
 
+    /**
+     * Inits content of the node editor
+     */
     initContent(): void {
         let self = this;
 
@@ -54,6 +65,10 @@ export class NodeEditor extends Editor{
         this.addButton("Delete", () => { this.deleteNode(); }, "node-delete-button");
     }
 
+    /**
+     * Updates the final property of the node
+     * @param stateIsFinal final property of the node
+     */
     private updateFinalButton(stateIsFinal?: boolean): void {
         if (stateIsFinal === undefined) {
             let state = this.turingMachine.stateMachine.getState(this.node.stateID);
@@ -64,6 +79,9 @@ export class NodeEditor extends Editor{
             .text(stateIsFinal ? "Turn off" : "Turn on");
     }
 
+    /**
+     * Deletes the node and close the editor
+     */
     deleteNode(): void {
         DeleteStateAction.do(this.node, this.turingMachine);
         this.setOnClose(() => { });

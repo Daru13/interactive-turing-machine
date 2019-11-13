@@ -3,7 +3,11 @@ import { addGenerator } from "../../custom-shapes/generator";
 import * as d3 from "d3-selection";
 import { Node } from "./Node";
 
+/**
+ * A class to create the generator node in a graph
+ */
 export class GeneratorNode extends Node{
+    /** Graph containing the generator node */
     graph: Graph;
 
     constructor(graph: Graph) {
@@ -13,6 +17,9 @@ export class GeneratorNode extends Node{
         this.initGeneratorNode();
     }
  
+    /**
+     * Inits generator node
+     */
     initGeneratorNode(): void {
         super.init();
 
@@ -24,6 +31,11 @@ export class GeneratorNode extends Node{
         addGenerator(this.handleSelection, Graph.sizeNode);
     }
 
+    /**
+     * Determines whether a d3 selection is a generator 
+     * @param selection d3 selection to test
+     * @returns true if is a generator 
+     */
     static isGenerator(selection: d3.Selection<any, any, any, any>): boolean {
         if (Node.isNode(selection)) {
             if (Node.getNode(selection) instanceof GeneratorNode) {
@@ -33,6 +45,11 @@ export class GeneratorNode extends Node{
         return false;
     }
 
+    /**
+     * Gets the generator node containing the selection
+     * @param selection d3 selection contained in a generator node
+     * @returns generator node containing the selection 
+     */
     static getGeneratorHandle(selection: d3.Selection<any, any, any, any>): GeneratorNode {
         if (Node.isNode(selection)) {
             let node = Node.getNode(selection);

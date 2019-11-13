@@ -14,13 +14,21 @@ import { NodeEditor } from "../../editors/NodeEditor";
 import { TransitionEdgeEditor } from "../../editors/TransitionEdgeEditor";
 import { GeneratorEdgeEditor } from "../../editors/GeneratorEdgeEditor";
 
+/** A class to define a tool to create edges */
 export class EdgeTool {
+    /** previous x position */
     previousX: number;
+    /** previous y position */
     previousY: number;
-    graph: Graph;
-    node: Node;
-    isDown: boolean;
+    /** turing machine where to create a transition */
     turingMachine: TuringMachine;
+    /** graph where to create an edge */
+    graph: Graph;
+    /** node the edge is comming from */
+    node: Node;
+    /** is the mouse down */
+    isDown: boolean;
+    /** shadow drawn to make a preview of the edge to create */
     edgeInCreation: d3.Selection<SVGElement, any, any, any>;
 
     constructor(graph: Graph, turingMachine: TuringMachine) {
@@ -31,6 +39,10 @@ export class EdgeTool {
         this.turingMachine = turingMachine;
     }
 
+    /**
+     * When the mouse is down, detect if we are on a node or not
+     * @param e
+     */
     pointerDown(e: ModifiedPointerEvent): void {
         this.previousX = e.x;
         this.previousY = e.y;
@@ -61,6 +73,10 @@ export class EdgeTool {
         this.isDown = false;
     }
 
+    /**
+     * When the mouse is moves, if we were down on a node, it will draw edge in creation. If not, it will pan the svg of the graph
+     * @param e 
+     */
     pointerMove(e: ModifiedPointerEvent): void {
         if (this.isDown) {
             // Draw an edge
@@ -88,6 +104,10 @@ export class EdgeTool {
         }
     }
 
+    /**
+     * When the mouse is up, look for the closest node where the mouse went up. If there is one not too far, 3 times the size of a node, creates an edge from this.node to closest node
+     * @param e 
+     */
     pointerUp(e: ModifiedPointerEvent): void {
         this.isDown = false;
         if (this.node !== undefined) {
@@ -108,6 +128,10 @@ export class EdgeTool {
         }
     }
 
+    /**
+     * When the mouse leaves, cancel the creation of an edge
+     * @param e 
+     */
     pointerLeave(e: ModifiedPointerEvent): void {
         if (this.isDown) {
             if (this.node !== undefined) {
@@ -118,6 +142,10 @@ export class EdgeTool {
         }
     }
 
+    /**
+     * When the mouse clicks, if on a graph element (node or edge), opens an editor for that element
+     * @param e 
+     */
     pointerClick(e: ModifiedPointerEvent): void {
         let target = e.target as d3.BaseType;
         let targetSelection = d3.select(target);
@@ -131,12 +159,23 @@ export class EdgeTool {
         }
     }
 
+    /**
+     * Draws the edge in creation
+     */
     private drawEdgeInCreation(): void {
         this.edgeInCreation
             .attr("d", "M" + this.node.x + "," + this.node.y + 
                         " L" + this.previousX + "," + this.previousY);
     }
 
+    /**
+     * find the closests node to the end of an edge
+     * @param beginEdge start point of the edge
+     * @param endEdge end point of the edge
+     * @param minLength minimal length of the edge
+     * @param distFromEnd maximal distance allowed between the end point and a node
+     * @returns the closest node to the end point with a distance to the end point of max distFromEnd if any
+     */
     private closestNode(beginEdge: { x, y }, endEdge: { x, y }, minLength: number, distFromEnd: number): Node {
         let closestNode: Node;
         let minDistance = distFromEnd; 

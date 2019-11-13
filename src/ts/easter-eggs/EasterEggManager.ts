@@ -1,30 +1,33 @@
-import { EasterEggs } from "./EasterEggs";
+import { EasterEgg } from "./EasterEggs";
 import { SpacemanEasterEgg } from "./SpacemanEasterEgg";
 import { Tape } from "../model/Tape";
 
+/** A class to manage the different easter eggs */
 export class EasterEggManager {
-    private tape: Tape;
-    private tapeMessage: string;
-    private easterEggs: EasterEggs[];
+    /** list of the possible easter eggs */
+    private easterEggs: EasterEgg[];
 
-    constructor(tape: Tape) {
-        this.tape = tape;
-        this.tapeMessage = "";
+    constructor() {
         this.easterEggs = [];
 
         this.addEasterEggs();
     }
 
-    launch(tape: string[]): void {
-        this.tapeMessage = this.tape.getContentAsString();
-
+    /**
+     * Launchs easter eggs that should be launch based on the content of the tape
+     * @param tape the tape to get content from
+     */
+    launch(tape: Tape): void {
         this.easterEggs.forEach((easterEgg) => {
-            if (easterEgg.shouldBeLaunched(this.tapeMessage)) {
-                easterEgg.launch(this.tapeMessage);
+            if (easterEgg.shouldBeLaunched(tape)) {
+                easterEgg.launch(tape);
             }
         });
     }
 
+    /**
+     * Adds easter eggs to this.easterEggs
+     */
     addEasterEggs(): void {
         this.easterEggs.push(new SpacemanEasterEgg());
     }

@@ -3,6 +3,9 @@ import { TuringMachine } from "../model/TuringMachine";
 import { State } from "../model/State";
 import { Transition } from "../model/Transition";
 
+/**
+ * A class to throw an error when the turing machine tries to run but there is a non deterministic error
+ */
 export class NonDeterministicError extends TMError {
     private readonly state: State;
     private readonly transitions: Transition[];

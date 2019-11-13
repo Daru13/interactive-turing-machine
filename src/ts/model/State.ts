@@ -4,7 +4,7 @@ import { EventManager } from '../events/EventManager';
 import { EditStateEvent } from '../events/EditStateEvent';
 import { transition, symbol } from 'd3';
 import { EditFinalStateEvent } from '../events/EditFinalStateEvent';
-import { MoveNodeAction } from '../view/actions/MoveNodeAction';
+import { MoveStateAction } from '../view/actions/MoveStateAction';
 import { moveStateEvent } from '../events/MoveStateEvent';
 
 
