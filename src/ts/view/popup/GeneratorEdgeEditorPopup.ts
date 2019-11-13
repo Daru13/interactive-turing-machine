@@ -1,5 +1,5 @@
 import { StateMachine } from "../../model/StateMachine";
-import { Editor } from "./Editor";
+import { Editor } from "./EditorPopup";
 import { GeneratorEdge } from "../graph/edges/GeneratorEdge";
 
 /**

@@ -4,7 +4,7 @@ import { EventManager, EventHandler, EventID, Event } from "../events/EventManag
 import { TapeMoveEvent } from "../events/TapeMoveEvent";
 import { TapeNewPosEvent } from "../events/TapeNewPosEvent";
 import { TuringMachine } from "../model/TuringMachine";
-import { TapeContentEditorPopup } from './editors/TapeContentEditorPopup';
+import { TapeContentEditorPopup } from './popup/TapeContentEditorPopup';
 
 /**
  * A class to display a tape in the view

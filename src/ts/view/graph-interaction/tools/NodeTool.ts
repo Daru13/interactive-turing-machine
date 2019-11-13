@@ -9,9 +9,9 @@ import { Node } from "../../graph/nodes/Node";
 import { GeneratorEdge } from "../../graph/edges/GeneratorEdge";
 import { Helpers } from "../../../helpers";
 import { MoveStateAction } from "../../actions/MoveStateAction";
-import { NodeEditor } from "../../editors/NodeEditor";
-import { TransitionEdgeEditor } from "../../editors/TransitionEdgeEditor";
-import { GeneratorEdgeEditor } from "../../editors/GeneratorEdgeEditor";
+import { NodeEditor } from "../../popup/NodeEditorPopup";
+import { TransitionEdgeEditor } from "../../popup/TransitionEdgeEditorPopup";
+import { GeneratorEdgeEditor } from "../../popup/GeneratorEdgeEditorPopup";
 
 /** A class to create a tool to create nodes and moves them */
 export class NodeTool{
