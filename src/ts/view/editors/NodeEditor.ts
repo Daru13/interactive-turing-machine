@@ -1,4 +1,4 @@
-import { DeleteNodeAction } from "../actions/DeleteNodeAction";
+import { DeleteStateAction } from "../actions/DeleteStateAction";
 import { TuringMachine } from "../../model/TuringMachine";
 import { Editor } from "./Editor";
 import { StateNode } from "../graph/nodes/StateNode";
@@ -65,7 +65,7 @@ export class NodeEditor extends Editor{
     }
 
     deleteNode(): void {
-        DeleteNodeAction.do(this.node, this.turingMachine);
+        DeleteStateAction.do(this.node, this.turingMachine);
         this.setOnClose(() => { });
         super.close();
     }

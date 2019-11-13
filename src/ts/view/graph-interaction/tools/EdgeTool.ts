@@ -1,18 +1,18 @@
 import { ModifiedPointerEvent } from "../ModifiedPointerEvent";
-import { CreateEdgeAction } from "../../actions/CreateEdgeAction";
+import { CreateTransitionAction } from "../../actions/CreateTransitionAction";
 import { Graph } from "../../graph/Graph";
 import { Node } from "../../graph/nodes/Node"; 
 import * as d3 from "d3-selection";
 import { TuringMachine } from "../../../model/TuringMachine";
 import { Helpers } from "../../../helpers";
-import { EditNodeAction } from "../../actions/EditNodeAction";
-import { EditTransitionEdgeAction } from "../../actions/EditTransitionEdgeAction";
-import { SetInitialNodeAction } from "../../actions/SetInitialNodeAction";
+import { SetInitialStateAction } from "../../actions/SetInitialStateAction";
 import { TransitionEdge } from "../../graph/edges/TransitionEdge";
 import { StateNode } from "../../graph/nodes/StateNode";
 import { GeneratorEdge } from "../../graph/edges/GeneratorEdge";
 import { GeneratorNode } from "../../graph/nodes/GeneratorNode";
-import { EditGeneratorEdgeAction } from "../../actions/EditGeneratorEdgeAction";
+import { NodeEditor } from "../../editors/NodeEditor";
+import { TransitionEdgeEditor } from "../../editors/TransitionEdgeEditor";
+import { GeneratorEdgeEditor } from "../../editors/GeneratorEdgeEditor";
 
 export class EdgeTool {
     previousX: number;
@@ -98,11 +98,11 @@ export class EdgeTool {
 
             if (closestNode !== undefined) {
                 if (this.node instanceof StateNode && closestNode instanceof StateNode) {
-                    CreateEdgeAction.do(this.node, closestNode, this.turingMachine);
+                    CreateTransitionAction.do(this.node, closestNode, this.turingMachine);
                 } else if (this.node instanceof GeneratorNode && closestNode instanceof StateNode) {
-                    SetInitialNodeAction.do(closestNode, this.turingMachine);
+                    SetInitialStateAction.do(closestNode, this.turingMachine);
                 } else if (this.node instanceof StateNode && closestNode instanceof GeneratorNode) {
-                    SetInitialNodeAction.do(this.node, this.turingMachine);
+                    SetInitialStateAction.do(this.node, this.turingMachine);
                 }
             }
         }
@@ -123,11 +123,11 @@ export class EdgeTool {
         let targetSelection = d3.select(target);
 
         if (this.node !== undefined && this.node instanceof StateNode) {
-            EditNodeAction.do(this.node, this.turingMachine);
+            new NodeEditor(this.node, this.turingMachine);
         } else if (TransitionEdge.isTransitionEdge(targetSelection)) {
-            EditTransitionEdgeAction.do(TransitionEdge.getTransitionEdge(targetSelection), this.turingMachine);
+            new TransitionEdgeEditor(TransitionEdge.getTransitionEdge(targetSelection), this.turingMachine);
         } else if (GeneratorEdge.isGeneratorEdge(targetSelection)) {
-            EditGeneratorEdgeAction.do(GeneratorEdge.getGeneratorEdge(targetSelection), this.turingMachine);
+            new GeneratorEdgeEditor(GeneratorEdge.getGeneratorEdge(targetSelection), this.turingMachine.stateMachine);
         }
     }
 

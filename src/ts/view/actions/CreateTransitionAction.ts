@@ -4,7 +4,8 @@ import { HeadAction } from "../../model/Tape";
 import { Action } from "./Action";
 import { StateNode } from "../graph/nodes/StateNode";
 
-export class CreateEdgeAction extends Action {
+/** A class with a static property to add a transition in a turing machine */
+export class CreateTransitionAction extends Action {
     static do(fromNode: StateNode, toNode: StateNode, turingMachine: TuringMachine): void {
         turingMachine.stateMachine
             .addTransition(new Transition(

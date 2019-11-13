@@ -2,16 +2,16 @@ import * as d3 from "d3-selection";
 import { Graph } from "../../graph/Graph";
 import { TuringMachine } from "../../../model/TuringMachine";
 import { ModifiedPointerEvent } from "../ModifiedPointerEvent";
-import { CreateNodeAction } from "../../actions/CreateNodeAction";
-import { EditNodeAction } from "../../actions/EditNodeAction";
+import { CreateStateAction } from "../../actions/CreateStateAction";
 import { TransitionEdge } from "../../graph/edges/TransitionEdge";
 import { StateNode } from "../../graph/nodes/StateNode";
 import { Node } from "../../graph/nodes/Node";
 import { GeneratorEdge } from "../../graph/edges/GeneratorEdge";
-import { EditGeneratorEdgeAction } from "../../actions/EditGeneratorEdgeAction";
-import { EditTransitionEdgeAction } from "../../actions/EditTransitionEdgeAction";
 import { Helpers } from "../../../helpers";
-import { MoveNodeAction } from "../../actions/MoveNodeAction";
+import { MoveStateAction } from "../../actions/MoveStateAction";
+import { NodeEditor } from "../../editors/NodeEditor";
+import { TransitionEdgeEditor } from "../../editors/TransitionEdgeEditor";
+import { GeneratorEdgeEditor } from "../../editors/GeneratorEdgeEditor";
 
 export class NodeTool{
     previousX: number;
@@ -100,7 +100,7 @@ export class NodeTool{
             this.node.handleSelection.classed("move", false);
             this.node.handleSelection.classed("bad-position", false);
 
-            MoveNodeAction.do(this.node, this.bestPos.x, this.bestPos.y, this.turingMachine);
+            MoveStateAction.do(this.node, this.bestPos.x, this.bestPos.y, this.turingMachine);
             
             this.node = undefined;
         }
@@ -116,13 +116,13 @@ export class NodeTool{
         let targetSelection = d3.select(target);
 
         if (d3.select(target).property("tagName") === "svg") {
-            CreateNodeAction.do(e.x, e.y, this.turingMachine);
+            CreateStateAction.do(e.x, e.y, this.turingMachine);
         } else if (StateNode.isStateNode(targetSelection)) {
-            EditNodeAction.do(StateNode.getStateNode(targetSelection), this.turingMachine);
+            new NodeEditor(StateNode.getStateNode(targetSelection), this.turingMachine);
         } else if (TransitionEdge.isTransitionEdge(targetSelection)) {
-            EditTransitionEdgeAction.do(TransitionEdge.getTransitionEdge(targetSelection), this.turingMachine);
+            new TransitionEdgeEditor(TransitionEdge.getTransitionEdge(targetSelection), this.turingMachine);
         } else if (GeneratorEdge.isGeneratorEdge(targetSelection)) {
-            EditGeneratorEdgeAction.do(GeneratorEdge.getGeneratorEdge(targetSelection), this.turingMachine);
+            new GeneratorEdgeEditor(GeneratorEdge.getGeneratorEdge(targetSelection), this.turingMachine.stateMachine);
         }
     }
 

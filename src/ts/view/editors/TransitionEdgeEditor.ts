@@ -4,7 +4,7 @@ import { StateMachine } from "../../model/StateMachine";
 import { TransitionID, READ_ANY_SYMBOL, WRITE_NO_SYMBOL } from '../../model/Transition';
 import { Editor } from "./Editor";
 import { TransitionEdge } from "../graph/edges/TransitionEdge";
-import { CreateEdgeAction } from "../actions/CreateEdgeAction";
+import { CreateTransitionAction } from "../actions/CreateTransitionAction";
 import { TuringMachine } from "../../model/TuringMachine";
 
 export class TransitionEdgeEditor extends Editor{
@@ -100,7 +100,7 @@ export class TransitionEdgeEditor extends Editor{
                 .on("click", () => {
                     this.submit();
 
-                    CreateEdgeAction.do(fromNode, toNode, this.turingMachine);
+                    CreateTransitionAction.do(fromNode, toNode, this.turingMachine);
                     body.remove();
                     this.addBody(this.content.select("table"));
                 });
