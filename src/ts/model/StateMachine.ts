@@ -95,10 +95,10 @@ export class StateMachine {
             return;
         }
 
-        let isFirstInitialState = this.initialState === null;
+        this.resetInitialState();
         this.initialState = this.states.get(id);
 
-        EventManager.emit(new EditInitialStateEvent(this.initialState, isFirstInitialState));
+        EventManager.emit(new EditInitialStateEvent(this.initialState, true));
     }
 
     resetInitialState(): void {

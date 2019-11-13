@@ -188,6 +188,7 @@ export class Graph {
     editInitialNode(state: State, isInitial: boolean): void {
         let node = this.stateIdToStateNode.get(state.id);
         node.setInitialNode(isInitial);
+        console.log(node, isInitial);
         if (isInitial) {
             this.generatorEdge = new GeneratorEdge(this, this.generator, node);
         } else {
