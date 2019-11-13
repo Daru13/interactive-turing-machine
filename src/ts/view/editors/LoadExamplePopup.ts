@@ -49,6 +49,13 @@ export class LoadExamplePopup extends Popup {
             },
 
             {
+                name: "Unaire soustractor",
+                author: "Adrien C.",
+                description: "A unaire soustractor that computes a-b with a > b. For the machine to work, add a '#' at the end of the soustraction.",
+                json: '{"stateMachine":{"states":[{"id":1,"position":{"x":285.04296875,"y":221.36328125},"label":"State 1","final":false},{"id":2,"position":{"x":527.26171875,"y":225.43359375},"label":"State 2","final":false},{"id":3,"position":{"x":830.5,"y":231.51171875},"label":"State 3","final":false},{"id":4,"position":{"x":1106.14453125,"y":240.62109375},"label":"State 4","final":false},{"id":5,"position":{"x":793.453125,"y":425.31640625},"label":"State 5","final":false},{"id":6,"position":{"x":1095.12890625,"y":84.03125},"label":"State 6","final":true}],"transitions":[{"id":1,"fromStateID":1,"toStateID":2,"onSymbol":"1","outputSymbol":"1","headAction":1},{"id":2,"fromStateID":2,"toStateID":3,"onSymbol":"-","outputSymbol":"-","headAction":1},{"id":3,"fromStateID":3,"toStateID":4,"onSymbol":"1","outputSymbol":"*","headAction":0},{"id":4,"fromStateID":4,"toStateID":5,"onSymbol":"-","outputSymbol":"-","headAction":0},{"id":5,"fromStateID":5,"toStateID":2,"onSymbol":"1","outputSymbol":"*","headAction":1},{"id":6,"fromStateID":5,"toStateID":5,"onSymbol":"*","outputSymbol":"*","headAction":0},{"id":7,"fromStateID":3,"toStateID":6,"onSymbol":"#","outputSymbol":"#","headAction":1},{"id":8,"fromStateID":3,"toStateID":3,"onSymbol":"*","outputSymbol":"*","headAction":1},{"id":9,"fromStateID":4,"toStateID":4,"onSymbol":"*","outputSymbol":"*","headAction":0},{"id":10,"fromStateID":2,"toStateID":2,"onSymbol":"1","outputSymbol":"1","headAction":1},{"id":11,"fromStateID":2,"toStateID":2,"onSymbol":"*","outputSymbol":"*","headAction":1}],"initialStateID":1},"tape":{"content":["1","1","1","-","1","1","#"]}}'
+            },
+
+            {
                 name: "Test palindrome word of even length",
                 author: "Adrien C.",
                 description: "Test if a word of even length in the alphabet {a, b} is a palindrome. Add a '#' at the end of the word for the machine to run",
