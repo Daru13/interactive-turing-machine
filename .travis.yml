@@ -11,11 +11,14 @@ install:
   - npm install
 
 script:
-  - grunt
+  - grunt build
+  - grunt make-doc
+  - mv build deploy
+  - mv docs deploy/docs
 
 deploy:
   provider: pages
-  local-dir: build
+  local-dir: deploy
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
   keep-history: false

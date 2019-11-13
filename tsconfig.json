@@ -8,6 +8,11 @@
       "alwaysStrict": true,
       "declaration": false
     },
+
+    "typedocOptions": {
+        "mode": "modules",
+        "out": "docs"
+    },
   
     "compileOnSave": false,
   
