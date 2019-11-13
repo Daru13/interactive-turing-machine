@@ -25,7 +25,7 @@ export class GeneratorNode extends Node{
 
         let viewbox = this.graph.getSVG().attr("viewBox").split(",");
        
-        this.translateTo(Graph.sizeNode, parseInt(viewbox[3]) / 2);
+        this.translateTo(Graph.sizeNode + 10, parseInt(viewbox[3]) / 2);
         this.handleSelection.attr("id", "generator") ;
 
         addGenerator(this.handleSelection, Graph.sizeNode);
