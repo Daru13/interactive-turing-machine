@@ -293,7 +293,13 @@ export class Graph {
             } else {
                 transitionEdge = this.transitionIdToTransitionEdge.get(transitions[1].id);
             }
-            transitionEdge.addTransitionToEdge(transition);
+            //if there was already an edge, adds the transition to it
+            if (transitionEdge !== undefined && transitionEdge !== null) {
+                transitionEdge.addTransitionToEdge(transition);
+            } else { //else create a new one
+                transitionEdge = new TransitionEdge(this, transition, false);
+            }
+            
         } else {
             transitionEdge = new TransitionEdge(this, transition, false);
         }
