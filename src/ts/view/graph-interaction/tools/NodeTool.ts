@@ -11,6 +11,7 @@ import { GeneratorEdge } from "../../graph/edges/GeneratorEdge";
 import { EditGeneratorEdgeAction } from "../../actions/EditGeneratorEdgeAction";
 import { EditTransitionEdgeAction } from "../../actions/EditTransitionEdgeAction";
 import { Helpers } from "../../../helpers";
+import { MoveNodeAction } from "../../actions/MoveNodeAction";
 
 export class NodeTool{
     previousX: number;
@@ -96,9 +97,11 @@ export class NodeTool{
 
     pointerUp(e: ModifiedPointerEvent): void {
         if (this.node !== undefined) {
-            this.node.translateTo(this.bestPos.x, this.bestPos.y);
             this.node.handleSelection.classed("move", false);
             this.node.handleSelection.classed("bad-position", false);
+
+            MoveNodeAction.do(this.node, this.bestPos.x, this.bestPos.y, this.turingMachine);
+            
             this.node = undefined;
         }
         this.isDown = false;

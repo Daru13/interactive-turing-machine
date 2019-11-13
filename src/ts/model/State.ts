@@ -4,6 +4,8 @@ import { EventManager } from '../events/EventManager';
 import { EditStateEvent } from '../events/EditStateEvent';
 import { transition, symbol } from 'd3';
 import { EditFinalStateEvent } from '../events/EditFinalStateEvent';
+import { MoveNodeAction } from '../view/actions/MoveNodeAction';
+import { moveStateEvent } from '../events/MoveStateEvent';
 
 
 export type StateID = number;
@@ -58,6 +60,7 @@ export class State {
 
     setPosition(position: Position): void {
         this.position = position;
+        EventManager.emit(new moveStateEvent(this, this.position));
     }
 
     getLabel(): string {

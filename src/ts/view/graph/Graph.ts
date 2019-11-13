@@ -13,9 +13,10 @@ import { EditStateEvent } from "../../events/EditStateEvent";
 import { GeneratorNode } from "./nodes/GeneratorNode";
 import { TransitionEdge } from "./edges/TransitionEdge";
 import { TransitionID, Transition } from "../../model/Transition";
-import { StateID, State } from "../../model/State";
+import { StateID, State, Position } from "../../model/State";
 import { StateNode } from "./nodes/StateNode";
 import { GeneratorEdge } from "./edges/GeneratorEdge";
+import { moveStateEvent } from "../../events/MoveStateEvent";
 
 export interface GraphDatum { }
 export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, { }>;
@@ -166,6 +167,11 @@ export class Graph {
         node.delete();
     }
 
+    moveNode(state: State, x: number, y: number): void {
+        let node = this.stateIdToStateNode.get(state.id);
+        node.translateTo(x, y);
+    }
+
     setEdgeCurved(transition: Transition): void {
         if (transition.fromState === transition.toState) {
             return;
@@ -263,6 +269,12 @@ export class Graph {
             this.deleteNode(e.state);
         });
         EventManager.registerHandler("deleteState", this.eventsHandlers["deleteState"]);
+
+        //move state 
+        this.eventsHandlers["moveState"] = ((e: moveStateEvent) => {
+            this.moveNode(e.state, e.position.x, e.position.y);
+        });
+        EventManager.registerHandler("moveState", this.eventsHandlers["moveState"]);
 
         //new transition
         this.eventsHandlers["newTransition"] = ((e: NewTransitionEvent) => {
