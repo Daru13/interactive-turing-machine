@@ -87,7 +87,7 @@ export class Graph {
      * Setups the UI by creating a group for the edge and one for the node
      */
     setupUI(): void {
-        d3.select("#graph").selectAll("*").remove();
+        d3.select("#graph").selectAll("*:not(#toolbar)").remove();
         this.svg = d3.select("#graph").append("svg");
 
         let bbox = this.svg.node().getBoundingClientRect();
