@@ -9,7 +9,7 @@ import { TapeContentEditorPopup } from './popups/TapeContentEditorPopup';
 /**
  * A class to display a tape in the view
  */
-export class Tape {
+export class InfiniteRoll {
     /** minimal number of cell around the current one */
     private static readonly minLength: number = 10;
     /** margin property of the cell */
@@ -60,10 +60,10 @@ export class Tape {
 
         this.displayedCellsIndices = {
             minIndex: 0,
-            maxIndex: Tape.minLength - 1
+            maxIndex: InfiniteRoll.minLength - 1
         };
         
-        for (let i = 0; i < Tape.minLength; i++) {
+        for (let i = 0; i < InfiniteRoll.minLength; i++) {
             this.addCell(i);
         }
 
@@ -81,9 +81,9 @@ export class Tape {
 
         let widthHolder = document.getElementById("tape-container").getBoundingClientRect().width;
 
-        this.origin = widthHolder / 2 - Tape.marginCell - Tape.sizeCell / 2;
+        this.origin = widthHolder / 2 - InfiniteRoll.marginCell - InfiniteRoll.sizeCell / 2;
         this.tape.style("left", (this.origin).toString() + "px");
-        this.stepMovement = Tape.sizeCell + 2 * Tape.marginCell;
+        this.stepMovement = InfiniteRoll.sizeCell + 2 * InfiniteRoll.marginCell;
     }
 
     /**
@@ -189,17 +189,17 @@ export class Tape {
     private updateDisplayedCell(l: number): void {
         let displayedCellIndex = Math.floor(Math.abs(l - this.origin) / this.stepMovement - 0.5) + 1;
 
-        while (this.displayedCellsIndices.minIndex < Math.max(0, displayedCellIndex - Tape.minLength)) {
+        while (this.displayedCellsIndices.minIndex < Math.max(0, displayedCellIndex - InfiniteRoll.minLength)) {
             this.removeCellAtTheBeginning();
         }
-        while (this.displayedCellsIndices.minIndex > Math.max(0, displayedCellIndex - Tape.minLength)) {
+        while (this.displayedCellsIndices.minIndex > Math.max(0, displayedCellIndex - InfiniteRoll.minLength)) {
             this.addCellAtTheBeginning();
         }
 
-        while (this.displayedCellsIndices.maxIndex > displayedCellIndex + Tape.minLength) {
+        while (this.displayedCellsIndices.maxIndex > displayedCellIndex + InfiniteRoll.minLength) {
             this.removeCellAtTheEnd();
         }
-        while (this.displayedCellsIndices.maxIndex < displayedCellIndex + Tape.minLength) {
+        while (this.displayedCellsIndices.maxIndex < displayedCellIndex + InfiniteRoll.minLength) {
             this.addCellAtTheEnd();
         }
 
@@ -378,7 +378,7 @@ export class Tape {
     resize(): void {
         let widthHolder = document.getElementById("tape-container").getBoundingClientRect().width;
         let previousOrigin = this.origin;
-        this.origin = widthHolder / 2 - Tape.marginCell - Tape.sizeCell / 2;
+        this.origin = widthHolder / 2 - InfiniteRoll.marginCell - InfiniteRoll.sizeCell / 2;
         this.moveTapeBy(previousOrigin - this.origin);
     }
 }

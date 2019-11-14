@@ -1,22 +1,22 @@
 import * as d3 from "d3-selection";
-import { EventManager, EventHandler, EventID } from "../../events/EventManager";
-import { NewStateEvent } from "../../events/NewStateEvent";
-import { DeleteStateEvent } from "../../events/DeleteStateEvent";
-import { NewTransitionEvent } from "../../events/NewTransitionEvent";
-import { DeleteTransitionEvent } from "../../events/DeleteTransitionEvent";
-import { EditTransitionEvent } from "../../events/EditTransitionEvent";
-import { EditInitialStateEvent } from "../../events/EditInitialStateEvent";
-import { EditFinalStateEvent } from "../../events/EditFinalStateEvent";
-import { TuringMachine } from "../../model/TuringMachine";
-import { NewCurrentStateEvent } from "../../events/NewCurrentStateEvent";
-import { EditStateEvent } from "../../events/EditStateEvent";
+import { EventManager, EventHandler, EventID } from "../events/EventManager";
+import { NewStateEvent } from "../events/NewStateEvent";
+import { DeleteStateEvent } from "../events/DeleteStateEvent";
+import { NewTransitionEvent } from "../events/NewTransitionEvent";
+import { DeleteTransitionEvent } from "../events/DeleteTransitionEvent";
+import { EditTransitionEvent } from "../events/EditTransitionEvent";
+import { EditInitialStateEvent } from "../events/EditInitialStateEvent";
+import { EditFinalStateEvent } from "../events/EditFinalStateEvent";
+import { TuringMachine } from "../model/TuringMachine";
+import { NewCurrentStateEvent } from "../events/NewCurrentStateEvent";
+import { EditStateEvent } from "../events/EditStateEvent";
 import { GeneratorNode } from "./nodes/GeneratorNode";
 import { TransitionEdge } from "./edges/TransitionEdge";
-import { TransitionID, Transition } from "../../model/Transition";
-import { StateID, State, Position } from "../../model/State";
+import { TransitionID, Transition } from "../model/Transition";
+import { StateID, State, Position } from "../model/State";
 import { StateNode } from "./nodes/StateNode";
 import { GeneratorEdge } from "./edges/GeneratorEdge";
-import { moveStateEvent } from "../../events/MoveStateEvent";
+import { moveStateEvent } from "../events/MoveStateEvent";
 
 export interface GraphDatum { }
 export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, { }>;

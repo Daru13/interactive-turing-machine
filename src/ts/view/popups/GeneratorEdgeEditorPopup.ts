@@ -1,6 +1,6 @@
 import { StateMachine } from "../../model/StateMachine";
 import { Editor } from "./EditorPopup";
-import { GeneratorEdge } from "../graph/edges/GeneratorEdge";
+import { GeneratorEdge } from "../edges/GeneratorEdge";
 
 /**
  * A class to create an editor for the edge going from the generator to a node

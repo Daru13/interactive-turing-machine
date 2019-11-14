@@ -1,6 +1,6 @@
-import { Tape } from "./Tape";
+import { InfiniteRoll } from "./InfiniteRoll";
 import { MouseDispatcher } from "./graph-interaction/tools/MouseDispatcher";
-import { Graph } from "./graph/Graph";
+import { Graph } from "./Graph";
 import { TuringMachine } from "../model/TuringMachine";
 import { ControlPanel } from "./ControlPanel";
 import { EventManager } from "../events/EventManager";
@@ -8,21 +8,29 @@ import { PenAndTouchDispatcher } from "./graph-interaction/pen-and-touch/PenAndT
 import { ChangeInteractionStyle } from "../events/ChangeInteractionStyleEvent";
 import { InteractionStyles } from "./MenuBar";
 
-/** A class to manage a graph and a tape. It is the equivalent of the turing machine in the model */
-export class ViewController{
-    /** graph managed by the controller */
-    graph: Graph;
-    /** view managed by the controller */
-    tape: Tape;
-    /** Associated turing machine */
+/**
+ * A class representing a graphical Turing machine.
+ * It manages a graph (paired with a state machine) and an infinite roll (paired with a tape).
+ */
+export class GraphicalTuringMachine {
+    /** The Turing machine to represent. */
     turingMachine: TuringMachine;
-    /** Control button to control the turing machine */
+
+    /** The graph paired with the state machine. */
+    graph: Graph;
+
+    /** The roll paired with the tape. */
+    roll: InfiniteRoll;
+
+    /** A panel with widgets to control the Turing machine. */
     tmButtons: ControlPanel;
-    /** window resize event handler */
+
+    /** Window resize event handler. */
     windowHandler: () => void;
     
     /** tool manager for the graph */
     toolManager: MouseDispatcher;
+
     /** pen and touch interaction for the graph */
     penAndTouchManager: PenAndTouchDispatcher;
 
@@ -33,7 +41,7 @@ export class ViewController{
     }
 
     /**
-     * Setups the ui with a graph, a tape and control buttons. Sets the interaction to Mouse interaction
+     * Setups the ui with a graph, an infinite roll and control buttons. Sets the interaction to Mouse interaction
      */
     setupUI(): void {
         this.graph = new Graph(this.turingMachine);
@@ -42,8 +50,8 @@ export class ViewController{
         this.penAndTouchManager = new PenAndTouchDispatcher(this.graph, this.turingMachine);
         this.setInteractionStyle(InteractionStyles.MOUSE);
 
-        this.tape = new Tape(this.turingMachine);
-        this.tmButtons = new ControlPanel(this.turingMachine, this.tape);
+        this.roll = new InfiniteRoll(this.turingMachine);
+        this.tmButtons = new ControlPanel(this.turingMachine, this.roll);
     }
 
     /**
@@ -66,7 +74,7 @@ export class ViewController{
      */
     removeHandler(): void {
         this.graph.removeHandler();
-        this.tape.removeEventListeners();
+        this.roll.removeEventListeners();
         window.removeEventListener("resize", this.windowHandler);
     }
 
@@ -75,7 +83,7 @@ export class ViewController{
      */
     resize(): void {
         this.graph.resize();
-        this.tape.resize();
+        this.roll.resize();
     }
 
     /**

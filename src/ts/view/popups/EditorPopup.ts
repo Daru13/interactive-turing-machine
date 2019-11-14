@@ -1,7 +1,7 @@
 import * as d3 from "d3-selection";
 import { Popup } from "./Popup";
-import { Edge } from "../graph/edges/Edge";
-import { Node } from "../graph/nodes/Node";
+import { Edge } from "../edges/Edge";
+import { Node } from "../nodes/Node";
 import { Selection } from "../../helpers";
 
 

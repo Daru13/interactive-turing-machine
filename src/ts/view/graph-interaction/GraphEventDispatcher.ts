@@ -1,4 +1,4 @@
-import { Graph } from "../graph/Graph";
+import { Graph } from "../Graph";
 import { TuringMachine } from "../../model/TuringMachine";
 import { Helpers } from "../../helpers";
 import { ModifiedPointerEvent } from "./ModifiedPointerEvent";

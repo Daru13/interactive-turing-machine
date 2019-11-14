@@ -1,5 +1,5 @@
 import { ModifiedPointerEvent } from "./view/graph-interaction/ModifiedPointerEvent";
-import { Graph } from "./view/graph/Graph";
+import { Graph } from "./view/Graph";
 
 /** Redefines d3 selection type to have shorter version */
 export interface Selection<

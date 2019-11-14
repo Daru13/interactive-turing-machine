@@ -1,6 +1,6 @@
 import * as d3 from "d3-selection";
 import { TuringMachine } from "../model/TuringMachine";
-import { Tape } from "./Tape";
+import { InfiniteRoll } from "./InfiniteRoll";
 import { ErrorPopup } from "./popups/ErrorPopup";
 import { TMError } from "../errors/TMError";
 import { EasterEggManager } from "../easter-eggs/EasterEggManager";
@@ -12,13 +12,13 @@ export class ControlPanel {
     /** Turing machine to control */
     turingMachine: TuringMachine;
     /** Tape in the view to move */
-    tape: Tape;
+    roll: InfiniteRoll;
     /** Manage easter eggs based on the tape content */
     easterEggManager: EasterEggManager;
 
-    constructor(turingMachine: TuringMachine, tape: Tape) {
+    constructor(turingMachine: TuringMachine, roll: InfiniteRoll) {
         this.turingMachine = turingMachine;
-        this.tape = tape;
+        this.roll = roll;
         this.easterEggManager = new EasterEggManager();
 
         this.init();
@@ -37,7 +37,7 @@ export class ControlPanel {
      */
     private addControlButtons(): void {
         let tm = this.turingMachine;
-        let tape = this.tape;
+        let roll = this.roll;
 
         d3.select("#control-panel").selectAll("*").remove();
         this.holder = d3.select("#control-panel");
@@ -45,7 +45,7 @@ export class ControlPanel {
             .attr("id", "run-turing-machine-button")
             .attr("title", "Simulate the machine")
             .on("click", () => {
-                tape.moveToCell(tm.tape.getHeadPosition());
+                roll.moveToCell(tm.tape.getHeadPosition());
 
                 try {
                     tm.reset();
@@ -64,7 +64,7 @@ export class ControlPanel {
             .attr("id", "step-turing-machine-button")
             .attr("title", "Simulate one computation step")
             .on("click", () => {
-                tape.moveToCell(tm.tape.getHeadPosition());
+                roll.moveToCell(tm.tape.getHeadPosition());
 
                 try {
                     tm.runOneStep();

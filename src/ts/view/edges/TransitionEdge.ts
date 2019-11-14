@@ -1,8 +1,8 @@
 import { Graph } from "../Graph";
 import * as d3 from "d3-selection";
-import { Transition, TransitionID } from "../../../model/Transition";
-import { Helpers } from "../../../helpers";
-import { HeadAction, TapeSymbol } from "../../../model/Tape";
+import { Transition, TransitionID } from "../../model/Transition";
+import { Helpers } from "../../helpers";
+import { HeadAction, TapeSymbol } from "../../model/Tape";
 import { Edge } from "./Edge";
 import { StateNode } from "../nodes/StateNode";
 

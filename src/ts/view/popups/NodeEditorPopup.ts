@@ -1,7 +1,7 @@
 import { DeleteStateAction } from "../actions/DeleteStateAction";
 import { TuringMachine } from "../../model/TuringMachine";
 import { Editor } from "./EditorPopup";
-import { StateNode } from "../graph/nodes/StateNode";
+import { StateNode } from "../nodes/StateNode";
 
 /**
  * A class to create an editor for a state node

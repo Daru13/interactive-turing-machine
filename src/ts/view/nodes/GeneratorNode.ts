@@ -1,5 +1,5 @@
 import { Graph } from "../Graph";
-import { addGenerator } from "../../custom-shapes/generator";
+import { addGenerator } from "../custom-shapes/generator";
 import * as d3 from "d3-selection";
 import { Node } from "./Node";
 
