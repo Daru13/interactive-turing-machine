@@ -691,8 +691,18 @@ body {
 /* LOAD EXAMPLE POPUP
 /*****************************************************************/
 
+/* #load-example-machine-popup {
+    max-height: 80%;
+} */
+
+#load-example-machine-popup .popup-content {
+    overflow: auto;
+    max-height: 500px;
+}
+
 #example-machine-list {
-    min-width: 600px;
+    min-width: 500px;
+    max-height: 500px;
     padding: 10px;
 }
 
@@ -804,6 +814,10 @@ body {
 
 .error-popup {
     max-width: 800px;
+}
+
+.error-popup .popup-content {
+    padding: 20px;
 }
 
 .error-popup .popup-titlebar {
