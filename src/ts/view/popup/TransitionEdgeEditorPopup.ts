@@ -90,7 +90,7 @@ export class TransitionEdgeEditor extends Editor{
         
         // Text field for the input text field
         cell = row.append("td").classed("input-symbol", true);
-        this.addTextField(transition.getOnSymbol(), {
+        this.addTextField(transition.getInputSymbol(), {
             placeholder: "Any",
             maxlength: "1"
         }, cell);
@@ -116,8 +116,8 @@ export class TransitionEdgeEditor extends Editor{
      * @param body 
      */
     addPlusButton(body: d3.Selection<HTMLTableSectionElement, any, any, any>): void {
-        let fromNode = this.edge.fromStateNode;
-        let toNode = this.edge.toStateNode;
+        let originNode = this.edge.originNode;
+        let destinationNode = this.edge.destinationNode;
 
         let row = body.append("tr")
             .classed("new-transition-button-row", true);
@@ -129,7 +129,7 @@ export class TransitionEdgeEditor extends Editor{
                 .on("click", () => {
                     this.submit();
 
-                    CreateTransitionAction.do(fromNode, toNode, this.turingMachine);
+                    CreateTransitionAction.do(originNode, destinationNode, this.turingMachine);
                     body.remove();
                     this.addBody(this.content.select("table"));
                 });
@@ -197,7 +197,7 @@ export class TransitionEdgeEditor extends Editor{
             let transition = t.stateMachine.getTransition(d["transitionID"] as TransitionID);
 
             let inputSymbol = (row.select(".input-symbol").select("input").node() as HTMLInputElement).value;
-            transition.setOnSymbol(inputSymbol === "" ? READ_ANY_SYMBOL : inputSymbol);
+            transition.setInputSymbol(inputSymbol === "" ? READ_ANY_SYMBOL : inputSymbol);
 
             let outputSymbol = (row.select(".output-symbol").select("input").node() as HTMLInputElement).value;
             transition.setOutputSymbol(outputSymbol === "" ? WRITE_NO_SYMBOL : outputSymbol);

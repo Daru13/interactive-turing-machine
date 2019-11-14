@@ -13,9 +13,9 @@ export class TransitionEdge extends Edge {
     /** List of transition ids reprensented by this edge */
     readonly transitionIDs: TransitionID[];
     /** The state from where the edge is comming from */
-    fromStateNode: StateNode;
+    originNode: StateNode;
     /** The state where the edge is going */
-    toStateNode: StateNode;
+    destinationNode: StateNode;
     /** Is the edge curved */
     isCurved: boolean;
     /** The graph containing the edge */
@@ -25,8 +25,8 @@ export class TransitionEdge extends Edge {
         super(graph);
 
         this.transitionIDs = [transition.id];    
-        this.fromStateNode = graph.stateIdToStateNode.get(transition.fromState.id);
-        this.toStateNode = graph.stateIdToStateNode.get(transition.toState.id);
+        this.originNode = graph.stateIdToStateNode.get(transition.origin.id);
+        this.destinationNode = graph.stateIdToStateNode.get(transition.destination.id);
         this.isCurved = isCurved;
         this.graph = graph;
         this.initTransitionEdge(transition);
@@ -41,7 +41,7 @@ export class TransitionEdge extends Edge {
 
          this.handleSelection.classed("transition-edge", true);
          this.redrawTransitionEdge();
-         this.drawTransitionText(transition.getOnSymbol(), transition.getOutputSymbol(), transition.getHeadAction());
+         this.drawTransitionText(transition.getInputSymbol(), transition.getOutputSymbol(), transition.getHeadAction());
      }
 
     /**
@@ -57,8 +57,8 @@ export class TransitionEdge extends Edge {
      * Redraws the transition edge
      */
     redrawTransitionEdge(): void {
-        let pt1 = { x: this.fromStateNode.x, y: this.fromStateNode.y };
-        let pt2 = { x: this.toStateNode.x, y: this.toStateNode.y };
+        let pt1 = { x: this.originNode.x, y: this.originNode.y };
+        let pt2 = { x: this.destinationNode.x, y: this.destinationNode.y };
         let dx, dy;
 
         //case where the edge is going from and to the same point
@@ -78,7 +78,7 @@ export class TransitionEdge extends Edge {
     }
 
     /**
-     * Removes a transition from the edge. If there is no more transition between the fromStateNode and toStateNode, the edge is deleted
+     * Removes a transition from the edge. If there is no more transition between the originNode and destinationNode, the edge is deleted
      * @param transitionId 
      */
     deleteTransitionEdge(transitionId: TransitionID): void {
@@ -113,11 +113,11 @@ export class TransitionEdge extends Edge {
 
     /**
      * Draws the text of the last modified transition represented by the edge
-     * @param onSymbol onSymbol of the transition
-     * @param outputSymbol outputSymbol of the transition
-     * @param headAction headAction of the transition
+     * @param inputSymbol input symbol of the transition
+     * @param outputSymbol output symbol of the transition
+     * @param headAction head action of the transition
      */
-    drawTransitionText(onSymbol: TapeSymbol, outputSymbol: TapeSymbol, headAction: HeadAction): void {
+    drawTransitionText(inputSymbol: TapeSymbol, outputSymbol: TapeSymbol, headAction: HeadAction): void {
         let headActionSymbol = "";
         switch (headAction) {
             case HeadAction.MoveLeft:
@@ -134,7 +134,7 @@ export class TransitionEdge extends Edge {
         }
 
         let extraTransitionsSymbol = (this.transitionIDs.length > 1) ? " ..." : "";
-        this.redrawText((onSymbol === "" ? "" : ("\u{1F4D6} " + onSymbol + " "))
+        this.redrawText((inputSymbol === "" ? "" : ("\u{1F4D6} " + inputSymbol + " "))
                       + (outputSymbol === "" ? "" : ("\u{1F4DD} " + outputSymbol + " "))
                       + ("\u{1F9ED} " + headActionSymbol)
                       + extraTransitionsSymbol);

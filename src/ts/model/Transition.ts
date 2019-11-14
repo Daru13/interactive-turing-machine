@@ -25,9 +25,9 @@ interface EditableTransition extends Transition {
 /** An exported transition which can be serialised. */
 export interface TransitionExport {
     readonly id: TransitionID;
-    readonly fromStateID: StateID;
-    readonly toStateID: StateID;
-    readonly onSymbol: TapeSymbol;
+    readonly originID: StateID;
+    readonly destinationID: StateID;
+    readonly inputSymbol: TapeSymbol;
     readonly outputSymbol: TapeSymbol;
     readonly headAction: HeadAction;
 }
@@ -44,13 +44,13 @@ export class Transition {
     readonly id: TransitionID;
 
     /** Origin state. */
-    readonly fromState: State;
+    readonly origin: State;
 
     /** Destination state. */
-    readonly toState: State;
+    readonly destination: State;
 
     /** Input symbol (to be read from the tape). */
-    private onSymbol: TapeSymbol;
+    private inputSymbol: TapeSymbol;
 
     /** Output symbol (to be written on the tape). */
     private outputSymbol: TapeSymbol;
@@ -61,24 +61,24 @@ export class Transition {
     /**
      * Create a new instance of Transition.
      * 
-     * @param fromState Origin state.
-     * @param toState Destination state.
-     * @param onSymbol Input symbol.
+     * @param origin Origin state.
+     * @param destination Destination state.
+     * @param inputSymbol Input symbol.
      * @param outputSymbol Output symbol.
      * @param headAction Action on the head of the tape.
      */
-    constructor(fromState: State,
-        toState: State,
-        onSymbol: TapeSymbol,
+    constructor(origin: State,
+        destination: State,
+        inputSymbol: TapeSymbol,
         outputSymbol: TapeSymbol,
         headAction: HeadAction) {
         this.id = Transition.nextTransitionID;
         Transition.nextTransitionID++;
 
-        this.fromState = fromState;
-        this.toState = toState;
+        this.origin = origin;
+        this.destination = destination;
 
-        this.onSymbol = onSymbol;
+        this.inputSymbol = inputSymbol;
         this.outputSymbol = outputSymbol;
         this.headAction = headAction;
     }
@@ -88,8 +88,8 @@ export class Transition {
      * 
      * @return The input symbol.
      */
-    getOnSymbol(): TapeSymbol {
-        return this.onSymbol;
+    getInputSymbol(): TapeSymbol {
+        return this.inputSymbol;
     }
 
     /**
@@ -98,12 +98,12 @@ export class Transition {
      * 
      * @param symbol The new input symbol.
      */
-    setOnSymbol(symbol: TapeSymbol): void {
-        let oldSymbol = this.onSymbol;
-        this.onSymbol = symbol;
+    setInputSymbol(symbol: TapeSymbol): void {
+        let oldSymbol = this.inputSymbol;
+        this.inputSymbol = symbol;
 
         // Update the origin state accordingly
-        this.fromState.editOutTransitionSymbol(this, oldSymbol, symbol);
+        this.origin.editOutTransitionInputSymbol(this, oldSymbol, symbol);
 
         EventManager.emit(new EditTransitionEvent(this));
     }
@@ -176,11 +176,11 @@ export class Transition {
                 break;
         }
 
-        return this.fromState.toString(useLabels)
+        return this.origin.toString(useLabels)
              + " → "
-             + this.toState.toString(useLabels)
+             + this.destination.toString(useLabels)
              + " ("
-             + (this.onSymbol === READ_ANY_SYMBOL ? "<any>" : this.onSymbol)
+             + (this.inputSymbol === READ_ANY_SYMBOL ? "<any>" : this.inputSymbol)
              + " / "
              + (this.outputSymbol === WRITE_NO_SYMBOL ? "<none>" : this.outputSymbol)
              + ", "
@@ -196,9 +196,9 @@ export class Transition {
     export(): TransitionExport {
         return {
             id: this.id,
-            fromStateID: this.fromState.id,
-            toStateID: this.toState.id,
-            onSymbol: this.onSymbol,
+            originID: this.origin.id,
+            destinationID: this.destination.id,
+            inputSymbol: this.inputSymbol,
             outputSymbol: this.outputSymbol,
             headAction: this.headAction
         };
@@ -218,17 +218,17 @@ export class Transition {
      */
     static fromExport(transitionExport: TransitionExport, states: Map<StateID, State>): Transition {
         // Origin and destination states MUST HAVE ALREADY BEEN CREATED
-        let fromState = states.get(transitionExport.fromStateID);
-        let toState = states.get(transitionExport.toStateID);
+        let origin = states.get(transitionExport.originID);
+        let destination = states.get(transitionExport.destinationID);
 
-        if (fromState === undefined || toState === undefined) {
+        if (origin === undefined || destination === undefined) {
             console.error("The transition could not be created from an export: unknown state.");
         }
 
         let transition = new Transition(
-            fromState,
-            toState,
-            transitionExport.onSymbol,
+            origin,
+            destination,
+            transitionExport.inputSymbol,
             transitionExport.outputSymbol,
             transitionExport.headAction
         ) as EditableTransition;

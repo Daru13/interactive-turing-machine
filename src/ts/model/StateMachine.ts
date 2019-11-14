@@ -221,10 +221,10 @@ export class StateMachine {
      * @param transition The transition to add.
      */
     addTransition(transition: Transition): void {
-        let fromState = transition.fromState;
-        let toState = transition.toState;
+        let origin = transition.origin;
+        let destination = transition.destination;
 
-        if (! (this.hasState(fromState.id) && this.hasState(toState.id))) {
+        if (! (this.hasState(origin.id) && this.hasState(destination.id))) {
             console.error("The transition could not be added: unknown origin or destination state.");
             return;
         }
@@ -234,8 +234,8 @@ export class StateMachine {
             return;
         }
 
-        toState.addInTransition(transition);
-        fromState.addOutTransition(transition);
+        destination.addInTransition(transition);
+        origin.addOutTransition(transition);
         this.transitions.set(transition.id, transition);
 
         EventManager.emit(new NewTransitionEvent(transition));
@@ -297,8 +297,8 @@ export class StateMachine {
         let transition = this.transitions.get(id);
         this.transitions.delete(id);
 
-        transition.toState.removeInTransition(transition);
-        transition.fromState.removeOutTransition(transition);
+        transition.destination.removeInTransition(transition);
+        transition.origin.removeOutTransition(transition);
 
         EventManager.emit(new DeleteTransitionEvent(transition));
     }

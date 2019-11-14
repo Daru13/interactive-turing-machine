@@ -260,18 +260,18 @@ export class Graph {
      * @param transition transition to get the edge from
      */
     setEdgeCurved(transition: Transition): void {
-        if (transition.fromState === transition.toState) {
+        if (transition.origin === transition.destination) {
             return;
         }
 
         let sm = this.turingMachine.stateMachine;
-        let isCurved = transition.fromState.hasOutTransitionTo(transition.toState)
-                    && transition.toState.hasOutTransitionTo(transition.fromState);
+        let isCurved = transition.origin.hasOutTransitionTo(transition.destination)
+                    && transition.destination.hasOutTransitionTo(transition.origin);
 
         this.transitionIdToTransitionEdge.get(transition.id).setCurved(isCurved);
         this.transitionIdToTransitionEdge.get(transition.id).redrawTransitionEdge();
 
-        let oppositeTransitions = transition.toState.getOutTransitionsTo(transition.fromState);
+        let oppositeTransitions = transition.destination.getOutTransitionsTo(transition.origin);
         if (oppositeTransitions.length > 0) {
             let transitionEdge = this.transitionIdToTransitionEdge.get(oppositeTransitions[0].id);
             transitionEdge.setCurved(isCurved);
@@ -286,7 +286,7 @@ export class Graph {
     addEdge(transition: Transition): void {
         let stateMachine = this.turingMachine.stateMachine;
         let transitionEdge;
-        let transitions = transition.fromState.getOutTransitionsTo(transition.toState);
+        let transitions = transition.origin.getOutTransitionsTo(transition.destination);
 
         if (transitions.length > 1) {
             if (transitions[0].id !== transition.id) {
@@ -307,7 +307,7 @@ export class Graph {
 
         this.transitionIdToTransitionEdge.set(transition.id, transitionEdge);
         this.setEdgeCurved(transition);
-        this.stateIdToStateNode.get(transition.fromState.id).updateValidateProperty();
+        this.stateIdToStateNode.get(transition.origin.id).updateValidateProperty();
     }
 
     /**
@@ -318,7 +318,7 @@ export class Graph {
         let transitionEdge = this.transitionIdToTransitionEdge.get(transition.id);
 
         this.setEdgeCurved(transition);
-        this.stateIdToStateNode.get(transition.fromState.id).updateValidateProperty();
+        this.stateIdToStateNode.get(transition.origin.id).updateValidateProperty();
 
         transitionEdge.deleteTransitionEdge(transition.id);
         this.transitionIdToTransitionEdge.delete(transition.id);
@@ -331,11 +331,11 @@ export class Graph {
     editEdge(transition: Transition): void {
         this.transitionIdToTransitionEdge.get(transition.id)
             .drawTransitionText(
-                transition.getOnSymbol(),
+                transition.getInputSymbol(),
                 transition.getOutputSymbol(),
                 transition.getHeadAction());
         
-        this.stateIdToStateNode.get(transition.fromState.id).updateValidateProperty();
+        this.stateIdToStateNode.get(transition.origin.id).updateValidateProperty();
     }
 
     /**

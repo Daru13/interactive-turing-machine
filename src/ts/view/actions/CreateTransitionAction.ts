@@ -6,11 +6,11 @@ import { StateNode } from "../graph/nodes/StateNode";
 
 /** A class with a static property to add a transition in a turing machine */
 export class CreateTransitionAction extends Action {
-    static do(fromNode: StateNode, toNode: StateNode, turingMachine: TuringMachine): void {
+    static do(originNode: StateNode, destinationNode: StateNode, turingMachine: TuringMachine): void {
         turingMachine.stateMachine
             .addTransition(new Transition(
-                turingMachine.stateMachine.getState(fromNode.stateID),
-                turingMachine.stateMachine.getState(toNode.stateID),
+                turingMachine.stateMachine.getState(originNode.stateID),
+                turingMachine.stateMachine.getState(destinationNode.stateID),
                 "",
                 "",
                 HeadAction.MoveRight));

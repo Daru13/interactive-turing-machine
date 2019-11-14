@@ -151,7 +151,7 @@ export class State {
      * @param transition The incomming transition to add.
      */
     addInTransition(transition: Transition): void {
-        if (transition.toState !== this) {
+        if (transition.destination !== this) {
             console.error("The transition could not be added: state and destination do not match.");
             return;
         }
@@ -180,17 +180,17 @@ export class State {
      * @param transition The outgoing transition to add.
      */
     addOutTransition(transition: Transition): void {
-        if (transition.fromState !== this) {
+        if (transition.origin !== this) {
             console.error("The transition could not be added: state and origin do not match.");
             return;
         }
 
-        let onSymbol = transition.getOnSymbol();
-        if (! this.symbolsToOutTransitions.has(onSymbol)) {
-            this.symbolsToOutTransitions.set(onSymbol, new Set());
+        let inputSymbol = transition.getInputSymbol();
+        if (! this.symbolsToOutTransitions.has(inputSymbol)) {
+            this.symbolsToOutTransitions.set(inputSymbol, new Set());
         }
 
-        this.symbolsToOutTransitions.get(transition.getOnSymbol()).add(transition);
+        this.symbolsToOutTransitions.get(transition.getInputSymbol()).add(transition);
         this.outTransitions.set(transition.id, transition);
     }
 
@@ -206,14 +206,14 @@ export class State {
             return;
         }
 
-        let onSymbol = transition.getOnSymbol();
-        let transitions = this.symbolsToOutTransitions.get(onSymbol);
+        let inputSymbol = transition.getInputSymbol();
+        let transitions = this.symbolsToOutTransitions.get(inputSymbol);
 
         transitions.delete(transition);
         this.outTransitions.delete(id);
 
-        if (this.symbolsToOutTransitions.get(onSymbol).size === 0) {
-            this.symbolsToOutTransitions.delete(onSymbol);
+        if (this.symbolsToOutTransitions.get(inputSymbol).size === 0) {
+            this.symbolsToOutTransitions.delete(inputSymbol);
         }
     }
 
@@ -225,7 +225,7 @@ export class State {
      */
     hasOutTransitionTo(state: State): boolean {
         for (let transition of this.outTransitions.values()) {
-            if (transition.toState === state) {
+            if (transition.destination === state) {
                 return true;
             }
         }
@@ -242,7 +242,7 @@ export class State {
     getOutTransitionsTo(state: State): Transition[] {
         return [...this.outTransitions.values()]
             .filter((t) => {
-                return t.toState === state;
+                return t.destination === state;
             });
     }
     
@@ -274,13 +274,13 @@ export class State {
     }
 
     /**
-     * Replace the symbol read by an outgoing transition by a new one.
+     * Replace the input symbol of an outgoing transition by a new one.
      * 
      * @param transition The outgoing transition to modify.
      * @param oldSymbol The old input symbol.
      * @param newSymbol The new input symbol.
      */
-    editOutTransitionSymbol(transition: Transition, oldSymbol: TapeSymbol, newSymbol: TapeSymbol): void {
+    editOutTransitionInputSymbol(transition: Transition, oldSymbol: TapeSymbol, newSymbol: TapeSymbol): void {
         if (oldSymbol === newSymbol) {
             return;
         }

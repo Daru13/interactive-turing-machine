@@ -147,7 +147,7 @@ export class TuringMachine {
 
         // Update the machine according to the transition
         let transition = [...transitions.values()][0];
-        let nextState = transition.toState;
+        let nextState = transition.destination;
 
         let outputSymbol = transition.getOutputSymbol();
         if (outputSymbol !== WRITE_NO_SYMBOL) {
