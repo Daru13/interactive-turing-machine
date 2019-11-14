@@ -1,6 +1,6 @@
 import * as d3 from "d3-selection";
 import { ExportPopup } from "./popups/ExportPopup";
-import { Main } from "../main";
+import { Main } from "../Main";
 import { EventManager } from "../events/EventManager";
 import { ChangeInteractionStyle } from "../events/ChangeInteractionStyleEvent";
 import { ImportPopup } from "./popups/ImportPopup";
@@ -36,7 +36,7 @@ export class MenuBar {
         // Title
         menuBar.append("h1")
             .attr("id", "app-title")
-            .text("Interactive Turing Machine");
+            .text("The Interactive Turing Machine");
 
         // Interaction style switch
         function getInteractionStyleSwitchText(): string {

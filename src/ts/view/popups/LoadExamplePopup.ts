@@ -1,5 +1,5 @@
 import { Popup } from "./Popup";
-import { Main } from "../../main";
+import { Main } from "../../Main";
 
 interface ExampleMachine {
     readonly name: string;

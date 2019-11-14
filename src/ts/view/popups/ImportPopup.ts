@@ -1,5 +1,5 @@
 import { Popup } from "./Popup";
-import { Main } from "../../main";
+import { Main } from "../../Main";
 
 /**
  * A class to create a pop up to import the turing machine from a JSON
