@@ -4,10 +4,10 @@ import { Graph } from "../../graph/Graph";
 import { TuringMachine } from "../../../model/TuringMachine";
 
 /**
- * A class to define actions to do when a user uses a pen
+ * A class to define actions to do when a user uses a pen.
  */
 export class Pen {
-    /** edge tool associated to the pen */
+    /** edge tool associated to the pen. */
     edgeTool: EdgeTool;
 
     constructor(graph: Graph, turingMachine: TuringMachine) {
@@ -15,7 +15,7 @@ export class Pen {
     }
 
     /**
-     * Action when the pen is down
+     * Action when the pen is down.
      * @param e
      */
     pointerDown(e: ModifiedPointerEvent): void {
@@ -23,7 +23,7 @@ export class Pen {
     }
 
     /**
-     * Action when the pen moves
+     * Action when the pen moves.
      * @param e
      */
     pointerMove(e: ModifiedPointerEvent): void {
@@ -31,7 +31,7 @@ export class Pen {
     }
 
     /**
-     * Action when the pen is up
+     * Action when the pen is up.
      * @param e
      */
     pointerUp(e: ModifiedPointerEvent): void {
@@ -39,7 +39,7 @@ export class Pen {
     }
 
     /**
-     * Action when the pen leaves
+     * Action when the pen leaves.
      * @param e
      */
     pointerLeave(e: ModifiedPointerEvent): void {
@@ -47,7 +47,7 @@ export class Pen {
     }
 
     /**
-     * Action when the pen cliks
+     * Action when the pen cliks.
      * @param e
      */
     click(e: ModifiedPointerEvent): void {

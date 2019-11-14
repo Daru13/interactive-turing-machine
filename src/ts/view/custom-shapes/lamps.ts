@@ -1,8 +1,8 @@
 import { Selection } from "../../helpers";
 
-/** Draw a lamp in the holder
- * @param holder a svg element
- * @param classOfCircle a class to add to the lamp
+/** Draw a lamp in the holder.
+ * @param holder a svg element.
+ * @param classOfCircle a class to add to the lamp.
  */
 export function addLamp(holder: Selection<SVGElement>, classOfCircle: string): void {
     //size of drawing: 115

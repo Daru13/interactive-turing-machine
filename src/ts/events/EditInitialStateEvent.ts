@@ -1,7 +1,7 @@
 import { Event } from './EventManager';
 import { State } from '../model/State';
 
-/** A class for an event when intial property of a state changed */
+/** A class for an event when intial property of a state changed. */
 export class EditInitialStateEvent implements Event {
   id: string = "editInitialState";
   state: State;

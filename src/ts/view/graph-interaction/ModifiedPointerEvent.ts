@@ -1,4 +1,4 @@
-/** New type of pointer event by selecting needed attributes */
+/** New type of pointer event by selecting needed attributes. */
 export interface ModifiedPointerEvent {
    pointerId: number; 
    pointerType: PointerEvent["pointerType"]; 

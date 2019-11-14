@@ -7,18 +7,18 @@ import { Edge } from "./Edge";
 import { StateNode } from "../nodes/StateNode";
 
 /**
- * A class to reprensent every transitions between two states of the turing machine as an edge in the graph
+ * A class to reprensent every transitions between two states of the turing machine as an edge in the graph.
  */
 export class TransitionEdge extends Edge {
-    /** List of transition ids reprensented by this edge */
+    /** List of transition ids reprensented by this edge. */
     readonly transitionIDs: TransitionID[];
-    /** The state from where the edge is comming from */
+    /** The state from where the edge is comming from. */
     originNode: StateNode;
-    /** The state where the edge is going */
+    /** The state where the edge is going. */
     destinationNode: StateNode;
-    /** Is the edge curved */
+    /** Is the edge curved. */
     isCurved: boolean;
-    /** The graph containing the edge */
+    /** The graph containing the edge. */
     graph: Graph;
 
     constructor(graph: Graph, transition: Transition, isCurved: boolean) {
@@ -33,8 +33,8 @@ export class TransitionEdge extends Edge {
      }
 
     /**
-     * Inits the transition edge
-     * @param transition first transition represented by the edge
+     * Inits the transition edge.
+     * @param transition first transition represented by the edge.
      */
     initTransitionEdge(transition: Transition): void {
          super.init();
@@ -45,8 +45,8 @@ export class TransitionEdge extends Edge {
      }
 
     /**
-     * Adds a transition to the edge
-     * @param transition transitions to add
+     * Adds a transition to the edge.
+     * @param transition transitions to add.
      */
     addTransitionToEdge(transition: Transition): void {
         this.transitionIDs.push(transition.id);
@@ -54,7 +54,7 @@ export class TransitionEdge extends Edge {
     }
 
     /**
-     * Redraws the transition edge
+     * Redraws the transition edge.
      */
     redrawTransitionEdge(): void {
         let pt1 = { x: this.originNode.x, y: this.originNode.y };
@@ -78,7 +78,7 @@ export class TransitionEdge extends Edge {
     }
 
     /**
-     * Removes a transition from the edge. If there is no more transition between the originNode and destinationNode, the edge is deleted
+     * Removes a transition from the edge. If there is no transition between the originNode and destinationNode anymore, the edge is deleted.
      * @param transitionId 
      */
     deleteTransitionEdge(transitionId: TransitionID): void {
@@ -91,18 +91,18 @@ export class TransitionEdge extends Edge {
     }
 
     /**
-     * Determines whether a d3 selection is a transition edge
-     * @param selection d3 selection to test
-     * @returns true if selection is a transition edge 
+     * Determines whether a d3 selection is a transition edge or not.
+     * @param selection d3 selection to test.
+     * @returns true if selection is a transition edge.
      */
     static isTransitionEdge(selection: d3.Selection<any, any, any, any>): boolean {
         return selection.datum() !== undefined && selection.datum()["edge"] !== undefined && selection.datum()["edge"] instanceof TransitionEdge;
     }
 
     /**
-     * Gets the transition edge containing the selection
-     * @param selection d3 selection of an element of a transition edge
-     * @returns the transition edge containing the selection
+     * Gets the transition edge containing the selection.
+     * @param selection d3 selection of an element of a transition edge.
+     * @returns the transition edge containing the selection.
      */
     static getTransitionEdge(selection: d3.Selection<any, any, any, any>): TransitionEdge {
         if (TransitionEdge.isTransitionEdge(selection)) {
@@ -112,10 +112,10 @@ export class TransitionEdge extends Edge {
     }
 
     /**
-     * Draws the text of the last modified transition represented by the edge
-     * @param inputSymbol input symbol of the transition
-     * @param outputSymbol output symbol of the transition
-     * @param headAction head action of the transition
+     * Draws the text of the last modified transition represented by the edge.
+     * @param inputSymbol input symbol of the transition.
+     * @param outputSymbol output symbol of the transition.
+     * @param headAction head action of the transition.
      */
     drawTransitionText(inputSymbol: TapeSymbol, outputSymbol: TapeSymbol, headAction: HeadAction): void {
         let headActionSymbol = "";
@@ -141,8 +141,8 @@ export class TransitionEdge extends Edge {
     }
 
     /**
-     * Sets the curved property of the edge
-     * @param b 
+     * Sets the curved property of the edge.
+     * @param b the new curved property for the edge.
      */
     setCurved(b: boolean): void {
         this.isCurved = b;

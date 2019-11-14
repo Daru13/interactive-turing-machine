@@ -4,7 +4,7 @@ import { EasterEgg } from "./EasterEggs";
 import { Tape } from "../model/Tape";
 
 /**
- * A class to make a space man move on the screen if the tape contain space related word
+ * A class to make a space man move on the screen if the tape contain space related word.
  */
 export class SpacemanEasterEgg extends EasterEgg {
     constructor() { 
@@ -12,9 +12,9 @@ export class SpacemanEasterEgg extends EasterEgg {
     }
 
     /**
-     * Tests if the tape contains some space related word
-     * @param tape 
-     * @returns true if be launched 
+     * Tests if the tape contains some space related word.
+     * @param tape the tape to check.
+     * @returns true if should be launched.
      */
     shouldBeLaunched(tape: Tape): boolean {
         let text = tape.getContentAsString();
@@ -24,8 +24,8 @@ export class SpacemanEasterEgg extends EasterEgg {
     }
 
     /**
-     * Draw a flying spaceman on the screen
-     * @param tape 
+     * Draw a flying spaceman on the screen.
+     * @param tape
      */
     launch(tape: Tape): void {
         let holder = 

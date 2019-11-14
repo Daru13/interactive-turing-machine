@@ -1,13 +1,13 @@
 import * as d3 from "d3-selection";
 import { MouseDispatcher, toolName } from "./MouseDispatcher";
 
-/** A class to display a tool bar in the application */
+/** A class to display a tool bar in the application. */
 export class ToolBar {
-    /** button to select the node tool */
+    /** button to select the node tool.. */
     nodeToolButton: d3.Selection<HTMLButtonElement, unknown, HTMLElement, any>;
     /** button to select the edge tool */
     edgeToolButton: d3.Selection<HTMLButtonElement, unknown, HTMLElement, any>;
-    /** MouseDispatcher we want to change the current tool */
+    /** MouseDispatcher we want to change the current tool.. */
     toolManager: MouseDispatcher;
 
     constructor(toolManager: MouseDispatcher) {

@@ -2,7 +2,7 @@ import { Graph } from "../Graph";
 import * as d3 from "d3-selection";
 
 /**
- * Data in the DOM link to the Element Node
+ * Data in the DOM link to the Element Node.
  */
 export interface NodeDatum {
     node: Node;
@@ -11,20 +11,20 @@ export interface NodeDatum {
 export type NodeSelection = d3.Selection<SVGGElement, NodeDatum, any, any>;
 
 /**
- * an abstract class to define an edge
+ * an abstract class to define an edge.
  */
 export abstract class Node{
-    /** number of node created */
+    /** number of node created. */
     static nodeNumber: number = 0;
-    /** id of the node */
+    /** id of the node. */
     id: string;
-    /** d3 selection of the svg group classed as a node */
+    /** d3 selection of the svg group classed as a node. */
     handleSelection: d3.Selection<SVGGElement, any, any, any>;
-    /** x position of the node */
+    /** x position of the node. */
     x: number;
-    /** y position of the node */
+    /** y position of the node. */
     y: number;
-    /** graph containing the node */
+    /** graph containing the node. */
     graph: Graph;
    
     constructor(graph: Graph) {
@@ -44,14 +44,14 @@ export abstract class Node{
     }
 
     /**
-     * Inits node
+     * Inits node.
      */
     init(): void { }
 
     /**
-     * Translates the node to x and y
-     * @param x 
-     * @param y 
+     * Translates the node to x and y.
+     * @param x new x position.
+     * @param y new y position.
      */
     translateTo(x: number, y: number): void {
         this.x = x;
@@ -60,9 +60,9 @@ export abstract class Node{
     }
 
     /**
-     * Translates the node by dx and dy
-     * @param dx 
-     * @param dy 
+     * Translates the node by dx and dy.
+     * @param dx How much to move on the x axis.
+     * @param dy How much to move on the y axis.
      */
     translateBy(dx: number, dy: number): void {
         this.x += dx;
@@ -71,30 +71,30 @@ export abstract class Node{
     }
 
     /**
-     * Deletes the node
+     * Deletes the node.
      */
     delete(): void {
         this.handleSelection.remove();
     }
 
     /**
-     * Classs the node as valid, i.e. the state represented by this node is deterministic
+     * Classs the node as valid, i.e. the state represented by this node is deterministic.
      */
     validate(): void {
         this.handleSelection.classed("not-valid", false);
     }
 
     /**
-     * Classs the node as invalid, i.e. the state represented by this node is non deterministic
+     * Classs the node as invalid, i.e. the state represented by this node is non deterministic.
      */
     invalidate(): void {
         this.handleSelection.classed("not-valid", true);
     }
 
     /**
-     * Determines whether a d3 selection is a node
-     * @param selection d3 selection to test
-     * @returns true if is a node 
+     * Determines whether a d3 selection is a node.
+     * @param selection d3 selection to test.
+     * @returns true if is a node.
      */
     static isNode(selection: d3.Selection<any, any, any, any>): boolean {
         let element = selection.node();
@@ -108,9 +108,9 @@ export abstract class Node{
     }
 
     /**
-     * Gets the node containing the selection
-     * @param selection d3 selection of a part of a node
-     * @returns the node containing the selection 
+     * Gets the node containing the selection.
+     * @param selection d3 selection of a part of a node.
+     * @returns the node containing the selection.
      */
     static getNode(selection: d3.Selection<any, any, any, any>): Node {
         let element = selection.node();

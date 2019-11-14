@@ -5,15 +5,15 @@ import { ErrorPopup } from "./popups/ErrorPopup";
 import { TMError } from "../errors/TMError";
 import { EasterEggManager } from "../easter-eggs/EasterEggManager";
 
-/** A class to display a panel with buttons to control the turing machine */
+/** A class to display a panel with buttons to control the turing machine. */
 export class ControlPanel {
-    /** Main div of the panel */
+    /** Main div of the panel. */
     holder: d3.Selection<HTMLDivElement, any, HTMLElement, any>;
-    /** Turing machine to control */
+    /** Turing machine to control. */
     turingMachine: TuringMachine;
-    /** Tape in the view to move */
+    /** Tape in the view to move. */
     tape: Tape;
-    /** Manage easter eggs based on the tape content */
+    /** Manage easter eggs based on the tape content. */
     easterEggManager: EasterEggManager;
 
     constructor(turingMachine: TuringMachine, tape: Tape) {

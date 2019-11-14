@@ -13,21 +13,21 @@ import { NodeEditor } from "../../popups/NodeEditorPopup";
 import { TransitionEdgeEditor } from "../../popups/TransitionEdgeEditorPopup";
 import { GeneratorEdgeEditor } from "../../popups/GeneratorEdgeEditorPopup";
 
-/** A class to create a tool to create nodes and moves them */
+/** A class to create a tool to create nodes and moves them. */
 export class NodeTool{
-    /** previous x position */
+    /** previous x position. */
     previousX: number;
-    /** previous y position */
+    /** previous y position. */
     previousY: number;
-    /** node to move */
+    /** node to move. */
     node: StateNode;
-    /** graph where to add nodes */
+    /** graph where to add nodes. */
     graph: Graph;
-    /** turing machine where to add states */
+    /** turing machine where to add states. */
     turingMachine: TuringMachine;
-    /** is the mouse down */
+    /** is the mouse down. */
     isDown: boolean;
-    /** best position where to put the node. If a node is moved above another one, the best position is the one before goign above the other node */
+    /** best position where to put the node. If a node is moved above another one, the best position is the one before goign above the other node. */
     bestPos: { x: number; y: number; };
 
     constructor(graph: Graph, turingMachine: TuringMachine) {

@@ -3,13 +3,13 @@ import { TuringMachine } from "../../model/TuringMachine";
 import { Helpers } from "../../helpers";
 import { ModifiedPointerEvent } from "./ModifiedPointerEvent";
 
-/** An abstract class to defines a dispatcher of pointer event happening on a graph */
+/** An abstract class to defines a dispatcher of pointer event happening on a graph. */
 export abstract class GraphEventDispatcher {
-    /** graph where the events are happening */
+    /** graph where the events are happening. */
     readonly graph: Graph;
-    /** turing machine associated to the graph */
+    /** turing machine associated to the graph. */
     readonly turingMachine: TuringMachine;
-    /** should this dispatcher process the events */
+    /** should this dispatcher process the events. */
     isActivated: boolean;
 
     constructor(graph: Graph, turingMachine: TuringMachine) {

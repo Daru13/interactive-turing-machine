@@ -1,7 +1,7 @@
 import { TuringMachine } from "../../model/TuringMachine";
 import { Action } from "./Action";
 
-/** A class with a static property to add a state in a turing machine */
+/** A class with a static property to add a state in a turing machine. */
 export class CreateStateAction extends Action{
         static nameState: number = 1;
 

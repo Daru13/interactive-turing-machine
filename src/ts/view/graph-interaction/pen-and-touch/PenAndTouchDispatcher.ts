@@ -10,7 +10,7 @@ import { GraphEventDispatcher } from "../GraphEventDispatcher";
  * A class to dispatch event based on type of the pointer used in Pen and touch interaction
  */
 export class PenAndTouchDispatcher extends GraphEventDispatcher{
-    /** Event id to the corresponding pen, touch or eraser */
+    /** Event id to the corresponding pen, touch or eraser. */
     readonly idToPenAndTouch: Record<string, any>;
 
     constructor(graph: Graph, turingMachine: TuringMachine) {

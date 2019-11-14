@@ -1,7 +1,7 @@
 import { ModifiedPointerEvent } from "./view/graph-interaction/ModifiedPointerEvent";
 import { Graph } from "./view/graph/Graph";
 
-/** Redefines d3 selection type to have shorter version */
+/** Redefines d3 selection type to have shorter version. */
 export interface Selection<
 	E extends Element,
 	P extends Element = Element,
@@ -9,13 +9,13 @@ export interface Selection<
 	PDatum extends object = object
 > extends d3.Selection<E, EDatum, P, PDatum> { }
 
-/** defines a point */
+/** defines a point. */
 export interface Point {
 	x: number;
 	y: number;
 }
 
-/** a class with various function to help */
+/** a class with various function to help. */
 export class Helpers{
     /**
      * Compute distance between two points

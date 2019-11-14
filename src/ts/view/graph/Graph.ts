@@ -22,27 +22,27 @@ export interface GraphDatum { }
 export type GraphSelection = d3.Selection<SVGElement, GraphDatum, HTMLElement, { }>;
 
 /**
- * A class to create a graph which is the visualization of a state machine
+ * A class to create a graph which is the visualization of a state machine.
  */
 export class Graph {
-    /** Size of the node in the graph */
+    /** Size of the node in the graph. */
     static sizeNode: number = parseInt(getComputedStyle(document.documentElement)
         .getPropertyValue('--node-size'));
-    /** Turing machine containing the state machine represented by this graph */
+    /** Turing machine containing the state machine represented by this graph. */
     turingMachine: TuringMachine;
-    /** d3 selection of the svg containing the nodes and edges */
+    /** d3 selection of the svg containing the nodes and edges. */
     svg: GraphSelection;
-    /** view box porperty of the svg */
+    /** view box porperty of the svg. */
     viewBox: { x: number, y: number, width: number, height: number };
-    /** Map of transition ID from the state machine to the transition edge in the graph */
+    /** Map of transition ID from the state machine to the transition edge in the graph. */
     transitionIdToTransitionEdge: Map<TransitionID, TransitionEdge>;
-    /** Map of state ID from the state machine to the state node in the graph */
+    /** Map of state ID from the state machine to the state node in the graph. */
     stateIdToStateNode: Map<StateID, StateNode>;
-    /** Generator Node of the graph */
+    /** Generator Node of the graph. */
     generator: GeneratorNode;
-    /** Generator edge comming from the generator */
+    /** Generator edge comming from the generator. */
     generatorEdge: GeneratorEdge;
-    /** event handlers for events emitted by the state machine */
+    /** event handlers for events emitted by the state machine. */
     eventsHandlers: Record<EventID, (EventHandler<any>)>;
 
     constructor(turingMachine: TuringMachine) {
@@ -57,7 +57,7 @@ export class Graph {
     }
 
     /**
-     * Inits the graph by creating a node for every state in the turing machine and an edge for every transition
+     * Inits the graph by creating a node for every state in the turing machine and an edge for every transition.
      */
     init(): void {
         let stateMachine = this.turingMachine.stateMachine;
@@ -84,7 +84,7 @@ export class Graph {
     }
 
     /**
-     * Setups the UI by creating a group for the edge and one for the node
+     * Setups the UI by creating a group for the edge and one for the node.
      */
     setupUI(): void {
         d3.select("#graph").selectAll("*:not(#toolbar)").remove();
@@ -101,39 +101,39 @@ export class Graph {
     }
 
     /**
-     * Gets the svg
-     * @returns svg
+     * Gets the svg.
+     * @returns svg.
      */
     getSVGElement(): SVGSVGElement {
         return this.svg.node() as SVGSVGElement;
     }
 
     /**
-     * Gets the d3 selection of the svg
-     * @returns d3 selection of the svg 
+     * Gets the d3 selection of the svg.
+     * @returns d3 selection of the svg.
      */
     getSVG(): GraphSelection {
         return this.svg;
     }
 
     /**
-     * Gets the group containing the nodes
-     * @returns the group containing the nodes
+     * Gets the group containing the nodes.
+     * @returns the group containing the nodes.
      */
     getNodesGroup(): d3.Selection<SVGGElement, any, any, any> {
         return this.svg.select("#nodes");
     }
 
     /**
-     * Gets the group containing the edges
-     * @returns the group containing the edges
+     * Gets the group containing the edges.
+     * @returns the group containing the edges.
      */
     getEdgesGroup(): d3.Selection<SVGGElement, any, any, any> {
         return this.svg.select("#edges");
     }
 
     /**
-     * Sets the reset viewBox button
+     * Sets the reset viewBox button.
      */
     setResetViewBoxButton(): void {
         d3.select("#graph").append("button").attr("id", "reset-viewbox-graph-button").on("click", () => {
@@ -144,16 +144,16 @@ export class Graph {
     }
 
     /**
-     * Updates the view box of the svg
+     * Updates the view box of the svg.
      */
     updateViewBox(): void {
         this.svg.attr("viewBox", `${this.viewBox.x},${this.viewBox.y}, ${this.viewBox.width}, ${this.viewBox.height}`);
     }
 
     /**
-     * Translates the view box by dx and dy
-     * @param dx 
-     * @param dy 
+     * Translates the view box by dx and dy.
+     * @param dx how much to translate the viewbow by on the x axis.
+     * @param dy how much to translate the viewbow by on the y axis.
      */
     translateViewBoxBy(dx: number, dy: number): void {
         this.viewBox.x -= dx;
@@ -162,9 +162,9 @@ export class Graph {
     }
 
     /**
-     * Scales the view box to width and height
-     * @param width 
-     * @param height 
+     * Scales the view box to a specific width and height.
+     * @param width the new width of the viewbox.
+     * @param height the new height of the viewbox.
      */
     scaleViewBoxTo(width: number, height: number): void {
         this.viewBox.width = width;
@@ -173,17 +173,17 @@ export class Graph {
     }
 
     /**
-     * Adds a state node in the graph
-     * @param state state to get the node from
+     * Adds a state node in the graph.
+     * @param state state to get the node from.
      */
     addNode(state: State): void {
         this.stateIdToStateNode.set(state.id, new StateNode(this, state));
     }
 
     /**
-     * Edits the initial property of a node
-     * @param state state to get the node from
-     * @param isInitial 
+     * Edits the initial property of a node.
+     * @param state state to get the node from.
+     * @param isInitial the new initial property of the node.
      */
     editInitialNode(state: State, isInitial: boolean): void {
         let node = this.stateIdToStateNode.get(state.id);
@@ -204,8 +204,8 @@ export class Graph {
     }
 
     /**
-     * Sets the current node
-     * @param state state to get the node from
+     * Sets the current node.
+     * @param state state to get the node from.
      */
     newCurrentNode(state: State): void {
         if (state === null) {
@@ -216,8 +216,8 @@ export class Graph {
     }
 
     /**
-     * Edits the final property of a node
-     * @param state state to get the node from
+     * Edits the final property of a node.
+     * @param state state to get the node from.
      * @param isFinal 
      */
     editFinalNode(state: State, isFinal: boolean): void {
@@ -225,16 +225,16 @@ export class Graph {
     }
 
     /**
-     * Edits the label of a node
-     * @param state state to get the node and the label from
+     * Edits the label of a node.
+     * @param state state to get the node and the label from.
      */
     editNode(state: State): void {
         this.stateIdToStateNode.get(state.id).setLabel(state.getLabel());
     }
     
     /**
-     * Deletes a node
-     * @param state state to get the node from
+     * Deletes a node.
+     * @param state state to get the node from.
      */
     deleteNode(state: State): void {
         let node = this.stateIdToStateNode.get(state.id);
@@ -245,8 +245,8 @@ export class Graph {
     }
 
     /**
-     * Moves a node to x and y
-     * @param state state to get the node from
+     * Moves a node to x and y.
+     * @param state state to get the node from.
      * @param x 
      * @param y 
      */
@@ -256,8 +256,8 @@ export class Graph {
     }
 
     /**
-     * Sets the curved property of an edge to true if for two nodes A and B, there is an edge from A to B and one from B to A
-     * @param transition transition to get the edge from
+     * Sets the curved property of an edge to true if for two nodes A and B, there is an edge from A to B and one from B to A.
+     * @param transition transition to get the edge from.
      */
     setEdgeCurved(transition: Transition): void {
         if (transition.origin === transition.destination) {
@@ -280,8 +280,8 @@ export class Graph {
     }
 
     /**
-     * from a transition from state A to state B, adds the transition to the edge from node A to B or creates a new edge if there is no edge from A to B
-     * @param transition
+     * from a transition from state A to state B, adds the transition to the edge from node A to B or creates a new edge if there is no edge from A to B.
+     * @param transition transition to add.
      */
     addEdge(transition: Transition): void {
         let stateMachine = this.turingMachine.stateMachine;
@@ -311,8 +311,8 @@ export class Graph {
     }
 
     /**
-     * Deletes a transition from an edge
-     * @param transition 
+     * Deletes a transition from an edge.
+     * @param transition transition to delete.
      */
     deleteEdge(transition: Transition): void {
         let transitionEdge = this.transitionIdToTransitionEdge.get(transition.id);
@@ -325,7 +325,7 @@ export class Graph {
     }
 
     /**
-     * Edits the text displayed on the edge
+     * Edits the text displayed on the edge.
      * @param transition 
      */
     editEdge(transition: Transition): void {
@@ -339,7 +339,7 @@ export class Graph {
     }
 
     /**
-     * Setups the listeners for events from the state machine
+     * Setups the listeners for events from the state machine.
      */
     setupListeners(): void {
         //New state
@@ -404,7 +404,7 @@ export class Graph {
     }
 
     /**
-     * Scale the viewBox of the svg to the bouding box of the svg
+     * Scale the viewBox of the svg to the bouding box of the svg.
      */
     resize(): void {
         let svgBoundingBox = this.svg.node().getBoundingClientRect();
@@ -412,7 +412,7 @@ export class Graph {
     }
 
     /**
-     * Removes event handlers
+     * Removes event handlers.
      */
     removeHandler(): void {
         for (let eventId of Object.keys(this.eventsHandlers)) {

@@ -20,11 +20,11 @@ type Tool = NodeTool | EdgeTool;
  * A class to dispatch event based on the selected tool
  */
 export class MouseDispatcher extends GraphEventDispatcher{
-    /** current tool used by the user */
+    /** current tool used by the user. */
     selectedTool: toolName;
-    /** tool name to an actual tool (EdgeTool.ts or NodeTool.ts) */
+    /** tool name to an actual tool (EdgeTool.ts or NodeTool.ts).. */
     readonly toolToInteraction: Record<toolName, Tool>;
-    /** the tool bar on the graph */
+    /** the tool bar on the graph. */
     toolBar: ToolBar;
 
     constructor(graph: Graph, turingMachine: TuringMachine) {

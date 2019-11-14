@@ -4,10 +4,10 @@ import * as d3 from "d3-selection";
 import { Node } from "./Node";
 
 /**
- * A class to create the generator node in a graph
+ * A class to create the generator node in a graph.
  */
 export class GeneratorNode extends Node{
-    /** Graph containing the generator node */
+    /** Graph containing the generator node. */
     graph: Graph;
 
     constructor(graph: Graph) {
@@ -18,7 +18,7 @@ export class GeneratorNode extends Node{
     }
  
     /**
-     * Inits generator node
+     * Inits generator node. Sets the position of the generator to be 10 pixel from the left border of the graph and vertically centered in the graph.
      */
     initGeneratorNode(): void {
         super.init();
@@ -32,9 +32,9 @@ export class GeneratorNode extends Node{
     }
 
     /**
-     * Determines whether a d3 selection is a generator 
-     * @param selection d3 selection to test
-     * @returns true if is a generator 
+     * Determines whether a d3 selection is a generator.
+     * @param selection d3 selection to test.
+     * @returns true if is a generator.
      */
     static isGenerator(selection: d3.Selection<any, any, any, any>): boolean {
         if (Node.isNode(selection)) {
@@ -46,9 +46,9 @@ export class GeneratorNode extends Node{
     }
 
     /**
-     * Gets the generator node containing the selection
-     * @param selection d3 selection contained in a generator node
-     * @returns generator node containing the selection 
+     * Gets the generator node containing the selection.
+     * @param selection d3 selection contained in a generator node.
+     * @returns generator node containing the selection.
      */
     static getGeneratorHandle(selection: d3.Selection<any, any, any, any>): GeneratorNode {
         if (Node.isNode(selection)) {

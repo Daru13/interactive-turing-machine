@@ -6,7 +6,7 @@ import { Helpers, Selection } from "../../../helpers";
 export type EdgeId = String;
 
 /**
- * Data in the DOM link to the Element Edge
+ * Data in the DOM link to the Element Edge.
  */
 export interface EdgeDatum {
     edge: Edge;
@@ -15,14 +15,14 @@ export interface EdgeDatum {
 export type EdgeSelection = d3.Selection<SVGGElement, EdgeDatum, any, any>;
 
 /**
- * an abstract class to define an edge
+ * An abstract class to define an edge.
  */
 export abstract class Edge{
-    /** Number of edge created */
+    /** Number of edge created. */
     static edgeNumber: number = 0;
-    /** id of the edge */
+    /** id of the edge. */
     id: string;
-    /** d3 selection of the svg group classed as an edge */
+    /** d3 selection of the svg group classed as an edge. */
     handleSelection: EdgeSelection;
 
     constructor(graph: Graph) {
@@ -39,7 +39,7 @@ export abstract class Edge{
     }
 
     /**
-     * Inits the edge by creating the svg group with a path, a text and a rectangle. The rectangle is the hit box of the edge
+     * Inits the edge by creating the svg group with a path, a text and a rectangle. The rectangle is the hit box of the edge.
      */
     init(): void {
         this.handleSelection
@@ -58,11 +58,11 @@ export abstract class Edge{
     }
 
     /**
-     * Redraws the edge between two points
-     * @param pt1 point where the edge comes from
-     * @param pt2 point where the goes to
-     * @param curved if pt1 !== pt2 the edge can be curved with this boolean 
-     * @param flipped if pt1 === pt2, the edge can be either above (flipped = true) or under the point
+     * Redraws the edge between two points.
+     * @param pt1 point where the edge comes from.
+     * @param pt2 point where the goes to.
+     * @param curved if pt1 !== pt2 the edge can be curved with this boolean .
+     * @param flipped if pt1 === pt2, the edge can be either above (flipped = true) or under the point.
      */
     protected redraw(pt1: { x: number, y: number }, pt2: { x: number, y: number }, curved: boolean = false, flipped: boolean = false): void {
         if (pt1.x === pt2.x && pt1.y === pt2.y) {
@@ -73,10 +73,10 @@ export abstract class Edge{
     }
 
     /**
-     * Redaws the edge between two different points
-     * @param pt1 point where the edge comes from
-     * @param pt2 point where the goes to
-     * @param curved if true, the edge will be a curve, if false the edge is a line
+     * Redaws the edge between two different points.
+     * @param pt1 point where the edge comes from.
+     * @param pt2 point where the goes to.
+     * @param curved if true, the edge will be a curve, if false the edge is a line.
      */
     private redawBetweenTwoPoints(pt1: { x: number, y: number }, pt2: { x: number, y: number }, curved: boolean = false): void {
         let len = Helpers.distance2(pt1, pt2); //length of the edge
@@ -135,9 +135,9 @@ export abstract class Edge{
     }
 
     /**
-     * Redraws the edge on one point
-     * @param pt point where the edge will be drawn
-     * @param flipped if true the edge is above the pt, if false the edge is under the pt
+     * Redraws the edge on one point.
+     * @param pt point where the edge will be drawn.
+     * @param flipped if true the edge is above the pt, if false the edge is under the pt.
      */
     private redrawBetweenOnePoint(pt: { x: number, y: number }, flipped: boolean): void {
         let firstYOffset: number = (flipped) ? -50 : 50;
@@ -175,47 +175,47 @@ export abstract class Edge{
     }
 
     /**
-     * Redraws the text of the edge
-     * @param text text to draw
+     * Redraws the text of the edge.
+     * @param text text to draw.
      */
     protected redrawText(text: string): void {
         this.handleSelection.select("text").text(text);
     }
 
     /**
-     * Deletes the edge
+     * Deletes the edge.
      */
     delete(): void {
         this.handleSelection.remove();
     }
 
     /**
-     * Classs the edge as valid
+     * Classs the edge as valid.
      */
     validate(): void  {
         this.handleSelection.classed("not-valid", false);
     }
 
     /**
-     * Classs the edge as invalid
+     * Classs the edge as invalid.
      */
     invalidate(): void  {
         this.handleSelection.classed("not-valid", true);
     }
 
     /**
-     * Determines whether a d3 selection is an edge or not
-     * @param selection d3 selection
-     * @returns true if is an edge 
+     * Determines whether a d3 selection is an edge or not.
+     * @param selection the d3 selection to test.
+     * @returns true if is the d3 selection is an edge.
      */
     static isEdge(selection: Selection<any>): boolean {
         return selection.datum() !== undefined && selection.datum()["edge"] !== undefined;
     }
 
     /**
-     * Gets the edge containing the selection
-     * @param selection selection of an element of an edge
-     * @returns the group classed as an edge containing the selection
+     * Gets the edge containing the selection.
+     * @param selection selection of an element of an edge.
+     * @returns the group classed as an edge containing the selection.
      */
     static getEdge(selection: Selection<any>): Edge {
         if (Edge.isEdge(selection)) {

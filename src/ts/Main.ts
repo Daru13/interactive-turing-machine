@@ -2,13 +2,13 @@ import { TuringMachine } from "./model/TuringMachine";
 import { ViewController } from "./view/ViewController";
 import { MenuBar } from "./view/MenuBar";
 
-/** A class to create our application */
+/** A class to create our application. */
 export class Main {
-    /** turing machine currently used */
+    /** turing machine currently used. */
     turingMachine: TuringMachine;
-    /** view controller associated to the current turing machine */
+    /** view controller associated to the current turing machine. */
     viewController: ViewController;
-    /** the menu bar */
+    /** the menu bar. */
     menuBar: MenuBar;
 
     constructor() {

@@ -7,9 +7,9 @@ import { NodeTool } from "../tools/NodeTool";
  * A class to define actions to do when a user uses touch
  */
 export class Touch{
-    /** node tool associated to touch */
+    /** node tool associated to touch. */
     nodeTool : NodeTool;
-    /** turing machine to pass to the node tool */
+    /** turing machine to pass to the node tool. */
     turingMachine: TuringMachine;
 
     constructor(graph: Graph, turingMachine: TuringMachine) {

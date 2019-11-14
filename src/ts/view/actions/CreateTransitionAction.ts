@@ -4,7 +4,7 @@ import { HeadAction } from "../../model/Tape";
 import { Action } from "./Action";
 import { StateNode } from "../graph/nodes/StateNode";
 
-/** A class with a static property to add a transition in a turing machine */
+/** A class with a static property to add a transition in a turing machine. */
 export class CreateTransitionAction extends Action {
     static do(originNode: StateNode, destinationNode: StateNode, turingMachine: TuringMachine): void {
         turingMachine.stateMachine

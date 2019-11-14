@@ -14,21 +14,21 @@ import { NodeEditor } from "../../popups/NodeEditorPopup";
 import { TransitionEdgeEditor } from "../../popups/TransitionEdgeEditorPopup";
 import { GeneratorEdgeEditor } from "../../popups/GeneratorEdgeEditorPopup";
 
-/** A class to define a tool to create edges */
+/** A class to define a tool to create edges. */
 export class EdgeTool {
-    /** previous x position */
+    /** previous x position. */
     previousX: number;
-    /** previous y position */
+    /** previous y position. */
     previousY: number;
-    /** turing machine where to create a transition */
+    /** turing machine where to create a transition. */
     turingMachine: TuringMachine;
-    /** graph where to create an edge */
+    /** graph where to create an edge. */
     graph: Graph;
-    /** node the edge is comming from */
+    /** node the edge is comming from. */
     node: Node;
-    /** is the mouse down */
+    /** is the mouse down. */
     isDown: boolean;
-    /** shadow drawn to make a preview of the edge to create */
+    /** shadow drawn to make a preview of the edge to create. */
     edgeInCreation: d3.Selection<SVGElement, any, any, any>;
 
     constructor(graph: Graph, turingMachine: TuringMachine) {

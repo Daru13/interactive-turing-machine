@@ -1,7 +1,7 @@
 import { Selection } from "../../helpers";
 
 /**
- * Draw a generator in the holder with a radius r
+ * Draw a generator in the holder with a radius r.
  * @param holder 
  * @param r 
  */
