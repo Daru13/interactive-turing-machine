@@ -41,8 +41,8 @@ export class MenuBar {
         // Interaction style switch
         function getInteractionStyleSwitchText(): string {
             return t.interactionStyle !== InteractionStyles.MOUSE
-                ? "Use Mouse interactions"
-                : "Use Pen&Touch interactions";
+                ? "Use the mouse"
+                : "Use Pen & Touch";
         }
 
         let interactionStyleSwitch = menuBar.append("button")
