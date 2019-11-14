@@ -2,7 +2,9 @@
 
 The Interactive Turing Machine is a web application for **designing and simulating Turing machines**. It was designed to be easy to use (no textual coding required) and playful (colorful graphics, animations, etc).
 
-▶️ [**Try it out!**](https://daru13.github.io/interactive-turing-machine/)
+▶️ [**Open The Interactive Turing Machine simulator**](https://daru13.github.io/interactive-turing-machine/)
+
+📖 [**Read the code documentation**](https://daru13.github.io/interactive-turing-machine/)
 
 The project was motivated by the apparent absence of fully interactive Turing machines online (we did not cover desktop or mobile applications). As an example, most of the alternatives we found, such as [turingmachinesimulator.com](https://turingmachinesimulator.com/) or [turingmachine.io](http://turingmachine.io/), required to describe the state machine using a textual language (instead of directly maniulating the graphical representation).
 
