@@ -37,4 +37,4 @@ Once this is done, **open a terminal and run the following commands**:
 4. `grunt` to finally build the application.
 
 The `build` folder will contain your own build.
-You can also generate your own documentation by running `grunt doc`.
+You can also generate your own documentation by running `grunt make-doc`.
