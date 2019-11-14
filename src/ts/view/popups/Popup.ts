@@ -36,7 +36,7 @@ export class Popup{
         titleBar.append("h2")
             .classed("popup-title", true);
 
-        titleBar.append("div")
+        titleBar.append("button")
             .classed("popup-close-button", true)
             .on("click", () => { t.close(); } )
             .text("Close");
