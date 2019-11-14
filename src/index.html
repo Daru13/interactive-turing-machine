@@ -1,124 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-
-    <meta name="description" content="A playful, interactive Turing machine simulator written in TypeScript.">
-    <meta name="keywords" content="game,interactive,turing,machine">
-
-    <title>Interactive Turing machine</title>
-
-    <link rel="stylesheet" href="./css/normalize.css">
-    <link rel="stylesheet" href="./css/style.css">
+    <head>
+        <meta charset="utf-8">
+        
+        <meta name="description" content="A playful, interactive Turing machine simulator written in TypeScript.">
+        <meta name="keywords" content="game,interactive,turing,machine">
+        <link rel="icon" sizes="16x16" href="./img/icons/favicon-16x16.png">
+        <link rel="icon" sizes="32x32" href="./img/icons/favicon-32x32.png">
+        
+        <title>The Interactive Turing machine</title>
+        
+        <link rel="stylesheet" href="./css/normalize.css">
+        <link rel="stylesheet" href="./css/style.css">
     </head>
-
-  <body id="body">
-        <!-- Content goes here! -->
+    <body id="body">
+        <!-- Conteant goes here! -->
         <div id="menu"></div>
         <div id="tape-container"></div>
         <div id="graph">
-          <div id="toolbar"></div>
+            <div id="toolbar"></div>
         </div>
         <div id="control-panel"></div>
-  </body>
+    </body>
+    <svg xmlns="http://www.w3.org/2000/svg" width="0px" height="0px">
+        <defs>
+            <marker id="arrowHead" viewBox="0 -10 37 20" refX="34" refY="0" markerWidth="14" markerHeight="14" orient="auto-start-reverse">
+                <g id="transition-arrow-right">
+                    <path d="M0,-10 L37,-10 L37,10 L0,10 z" fill="#969654" />
+                    <path d="M0,-8 L37,-8 L37,8 L0,8 z" fill="#AFAD64" />
+                    <path d="M0,-6 L37,-6 L37,2 L0,2 z" fill="#EAE786" />
+                    <path d="M3,-5.099 L12.48,-0.168 L3,5.208 z" fill="#545656" />
+                </g>
+            </marker>
+            
+            <marker id="arrowHeadSmaller" viewBox="0 -10 37 20" refX="34" refY="0" markerWidth="5.6" markerHeight="5.6" orient="auto-start-reverse">
+                <g id="transition-arrow-right">
+                    <path d="M0,-10 L37,-10 L37,10 L0,10 z" fill="#969654" />
+                    <path d="M0,-8 L37,-8 L37,8 L0,8 z" fill="#AFAD64" />
+                    <path d="M0,-6 L37,-6 L37,2 L0,2 z" fill="#EAE786" />
+                    <path d="M3,-5.099 L12.48,-0.168 L3,5.208 z" fill="#545656" />
+                </g>
+            </marker>
+            
+            <marker id="plug" viewBox="0 0 38.631 14.517" refX="34" refY="7.258" markerWidth="14" markerHeight="14" orient="auto-start-reverse">
+                <g>
+                    <polygon fill="#969654"
+                    points="26.143,9.162 26.142,5.534 37.605,5.533 38.631,6.677 38.631,8.048 37.604,9.161 	" />
+                    <line fill="none" stroke="#EAE786" stroke-miterlimit="10" x1="26.656" y1="6.835" x2="37.306" y2="6.835" />
+                </g>
+                <g>
+                    <rect x="0.101" y="0" fill="#969654" width="26.856" height="14.517" />
+                    <rect x="0.102" y="1.451" fill="#AFAD64" width="26.856" height="11.612" />
+                    <rect x="0.1" y="2.902" fill="#EAE786" width="26.856" height="5.806" />
+                    <polygon fill="#969654" points="2.279,3.846 9.159,7.426 2.278,11.33 " />
+                </g>
+            </marker>
+            
+            <filter id="blur" height="300%" width="300%" x="-75%" y="-75%">
+                <feMorphology operator="dilate" radius="4" in="SourceAlpha" result="thicken" />
+                <feGaussianBlur in="thicken" stdDeviation="10" result="blurred" />
+                <feFlood flood-color="rgb(120,120,120)" result="glowColor" />
+                <feComposite in="glowColor" in2="blurred" operator="in" result="softGlow_colored" />
+                <feMerge>
+                    <feMergeNode in="softGlow_colored"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+            <filter id="outline" height="300%" width="300%" x="-75%" y="-75%">
+                <feMorphology operator="dilate" radius="2" in="SourceAlpha" result="thicken" />
+                <feFlood flood-color="rgb(120,120,255)" result="outlineColor" />
+                <feComposite in="outlineColor" in2="thicken" operator="in" result="softGlow_colored" />
+                <feMerge>
+                    <feMergeNode in="softGlow_colored"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+            
+            <filter id="lightOn" height="300%" width="300%" x="-75%" y="-75%">
+                <feMorphology operator="dilate" radius="4" in="SourceAlpha" result="thicken" />
+                <feGaussianBlur in="thicken" stdDeviation="10" result="blurred" />
+                <feFlood flood-color="rgb(255, 241, 112)" result="glowColor" />
+                <feComposite in="glowColor" in2="blurred" operator="in" result="softGlow_colored" />
+                <feMerge>
+                    <feMergeNode in="softGlow_colored" />
+                    <feMergeNode in="SourceGraphic" />
+                </feMerge>
+            </filter>
+            <filter id="outline" height="300%" width="300%" x="-75%" y="-75%">
+                <feMorphology operator="dilate" radius="2" in="SourceAlpha" result="thicken" />
+                <feFlood flood-color="rgb(120,120,255)" result="outlineColor" />
+                <feComposite in="outlineColor" in2="thicken" operator="in" result="softGlow_colored" />
+                <feMerge>
+                    <feMergeNode in="softGlow_colored" />
+                    <feMergeNode in="SourceGraphic" />
+                </feMerge>
+            </filter>
+            
+            <filter id="red-outline" height="300%" width="300%" x="-75%" y="-75%">
+                <feMorphology operator="dilate" radius="2" in="SourceAlpha" result="thicken" />
+                <feFlood flood-color="rgb(255,120,120)" result="outlineColor" />
+                <feComposite in="outlineColor" in2="thicken" operator="in" result="softGlow_colored" />
+                <feMerge>
+                    <feMergeNode in="softGlow_colored" />
+                    <feMergeNode in="SourceGraphic" />
+                </feMerge>
+            </filter>
+            
+            <filter id="dilate" x="-50%" y="-50%" width="500%" height="500%">
+                <feMorphology operator="dilate" radius="4" in="SourceGraphic" result="offOut" />
+                <feBlend in="SourceGraphic" in2="offOut" mode="normal" />
+            </filter>
+            
+            <radialGradient id="shadowGradient" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="40">
+                <stop offset="0" stop-color="#000000" />
+                <stop offset="1" stop-color="#000000" stop-opacity="0" />
+            </radialGradient>
+        </defs>
+    </svg>
 
-  <svg xmlns="http://www.w3.org/2000/svg" width="0px" height="0px">
-    <defs>
-      <marker id="arrowHead" viewBox="0 -10 37 20" refX="34" refY="0" markerWidth="14" markerHeight="14" orient="auto-start-reverse">
-        <g id="transition-arrow-right">
-            <path d="M0,-10 L37,-10 L37,10 L0,10 z" fill="#969654" />
-            <path d="M0,-8 L37,-8 L37,8 L0,8 z" fill="#AFAD64" />
-            <path d="M0,-6 L37,-6 L37,2 L0,2 z" fill="#EAE786" />
-            <path d="M3,-5.099 L12.48,-0.168 L3,5.208 z" fill="#545656" />
-        </g>
-      </marker>
-
-    <marker id="arrowHeadSmaller" viewBox="0 -10 37 20" refX="34" refY="0" markerWidth="5.6" markerHeight="5.6"
-        orient="auto-start-reverse">
-        <g id="transition-arrow-right">
-            <path d="M0,-10 L37,-10 L37,10 L0,10 z" fill="#969654" />
-            <path d="M0,-8 L37,-8 L37,8 L0,8 z" fill="#AFAD64" />
-            <path d="M0,-6 L37,-6 L37,2 L0,2 z" fill="#EAE786" />
-            <path d="M3,-5.099 L12.48,-0.168 L3,5.208 z" fill="#545656" />
-        </g>
-    </marker>
-
-    <marker id="plug" viewBox="0 0 38.631 14.517" refX="34" refY="7.258" markerWidth="14" markerHeight="14"
-        orient="auto-start-reverse">
-        <g>
-            <polygon fill="#969654"
-                points="26.143,9.162 26.142,5.534 37.605,5.533 38.631,6.677 38.631,8.048 37.604,9.161 	" />
-            <line fill="none" stroke="#EAE786" stroke-miterlimit="10" x1="26.656" y1="6.835" x2="37.306" y2="6.835" />
-        </g>
-        <g>
-            <rect x="0.101" y="0" fill="#969654" width="26.856" height="14.517" />
-            <rect x="0.102" y="1.451" fill="#AFAD64" width="26.856" height="11.612" />
-            <rect x="0.1" y="2.902" fill="#EAE786" width="26.856" height="5.806" />
-            <polygon fill="#969654" points="2.279,3.846 9.159,7.426 2.278,11.33 " />
-        </g>
-    </marker>
-
-    <filter id="blur" height="300%" width="300%" x="-75%" y="-75%">
-      <feMorphology operator="dilate" radius="4" in="SourceAlpha" result="thicken" />
-      <feGaussianBlur in="thicken" stdDeviation="10" result="blurred" />
-      <feFlood flood-color="rgb(120,120,120)" result="glowColor" />
-      <feComposite in="glowColor" in2="blurred" operator="in" result="softGlow_colored" />
-      <feMerge>
-        <feMergeNode in="softGlow_colored"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-    <filter id="outline" height="300%" width="300%" x="-75%" y="-75%">
-      <feMorphology operator="dilate" radius="2" in="SourceAlpha" result="thicken" />
-      <feFlood flood-color="rgb(120,120,255)" result="outlineColor" />
-      <feComposite in="outlineColor" in2="thicken" operator="in" result="softGlow_colored" />
-      <feMerge>
-        <feMergeNode in="softGlow_colored"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-
-    <filter id="lightOn" height="300%" width="300%" x="-75%" y="-75%">
-        <feMorphology operator="dilate" radius="4" in="SourceAlpha" result="thicken" />
-        <feGaussianBlur in="thicken" stdDeviation="10" result="blurred" />
-        <feFlood flood-color="rgb(255, 241, 112)" result="glowColor" />
-        <feComposite in="glowColor" in2="blurred" operator="in" result="softGlow_colored" />
-        <feMerge>
-            <feMergeNode in="softGlow_colored" />
-            <feMergeNode in="SourceGraphic" />
-        </feMerge>
-    </filter>
-    <filter id="outline" height="300%" width="300%" x="-75%" y="-75%">
-        <feMorphology operator="dilate" radius="2" in="SourceAlpha" result="thicken" />
-        <feFlood flood-color="rgb(120,120,255)" result="outlineColor" />
-        <feComposite in="outlineColor" in2="thicken" operator="in" result="softGlow_colored" />
-        <feMerge>
-            <feMergeNode in="softGlow_colored" />
-            <feMergeNode in="SourceGraphic" />
-        </feMerge>
-    </filter>
-
-    <filter id="red-outline" height="300%" width="300%" x="-75%" y="-75%">
-        <feMorphology operator="dilate" radius="2" in="SourceAlpha" result="thicken" />
-        <feFlood flood-color="rgb(255,120,120)" result="outlineColor" />
-        <feComposite in="outlineColor" in2="thicken" operator="in" result="softGlow_colored" />
-        <feMerge>
-            <feMergeNode in="softGlow_colored" />
-            <feMergeNode in="SourceGraphic" />
-        </feMerge>
-    </filter>
-
-    <filter id="dilate" x="-50%" y="-50%" width="500%" height="500%">
-      <feMorphology operator="dilate" radius="4" in="SourceGraphic" result="offOut" />
-      <feBlend in="SourceGraphic" in2="offOut" mode="normal" />
-    </filter>
-  
-        <radialGradient id="shadowGradient" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="40">
-            <stop offset="0" stop-color="#000000" />
-            <stop offset="1" stop-color="#000000" stop-opacity="0" />
-        </radialGradient>
-    </defs>
-  </svg>
-
-  <script type="text/javascript" src="itm.js"></script>
+    <script type="text/javascript" src="itm.js"></script>
 </html>
