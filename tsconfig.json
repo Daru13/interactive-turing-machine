@@ -10,8 +10,9 @@
     },
 
     "typedocOptions": {
-        "mode": "modules",
-        "out": "docs"
+        "mode": "file",
+        "out": "docs",
+        "name": "The Interactive Turing Machine — Documentation"
     },
   
     "compileOnSave": false,
