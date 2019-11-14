@@ -10,9 +10,9 @@ import { TransitionEdge } from "../../graph/edges/TransitionEdge";
 import { StateNode } from "../../graph/nodes/StateNode";
 import { GeneratorEdge } from "../../graph/edges/GeneratorEdge";
 import { GeneratorNode } from "../../graph/nodes/GeneratorNode";
-import { NodeEditor } from "../../popup/NodeEditorPopup";
-import { TransitionEdgeEditor } from "../../popup/TransitionEdgeEditorPopup";
-import { GeneratorEdgeEditor } from "../../popup/GeneratorEdgeEditorPopup";
+import { NodeEditor } from "../../popups/NodeEditorPopup";
+import { TransitionEdgeEditor } from "../../popups/TransitionEdgeEditorPopup";
+import { GeneratorEdgeEditor } from "../../popups/GeneratorEdgeEditorPopup";
 
 /** A class to define a tool to create edges */
 export class EdgeTool {

@@ -1,10 +1,10 @@
 import * as d3 from "d3-selection";
-import { ExportPopup } from "./popup/ExportPopup";
+import { ExportPopup } from "./popups/ExportPopup";
 import { Main } from "../main";
 import { EventManager } from "../events/EventManager";
 import { ChangeInteractionStyle } from "../events/ChangeInteractionStyleEvent";
-import { ImportPopup } from "./popup/ImportPopup";
-import { LoadExamplePopup } from './popup/LoadExamplePopup';
+import { ImportPopup } from "./popups/ImportPopup";
+import { LoadExamplePopup } from './popups/LoadExamplePopup';
 
 /** Possible interaction styles in our application */
 export enum InteractionStyles {
