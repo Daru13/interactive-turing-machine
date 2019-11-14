@@ -16,19 +16,34 @@ export class GeneratorEdgeEditor extends Editor {
         this.edge = edge;
         this.stateMachine = stateMachine;
 
-        this.holder.classed("generator-edge-editor", true);
+        this.init();
+    }
 
-        this.initContent();
+    /**
+     * Initialise the popup properties and its content.
+     */
+    init(): void {
+        this.setTitle("Edge from the generator");
+        this.holder.attr("id", "generator-edge-editor");
+
+        this.addButtons();
         this.initPosition();
     }
 
     /**
-     * Inits content with a delete button
+     * Add delete and cancel buttons to the popup content.
      */
-    initContent(): void {
+    addButtons(): void {
+        let container = this.content.append("div")
+            .classed("action-button-container", true);
+
         this.addButton("Delete", () => {
             this.stateMachine.resetInitialState();
             this.close();
-        }, "delete-generator-edge-button");
+        }, "", "delete", container);
+
+        this.addButton("Cancel", () => {
+            this.close();
+        }, "", "cancel", container);
     }
 }

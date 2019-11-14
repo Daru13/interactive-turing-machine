@@ -608,6 +608,34 @@ body {
     box-shadow: 0 -2px 0 #25701b inset;
 }
 
+/*****************************************************************/
+
+#generator-edge-editor {
+    min-width: 500px;
+}
+
+#generator-edge-editor .action-button-container {
+    display: flex;
+}
+
+#generator-edge-editor .action-button-container > * {
+    flex: 1 1 0;
+    margin: 0 10px 0 0;
+}
+
+#generator-edge-editor .action-button-container > *:last-child {
+    margin-right: 0;
+}
+
+#generator-edge-editor .action-button-container .delete {
+    background-color: #b3484a;
+    box-shadow: 0 -5px 0 #821e1f inset;
+}
+
+#generator-edge-editor .action-button-container .delete:hover {
+    background-color: #9e2627;
+    box-shadow: 0 -2px 0 #821e1f inset;
+}
 
 
 /******************************************************************
