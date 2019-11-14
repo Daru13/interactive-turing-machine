@@ -55,14 +55,14 @@ export class TuringMachine {
         this.stateMachine = new StateMachine();
         this.tape = new Tape();
 
-        this.currentStep = 1;
+        this.currentStep = 0;
         this.state = TuringMachineState.READY;
     }
 
     /**
      * Return the current execution step of the Turing machine.
      * 
-     * @return The step (starting from 1).
+     * @return The step (starting from 0).
      */
     getCurrentStep(): number {
         return this.currentStep;
