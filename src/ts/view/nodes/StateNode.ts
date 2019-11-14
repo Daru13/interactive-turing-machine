@@ -1,7 +1,7 @@
 import { Graph } from "../Graph";
 import * as d3 from "d3-selection";
-import { State, StateID } from "../../../model/State";
-import { addLamp } from "../../custom-shapes/lamps";
+import { State, StateID } from "../../model/State";
+import { addLamp } from "../custom-shapes/lamps";
 import { Node } from "./Node";
 
 /**

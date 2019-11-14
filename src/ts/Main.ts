@@ -1,21 +1,21 @@
 import { TuringMachine } from "./model/TuringMachine";
-import { ViewController } from "./view/ViewController";
+import { GraphicalTuringMachine } from "./view/GraphicalTuringMachine";
 import { MenuBar } from "./view/MenuBar";
 
 /** A class to create our application. */
 export class Main {
     /** turing machine currently used. */
     turingMachine: TuringMachine;
-    /** view controller associated to the current turing machine. */
-    viewController: ViewController;
-    /** the menu bar. */
+    /** view controller associated to the current turing machine */
+    viewController: GraphicalTuringMachine;
+    /** the menu bar */
     menuBar: MenuBar;
 
     constructor() {
         this.menuBar = new MenuBar(this);
 
         this.turingMachine = new TuringMachine();
-        this.viewController = new ViewController(this.turingMachine);
+        this.viewController = new GraphicalTuringMachine(this.turingMachine);
     }
 
     /**
@@ -25,7 +25,7 @@ export class Main {
     setTuringMachineFromImport(json: string): void {
         this.viewController.removeHandler();
         this.turingMachine = TuringMachine.fromJSONExport(json);
-        this.viewController = new ViewController(this.turingMachine);
+        this.viewController = new GraphicalTuringMachine(this.turingMachine);
         this.viewController.setInteractionStyle(this.menuBar.interactionStyle);
     }
 }

@@ -1,12 +1,12 @@
 import * as d3 from "d3-selection";
-import { Graph } from "../../graph/Graph";
+import { Graph } from "../../Graph";
 import { TuringMachine } from "../../../model/TuringMachine";
 import { ModifiedPointerEvent } from "../ModifiedPointerEvent";
 import { CreateStateAction } from "../../actions/CreateStateAction";
-import { TransitionEdge } from "../../graph/edges/TransitionEdge";
-import { StateNode } from "../../graph/nodes/StateNode";
-import { Node } from "../../graph/nodes/Node";
-import { GeneratorEdge } from "../../graph/edges/GeneratorEdge";
+import { TransitionEdge } from "../../edges/TransitionEdge";
+import { StateNode } from "../../nodes/StateNode";
+import { Node } from "../../nodes/Node";
+import { GeneratorEdge } from "../../edges/GeneratorEdge";
 import { Helpers } from "../../../helpers";
 import { MoveStateAction } from "../../actions/MoveStateAction";
 import { NodeEditor } from "../../popups/NodeEditorPopup";

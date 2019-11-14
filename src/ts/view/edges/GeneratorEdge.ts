@@ -1,6 +1,6 @@
 import { Graph } from "../Graph";
 import * as d3 from "d3-selection";
-import { Helpers } from "../../../helpers";
+import { Helpers } from "../../helpers";
 import { Edge } from "./Edge";
 import { GeneratorNode } from "../nodes/GeneratorNode";
 import { StateNode } from "../nodes/StateNode";

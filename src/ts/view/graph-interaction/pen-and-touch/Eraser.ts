@@ -1,11 +1,11 @@
-import { Graph } from "../../graph/Graph";
+import { Graph } from "../../Graph";
 import { TuringMachine } from "../../../model/TuringMachine";
 import { ModifiedPointerEvent } from "../ModifiedPointerEvent";
 import * as d3 from "d3-selection";
 import { DeleteTransitionAction } from "../../actions/DeleteTransitionAction";
 import { DeleteStateAction } from "../../actions/DeleteStateAction";
-import { TransitionEdge } from "../../graph/edges/TransitionEdge";
-import { StateNode } from "../../graph/nodes/StateNode";
+import { TransitionEdge } from "../../edges/TransitionEdge";
+import { StateNode } from "../../nodes/StateNode";
 
 /**
  * A class to defines action to do when a user uses the eraser of the microsoft pen.

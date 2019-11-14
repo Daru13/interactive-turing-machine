@@ -1,5 +1,5 @@
 import { Action } from "./Action";
-import { StateNode } from "../graph/nodes/StateNode";
+import { StateNode } from "../nodes/StateNode";
 import { TuringMachine } from "../../model/TuringMachine";
 
 /** A class with a static property to move a state. */

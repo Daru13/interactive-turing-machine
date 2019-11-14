@@ -1,6 +1,6 @@
 import { Graph } from "../Graph";
 import * as d3 from "d3-selection";
-import { Helpers, Selection } from "../../../helpers";
+import { Helpers, Selection } from "../../helpers";
 
 
 export type EdgeId = String;
