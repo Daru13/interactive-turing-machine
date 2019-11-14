@@ -1095,15 +1095,16 @@ body {
 }
 
 #head {
-    width: 20px;
-    height: 20px;
     position: absolute;
-    top: -10px;
-    left: 0;
+    top: 0;
+    left: 12px;
     right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: red;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto;
+    background-image: url(../img/textures/tape-head.svg);
+    background-repeat: no-repeat;
+    background-position: top center;
     z-index: 1000;
 }
 
