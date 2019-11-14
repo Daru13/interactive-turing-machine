@@ -66,6 +66,8 @@ export class Tape {
         for (let i = 0; i < Tape.minLength; i++) {
             this.addCell(i);
         }
+
+        this.updateCurrentCell();
     }
 
     /**
@@ -200,6 +202,8 @@ export class Tape {
         while (this.displayedCellsIndices.maxIndex < displayedCellIndex + Tape.minLength) {
             this.addCellAtTheEnd();
         }
+
+        this.updateCurrentCell();
     }
 
     /**
@@ -250,30 +254,46 @@ export class Tape {
             default:
                 break;
         }
+
+        this.updateCurrentCell();
     }
 
     /**
-     * Updates the value of the cell
-     * @param symbol new value of the cell
-     * @param index index of the cell to upadte
+     * Update the value of the cell at the given index.
+     * 
+     * @param symbol The new value of the cell.
+     * @param index The index of the cell to update.
      */
     updateCell(symbol: TapeSymbol, index: number): void {
-        let inputCell = this.tape.select("#cell-" + index).select("input").node() as HTMLInputElement;
-        inputCell.value = symbol;
+        let cell = this.tape.select("#cell-" + index);
+        let inputElement = cell.select("input").node() as HTMLInputElement;
+
+        inputElement.value = symbol;
     }
 
     /**
-     * Updates content of the tape
+     * Update the style of the current cell (below the tape head).
+     */
+    updateCurrentCell(): void {
+        let currentCellIndex = this.turingMachine.tape.getHeadPosition();
+
+        this.tape.select(".current-cell").classed("current-cell", false);
+        this.tape.select("#cell-" + currentCellIndex)
+            .classed("current-cell", true);
+    }
+
+    /**
+     * Update the content and the style of the tape.
      */
     updateContent(): void {
         let tapeContent = this.turingMachine.tape.getContent();
-        let symbol;
+        
+        // Cancel the style of the current cell (if any)
+        
+
+        // Update the style and the content of all the displayed cells
         for (let i = this.displayedCellsIndices.minIndex; i <= this.displayedCellsIndices.maxIndex; i++) {
-            if (i < tapeContent.length) {
-                symbol = tapeContent[i];
-            } else {
-                symbol = "";
-            }
+            let symbol = i < tapeContent.length ? tapeContent[i] : "";
             this.updateCell(symbol, i);
         }
     }
