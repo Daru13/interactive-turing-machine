@@ -130,56 +130,94 @@ body {
 /*****************************************************************/
 
 #menu {
+    box-sizing: border-box;
     grid-area: menu;
     display: grid;
     grid-template-rows: auto;
-    grid-template-columns: 160px 90px 90px auto 280px 40px;
-    gap: 10px;
+    grid-template-columns: 160px 90px 90px auto 200px 80px;
+    gap: 0;
+    height: 60px;
     background-color: #3b3c3d;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.6);
     color: #FFF;
     z-index: 100;
 }
 
-#menu button,
-#menu select {
-    height: 40px;
-    margin: 10px 5px;
+#menu > * {
+    box-sizing: border-box;
+    height: 60px;
+    margin: 0;
     padding: 0;
     /* overflow: hidden; */
     text-overflow: ellipsis;
 }
 
-#predefined-models-list {
+#menu button,
+#help-button {
+    width: 100%;
+    height: 60px;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    border-width: 0;
+    border-color: rgba(0, 0, 0, 0.6);
+    border-style: solid;
+    color: #FFF;
+    font-size: 1.2rem;
+    text-decoration: none;
+    line-height: 60px;
+    vertical-align: middle;
+    text-align: center;
+    transition: 50ms ease-in-out;
+}
+
+#menu button:hover,
+#menu button:active,
+#help-button:hover,
+#help-button:active {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+#menu #load-example-button {
     grid-row: 1;
     grid-column: 1;
+    border-right-width: 2px;
 }
 
-#import-model-button {
+#menu #import-model-button {
     grid-row: 1;
     grid-column: 2;
+    border-right-width: 2px;
 }
 
-#export-model-button {
+#menu #export-model-button {
     grid-row: 1;
     grid-column: 3;
+    border-right-width: 2px;
 }
 
-#app-title {
+#menu #app-title {
+    display: inline;
     grid-row: 1;
     grid-column: 4;
     justify-self: center;
     font-size: 1.6rem;
     font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 60px;
 }
 
-#switch-interaction-style-button {
+#menu #switch-interaction-style-button {
     grid-row: 1;
     grid-column: 5;
+    border-left-width: 2px;
 }
 
-#help-button {
+#menu #help-button {
     grid-row: 1;
     grid-column: 6;
+    border-left-width: 2px;
 }
 
 
