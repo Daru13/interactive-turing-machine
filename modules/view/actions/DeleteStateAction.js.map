@@ -1,0 +1,1 @@
+{"version":3,"file":"DeleteStateAction.js","sourceRoot":"","sources":["../../../../src/ts/view/actions/DeleteStateAction.ts"],"names":[],"mappings":";;AACA,qCAAkC;AAIlC,MAAa,iBAAkB,SAAQ,eAAM;IACrC,MAAM,CAAC,EAAE,CAAC,IAAe,EAAE,aAA4B;QAC/C,aAAa,CAAC,YAAY,CAAC,WAAW,CAAC,IAAI,CAAC,OAAO,CAAC,CAAC;IACjE,CAAC;CACJ;AAJD,8CAIC"}
