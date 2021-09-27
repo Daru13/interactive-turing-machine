@@ -1,0 +1,1 @@
+{"version":3,"file":"NoInitialStateError.js","sourceRoot":"","sources":["../../../src/ts/errors/NoInitialStateError.ts"],"names":[],"mappings":";;AAAA,uCAAoC;AAMpC,MAAa,mBAAoB,SAAQ,iBAAO;IAC5C,YAAY,aAA4B;QACpC,KAAK,CAAC,aAAa,EACf,kBAAkB,EAClB,8FAA8F,EAC9F,sGAAsG,CACzG,CAAC;IACN,CAAC;CACJ;AARD,kDAQC"}

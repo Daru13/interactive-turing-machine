@@ -1,0 +1,1 @@
+{"version":3,"file":"SetInitialStateAction.js","sourceRoot":"","sources":["../../../../src/ts/view/actions/SetInitialStateAction.ts"],"names":[],"mappings":";;AAAA,qCAAkC;AAKlC,MAAa,qBAAsB,SAAQ,eAAM;IAC7C,MAAM,CAAC,EAAE,CAAC,IAAe,EAAE,aAA4B;QACnD,aAAa,CAAC,YAAY,CAAC,eAAe,CAAC,IAAI,CAAC,OAAO,CAAC,CAAC;IAC7D,CAAC;CACJ;AAJD,sDAIC"}

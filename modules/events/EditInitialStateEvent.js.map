@@ -1,0 +1,1 @@
+{"version":3,"file":"EditInitialStateEvent.js","sourceRoot":"","sources":["../../../src/ts/events/EditInitialStateEvent.ts"],"names":[],"mappings":";;AAIA,MAAa,qBAAqB;IAKhC,YAAY,KAAY,EAAE,mBAA4B;QAJtD,OAAE,GAAW,kBAAkB,CAAC;QAK9B,IAAI,CAAC,KAAK,GAAG,KAAK,CAAC;QACnB,IAAI,CAAC,mBAAmB,GAAG,mBAAmB,CAAC;IACjD,CAAC;CACF;AATD,sDASC"}

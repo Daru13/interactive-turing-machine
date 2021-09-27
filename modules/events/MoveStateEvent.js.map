@@ -1,0 +1,1 @@
+{"version":3,"file":"MoveStateEvent.js","sourceRoot":"","sources":["../../../src/ts/events/MoveStateEvent.ts"],"names":[],"mappings":";;AAIA,MAAa,cAAc;IAKvB,YAAY,KAAY,EAAE,QAAkB;QAJ5C,OAAE,GAAW,WAAW,CAAC;QAKrB,IAAI,CAAC,KAAK,GAAG,KAAK,CAAC;QACnB,IAAI,CAAC,QAAQ,GAAG,QAAQ,CAAC;IAC7B,CAAC;CACJ;AATD,wCASC"}
